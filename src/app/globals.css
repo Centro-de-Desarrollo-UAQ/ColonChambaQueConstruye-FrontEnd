@@ -187,11 +187,37 @@
   --uaq-default-900: oklch(10.20% 0 0);
 }
 
+@font-face {
+  font-family: "Futura";
+  src: url("/fonts/FuturaBT-Medium.woff2") format("woff2"),
+       url("/fonts/FuturaBT-Medium.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Futura";
+  src: url("/fonts/FuturaBT-Heavy.woff2") format("woff2"),
+       url("/fonts/FuturaBT-Heavy.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Futura";
+  src: url("/fonts/FuturaBT-Light.woff2") format("woff2"),
+       url("/fonts/FuturaBT-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+}
+
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+    font-family: "Futura", sans-serif;
   }
 }
