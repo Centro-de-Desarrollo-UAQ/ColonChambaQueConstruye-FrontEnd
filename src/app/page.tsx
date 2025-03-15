@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 export default function Home() {
   return (
     <div>
-      <h1 className="px-">My Homepage</h1>
+      <h1>My Homepage</h1>
       <p>
         Welcome !
       </p>
