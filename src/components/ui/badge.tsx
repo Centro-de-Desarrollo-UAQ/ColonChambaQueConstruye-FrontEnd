@@ -5,28 +5,28 @@ import { CloseCircle } from "@solar-icons/react"
 
 
 const badgeVariants = cva(
-    "inline-flex items-center rounded-lg border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  "inline-flex items-center rounded-lg px-2.5 py-0.5 text-xs font-[400] font-futura transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
     {
     variants: {
       variant: {
         default:
-          "border-uaq-success bg-uaq-success/50 text-uaq-success shadow",
+          "bg-uaq-success-transparent text-uaq-success",
         secondary:
-          "border-uaq-warning bg-uaq-warning/50 text-uaq-warning",
+          "bg-uaq-warning-transparent text-uaq-warning",
         destructive:
-          "border-uaq-danger bg-uaq-danger/50 text-uaq-danger",
+          "bg-uaq-danger-transparent text-uaq-danger",
         outline:
-          "border-foreground text-foreground",
+          "border border-uaq-default-800 text-foreground",
 
         // Variantes con el onClose
         defaultClosable:
-          "border-uaq-success bg-uaq-success/50 text-uaq-success shadow",
+          "bg-uaq-success-transparent text-uaq-success",
         secondaryClosable:
-          "border-uaq-warning bg-uaq-warning/50 text-uaq-warning",
+          "bg-uaq-warning-transparent text-uaq-warning",
         destructiveClosable:
-          "border-uaq-danger bg-uaq-danger/50 text-uaq-danger",
+          "bg-uaq-danger-transparent text-uaq-danger",
         outlineClosable:
-            "border-foreground text-foreground",
+          "border border-uaq-default-800 text-foreground",
       },
     },
     defaultVariants: {
