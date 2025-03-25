@@ -11,26 +11,28 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-uaq-brand text-uaq-default-50 shadow hover:bg-uaq-brand-hover border border-uaq-brand justify-center items-center gap-2.5 font-base-bold font-bold text-[1rem]", // Botón primario con colores de la marca UAQ
+          "bg-uaq-brand text-uaq-default-50 shadow hover:bg-uaq-brand-hover border border-uaq-brand font-base-bold font-bold text-[1rem]", 
         destructive:
-          "bg-uaq-danger text-uaq-default-50 shadow-sm hover:bg-uaq-danger-hover justify-center items-center gap-2.5 font-base-bold font-bold text-[1rem] ", // Botón para acciones destructivas
+          "bg-uaq-danger text-uaq-default-50 shadow-sm hover:bg-uaq-danger-hover font-base-bold font-bold text-[1rem]", 
         outline:
-          "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground justify-center items-center gap-2.5 font-base-bold font-bold text-[1rem] ", // Botón con borde y fondo transparente
+          "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground font-base-bold font-bold text-[1rem]", 
         secondary:
-          "bg-uaq-accent text-uaq-default-50 shadow-sm hover:bg-uaq-accent-hover justify-center items-center gap-2.5 font-base-bold font-bold text-[1rem] ", // Botón secundario
-        ghost: "hover:bg-uaq-default-200 text-uaq-brand justify-center items-center gap-2.5 font-base-bold font-bold text-[1rem] ", // Botón sin fondo, solo cambia el color al pasar el mouse
-        edit: " bg-uaq-default-100 text-uaq-default-800 hover:bg-uaq-default-300 justify-center items-center gap-2.5 text-[1rem] ", // Botón estilo enlace
+          "bg-uaq-accent text-uaq-default-50 shadow-sm hover:bg-uaq-accent-hover font-base-bold font-bold text-[1rem]", 
+        ghost: 
+          "bg-uaq-default-50 hover:bg-uaq-default-200 text-uaq-brand font-base-bold font-bold text-[1rem]", 
+        edit: 
+          "bg-uaq-default-100 text-uaq-default-800 hover:bg-uaq-default-300 text-[1rem]", 
       },
       size: {
-        default: "h-11 w-20 px-[0.937rem] py-[0.75rem] rounded-lg", // Tamaño por defecto
-        sm: "h-8 rounded-md px-3 text-xs", // Tamaño pequeño
-        lg: "h-10 rounded-md px-8", // Tamaño grande
-        icon: "h-9 w-9", // Botón con solo icono
+        default: "h-11 px-[0.937rem] py-[0.75rem] rounded-lg", 
+        sm: "h-8 rounded-md px-3 text-xs",
+        lg: "h-10 rounded-md px-8",
+        icon: "h-9 w-9",
       },
     },
     defaultVariants: {
-      variant: "default", // Variante por defecto
-      size: "default", // Tamaño por defecto
+      variant: "default",
+      size: "default",
     },
   }
 )

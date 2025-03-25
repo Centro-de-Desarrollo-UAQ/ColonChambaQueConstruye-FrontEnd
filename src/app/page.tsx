@@ -1,8 +1,11 @@
 'use client'
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { ButtonNavBar } from "@/components/ui/buttonNavBar";
 import { Badge } from "@/components/ui/badge";
-
+import LinkerNavBar from "@/components/linkerNavBar";
+import UserNavBar from "@/components/userNavBar";
+import FooterLanding from "@/components/footerLanding";
 export default function Home() {
   const [visibleBadges, setVisibleBadges] = useState({
     outlineClosable: true,
@@ -19,6 +22,11 @@ export default function Home() {
   }
   return (
     <>
+    <div>
+      <LinkerNavBar />
+      <div className="bg-white p-2"></div>
+      <UserNavBar/>
+    </div>
       <div className="space-y-4">
         <h1 className="px-">My Homepage</h1>
         <p>Welcome!</p>
@@ -27,6 +35,11 @@ export default function Home() {
         <Button variant="secondary">Button</Button>
         <Button variant="ghost">Button</Button>
         <Button variant="edit">Button</Button>
+      </div>
+      <div className="space-y-4">
+        <ButtonNavBar variant="hover" size="sm">Option</ButtonNavBar>
+        <ButtonNavBar variant="default" size="default">Option</ButtonNavBar>
+        <ButtonNavBar variant="active">Option</ButtonNavBar>
       </div>
 
       <div className="space-y-4">
@@ -64,6 +77,9 @@ export default function Home() {
           </Badge>
         )}
       </div>
+    </div>
+    <div>
+      <FooterLanding/>
     </div>
     </>
   );
