@@ -259,3 +259,55 @@
   min-width: max-content;
   animation: scroll-reverse 20s linear infinite;
 }
+
+.facArtes {
+  background-color: #614184
+}
+
+.facConta {
+  background-color: #0061A9
+}
+
+.facDerecho {
+  background-color: #526671
+}
+
+.facCiencias {
+  background-color: #00BD1D
+}
+
+.facInformatica {
+  background-color: #00695A
+}
+
+.facFilosofia {
+  background-color: #FFAD46
+}
+
+.facEnfermeria {
+  background-color: #009A92
+}
+
+.facPoliticas {
+  background-color: #009BC6
+}
+
+.facIngenieria {
+  background-color: #FF231B
+}
+
+.facLenguas {
+  background-color: #FACB00
+}
+
+.facMedicina {
+  background-color: #005483
+}
+
+.facPsicologia {
+  background-color: #005483
+}
+
+.facQuimica {
+  background-color: #FF6900
+}

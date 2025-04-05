@@ -6,6 +6,7 @@ import { fakeAdsCompanies } from "@/constants";
 import { AppropriateJob } from "@/components/ui/landing-page/AppropriateJob";
 import { TargetGroups } from "@/components/ui/landing-page/TargetGroups";
 import { CompanyService } from "@/components/ui/landing-page/CompanyService";
+import { UaqOffers } from "@/components/ui/landing-page/UaqOffers";
 
 async function getAdvertisingCompanies(): Promise<CompanyAdvertising[] | void> {
   // fetch to have companies that have purchased the ads section
@@ -41,6 +42,12 @@ export default async function LandingPage() {
         </div>
         <div className="space-y-4 pt-20 pb-20 bg-uaq-brand text-white">
           <CompanyService />
+        </div>
+        <div className="space-y-4 pt-20 pb-20">
+          <UaqOffers />
+        </div>
+        <div className="space-y-4 pt-20 pb-20">
+          
         </div>
     </div>
     </>
