@@ -8,7 +8,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <main className="flex-grow">
         {children}
       </main>
-      <FooterLanding />
+      <div className="pt-40 bg-zinc-50">
+        <FooterLanding />
+      </div>
     </div>
   );
 }
