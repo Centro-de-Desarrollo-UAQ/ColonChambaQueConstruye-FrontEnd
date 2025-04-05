@@ -3,8 +3,8 @@ import { Button } from "../button";
 
 export function Hero() {
   return (
-    <div className=" p-10 flex flex-col md:flex-row items-center justify-between md:px-16 lg:px-48 gap-8 ">
-        <div className="flex flex-col w-full h-full md:w-[686px] gap-4">
+    <div className=" p-10 flex flex-col md:flex-row items-center justify-between md:px-16 lg:px-48 gap-8 relative">
+        <div className="flex flex-col w-full md:w-[686px] gap-4 text-center md:text-left items-center md:items-start">
             <h1 className="text-4xl text-zinc-800 font-bold">Plataforma virtual de empleo y bolsa de trabajo UAQ</h1>
 
             <p className="text-zinc-800 w-[400px]">
