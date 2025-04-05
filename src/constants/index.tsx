@@ -1,5 +1,35 @@
 import { CompanyAdvertising } from "@/interfaces";
 
+export const careers1: string[] = [
+    "Ingeniería en computación",
+    "Enfermería",
+    "Ingeniería de software",
+    "Fisioterapia",
+    "Biología",
+    "Nutrición",
+    "Estudios literarios",
+    "Licenciatura en Administración",
+    "Contador público",
+    "Medicina",
+    "Odontología",
+    "Biotecnología"
+];
+
+export const careers2: string[] = [
+    "Lenguas modernas inglés",
+    "Psicología",
+    "Innovación y gestión educativa",
+    "Música",
+    "Actuación",
+    "Sociología",
+    "Relaciones internacionales",
+    "Derecho",
+    "Historia",
+    "Gastronomia",
+    "Arquitectura",
+    "Químico ambienral"
+];
+
 export const indicators: { title: string, description: string }[] = [
     {
         title: "+ 400 empresas",
