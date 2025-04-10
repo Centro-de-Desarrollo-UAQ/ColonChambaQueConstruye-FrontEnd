@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { InfoCard } from "@/components/InfoCard/InfoCard";
+import { ConfigRow } from "@/components/ConfigRow/ConfigRow";
 
 export default function Home() {
   const [visibleBadges, setVisibleBadges] = useState({
@@ -78,10 +79,23 @@ export default function Home() {
           )}
         </div>
       </div>
+       {/* InfoCard */}
       <div className="flex">
         <InfoCard avatar="https://github.com/shadcn.png" name="Jane Daw" email="Hosea28@yahoo.com" cellphone="+52 441 441 22 22"/>
         <InfoCard avatar="https://github.com/shadcn.png" name="Jane Daw" email="Hosea28@yahoo.com" cellphone={null}/>
       </div>
+
+      {/* ConfigRow */}
+      <div className="flex space-y-4 flex-col w-[60vw]">
+        <ConfigRow title="Header Title" valueinput="" isTitle={true} placeholder=""  isEditable={true} editInput={true}/>
+        <ConfigRow title="Header Title" valueinput="" isTitle={true} placeholder=""  isEditable={false} editInput={true}/>
+        <ConfigRow title="Header Title" valueinput="Hola" isTitle={false} placeholder="Contenido"  isEditable={false} editInput={false}/>
+        <ConfigRow title="Header Title" valueinput="Hola" isTitle={false} placeholder="Contenido"  isEditable={true} editInput={true}/>
+        <ConfigRow title="Header Title" valueinput="" isTitle={false} placeholder="Password"  isEditable={false} editInput={true}/>
+        <ConfigRow title="Header Title" valueinput="" isTitle={false} placeholder="Password"  isEditable={true} editInput={true}/>
+
+      </div>
     </>
   );
 }
+ 
