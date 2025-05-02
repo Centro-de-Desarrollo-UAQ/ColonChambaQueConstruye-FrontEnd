@@ -10,13 +10,10 @@
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.3",
-<<<<<<< HEAD
     "@radix-ui/react-label": "^2.1.2",
     "@radix-ui/react-popover": "^1.1.6",
     "@radix-ui/react-select": "^2.1.6",
     "@radix-ui/react-separator": "^1.1.2",
-=======
->>>>>>> e94c81be2d5cfe41bc75f105f0160dd4fe23e916
     "@radix-ui/react-slot": "^1.1.2",
     "@radix-ui/react-tabs": "^1.1.3",
     "@solar-icons/react": "^1.0.1",

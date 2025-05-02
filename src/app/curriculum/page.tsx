@@ -2,7 +2,8 @@
 import UserTabs from "@/components/userTabs"
 import { Button } from "@/components/ui/button"
 import { FileDisplay } from "@/components/fileDisplay"
-import { Documents } from "@solar-icons/react"
+import TitleSection from "@/components/titleSection"
+import { ConfigRow } from "@/components/ConfigRow/ConfigRow"
 
 export default function Curriculum() {
   return (
@@ -14,20 +15,12 @@ export default function Curriculum() {
       
       {/* Columna derecha - Contenido principal */}
       <div className="flex-1 p-4 md:p-6 space-y-6 mr-20">
-          <div className="flex items-center gap-3 bg-uaq-default-100 p-3 border-l-2 border-black">
-            <Documents size={24} weight="Bold"/>
-            <span>CURRICULUM</span>
-          </div>
-          <p className="py-1">Cree, suba y administre sus CV para postular empleos</p>
+          <TitleSection variant="curriculum"/>
         
         {/* Sección de CV actual */}
         <div className="border border-uaq-default-300 rounded-lg shadow-sm">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-4 bg-uaq-default-50">
-            <h2 className="text-400 font-[700] p-2">CVs Subidos</h2>
-            <Button variant="outline" className="gap-2">
-              Subir nuevo CV
-            </Button>
-          </div>
+          <ConfigRow title="CVs Subidos" valueinput="" isTitle={true} placeholder=""  isEditable={true} editInput={true}/>
+          
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
             <FileDisplay 
@@ -37,12 +30,8 @@ export default function Curriculum() {
           </div>
         
         {/* Sección de CVs generados */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-4 bg-uaq-default-50">
-            <h2 className="text-400 font-[700] p-2">CVs Subidos</h2>
-            <Button variant="outline" className="gap-2">
-              Generar nuevo CV
-            </Button>
-          </div>
+        <ConfigRow title="CVs Subidos" valueinput="" isTitle={true} placeholder=""  isEditable={true} editInput={true}/>
+
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5">
             <FileDisplay 

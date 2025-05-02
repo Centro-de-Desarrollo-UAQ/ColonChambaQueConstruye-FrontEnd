@@ -4,7 +4,6 @@ import { useRef } from "react"
 import { Button } from "@/components/ui/button";
 import { ButtonNavBar } from "@/components/ui/buttonNavBar";
 import { Badge } from "@/components/ui/badge";
-<<<<<<< HEAD
 import LinkerNavBar from "@/components/linkerNavBar";
 import UserNavBar from "@/components/userNavBar";
 import FooterLanding from "@/components/footerLanding";
@@ -12,12 +11,8 @@ import { Eye } from "@solar-icons/react";
 import InputSelect from "@/components/inputSelect";
 import InputBirthDate from "@/components/inputBirthDate";
 import { FormField } from "@/components/input";
-
-
-=======
 import { InfoCard } from "@/components/InfoCard/InfoCard";
 import { ConfigRow } from "@/components/ConfigRow/ConfigRow";
->>>>>>> e94c81be2d5cfe41bc75f105f0160dd4fe23e916
 
 export default function Home() {
   const [visibleBadges, setVisibleBadges] = useState({
@@ -25,13 +20,8 @@ export default function Home() {
     defaultClosable: true,
     secondaryClosable: true,
     destructiveClosable: true,
-<<<<<<< HEAD
   })
   const inputRef = useRef<HTMLInputElement>(null)
-
-=======
-  });
->>>>>>> e94c81be2d5cfe41bc75f105f0160dd4fe23e916
 
   const handleClose = (badge: string) => {
     setVisibleBadges((prevState) => ({
@@ -125,7 +115,6 @@ export default function Home() {
         <ConfigRow title="Header Title" valueinput="" isTitle={false} placeholder="Password"  isEditable={true} editInput={true}/>
 
       </div>
-<<<<<<< HEAD
       
       <div>
         <div className="grid w-full max-w-sm items-center gap-2">
@@ -213,7 +202,7 @@ export default function Home() {
 
         </div>
       </div>
-    </div>
+    
     <div className="mt-10 w-1/2">
     <InputSelect/>
     </div>
@@ -224,8 +213,6 @@ export default function Home() {
     <div className="mt-10">
       <FooterLanding/>
     </div>
-=======
->>>>>>> e94c81be2d5cfe41bc75f105f0160dd4fe23e916
     </>
   );
 }
