@@ -1,3 +1,4 @@
+"use client";
 import {
   Select,
   SelectContent,
@@ -5,18 +6,16 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  SelectScrollUpButton,
-  SelectScrollDownButton,
 } from "@/components/ui/select";
+import { useEffect, useState } from "react";
 
 interface CustomSelectProps {
   options: { label: string; value: string }[];
   placeholder?: string;
-  value?: string;
+  value?: string | null;
   disabled?: boolean;
   onChange?: (value: string) => void;
   className?: string;
-  maxHeight?: string;
 }
 
 export default function CustomSelect({
@@ -25,41 +24,33 @@ export default function CustomSelect({
   value,
   disabled = false,
   onChange,
-  className = "bg-uaq-default-100 font-[700] px-4 py-3",
-  maxHeight = "250px",
+  className = "bg-uaq-default-100 font-[400] px-4 py-3",
 }: CustomSelectProps) {
-  const handleChange = (value: string) => {
-    if (onChange && !disabled) {
-      onChange(value); 
+  const handleChange = (newValue: string) => {
+    if (!disabled && onChange) {
+      onChange(newValue);
     }
   };
 
   return (
     <Select 
-      onValueChange={handleChange} 
-      value={value}
+      value={value || undefined}
+      onValueChange={handleChange}
       disabled={disabled}
     >
-      <SelectTrigger className={className} disabled={disabled}>
-        <SelectValue placeholder={placeholder}/>
+      <SelectTrigger className={className}>
+        <SelectValue placeholder={placeholder}>
+          {options.find(opt => opt.value === value)?.label || placeholder}
+        </SelectValue>
       </SelectTrigger>
-      <SelectContent 
-        className="overflow-y-auto"
-        style={{ maxHeight }}
-      >
-        <SelectScrollUpButton />
+      <SelectContent>
         <SelectGroup>
           {options.map((option) => (
-            <SelectItem 
-              key={option.value} 
-              value={option.value}
-              disabled={disabled}
-            >
+            <SelectItem key={option.value} value={option.value}>
               {option.label}
             </SelectItem>
           ))}
         </SelectGroup>
-        <SelectScrollDownButton />
       </SelectContent>
     </Select>
   );

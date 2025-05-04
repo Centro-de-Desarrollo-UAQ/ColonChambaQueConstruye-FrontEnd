@@ -2,7 +2,7 @@ import CustomSelect from "./select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { currencyOptions, ageOptions, phoneExtensions } from "@/data/selectOptions";
+import { currencyOptions, phoneExtensions } from "@/data/selectOptions";
 
 export default function InputSelect() {
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);

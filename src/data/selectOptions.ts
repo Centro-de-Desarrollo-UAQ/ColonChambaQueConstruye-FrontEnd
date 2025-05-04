@@ -65,3 +65,11 @@ export const yearOptions = Array.from(
     value: `${1970 + i}`
   })
 ).reverse(); 
+
+export const vacancyOptions = [
+  { value: 'full-time', label: 'Tiempo completo (40+ hrs)' },
+  { value: 'part-time', label: 'Medio tiempo (20-30 hrs)' },
+  { value: 'freelance', label: 'Freelance/Proyectos' },
+  { value: 'internship', label: 'Prácticas profesionales' },
+  { value: 'flexible', label: 'Horario flexible' }
+]

@@ -1,12 +1,12 @@
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textArea";
-import { Label} from "@/components/ui/label";
+import { Label } from "@/components/ui/label";
 import { ComboboxDemo } from "@/components/ui/comboBox";
 import { ComponentType, forwardRef, RefObject } from "react";
 
 type FormFieldProps = {
   label?: string;
-  description?: string; // Nuevo prop para la descripción
+  description?: string;
   htmlFor?: string;
   variant?: "default" | "count" | "description";
   type?: "text" | "email" | "password" | "textarea" | "combobox";
@@ -18,7 +18,9 @@ type FormFieldProps = {
   width?: number;
   className?: string;
   inputRef?: RefObject<HTMLInputElement | null>;
-  descriptionClassName?: string; // Clase adicional para el label de descripción
+  descriptionClassName?: string;
+  value?: string; // Nueva prop value
+  onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 };
 
 export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
@@ -37,6 +39,8 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
       className,
       inputRef,
       descriptionClassName = "mb-6",
+      value, // Extraemos value de props
+      onChange, // Extraemos onChange de props
       ...props
     },
     ref
@@ -44,7 +48,15 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
     const renderInput = () => {
       switch (type) {
         case "textarea":
-          return <Textarea placeholder={placeholder} {...props} className="mb-1"/>;
+          return (
+            <Textarea
+              placeholder={placeholder}
+              value={value}
+              onChange={onChange}
+              {...props}
+              className="mb-1"
+            />
+          );
         case "combobox":
           return <ComboboxDemo width={width} {...props} />;
         default:
@@ -58,6 +70,8 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
               icon={icon}
               iconPosition={iconPosition}
               maxLength={maxChars}
+              value={value}
+              onChange={onChange}
               {...props}
               className="mb-1"
             />
@@ -69,7 +83,7 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
       <div className={className}>
         {/* Label superior */}
         {label && (
-          <Label htmlFor={htmlFor} variant="default" className="pb-1">
+          <Label htmlFor={htmlFor} variant="default" className="pb-3">
             {label}
           </Label>
         )}
