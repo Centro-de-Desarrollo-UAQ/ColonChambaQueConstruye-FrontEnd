@@ -31,13 +31,13 @@ export default function Control() {
           
           
           {/* Fila 1 - Carrera */}
-          <div className="gap-6 px-6 pt-6">
+          <div className="px-6">
             <ConfigRow title="Correo electrónico" valueinput="bryanbona0406@gmail.com" isTitle={false} placeholder="Contenido"  isEditable={true} editInput={true}/>
           </div>
-          <div className="gap-6 px-6 pt-6">
+          <div className="px-6">
           <ConfigRow title="Número teléfonico" valueinput="4423464978" isTitle={false} placeholder="Contenido"  isEditable={true} editInput={true}/>
           </div>
-          <div className="gap-6 px-6 pt-6">
+          <div className="px-6">
             <ConfigRow title="Contraseña" valueinput="*************" isTitle={false} placeholder="Contenido"  isEditable={true} editInput={true}/>
           </div>
           

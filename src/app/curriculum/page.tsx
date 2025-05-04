@@ -14,7 +14,7 @@ export default function Curriculum() {
       </div>
       
       {/* Columna derecha - Contenido principal */}
-      <div className="flex-1 p-4 md:p-6 space-y-6 mr-20">
+      <div className="flex-1 p-10 md:p-6 space-y-6 mr-20">
           <TitleSection variant="curriculum"/>
         
         {/* Sección de CV actual */}

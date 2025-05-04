@@ -12,7 +12,7 @@ interface InfoCardProps {
 
 export const InfoCard = ({ avatar, name, email, cellphone }: InfoCardProps) => {
   return (
-    <Card className="flex w-80 h-32 flex-row p-4">
+    <div className="flex w-full h-32 flex-row p-4 ml-12">
       <Avatar className="w-24 h-24 transition-all duration-200">
         <AvatarImage src={avatar} />
         <AvatarFallback>CN</AvatarFallback>
@@ -32,13 +32,13 @@ export const InfoCard = ({ avatar, name, email, cellphone }: InfoCardProps) => {
         
       </Avatar>
 
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-col justify-center pl-6">
         <p className="font-bold text-xl text-uaq-default-800">{name}</p>
         <p className="text-uaq-default-800 italic">{email}</p>
         {cellphone ?? (
           <p className="text-uaq-default-800 italic">{cellphone}</p>
         )}
       </div>
-    </Card>
+    </div>
   );
 };

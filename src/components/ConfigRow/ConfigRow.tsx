@@ -1,8 +1,6 @@
 import React, { useState } from "react"; 
 import { Button } from "../ui/button";
-import { Card } from "../ui/card";
 import { Input } from "../ui/input";
-import { Interface } from "readline";
 
 interface ConfigRowProps {
   title: string;
@@ -24,31 +22,33 @@ export const ConfigRow = ({
   const [valueInputA, setValueInputA] = useState(`${valueinput}`);
   const [editInputA, setEditInputA] = useState(editInput);
   return (
-    <Card className="flex w-full flex-row h-16 justify-between items-center p-6 bg-uaq-default-50">
+    <div className={`flex w-full items-center ${isTitle ? "px-6" : "px-4"} border-b border-uaq-default-100 ${isTitle && isEditable ? "bg-uaq-default-50" : isTitle ? "bg-uaq-default-50 py-4" : ""}`}>
       {isTitle ? (
         <>
-          <h3 className="text-uaq-default-800 font-bold text-[16px]">
+          <h3 className="text-uaq-default-800 font-bold text-[16px] flex-1">
             {title}
           </h3>
         </>
       ) : (
-        <>
-          <p>{title}</p>
+        <div className="flex items-center min-w-0 flex-1">
+          <p className="py-3 min-w-[150px]">{title}</p>
           <Input
-            className="w-auto border-none h-[4rem] flex grow"
+            className="border-none h-[4rem] flex-1 min-w-0"
             value={valueInputA}
             placeholder={placeholder}
             onChange={(e) => setValueInputA(e.target.value)}
             disabled={!editInputA}
-            style={{ color: "black", backgroundColor: "transparent", opacity: 1 }} // Forzar estilos
+            style={{ color: "black", backgroundColor: "transparent", opacity: 1 }}
           />
-        </>
+        </div>
       )}
-      {isEditable && (
-        <Button onClick={()=>setEditInputA(!editInputA)} className="w-[4.4rem] h-11 bg-uaq-default-100 text-uaq-default-800 font-normal border-1 border-uaq-default-200 rounded-[0.5rem] shadow-none">
-          Editar
-        </Button>
-      )}
-    </Card>
+      <div className={`ml-auto ${isEditable ? "py-4" : "py-6"} shrink-0`}>
+        {isEditable && (
+          <Button onClick={() => setEditInputA(!editInputA)} variant="edit" color="gray">
+            Editar
+          </Button>
+        )}
+      </div>
+    </div>
   );
 };

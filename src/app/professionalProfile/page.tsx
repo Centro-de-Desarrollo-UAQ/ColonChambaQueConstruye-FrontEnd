@@ -31,12 +31,12 @@ export default function ProfessionalProfile() {
 
           
           {/* Fila 1 - Carrera */}
-          <div className="gap-6 p-6">
+          <div className="px-6">
             <ConfigRow title="Carrera" valueinput="Ingeniería en Software" isTitle={false} placeholder="Ingeniería en Software"  isEditable={false} editInput={false}/>
           </div>
           
           {/* Fila 2 - Resumen personal */}
-          <div className="gap-6 p-6">
+          <div className="px-6">
             
             <ConfigRow title="Resumen personal" valueinput="" isTitle={false} placeholder="Describa su perfil profesional en una pequeña oración"  isEditable={false} editInput={true}/>
 
@@ -47,17 +47,17 @@ export default function ProfessionalProfile() {
 
           
           {/* Fila 1 - Ubicación laboral */}
-          <div className="gap-6 px-6 pt-6">
+          <div className="px-6">
             <ConfigRow title="Preferencia de ubicación laboral" valueinput="" isTitle={false} placeholder="¿En qué ubicación preferiría explorar ofertas de trabajo?"  isEditable={false} editInput={true}/>
           </div>
           
           {/* Fila 2 - Horas preferentes */}
-          <div className="gap-6 px-6 pt-6">
+          <div className="px-6">
             <ConfigRow title="Horas preferentes" valueinput="" isTitle={false} placeholder="¿Qué horario laboral prefiere?"  isEditable={false} editInput={true}/>
           </div>
           
           {/* Fila 3 - Modalidad de empleo */}
-          <div className="gap-6 px-6 pt-6">
+          <div className="px-6">
             <ConfigRow title="Modalidad de empleo preferente" valueinput="" isTitle={false} placeholder="Seleccione una opción"  isEditable={false} editInput={true}/>
           </div>
         </div>

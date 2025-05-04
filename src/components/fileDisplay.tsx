@@ -71,6 +71,7 @@ export function FileDisplay({
               size="icon" 
               onClick={onView}
               className="h-9 w-9"
+              color="gray"
             >
               <Upload className="h-4 w-4" weight="Bold" />
             </Button>
@@ -81,8 +82,9 @@ export function FileDisplay({
               size="icon" 
               onClick={onView}
               className="h-9 w-9"
+              color="gray"
             >
-              <Pen2 className="h-4 w-4" />
+              <Pen2 className="h-4 w-4" weight="Bold"/>
             </Button>
           )}
           <Button 
@@ -90,8 +92,9 @@ export function FileDisplay({
             size="icon" 
             onClick={onRemove}
             className="h-9 w-9"
+            color="gray"
           >
-            <CloseSquare className="h-4 w-4" />
+            <CloseSquare className="h-4 w-4" weight="Bold"/>
           </Button>
         </div>
       )}
