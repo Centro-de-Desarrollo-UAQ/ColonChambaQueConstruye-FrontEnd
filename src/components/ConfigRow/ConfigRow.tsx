@@ -25,7 +25,7 @@ export const ConfigRow = ({
     <div className={`flex w-full items-center ${isTitle ? "px-6" : "px-4"} border-b border-uaq-default-100 ${isTitle && isEditable ? "bg-uaq-default-50" : isTitle ? "bg-uaq-default-50 py-4" : ""}`}>
       {isTitle ? (
         <>
-          <h3 className="text-uaq-default-800 font-bold text-[16px] flex-1">
+          <h3 className="text-uaq-default-800 text-[16px] flex-1">
             {title}
           </h3>
         </>

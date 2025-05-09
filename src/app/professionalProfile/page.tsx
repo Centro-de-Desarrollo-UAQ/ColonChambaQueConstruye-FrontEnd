@@ -1,11 +1,6 @@
 'use client'
 import UserTabs from "@/components/userTabs"
-import { Button } from "@/components/ui/button"
-import { Diploma } from "@solar-icons/react"
-import { FormField } from "@/components/input"
-import { vacancyOptions } from "@/data/selectOptions"
 import { useState } from "react"
-import CustomSelect from "@/components/select"
 import TitleSection from "@/components/titleSection"
 import { ConfigRow } from "@/components/ConfigRow/ConfigRow"
 
@@ -32,13 +27,13 @@ export default function ProfessionalProfile() {
           
           {/* Fila 1 - Carrera */}
           <div className="px-6">
-            <ConfigRow title="Carrera" valueinput="Ingeniería en Software" isTitle={false} placeholder="Ingeniería en Software"  isEditable={false} editInput={false}/>
+            <ConfigRow title="Carrera" valueinput="" isTitle={false} placeholder="Ingeniería en Software"  isEditable={false} editInput={false}/>
           </div>
           
           {/* Fila 2 - Resumen personal */}
           <div className="px-6">
             
-            <ConfigRow title="Resumen personal" valueinput="" isTitle={false} placeholder="Describa su perfil profesional en una pequeña oración"  isEditable={false} editInput={true}/>
+            <ConfigRow title="Resumen personal" valueinput="" isTitle={false} placeholder="Describa su perfil profesional en una pequeña oración"  isEditable={false} editInput={false}/>
 
           </div>
         
@@ -48,17 +43,17 @@ export default function ProfessionalProfile() {
           
           {/* Fila 1 - Ubicación laboral */}
           <div className="px-6">
-            <ConfigRow title="Preferencia de ubicación laboral" valueinput="" isTitle={false} placeholder="¿En qué ubicación preferiría explorar ofertas de trabajo?"  isEditable={false} editInput={true}/>
+            <ConfigRow title="Preferencia de ubicación laboral" valueinput="" isTitle={false} placeholder="¿En qué ubicación preferiría explorar ofertas de trabajo?"  isEditable={false} editInput={false}/>
           </div>
           
           {/* Fila 2 - Horas preferentes */}
           <div className="px-6">
-            <ConfigRow title="Horas preferentes" valueinput="" isTitle={false} placeholder="¿Qué horario laboral prefiere?"  isEditable={false} editInput={true}/>
+            <ConfigRow title="Horas preferentes" valueinput="" isTitle={false} placeholder="¿Qué horario laboral prefiere?"  isEditable={false} editInput={false}/>
           </div>
           
           {/* Fila 3 - Modalidad de empleo */}
           <div className="px-6">
-            <ConfigRow title="Modalidad de empleo preferente" valueinput="" isTitle={false} placeholder="Seleccione una opción"  isEditable={false} editInput={true}/>
+            <ConfigRow title="Modalidad de empleo preferente" valueinput="" isTitle={false} placeholder="Seleccione una opción"  isEditable={false} editInput={false}/>
           </div>
         </div>
       </div>

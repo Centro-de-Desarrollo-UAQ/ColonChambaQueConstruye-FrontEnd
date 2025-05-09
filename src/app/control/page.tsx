@@ -1,11 +1,6 @@
 'use client'
 import UserTabs from "@/components/userTabs"
-import { Button } from "@/components/ui/button"
-import { ShieldKeyholeMinimalistic } from "@solar-icons/react"
-import { FormField } from "@/components/input"
-import { vacancyOptions } from "@/data/selectOptions"
 import { useState } from "react"
-import CustomSelect from "@/components/select"
 import TitleSection from "@/components/titleSection"
 import { ConfigRow } from "@/components/ConfigRow/ConfigRow"
 

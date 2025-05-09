@@ -13,6 +13,10 @@ import InputBirthDate from "@/components/inputBirthDate";
 import { FormField } from "@/components/input";
 import { InfoCard } from "@/components/InfoCard/InfoCard";
 import { ConfigRow } from "@/components/ConfigRow/ConfigRow";
+import CompanyCard from "@/components/companyCard";
+import StepperRegister from "@/components/stepperRegister";
+import LinkerHeader from "@/components/linkerHeader";
+import QuestionItem from "@/components/questionItem";
 
 export default function Home() {
   const [visibleBadges, setVisibleBadges] = useState({
@@ -35,8 +39,26 @@ export default function Home() {
       <LinkerNavBar />
       <div className="bg-white p-2"></div>
       <UserNavBar/>
+      <div className="bg-black p-2"></div>
+      <LinkerHeader isCompany={true}/>
+      <div className="bg-white p-2"></div>
+      <QuestionItem
+        question="Pregunta" 
+        description="Descripción"
+      />
     </div>
       <div className="space-y-4">
+
+      <StepperRegister/>
+
+      <CompanyCard
+        title="Deloitte"
+        description="Consultoría y servicios profesionales"
+        email="contacto@deloitte.com"
+        activeVacancies={8}
+        logoUrl="/Deloitte.svg"
+      />        
+        
         <h1 className="px-">My Homepage</h1>
         <p>Welcome!</p>
 
