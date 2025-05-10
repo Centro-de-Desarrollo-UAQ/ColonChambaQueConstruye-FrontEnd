@@ -11,6 +11,7 @@ import { vacancyOptions } from '@/data/selectOptions'
 import { Label } from '@/components/ui/label'
 import { UploadFile } from '@/components/uploadFile'
 import { UploadedFile } from '@/components/uploadedFile'
+import { FileSmile, FileSend } from '@solar-icons/react'
 
 const COMMON_TEXTS = {
   dropText: "Arrastra y suelta tu archivo aquí ó",
@@ -179,8 +180,8 @@ export default function StepperRegister() {
             <Separator />
             
             <div className='flex gap-4 mt-10'>
-              <Button variant="secondary" className="flex-1">Sube tu CV</Button>
-              <Button variant="ghost" className="flex-1">Crea tu CV</Button>
+              <Button variant="primary" color="accent" className="flex-1"><FileSend weight='Bold'/>Sube tu CV</Button>
+              <Button variant="secondary" color="brand" className="flex-1"><FileSmile weight='Bold'/>Crea tu CV</Button>
             </div>
           </div>
         </div>

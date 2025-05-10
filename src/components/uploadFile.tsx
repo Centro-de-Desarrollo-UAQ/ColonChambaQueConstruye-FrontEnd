@@ -83,7 +83,7 @@ export function UploadFile({ language, onDrop, dropText, buttonText }: UploadFil
       <p className="text-center text-muted-foreground">
         {dropText}
       </p>
-      <Button variant="secondary" className="">
+      <Button variant="primary" color="accent" className="">
         {buttonText}
       </Button>
     </div>
