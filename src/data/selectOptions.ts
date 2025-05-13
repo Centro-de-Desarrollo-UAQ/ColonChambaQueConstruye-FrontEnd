@@ -64,7 +64,7 @@ export const yearOptions = Array.from(
     label: `${1970 + i}`,
     value: `${1970 + i}`
   })
-).reverse(); 
+).reverse();
 
 export const vacancyOptions = [
   { value: 'full-time', label: 'Tiempo completo (40+ hrs)' },
