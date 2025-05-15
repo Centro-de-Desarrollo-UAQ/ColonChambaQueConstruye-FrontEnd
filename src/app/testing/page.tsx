@@ -1,26 +1,26 @@
-"use client";
-import React, { useState } from "react";
-import { useRef } from "react"
-import { Button } from "@/components/ui/button";
-import { ButtonNavBar } from "@/components/ui/buttonNavBar";
-import { Badge } from "@/components/ui/badge";
-import LinkerNavBar from "@/components/linkerNavBar";
-import UserNavBar from "@/components/userNavBar";
-import FooterLanding from "@/components/footerLanding";
-import DropdownSelect from "@/components/ui/dropdownselect";
+'use client';
+import React, { useState } from 'react';
+import { useRef } from 'react';
+import { Button } from '@/components/ui/button';
+import { ButtonNavBar } from '@/components/ui/buttonNavBar';
+import { Badge } from '@/components/ui/badge';
+import LinkerNavBar from '@/components/linkerNavBar';
+import UserNavBar from '@/components/userNavBar';
+import FooterLanding from '@/components/footerLanding';
+import DropdownSelect from '@/components/ui/dropdownselect';
 import Toggle from '@/components/ui/toggle';
-import SimpleSelect from "@/components/ui/simpleselect";
-import { Eye, AddCircle } from "@solar-icons/react";
-import InputSelect from "@/components/inputSelect";
-import InputBirthDate from "@/components/inputBirthDate";
-import { FormField } from "@/components/input";
-import { InfoCard } from "@/components/InfoCard/InfoCard";
-import { ConfigRow } from "@/components/ConfigRow/ConfigRow";
-import CompanyCard from "@/components/companyCard";
-import StepperRegister from "@/components/stepperRegister";
-import LinkerHeader from "@/components/linkerHeader";
-import QuestionItem from "@/components/questionItem";
-import SearchBar from "@/components/ui/searchbar";
+import SimpleSelect from '@/components/ui/simpleselect';
+import { Eye, AddCircle } from '@solar-icons/react';
+import InputSelect from '@/components/inputSelect';
+import InputBirthDate from '@/components/inputBirthDate';
+import { FormField } from '@/components/input';
+import { InfoCard } from '@/components/InfoCard/InfoCard';
+import { ConfigRow } from '@/components/ConfigRow/ConfigRow';
+import CompanyCard from '@/components/companyCard';
+import StepperRegister from '@/components/stepperRegister';
+import LinkerHeader from '@/components/linkerHeader';
+import QuestionItem from '@/components/questionItem';
+import SearchBar from '@/components/ui/searchbar';
 
 export default function Home() {
   const [visibleBadges, setVisibleBadges] = useState({
@@ -28,8 +28,8 @@ export default function Home() {
     defaultClosable: true,
     secondaryClosable: true,
     destructiveClosable: true,
-  })
-  const inputRef = useRef<HTMLInputElement>(null)
+  });
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleClose = (badge: string) => {
     setVisibleBadges((prevState) => ({
@@ -39,30 +39,26 @@ export default function Home() {
   };
   return (
     <>
-    <div>
-      <LinkerNavBar />
-      <div className="bg-white p-2"></div>
-      <UserNavBar/>
-      <div className="bg-black p-2"></div>
-      <LinkerHeader isCompany={true}/>
-      <div className="bg-white p-2"></div>
-      <QuestionItem
-        question="Pregunta" 
-        description="Descripción"
-      />
-    </div>
+      <div>
+        <LinkerNavBar />
+        <div className="bg-white p-2"></div>
+        <UserNavBar />
+        <div className="bg-black p-2"></div>
+        <LinkerHeader isCompany={true} />
+        <div className="bg-white p-2"></div>
+        <QuestionItem question="Pregunta" description="Descripción" />
+      </div>
       <div className="space-y-4">
+        <StepperRegister />
 
-      <StepperRegister/>
+        <CompanyCard
+          title="Deloitte"
+          description="Consultoría y servicios profesionales"
+          email="contacto@deloitte.com"
+          activeVacancies={8}
+          logoUrl="/Deloitte.svg"
+        />
 
-      <CompanyCard
-        title="Deloitte"
-        description="Consultoría y servicios profesionales"
-        email="contacto@deloitte.com"
-        activeVacancies={8}
-        logoUrl="/Deloitte.svg"
-      />        
-        
         <h1 className="px-">My Homepage</h1>
         <p>Welcome!</p>
 
@@ -71,10 +67,18 @@ export default function Home() {
           <p>Primary:</p>
           <div className="flex flex-col gap-1">
             <div className="flex gap-2">
-              <Button variant="primary" color="brand">Primary</Button>
-              <Button variant="primary" color="accent">Primary</Button>
-              <Button variant="primary" color="danger">Primary</Button>
-              <Button variant="primary" color="gray">Primary</Button>
+              <Button variant="primary" color="brand">
+                Primary
+              </Button>
+              <Button variant="primary" color="accent">
+                Primary
+              </Button>
+              <Button variant="primary" color="danger">
+                Primary
+              </Button>
+              <Button variant="primary" color="gray">
+                Primary
+              </Button>
             </div>
             <div className="flex gap-2">
               <Button variant="primary" color="brand">
@@ -130,10 +134,18 @@ export default function Home() {
           <p>Secondary:</p>
           <div className="flex flex-col gap-1">
             <div className="flex gap-2">
-              <Button variant="secondary" color="brand">Secondary</Button>
-              <Button variant="secondary" color="accent">Secondary</Button>
-              <Button variant="secondary" color="danger">Secondary</Button>
-              <Button variant="secondary" color="gray">Secondary</Button>
+              <Button variant="secondary" color="brand">
+                Secondary
+              </Button>
+              <Button variant="secondary" color="accent">
+                Secondary
+              </Button>
+              <Button variant="secondary" color="danger">
+                Secondary
+              </Button>
+              <Button variant="secondary" color="gray">
+                Secondary
+              </Button>
             </div>
             <div className="flex gap-2">
               <Button variant="secondary" color="brand">
@@ -189,10 +201,18 @@ export default function Home() {
           <p>Edit:</p>
           <div className="flex flex-col gap-1">
             <div className="flex gap-2">
-              <Button variant="edit" color="brand">Edit</Button>
-              <Button variant="edit" color="accent">Edit</Button>
-              <Button variant="edit" color="danger">Edit</Button>
-              <Button variant="edit" color="gray">Edit</Button>
+              <Button variant="edit" color="brand">
+                Edit
+              </Button>
+              <Button variant="edit" color="accent">
+                Edit
+              </Button>
+              <Button variant="edit" color="danger">
+                Edit
+              </Button>
+              <Button variant="edit" color="gray">
+                Edit
+              </Button>
             </div>
             <div className="flex gap-2">
               <Button variant="edit" color="brand">
@@ -248,10 +268,18 @@ export default function Home() {
           <p>Ghost:</p>
           <div className="flex flex-col gap-1">
             <div className="flex gap-2">
-              <Button variant="ghost" color="brand">Ghost</Button>
-              <Button variant="ghost" color="accent">Ghost</Button>
-              <Button variant="ghost" color="danger">Ghost</Button>
-              <Button variant="ghost" color="gray">Ghost</Button>
+              <Button variant="ghost" color="brand">
+                Ghost
+              </Button>
+              <Button variant="ghost" color="accent">
+                Ghost
+              </Button>
+              <Button variant="ghost" color="danger">
+                Ghost
+              </Button>
+              <Button variant="ghost" color="gray">
+                Ghost
+              </Button>
             </div>
             <div className="flex gap-2">
               <Button variant="ghost" color="brand">
@@ -307,10 +335,18 @@ export default function Home() {
           <p>Mono:</p>
           <div className="flex flex-col gap-1">
             <div className="flex gap-2">
-              <Button variant="mono" color="brand">Mono</Button>
-              <Button variant="mono" color="accent">Mono</Button>
-              <Button variant="mono" color="danger">Mono</Button>
-              <Button variant="mono" color="gray">Mono</Button>
+              <Button variant="mono" color="brand">
+                Mono
+              </Button>
+              <Button variant="mono" color="accent">
+                Mono
+              </Button>
+              <Button variant="mono" color="danger">
+                Mono
+              </Button>
+              <Button variant="mono" color="gray">
+                Mono
+              </Button>
             </div>
             <div className="flex gap-2">
               <Button variant="mono" color="brand">
@@ -366,8 +402,12 @@ export default function Home() {
         </div>
       </div>
       <div className="space-y-4">
-        <ButtonNavBar variant="hover" size="sm">Option</ButtonNavBar>
-        <ButtonNavBar variant="default" size="default">Option</ButtonNavBar>
+        <ButtonNavBar variant="hover" size="sm">
+          Option
+        </ButtonNavBar>
+        <ButtonNavBar variant="default" size="default">
+          Option
+        </ButtonNavBar>
         <ButtonNavBar variant="active">Option</ButtonNavBar>
       </div>
 
@@ -383,37 +423,25 @@ export default function Home() {
         {/* Badges con onClose */}
         <div className="flex flex-wrap gap-2">
           {visibleBadges.outlineClosable && (
-            <Badge
-              variant="outline"
-              onClose={() => handleClose("outlineClosable")}
-            >
+            <Badge variant="outline" onClose={() => handleClose('outlineClosable')}>
               Ingeniería en Software
             </Badge>
           )}
 
           {visibleBadges.defaultClosable && (
-            <Badge
-              variant="defaultClosable"
-              onClose={() => handleClose("defaultClosable")}
-            >
+            <Badge variant="defaultClosable" onClose={() => handleClose('defaultClosable')}>
               Default Badge with Close
             </Badge>
           )}
 
           {visibleBadges.secondaryClosable && (
-            <Badge
-              variant="secondaryClosable"
-              onClose={() => handleClose("secondaryClosable")}
-            >
+            <Badge variant="secondaryClosable" onClose={() => handleClose('secondaryClosable')}>
               Secondary Badge with Close
             </Badge>
           )}
 
           {visibleBadges.destructiveClosable && (
-            <Badge
-              variant="destructiveClosable"
-              onClose={() => handleClose("destructiveClosable")}
-            >
+            <Badge variant="destructiveClosable" onClose={() => handleClose('destructiveClosable')}>
               Destructive Badge with Close
             </Badge>
           )}
@@ -421,19 +449,70 @@ export default function Home() {
       </div>
       {/* InfoCard */}
       <div className="flex">
-        <InfoCard avatar="https://github.com/shadcn.png" name="Jane Daw" email="Hosea28@yahoo.com" cellphone="+52 441 441 22 22" />
-        <InfoCard avatar="https://github.com/shadcn.png" name="Jane Daw" email="Hosea28@yahoo.com" cellphone={null} />
+        <InfoCard
+          avatar="https://github.com/shadcn.png"
+          name="Jane Daw"
+          email="Hosea28@yahoo.com"
+          cellphone="+52 441 441 22 22"
+        />
+        <InfoCard
+          avatar="https://github.com/shadcn.png"
+          name="Jane Daw"
+          email="Hosea28@yahoo.com"
+          cellphone={null}
+        />
       </div>
 
       {/* ConfigRow */}
-      <div className="flex space-y-4 flex-col w-[60vw]">
-        <ConfigRow title="Header Title" valueinput="" isTitle={true} placeholder="" isEditable={true} editInput={true} />
-        <ConfigRow title="Header Title" valueinput="" isTitle={true} placeholder="" isEditable={false} editInput={true} />
-        <ConfigRow title="Header Title" valueinput="Hola" isTitle={false} placeholder="Contenido" isEditable={false} editInput={false} />
-        <ConfigRow title="Header Title" valueinput="Hola" isTitle={false} placeholder="Contenido" isEditable={true} editInput={true} />
-        <ConfigRow title="Header Title" valueinput="" isTitle={false} placeholder="Password" isEditable={false} editInput={true} />
-        <ConfigRow title="Header Title" valueinput="" isTitle={false} placeholder="Password" isEditable={true} editInput={true} />
-
+      <div className="flex w-[60vw] flex-col space-y-4">
+        <ConfigRow
+          title="Header Title"
+          valueinput=""
+          isTitle={true}
+          placeholder=""
+          isEditable={true}
+          editInput={true}
+        />
+        <ConfigRow
+          title="Header Title"
+          valueinput=""
+          isTitle={true}
+          placeholder=""
+          isEditable={false}
+          editInput={true}
+        />
+        <ConfigRow
+          title="Header Title"
+          valueinput="Hola"
+          isTitle={false}
+          placeholder="Contenido"
+          isEditable={false}
+          editInput={false}
+        />
+        <ConfigRow
+          title="Header Title"
+          valueinput="Hola"
+          isTitle={false}
+          placeholder="Contenido"
+          isEditable={true}
+          editInput={true}
+        />
+        <ConfigRow
+          title="Header Title"
+          valueinput=""
+          isTitle={false}
+          placeholder="Password"
+          isEditable={false}
+          editInput={true}
+        />
+        <ConfigRow
+          title="Header Title"
+          valueinput=""
+          isTitle={false}
+          placeholder="Password"
+          isEditable={true}
+          editInput={true}
+        />
       </div>
 
       <div>
@@ -519,30 +598,29 @@ export default function Home() {
           <Label htmlFor="email">Password Input</Label>
           <Input type="password" placeholder="Password" icon={Eye} iconPosition="right" />
           <Label htmlFor="description" variant="description" className="mb-6">Description</Label> */}
-
         </div>
       </div>
       <div className="my-10">
-        <h2 className="text-xl font-semibold mb-4">Dropdown Select Aspect</h2>
+        <h2 className="mb-4 text-xl font-semibold">Dropdown Select Aspect</h2>
         <DropdownSelect color="gray" />
         <DropdownSelect color="blue" />
       </div>
 
       <div className="my-10">
-        <h2 className="text-xl font-semibold mb-4">Toggle Aspect</h2>
-        <Toggle  />
+        <h2 className="mb-4 text-xl font-semibold">Toggle Aspect</h2>
+        <Toggle />
       </div>
 
       <div className="my-10">
-        <h2 className="text-xl font-semibold mb-4">Toggle Aspect</h2>
-        <SimpleSelect  />
+        <h2 className="mb-4 text-xl font-semibold">Toggle Aspect</h2>
+        <SimpleSelect />
       </div>
 
       <div className="my-10">
-        <h2 className="text-xl font-semibold mb-4">SearchBar Aspect</h2>
-        <SearchBar  />
-        <SearchBar showFilter />  
-        <SearchBar showFilter showSort /> 
+        <h2 className="mb-4 text-xl font-semibold">SearchBar Aspect</h2>
+        <SearchBar />
+        <SearchBar showFilter />
+        <SearchBar showFilter showSort />
       </div>
 
       <div className="mt-10 w-1/2">
@@ -550,7 +628,6 @@ export default function Home() {
       </div>
       <div className="mt-10 w-1/2">
         <InputBirthDate />
-
       </div>
       <div className="mt-10">
         <FooterLanding />

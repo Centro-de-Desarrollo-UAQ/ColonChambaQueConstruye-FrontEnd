@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import {
   Select,
   SelectContent,
@@ -6,8 +6,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { useEffect, useState } from "react";
+} from '@/components/ui/select';
+import { useEffect, useState } from 'react';
 
 interface CustomSelectProps {
   options: { label: string; value: string }[];
@@ -20,11 +20,11 @@ interface CustomSelectProps {
 
 export default function CustomSelect({
   options,
-  placeholder = "Select",
+  placeholder = 'Select',
   value,
   disabled = false,
   onChange,
-  className = "bg-uaq-default-100 font-[400] px-4 py-3",
+  className = 'bg-uaq-default-100 font-[400] px-4 py-3',
 }: CustomSelectProps) {
   const handleChange = (newValue: string) => {
     if (!disabled && onChange) {
@@ -33,14 +33,10 @@ export default function CustomSelect({
   };
 
   return (
-    <Select 
-      value={value || undefined}
-      onValueChange={handleChange}
-      disabled={disabled}
-    >
+    <Select value={value || undefined} onValueChange={handleChange} disabled={disabled}>
       <SelectTrigger className={className}>
         <SelectValue placeholder={placeholder}>
-          {options.find(opt => opt.value === value)?.label || placeholder}
+          {options.find((opt) => opt.value === value)?.label || placeholder}
         </SelectValue>
       </SelectTrigger>
       <SelectContent>

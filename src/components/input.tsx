@@ -1,20 +1,20 @@
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textArea";
-import { Label } from "@/components/ui/label";
-import { ComboboxDemo } from "@/components/ui/comboBox";
-import { ComponentType, forwardRef, RefObject } from "react";
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textArea';
+import { Label } from '@/components/ui/label';
+import { ComboboxDemo } from '@/components/ui/comboBox';
+import { ComponentType, forwardRef, RefObject } from 'react';
 
 type FormFieldProps = {
   label?: string;
   description?: string;
   htmlFor?: string;
-  variant?: "default" | "count" | "description";
-  type?: "text" | "email" | "password" | "textarea" | "combobox";
+  variant?: 'default' | 'count' | 'description';
+  type?: 'text' | 'email' | 'password' | 'textarea' | 'combobox';
   placeholder?: string;
   maxChars?: number;
   disabled?: boolean;
   icon?: ComponentType<{ className?: string }>;
-  iconPosition?: "left" | "right";
+  iconPosition?: 'left' | 'right';
   width?: number;
   className?: string;
   inputRef?: RefObject<HTMLInputElement | null>;
@@ -29,25 +29,25 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
       label,
       description,
       htmlFor,
-      type = "text",
+      type = 'text',
       placeholder,
       maxChars,
       disabled = false,
       icon,
-      iconPosition = "right",
+      iconPosition = 'right',
       width,
       className,
       inputRef,
-      descriptionClassName = "mb-6",
+      descriptionClassName = 'mb-6',
       value, // Extraemos value de props
       onChange, // Extraemos onChange de props
       ...props
     },
-    ref
+    ref,
   ) => {
     const renderInput = () => {
       switch (type) {
-        case "textarea":
+        case 'textarea':
           return (
             <Textarea
               placeholder={placeholder}
@@ -57,7 +57,7 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
               className="mb-1"
             />
           );
-        case "combobox":
+        case 'combobox':
           return <ComboboxDemo width={width} {...props} />;
         default:
           return (
@@ -99,7 +99,7 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
         )}
       </div>
     );
-  }
+  },
 );
 
-FormField.displayName = "FormField";
+FormField.displayName = 'FormField';

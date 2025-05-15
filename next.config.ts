@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 /** @type {import('next').NextConfig} */
 
 const nextConfig: NextConfig = {
@@ -6,10 +6,10 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "**",
-        port: "",
-      }
+        protocol: 'https',
+        hostname: '**',
+        port: '',
+      },
     ],
   },
   // experimental: {

@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @plugin "tailwindcss-animate";
 
@@ -126,7 +126,7 @@
   --uaq-default-600: oklch(36.47% 0 0);
   --uaq-default-700: oklch(29.02% 0 0);
   --uaq-default-800: oklch(16.08% 0 0);
-  --uaq-default-900: oklch(10.20% 0 0);
+  --uaq-default-900: oklch(10.2% 0 0);
 }
 
 .dark {
@@ -184,41 +184,44 @@
   --uaq-default-600: oklch(36.47% 0 0);
   --uaq-default-700: oklch(29.02% 0 0);
   --uaq-default-800: oklch(16.08% 0 0);
-  --uaq-default-900: oklch(10.20% 0 0);
+  --uaq-default-900: oklch(10.2% 0 0);
 }
 
 @font-face {
-  font-family: "Futura";
-  src: url("/fonts/FuturaBT-Book.woff2") format("woff2"),
-       url("/fonts/FuturaBT-Book.woff") format("woff");
+  font-family: 'Futura';
+  src:
+    url('/fonts/FuturaBT-Book.woff2') format('woff2'),
+    url('/fonts/FuturaBT-Book.woff') format('woff');
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Futura";
-  src: url("/fonts/FuturaBT-Medium.woff2") format("woff2"),
-       url("/fonts/FuturaBT-Medium.woff") format("woff");
+  font-family: 'Futura';
+  src:
+    url('/fonts/FuturaBT-Medium.woff2') format('woff2'),
+    url('/fonts/FuturaBT-Medium.woff') format('woff');
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Futura";
-  src: url("/fonts/FuturaBT-Heavy.woff2") format("woff2"),
-       url("/fonts/FuturaBT-Heavy.woff") format("woff");
+  font-family: 'Futura';
+  src:
+    url('/fonts/FuturaBT-Heavy.woff2') format('woff2'),
+    url('/fonts/FuturaBT-Heavy.woff') format('woff');
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
-  font-family: "Futura";
-  src: url("/fonts/FuturaBT-Light.woff2") format("woff2"),
-       url("/fonts/FuturaBT-Light.woff") format("woff");
+  font-family: 'Futura';
+  src:
+    url('/fonts/FuturaBT-Light.woff2') format('woff2'),
+    url('/fonts/FuturaBT-Light.woff') format('woff');
   font-weight: 300;
   font-style: normal;
 }
-
 
 @layer base {
   * {
@@ -226,7 +229,7 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: "Futura", sans-serif;
+    font-family: 'Futura', sans-serif;
   }
 }
 
@@ -261,53 +264,53 @@
 }
 
 .facArtes {
-  background-color: #614184
+  background-color: #614184;
 }
 
 .facConta {
-  background-color: #0061A9
+  background-color: #0061a9;
 }
 
 .facDerecho {
-  background-color: #526671
+  background-color: #526671;
 }
 
 .facCiencias {
-  background-color: #00BD1D
+  background-color: #00bd1d;
 }
 
 .facInformatica {
-  background-color: #00695A
+  background-color: #00695a;
 }
 
 .facFilosofia {
-  background-color: #FFAD46
+  background-color: #ffad46;
 }
 
 .facEnfermeria {
-  background-color: #009A92
+  background-color: #009a92;
 }
 
 .facPoliticas {
-  background-color: #009BC6
+  background-color: #009bc6;
 }
 
 .facIngenieria {
-  background-color: #FF231B
+  background-color: #ff231b;
 }
 
 .facLenguas {
-  background-color: #FACB00
+  background-color: #facb00;
 }
 
 .facMedicina {
-  background-color: #005483
+  background-color: #005483;
 }
 
 .facPsicologia {
-  background-color: #005483
+  background-color: #005483;
 }
 
 .facQuimica {
-  background-color: #FF6900
+  background-color: #ff6900;
 }

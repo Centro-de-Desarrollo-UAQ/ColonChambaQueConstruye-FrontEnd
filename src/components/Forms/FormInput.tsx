@@ -1,16 +1,10 @@
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textArea";
-import { Label } from "@/components/ui/label";
-import { ComboboxDemo } from "@/components/ui/comboBox";
-import { FieldValues } from "react-hook-form";
-import { FormFieldProps } from "@/interfaces";
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textArea';
+import { Label } from '@/components/ui/label';
+import { ComboboxDemo } from '@/components/ui/comboBox';
+import { FieldValues } from 'react-hook-form';
+import { FormFieldProps } from '@/interfaces';
 
 export default function FormInput<T extends FieldValues>({
   control,
@@ -18,12 +12,12 @@ export default function FormInput<T extends FieldValues>({
   label,
   description,
   htmlFor,
-  type = "text",
+  type = 'text',
   placeholder,
   maxChars,
   disabled = false,
   icon,
-  iconPosition = "right",
+  iconPosition = 'right',
   width,
   className,
 }: FormFieldProps<T>) {
@@ -34,20 +28,12 @@ export default function FormInput<T extends FieldValues>({
       render={({ field }) => (
         <FormItem className={className}>
           {/* Label superior */}
-          {label && (
-            <FormLabel htmlFor={htmlFor}>
-              {label}
-            </FormLabel>
-          )}
+          {label && <FormLabel htmlFor={htmlFor}>{label}</FormLabel>}
 
           <FormControl>
-            {type === "textarea" ? (
-              <Textarea
-                placeholder={placeholder}
-                disabled={disabled}
-                {...field}
-              />
-            ) : type === "combobox" ? (
+            {type === 'textarea' ? (
+              <Textarea placeholder={placeholder} disabled={disabled} {...field} />
+            ) : type === 'combobox' ? (
               <ComboboxDemo width={width} {...field} />
             ) : (
               <Input

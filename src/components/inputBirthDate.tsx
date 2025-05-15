@@ -1,7 +1,7 @@
-import CustomSelect from "./select";
-import { Label } from "@/components/ui/label";
-import { monthOptions, yearOptions, getDayOptions } from "@/data/selectOptions";
-import { useState, useEffect, useCallback, useMemo } from "react";
+import CustomSelect from './select';
+import { Label } from '@/components/ui/label';
+import { monthOptions, yearOptions, getDayOptions } from '@/data/selectOptions';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 
 interface InputBirthDateProps {
   value?: string;
@@ -9,7 +9,11 @@ interface InputBirthDateProps {
   showError?: boolean;
 }
 
-export default function InputBirthDate({ value, onChange, showError = false }: InputBirthDateProps) {
+export default function InputBirthDate({
+  value,
+  onChange,
+  showError = false,
+}: InputBirthDateProps) {
   // Parsear el valor inicial
   const initialDate = value ? new Date(value) : null;
   const initialYear = initialDate?.getFullYear() || null;
@@ -18,8 +22,9 @@ export default function InputBirthDate({ value, onChange, showError = false }: I
 
   const [selectedYear, setSelectedYear] = useState<number | null>(initialYear);
   const [selectedMonth, setSelectedMonth] = useState<number | null>(initialMonth);
-// 1. Modifica el estado para el día:
-const [selectedDay, setSelectedDay] = useState<string | null>(initialDay?.toString() || null);  const [dayOptions, setDayOptions] = useState<{ label: string; value: string }[]>([]);
+  // 1. Modifica el estado para el día:
+  const [selectedDay, setSelectedDay] = useState<string | null>(initialDay?.toString() || null);
+  const [dayOptions, setDayOptions] = useState<{ label: string; value: string }[]>([]);
 
   // Memoize las opciones para evitar recreación
   const memoizedYearOptions = useMemo(() => yearOptions, []);
@@ -30,8 +35,8 @@ const [selectedDay, setSelectedDay] = useState<string | null>(initialDay?.toStri
     if (selectedYear && selectedMonth) {
       const days = getDayOptions(selectedMonth, selectedYear);
       setDayOptions(days);
-      
-      if (selectedDay && !days.some(day => day.value === selectedDay)) {
+
+      if (selectedDay && !days.some((day) => day.value === selectedDay)) {
         setSelectedDay(null);
       }
     } else {
@@ -73,16 +78,20 @@ const [selectedDay, setSelectedDay] = useState<string | null>(initialDay?.toStri
 
   return (
     <div className="space-y-2">
-      <p className="text-sm text-muted-foreground">
-        {selectedYear 
-          ? (selectedMonth ? "Finalmente selecciona el día" : "Ahora selecciona el mes") 
-          : "Selecciona el año"}
+      <p className="text-muted-foreground text-sm">
+        {selectedYear
+          ? selectedMonth
+            ? 'Finalmente selecciona el día'
+            : 'Ahora selecciona el mes'
+          : 'Selecciona el año'}
       </p>
-      
+
       <div className="grid grid-cols-3 gap-2">
         {/* Año */}
         <div className="flex flex-col">
-          <Label htmlFor="year" className="mb-1">Año</Label>
+          <Label htmlFor="year" className="mb-1">
+            Año
+          </Label>
           <CustomSelect
             placeholder="Año"
             options={memoizedYearOptions}
@@ -93,7 +102,9 @@ const [selectedDay, setSelectedDay] = useState<string | null>(initialDay?.toStri
 
         {/* Mes */}
         <div className="flex flex-col">
-          <Label htmlFor="month" className="mb-1">Mes</Label>
+          <Label htmlFor="month" className="mb-1">
+            Mes
+          </Label>
           <CustomSelect
             placeholder="Mes"
             options={memoizedMonthOptions}
@@ -105,7 +116,9 @@ const [selectedDay, setSelectedDay] = useState<string | null>(initialDay?.toStri
 
         {/* Día */}
         <div className="flex flex-col">
-          <Label htmlFor="day" className="mb-1">Día</Label>
+          <Label htmlFor="day" className="mb-1">
+            Día
+          </Label>
           <CustomSelect
             placeholder="Día"
             options={dayOptions}

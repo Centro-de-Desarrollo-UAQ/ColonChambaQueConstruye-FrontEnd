@@ -1,6 +1,6 @@
-import React, { useState } from "react"; 
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+import React, { useState } from 'react';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
 
 interface ConfigRowProps {
   title: string;
@@ -17,32 +17,32 @@ export const ConfigRow = ({
   isTitle,
   placeholder,
   isEditable,
-  editInput
+  editInput,
 }: ConfigRowProps) => {
   const [valueInputA, setValueInputA] = useState(`${valueinput}`);
   const [editInputA, setEditInputA] = useState(editInput);
   return (
-    <div className={`flex w-full items-center ${isTitle ? "px-6" : "px-4"} border-b border-uaq-default-100 ${isTitle && isEditable ? "bg-uaq-default-50" : isTitle ? "bg-uaq-default-50 py-4" : ""}`}>
+    <div
+      className={`flex w-full items-center ${isTitle ? 'px-6' : 'px-4'} border-uaq-default-100 border-b ${isTitle && isEditable ? 'bg-uaq-default-50' : isTitle ? 'bg-uaq-default-50 py-4' : ''}`}
+    >
       {isTitle ? (
         <>
-          <h3 className="text-uaq-default-800 text-[16px] flex-1">
-            {title}
-          </h3>
+          <h3 className="text-uaq-default-800 flex-1 text-[16px]">{title}</h3>
         </>
       ) : (
-        <div className="flex items-center min-w-0 flex-1">
-          <p className="py-3 min-w-[150px]">{title}</p>
+        <div className="flex min-w-0 flex-1 items-center">
+          <p className="min-w-[150px] py-3">{title}</p>
           <Input
-            className="border-none h-[4rem] flex-1 min-w-0"
+            className="h-[4rem] min-w-0 flex-1 border-none"
             value={valueInputA}
             placeholder={placeholder}
             onChange={(e) => setValueInputA(e.target.value)}
             disabled={!editInputA}
-            style={{ color: "black", backgroundColor: "transparent", opacity: 1 }}
+            style={{ color: 'black', backgroundColor: 'transparent', opacity: 1 }}
           />
         </div>
       )}
-      <div className={`ml-auto ${isEditable ? "py-4" : "py-6"} shrink-0`}>
+      <div className={`ml-auto ${isEditable ? 'py-4' : 'py-6'} shrink-0`}>
         {isEditable && (
           <Button onClick={() => setEditInputA(!editInputA)} variant="edit" color="gray">
             Editar
