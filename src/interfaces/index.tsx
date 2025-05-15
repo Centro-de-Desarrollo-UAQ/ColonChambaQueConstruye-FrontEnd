@@ -1,3 +1,5 @@
+export * from "./ui";
+
 export interface TargetGroup {
     adviceHref: string
     adviceText: string

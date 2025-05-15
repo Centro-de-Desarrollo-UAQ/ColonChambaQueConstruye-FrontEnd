@@ -20,7 +20,6 @@ import CompanyCard from "@/components/companyCard";
 import StepperRegister from "@/components/stepperRegister";
 import LinkerHeader from "@/components/linkerHeader";
 import QuestionItem from "@/components/questionItem";
-import { Search } from "lucide-react";
 import SearchBar from "@/components/ui/searchbar";
 
 export default function Home() {
