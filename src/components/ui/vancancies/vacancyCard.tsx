@@ -15,6 +15,7 @@ interface JobCardProps {
     modality: string;
     logoUrl?: string;
     companyUrl?: string;
+    information?: string;
 }
 
 export default function JobCard({
@@ -26,10 +27,11 @@ export default function JobCard({
     modality,
     schedule,
     logoUrl = '/deloitte-logo.svg', // TODO: Add a default logo if the company doesn't have one,
-    companyUrl // Only add this if the company has a website
+    companyUrl, // Only add this if the company has a website
+    information, // Only add this if you want to show the information link
 }: JobCardProps) {
     return (
-        <div className="w-full max-w-[560px] border rounded-xl shadow-sm p-8 bg-white transition hover:shadow-md hover:border-zinc-400 cursor-pointer">
+        <div className="w-full max-w-[560px] border rounded-xl shadow-sm p-8 bg-white transition hover:shadow-md hover:border-zinc-400">
             <div className="flex gap-2 items-start mb-3">
                 <Image src={logoUrl} alt="Company Logo" width={60} height={60} className="rounded-md self-center" />
                 <div className="flex-1">
@@ -62,12 +64,20 @@ export default function JobCard({
             <p className="text-sm mt-4 mb-4 text-zinc-800">
                 {description}
             </p>
+
             <div className="flex justify-between items-end mt-4">
                 <span className="text-uaq-brand font-medium">{salaryRange}</span>
-                <button className="flex items-center gap-2 text-uaq-accent">
-                    <AddCircle weight="Bold" className="w-4 h-4" />
-                    Información
-                </button>
+                {information ? (
+                    <Link href={information} className="flex items-center gap-2 text-uaq-accent">
+                        <AddCircle weight="Bold" className="w-4 h-4" />
+                        Información
+                    </Link>
+                ) : (
+                    <div className="flex items-center gap-2 text-uaq-accent">
+                        <AddCircle weight="Bold" className="w-4 h-4" />
+                        Información
+                    </div>
+                )}
             </div>
         </div>
     );
