@@ -16,4 +16,5 @@ export interface FormFieldProps<T extends FieldValues> {
   iconPosition?: 'left' | 'right';
   width?: number;
   className?: string;
+  optional?: boolean;
 }

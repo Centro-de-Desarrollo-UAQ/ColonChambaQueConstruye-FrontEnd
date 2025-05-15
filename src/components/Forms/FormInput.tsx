@@ -20,6 +20,7 @@ export default function FormInput<T extends FieldValues>({
   iconPosition = 'right',
   width,
   className,
+  optional = false,
 }: FormFieldProps<T>) {
   return (
     <FormField
@@ -28,7 +29,16 @@ export default function FormInput<T extends FieldValues>({
       render={({ field }) => (
         <FormItem className={className}>
           {/* Label superior */}
-          {label && <FormLabel htmlFor={htmlFor}>{label}</FormLabel>}
+          {label && (
+            <FormLabel htmlFor={htmlFor} className="justify-between">
+              {label}
+              {optional && (
+                <span className="text-gray-500 text-sm font-light">
+                  {' Opcional'}
+                </span>
+              )}
+            </FormLabel>
+          )}
 
           <FormControl>
             {type === 'textarea' ? (

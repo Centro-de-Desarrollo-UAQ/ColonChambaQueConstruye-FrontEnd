@@ -62,20 +62,10 @@ export default function SignUpEmployer() {
         {/* UI paso a paso */}
         {step === 1 && (
           <>
-            <Stepper size={2} activeStep={1} />
-            <EmployerDetailsStep control={control} />
-            {/* TODO: Add link to terms and conditions */}
-            <div>
-              Al continuar, confirmas que has leído las{' '}
-              <Link href="" className="text-uaq-brand underline">
-                Condiciones Legales
-              </Link>{' '}
-              y la{' '}
-              <Link href="" className="text-uaq-brand underline">
-                Política de Privacidad
-              </Link>{' '}
-              de la Bolsa de Trabajo UAQ para continuar con el registro.
+            <div className='mb-7 mx-auto w-2/3'>
+              <Stepper size={2} activeStep={1} />
             </div>
+            <EmployerDetailsStep control={control} />
           </>
         )}
 
@@ -89,7 +79,7 @@ export default function SignUpEmployer() {
           </>
         )}
 
-        <div className="mt-8 flex justify-between">
+        <div className="mt-4 flex justify-between items-center">
           {step === 1 && (
             <>
               <Link href="" className="text-zinc-600 underline">
@@ -97,7 +87,7 @@ export default function SignUpEmployer() {
                 <span className="font-bold"> Inicia sesión</span>
               </Link>
               <Button type="button" onClick={handleNextStep}>
-                Siguiente
+                Registra tu empresa
               </Button>
             </>
           )}

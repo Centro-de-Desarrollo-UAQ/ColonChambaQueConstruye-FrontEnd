@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Control } from 'react-hook-form';
+import Link from 'next/link';
 import { EmployerFormType } from '@/validations/employerSchema';
 import FormInput from '@/components/Forms/FormInput';
 
@@ -11,9 +12,9 @@ interface EmployerDetailsStepProps {
 
 export default function EmployerDetailsStep({ control }: EmployerDetailsStepProps) {
   return (
-    <div className="space-y-4">
-      <h2 className="mt-2 text-xl font-bold">Información de la empresa</h2>
-      <div className="my-4 h-[1px] w-full rounded bg-gray-300"></div>
+    <div className="pb-4 space-y-4">
+      <h2 className="mt-6 mb-2 text-xl font-bold">Información de la empresa</h2>
+      <div className="mb-4 h-[1px] w-full rounded bg-gray-300"></div>
 
       <FormInput
         control={control}
@@ -31,8 +32,8 @@ export default function EmployerDetailsStep({ control }: EmployerDetailsStepProp
         description="Correo oficial para contactar con la empresa"
       />
 
-      <h2 className="mt-2 text-xl font-bold">Descripción</h2>
-      <div className="my-4 h-[1px] w-full rounded bg-gray-300"></div>
+      <h2 className="mt-6 mb-2 text-xl font-bold">Descripción</h2>
+      <div className="mb-4 h-[1px] w-full rounded bg-gray-300"></div>
 
       <FormInput
         control={control}
@@ -42,8 +43,8 @@ export default function EmployerDetailsStep({ control }: EmployerDetailsStepProp
         description="Breve descripción de la empresa (misión, visión, servicios, etc.)"
       />
 
-      <h2 className="mt-2 text-xl font-bold">Ubicación</h2>
-      <div className="my-4 h-[1px] w-full rounded bg-gray-300"></div>
+      <h2 className="mt-6 mb-2 text-xl font-bold">Ubicación</h2>
+      <div className="mb-4 h-[1px] w-full rounded bg-gray-300"></div>
 
       <FormInput control={control} label="Dirección" name="companyAddress" type="text" />
 
@@ -54,8 +55,8 @@ export default function EmployerDetailsStep({ control }: EmployerDetailsStepProp
         <FormInput control={control} label="País" name="companyAddressCountry" type="text" />
       </div>
 
-      <h2 className="mt-2 text-xl font-bold">Datos Fiscales</h2>
-      <div className="my-4 h-[1px] w-full rounded bg-gray-300"></div>
+      <h2 className="mt-6 mb-2 text-xl font-bold">Datos Fiscales</h2>
+      <div className="mb-4 h-[1px] w-full rounded bg-gray-300"></div>
 
       <FormInput control={control} label="RFC" name="companyRFC" type="text" />
 
@@ -76,11 +77,11 @@ export default function EmployerDetailsStep({ control }: EmployerDetailsStepProp
         />
       </div>
 
-      <h2 className="mt-2 text-xl font-bold">Información del Empleador</h2>
-      <label className="block">
+      <h2 className="mt-6 mb-0 text-xl font-bold">Información del Empleador</h2>
+      <label className="mb-4 block">
         Ingrese aquí la información del propietario de la cuenta (Empleador)
       </label>
-      <div className="my-4 h-[1px] w-full rounded bg-gray-300"></div>
+      <div className="mb-4 h-[1px] w-full rounded bg-gray-300"></div>
 
       <FormInput control={control} label="Nombre(s)" name="employerName" type="text" />
       <FormInput control={control} label="Apellido(s)" name="employerLastName" type="text" />
@@ -111,6 +112,19 @@ export default function EmployerDetailsStep({ control }: EmployerDetailsStepProp
           name="accountPasswordConfirm"
           type="password"
         />
+      </div>
+      
+      {/* TODO: Add link to terms and conditions */}
+      <div>
+        Al continuar, confirmas que has leído las{' '}
+        <Link href="" className="text-uaq-brand underline">
+          Condiciones Legales
+        </Link>{' '}
+        y la{' '}
+        <Link href="" className="text-uaq-brand underline">
+          Política de Privacidad
+        </Link>{' '}
+        de la Bolsa de Trabajo UAQ para continuar con el registro.
       </div>
     </div>
   );
