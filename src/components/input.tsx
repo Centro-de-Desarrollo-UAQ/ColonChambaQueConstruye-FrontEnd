@@ -1,7 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textArea';
 import { Label } from '@/components/ui/label';
-import { ComboboxDemo } from '@/components/ui/comboBox';
 import { ComponentType, forwardRef, RefObject } from 'react';
 
 type FormFieldProps = {
@@ -9,7 +8,7 @@ type FormFieldProps = {
   description?: string;
   htmlFor?: string;
   variant?: 'default' | 'count' | 'description';
-  type?: 'text' | 'email' | 'password' | 'textarea' | 'combobox';
+  type?: 'text' | 'email' | 'password' | 'textarea';
   placeholder?: string;
   maxChars?: number;
   disabled?: boolean;
@@ -57,8 +56,6 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
               className="mb-1"
             />
           );
-        case 'combobox':
-          return <ComboboxDemo width={width} {...props} />;
         default:
           return (
             <Input

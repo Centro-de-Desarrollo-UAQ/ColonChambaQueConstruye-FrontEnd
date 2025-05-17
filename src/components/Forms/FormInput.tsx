@@ -2,9 +2,8 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/comp
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textArea';
 import { Label } from '@/components/ui/label';
-import { ComboboxDemo } from '@/components/ui/comboBox';
 import { FieldValues } from 'react-hook-form';
-import { FormFieldProps } from '@/interfaces';
+import { FormInputProps } from '@/interfaces';
 
 export default function FormInput<T extends FieldValues>({
   control,
@@ -18,10 +17,9 @@ export default function FormInput<T extends FieldValues>({
   disabled = false,
   icon,
   iconPosition = 'right',
-  width,
   className,
   optional = false,
-}: FormFieldProps<T>) {
+}: FormInputProps<T>) {
   return (
     <FormField
       control={control}
@@ -30,7 +28,7 @@ export default function FormInput<T extends FieldValues>({
         <FormItem className={className}>
           {/* Label superior */}
           {label && (
-            <FormLabel htmlFor={htmlFor} className="justify-between">
+            <FormLabel htmlFor={htmlFor} className="justify-between font-medium">
               {label}
               {optional && (
                 <span className="text-gray-500 text-sm font-light">
@@ -43,8 +41,6 @@ export default function FormInput<T extends FieldValues>({
           <FormControl>
             {type === 'textarea' ? (
               <Textarea placeholder={placeholder} disabled={disabled} {...field} />
-            ) : type === 'combobox' ? (
-              <ComboboxDemo width={width} {...field} />
             ) : (
               <Input
                 type={type}

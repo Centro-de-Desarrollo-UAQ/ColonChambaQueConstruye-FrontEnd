@@ -20,20 +20,18 @@ export default function SignUpEmployer() {
       companyEmail: '',
       companyDescription: '',
       companyAddress: '',
-      companyAddressState: 'Selecciona un estado',
+      companyAddressState: '',
       companyAddressZip: '',
-      companyAddressCountry: 'Selecciona un Pais',
+      companyAddressCountry: '',
       companyRFC: '',
       companyRazonSocial: '',
-      companySector: 'Selecciona un sector',
+      companySector: '',
       employerName: '',
       employerLastName: '',
       employerEmail: '',
-      employerPhone: '',
-      employerPhoneCode: 'MX +(52)',
+      employerPhone: {code: '+52', number: '' },
       accountPassword: '',
       accountPasswordConfirm: '',
-      accountTerms: false,
       image: null,
     },
   });
@@ -71,7 +69,9 @@ export default function SignUpEmployer() {
 
         {step === 2 && (
           <>
-            <Stepper size={2} activeStep={2} />
+            <div className='mb-7 mx-auto w-2/3'>
+              <Stepper size={2} activeStep={2} />
+            </div>
             <ImageUploadStep
               selectedImage={watch('image')}
               setSelectedImage={(image) => setValue('image', image)}
@@ -94,10 +94,7 @@ export default function SignUpEmployer() {
 
           {step === 2 && (
             <>
-              <Button type="button" variant="ghost" onClick={() => setStep(1)}>
-                Atrás
-              </Button>
-              <Button type="submit">Crear cuenta</Button>
+              <Button className='ml-auto' type="submit">Finalizar</Button>
             </>
           )}
         </div>

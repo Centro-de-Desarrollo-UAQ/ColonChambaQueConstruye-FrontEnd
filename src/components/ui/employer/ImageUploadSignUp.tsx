@@ -47,7 +47,7 @@ function ImageUploadStep({ selectedImage, setSelectedImage }: ImageUploadStepPro
       </p>
       <div className="my-4 h-[1px] w-full rounded bg-gray-300"></div>
       <div
-        className="relative flex flex-col items-center justify-center rounded-lg border border-dashed border-zinc-200 p-8"
+        className="relative flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-8"
         onDragOver={handleDragOver}
         onDrop={handleDrop}
       >
@@ -72,12 +72,12 @@ function ImageUploadStep({ selectedImage, setSelectedImage }: ImageUploadStepPro
         )}
 
         {!selectedImage && (
-          <Button variant="secondary" onClick={() => document.getElementById('fileInput')?.click()}>
+          <Button variant="ghost" onClick={() => document.getElementById('fileInput')?.click()}>
             Selecciona un archivo
           </Button>
         )}
         {selectedImage && (
-          <Button variant="destructive" onClick={handleRemoveImage}>
+          <Button variant="ghost" color='accent' onClick={handleRemoveImage}>
             Borrar
           </Button>
         )}

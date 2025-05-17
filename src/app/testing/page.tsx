@@ -546,14 +546,6 @@ export default function Home() {
             placeholder="ejemplo@email.com"
           />
 
-          {/* Combobox */}
-          <FormField
-            label="País"
-            description="Selecciona tu país de residencia"
-            type="combobox"
-            width={380}
-          />
-
           {/* Campo deshabilitado */}
           <FormField
             label="Campo deshabilitado"

@@ -1,3 +1,4 @@
+// * Styles with customized color variants
 import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
@@ -22,6 +23,7 @@ const buttonVariants = cva(
        * - `edit`: Botón con sombra interna activa.
        * - `ghost`: Fondo claro, hover suave.
        * - `mono`: Solo modifica el color del texto en hover.
+       * - `combobox`: Estilo de botón para un combobox.
        */
       variant: {
         primary: 'text-base font-bold',
@@ -29,6 +31,7 @@ const buttonVariants = cva(
         edit: 'text-base font-normal shadow-md active:shadow-none active:shadow-[0px_6px_10px_rgba(0,_0,_0,_0.20)_inset]',
         ghost: 'bg-zinc-100 text-base font-bold hover:bg-zinc-200',
         mono: 'text-zinc-800',
+        combobox: 'text-base border border-input bg-zinc-100',
       },
       /**
        * Tamaños disponibles para el botón.
@@ -37,12 +40,14 @@ const buttonVariants = cva(
        * - `sm`: Botón compacto.
        * - `lg`: Botón grande.
        * - `icon`: Botón cuadrado ideal para íconos.
+       * - `sm_icon`: Botón cuadrado compacto ideal para íconos.
        */
       size: {
         default: 'px-4 py-3 rounded-md',
-        sm: 'h-8 rounded-md px-3 text-xs',
+        sm: 'h-9 rounded-md px-3 text-sm',
         lg: 'h-10 rounded-md px-8',
         icon: 'p-3 rounded-md',
+        sm_icon: 'size-9 p-3 rounded-md',
       },
     },
     defaultVariants: {
@@ -126,6 +131,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         accent: 'hover:text-uaq-accent',
         danger: 'hover:text-uaq-danger',
         gray: 'hover:text-zinc-500',
+      },
+      combobox: {
+        brand: 'text-uaq-brand',
+        accent: 'text-uaq-accent',
+        danger: 'text-uaq-danger',
+        gray: 'text-zinc-800',
       },
     };
 

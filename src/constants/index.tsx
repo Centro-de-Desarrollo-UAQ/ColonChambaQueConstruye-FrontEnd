@@ -1,5 +1,7 @@
 import { CompanyAdvertising, TargetGroup } from '@/interfaces';
 
+export * from './companyData';
+
 export const careers1: string[] = [
   'Ingeniería en computación',
   'Enfermería',

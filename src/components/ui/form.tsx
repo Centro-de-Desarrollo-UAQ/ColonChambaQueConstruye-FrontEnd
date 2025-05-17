@@ -1,3 +1,4 @@
+//* Modification of the error message
 'use client';
 
 import * as React from 'react';
@@ -122,21 +123,45 @@ function FormDescription({ className, ...props }: React.ComponentProps<'p'>) {
 
 function FormMessage({ className, ...props }: React.ComponentProps<'p'>) {
   const { error, formMessageId } = useFormField();
-  const body = error ? String(error?.message ?? '') : props.children;
 
-  if (!body) {
-    return null;
-  }
+  if (!error) return null;
+
+  // Función auxiliar para convertir cualquier error en un arreglo de strings
+  const parseErrorMessages = (err: unknown): string[] => {
+    if (typeof err === 'string') return [err];
+    if (typeof err === 'object' && err !== null && 'message' in err && typeof (err as { message: unknown }).message === 'string') {
+      return [(err as { message: string }).message];
+    }
+
+    // ZodError en objetos anidados
+    if (typeof err === 'object' && err !== null) {
+      return Object.values(err as Record<string, unknown>)
+        .map((subErr) => {
+          if (typeof subErr === 'string') return subErr;
+          if (typeof subErr === 'object' && subErr !== null && 'message' in subErr && typeof (subErr as { message: unknown }).message === 'string') {
+            return (subErr as { message: string }).message;
+          }
+          return null;
+        })
+        .filter(Boolean) as string[];
+    }
+
+    return ['Error desconocido'];
+  };
+
+  const messages = parseErrorMessages(error);
 
   return (
-    <p
+    <div
       data-slot="form-message"
       id={formMessageId}
-      className={cn('text-destructive text-sm', className)}
+      className={cn('text-destructive text-sm space-y-1', className)}
       {...props}
     >
-      {body}
-    </p>
+      {messages.map((msg, i) => (
+        <p key={i}>{msg}</p>
+      ))}
+    </div>
   );
 }
 
