@@ -28,7 +28,7 @@ Un front-end en **Next.js + TypeScript** para el **Sistema General de Bolsa de T
 - **Tailwind CSS**, **Prettier**, **ESLint**  
 - **Zod** (validaciones)  
 - **Shadcn/UI** (componentes)  
-- Diversas librerías Radix UI y NextUI (Remover esta última a futuro) 
+- Diversas librerías Radix UI y NextUI (Remover o actualizar NextUI a futuro) 
 
 ---
 
@@ -144,8 +144,6 @@ Estos son los comandos disponibles en `package.json`:
   - @BryanBonilla
   - @DaniPau19
   - @Carlitosandia
-
-> Para comunicación interna usamos el canal de Slack de Desarrollo UAQ.
 
 ---
 
