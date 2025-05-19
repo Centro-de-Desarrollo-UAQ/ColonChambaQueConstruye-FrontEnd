@@ -4,10 +4,10 @@ import React from 'react';
 import { Control } from 'react-hook-form';
 import Link from 'next/link';
 import { EmployerFormType } from '@/validations/employerSchema';
-import FormInput from '@/components/Forms/FormInput';
-import FormOptions from '@/components/Forms/FormOptions';
+import FormInput from '@/components/forms/FormInput';
+import FormOptions from '@/components/forms/FormOptions';
 import { sector } from '@/constants';
-import FormPhone from '@/components/Forms/FormPhone';
+import FormPhone from '@/components/forms/FormPhone';
 
 interface EmployerDetailsStepProps {
   control: Control<EmployerFormType>;
