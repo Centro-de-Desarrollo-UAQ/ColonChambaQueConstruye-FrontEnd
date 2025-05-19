@@ -126,14 +126,14 @@ function FormMessage({ className, ...props }: React.ComponentProps<'p'>) {
 
   if (!error) return null;
 
-  // Función auxiliar para convertir cualquier error en un arreglo de strings
+  // Auxiliary function to convert any error into an array of strings
   const parseErrorMessages = (err: unknown): string[] => {
     if (typeof err === 'string') return [err];
     if (typeof err === 'object' && err !== null && 'message' in err && typeof (err as { message: unknown }).message === 'string') {
       return [(err as { message: string }).message];
     }
 
-    // ZodError en objetos anidados
+    // ZodError in nested objects
     if (typeof err === 'object' && err !== null) {
       return Object.values(err as Record<string, unknown>)
         .map((subErr) => {

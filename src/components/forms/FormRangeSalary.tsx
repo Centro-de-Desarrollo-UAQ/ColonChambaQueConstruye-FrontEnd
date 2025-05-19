@@ -1,7 +1,8 @@
+//TODO Make this component reusable and add the form wrapper
 'use client';
 
 import { useState } from 'react';
-import CustomSelect from './select';
+import CustomSelect from '../select';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { currencyOptions } from '@/data/selectOptions';

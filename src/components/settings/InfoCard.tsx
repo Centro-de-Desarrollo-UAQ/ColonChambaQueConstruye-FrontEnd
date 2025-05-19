@@ -1,5 +1,5 @@
+// TODO add upload image functionality
 import React from 'react';
-import { Card } from '../ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { UploadMinimalistic } from '@solar-icons/react';
 

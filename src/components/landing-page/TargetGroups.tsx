@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { targetGroups } from '@/constants';
-import { Button } from '../button';
+import { Button } from '../ui/button';
 import clsx from 'clsx';
 import router from 'next/router';
 

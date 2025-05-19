@@ -1,5 +1,5 @@
 import { GalleryAdd } from '@solar-icons/react';
-import { Button } from '../button';
+import { Button } from '../ui/button';
 
 interface ImageUploadStepProps {
   selectedImage: string | null;

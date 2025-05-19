@@ -3,7 +3,7 @@ import { useState, useRef } from 'react';
 import { UploadMinimalistic } from '@solar-icons/react';
 import TabOptions from '@/components/tabOptions';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { InfoCard } from './InfoCard/InfoCard';
+import { InfoCard } from './settings/InfoCard';
 
 export default function UserTabs() {
   const [avatarSrc, setAvatarSrc] = useState('https://github.com/shadcn.png');

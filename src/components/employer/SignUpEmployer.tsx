@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { employerSchema, EmployerFormType } from '@/validations/employerSchema';
-import { Button } from '../button';
+import { Button } from '../ui/button';
 import Link from 'next/link';
 import ImageUploadStep from './ImageUploadSignUp';
 import EmployerDetailsStep from './EmployerDetailsStep';

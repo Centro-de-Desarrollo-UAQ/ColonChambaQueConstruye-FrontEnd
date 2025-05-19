@@ -2,7 +2,7 @@
 import UserTabs from '@/components/userTabs';
 import { useState } from 'react';
 import TitleSection from '@/components/titleSection';
-import { ConfigRow } from '@/components/ConfigRow/ConfigRow';
+import { ConfigRow } from '@/components/settings/ConfigRow';
 
 export default function Control() {
   const [selectedVacancy, setSelectedVacancy] = useState<string | null>(null);

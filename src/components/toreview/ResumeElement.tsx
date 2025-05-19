@@ -1,9 +1,10 @@
+//TODO: Changing styles to appeal to figma design
 'use client';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { CloseSquare, Pen2, Upload } from '@solar-icons/react';
 
-interface FileDisplayProps {
+interface ResumeElementProps {
   displayName: string;
   file?: File | string;
   action?: 'upload' | 'edit' | 'none';
@@ -11,13 +12,13 @@ interface FileDisplayProps {
   onRemove?: () => void;
 }
 
-export function FileDisplay({
+export function ResumeElement({
   displayName,
   file,
   action = 'none',
   onView,
   onRemove,
-}: FileDisplayProps) {
+}: ResumeElementProps) {
   return (
     <div className="flex w-full min-w-0 rounded-xl border transition-shadow hover:shadow-md">
       {/* Sección izquierda - Información del archivo */}

@@ -1,3 +1,4 @@
+// * Added badge component with variants and close button
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';

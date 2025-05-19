@@ -1,9 +1,10 @@
+//! This component is incorrectly implemented, it must be refactored
 'use client';
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
 type DropdownSelectProps = {
-  color?: 'gray' | 'blue'; // puedes expandir esto a más colores si quieres
+  color?: 'gray' | 'blue';
 };
 
 export default function DropdownSelect({ color = 'gray' }: DropdownSelectProps) {

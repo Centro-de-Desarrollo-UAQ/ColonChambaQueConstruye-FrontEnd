@@ -1,9 +1,9 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { Stepper } from '@/components/stepper';
+import { Stepper } from '@/components/toreview/stepper';
 import { Separator } from '@/components/ui/separator';
-import { FormField } from '@/components/input';
-import InputBirthDate from '@/components/inputBirthDate';
+import { FormField } from '@/components/toreview/input';
+import InputBirthDate from '@/components/toreview/inputBirthDate';
 import PhoneInput from '@/components/phoneInput';
 import CustomSelect from '@/components/select';
 import { useCallback, useState } from 'react';

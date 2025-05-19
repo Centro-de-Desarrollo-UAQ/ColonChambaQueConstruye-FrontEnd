@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
-import { ButtonNavBar } from '@/components/ui/buttonNavBar';
+import { ButtonNavBar } from '@/components/navbar/ButtonNavBar';
 import { Button } from './ui/button';
 import Link from 'next/link';
 

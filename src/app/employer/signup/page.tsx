@@ -1,5 +1,5 @@
 import React from 'react';
-import SignUpEmployer from '@/components/ui/employer/SignUpEmployer';
+import SignUpEmployer from '@/components/employer/SignUpEmployer';
 import LinkerNavBar from '@/components/linkerNavBar';
 
 export default function Signup() {

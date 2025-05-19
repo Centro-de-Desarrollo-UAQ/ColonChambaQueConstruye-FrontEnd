@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Bell, Case, Document, HomeAngle } from '@solar-icons/react';
-import { ButtonNavBar } from './ui/buttonNavBar';
+import { ButtonNavBar } from './navbar/ButtonNavBar';
 
 export default function UserNavBar() {
   const pathname = usePathname();

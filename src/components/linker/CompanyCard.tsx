@@ -1,3 +1,4 @@
+//TODO: Add a click handler to open the drawer with the company details
 import Image from 'next/image';
 import { FolderOpen, Letter } from '@solar-icons/react';
 
@@ -29,7 +30,6 @@ export default function CompanyCard({
           />
         </div>
 
-        {/* Segunda columna - Contenido principal */}
         <div className="flex flex-1 flex-col self-center px-4 py-4 transition-colors duration-300">
           <div className="flex-1 space-y-1 text-start">
             <div className="text-lg font-[800]">{title}</div>
@@ -37,7 +37,6 @@ export default function CompanyCard({
           </div>
         </div>
 
-        {/* Tercera columna - Información */}
         <div className="flex w-[250px] flex-col justify-center gap-2 self-center rounded-r-lg p-4 transition-colors duration-300">
           <div className="flex items-center gap-2 text-sm text-gray-700 transition-colors duration-200 group-hover:text-gray-900">
             <Letter className="h-4 w-4" weight="Linear" />

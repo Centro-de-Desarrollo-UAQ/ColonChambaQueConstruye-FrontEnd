@@ -1,10 +1,11 @@
+//* idk, but its different
 'use client';
 
 import * as React from 'react';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import { cn } from '@/lib/utils';
 
-// Componentes originales (sin modificaciones)
+// Original components (without modifications)
 const Tabs = TabsPrimitive.Root;
 
 const TabsList = React.forwardRef<
@@ -58,7 +59,7 @@ const TabsContent = React.forwardRef<
 ));
 TabsContent.displayName = TabsPrimitive.Content.displayName;
 
-// Componentes VerticalTabs simplificados (solo variante default)
+// Simplified VerticalTabs components (default variant only)
 const VerticalTabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
@@ -90,10 +91,8 @@ const VerticalTabsTrigger = React.forwardRef<
 ));
 VerticalTabsTrigger.displayName = 'VerticalTabsTrigger';
 
-// Exportaciones
 export { Tabs, TabsList, TabsTrigger, TabsContent };
 export { VerticalTabsList, VerticalTabsTrigger };
 
-// Aliases para consistencia
 export const VerticalTabs = Tabs;
 export const VerticalTabsContent = TabsContent;

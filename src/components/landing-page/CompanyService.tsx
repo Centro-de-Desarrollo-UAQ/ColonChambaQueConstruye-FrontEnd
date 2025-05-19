@@ -1,7 +1,7 @@
 'use client';
 
 import router from 'next/router';
-import { Button } from '../button';
+import { Button } from '../ui/button';
 
 export function CompanyService() {
   return (

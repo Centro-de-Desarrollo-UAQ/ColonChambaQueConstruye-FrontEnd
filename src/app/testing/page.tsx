@@ -2,25 +2,25 @@
 import React, { useState } from 'react';
 import { useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { ButtonNavBar } from '@/components/ui/buttonNavBar';
+import { ButtonNavBar } from '@/components/navbar/ButtonNavBar';
 import { Badge } from '@/components/ui/badge';
 import LinkerNavBar from '@/components/linkerNavBar';
 import UserNavBar from '@/components/userNavBar';
-import FooterLanding from '@/components/footerLanding';
-import DropdownSelect from '@/components/ui/dropdownselect';
-import Toggle from '@/components/ui/toggle';
-import SimpleSelect from '@/components/ui/simpleselect';
+import FooterLanding from '@/components/landing-page/FooterLanding';
+import DropdownSelect from '@/components/toreview/dropdownselect';
+import Toggle from '@/components/toreview/toggle';
+import SimpleSelect from '@/components/toreview/simpleselect';
 import { Eye, AddCircle } from '@solar-icons/react';
-import InputSelect from '@/components/inputSelect';
-import InputBirthDate from '@/components/inputBirthDate';
-import { FormField } from '@/components/input';
-import { InfoCard } from '@/components/InfoCard/InfoCard';
-import { ConfigRow } from '@/components/ConfigRow/ConfigRow';
-import CompanyCard from '@/components/companyCard';
+import InputSelect from '@/components/toreview/inputSelect';
+import InputBirthDate from '@/components/toreview/inputBirthDate';
+import { FormField } from '@/components/toreview/input';
+import { InfoCard } from '@/components/settings/InfoCard';
+import { ConfigRow } from '@/components/settings/ConfigRow';
+import CompanyCard from '@/components/linker/CompanyCard';
 import StepperRegister from '@/components/stepperRegister';
 import LinkerHeader from '@/components/linkerHeader';
 import QuestionItem from '@/components/questionItem';
-import SearchBar from '@/components/ui/searchbar';
+import SearchBar from '@/components/toreview/searchbar';
 
 export default function Home() {
   const [visibleBadges, setVisibleBadges] = useState({

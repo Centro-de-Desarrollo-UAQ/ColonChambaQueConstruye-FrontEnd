@@ -1,8 +1,8 @@
 'use client';
 import UserTabs from '@/components/userTabs';
-import { FileDisplay } from '@/components/fileDisplay';
+import { ResumeElement } from '@/components/toreview/ResumeElement';
 import TitleSection from '@/components/titleSection';
-import { ConfigRow } from '@/components/ConfigRow/ConfigRow';
+import { ConfigRow } from '@/components/settings/ConfigRow';
 
 export default function Curriculum() {
   return (
@@ -28,7 +28,7 @@ export default function Curriculum() {
           />
 
           <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2">
-            <FileDisplay displayName="CV_Principal_Bryan_Bonilla.pdf" action="edit" />
+            <ResumeElement displayName="CV_Principal_Bryan_Bonilla.pdf" action="edit" />
           </div>
 
           {/* Sección de CVs generados */}
@@ -42,12 +42,12 @@ export default function Curriculum() {
           />
 
           <div className="grid grid-cols-1 gap-4 p-5 md:grid-cols-2">
-            <FileDisplay displayName="CV_Ingeniero_Software.pdf" action="edit" />
-            <FileDisplay displayName="CV_Desarrollador_FullStack.pdf" action="edit" />
-            <FileDisplay displayName="CV_Bryan_Bonilla_2024.pdf" action="edit" />
-            <FileDisplay displayName="CV_Resumido.pdf" action="edit" />
-            <FileDisplay displayName="CV_Inglés.pdf" action="edit" />
-            <FileDisplay displayName="CV_Ejecutivo.pdf" action="edit" />
+            <ResumeElement displayName="CV_Ingeniero_Software.pdf" action="edit" />
+            <ResumeElement displayName="CV_Desarrollador_FullStack.pdf" action="edit" />
+            <ResumeElement displayName="CV_Bryan_Bonilla_2024.pdf" action="edit" />
+            <ResumeElement displayName="CV_Resumido.pdf" action="edit" />
+            <ResumeElement displayName="CV_Inglés.pdf" action="edit" />
+            <ResumeElement displayName="CV_Ejecutivo.pdf" action="edit" />
           </div>
         </div>
       </div>

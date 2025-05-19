@@ -6,24 +6,24 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 /**
- * Variantes de estilo y tamaño del componente Button.
+ * Style and size variants of the Button component.
  *
- * - `variant`: define el estilo visual del botón.
- * - `size`: define las dimensiones del botón.
+ * - `variant`: defines the visual style of the button.
+ * - `size`: defines the dimensions of the button.
  */
 const buttonVariants = cva(
   'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-5 [&_svg]:shrink-0 cursor-pointer',
   {
     variants: {
       /**
-       * Estilos visuales disponibles para el botón.
+       * Visual styles available for the button.
        *
-       * - `primary`: Botón con fondo sólido y texto destacado.
-       * - `secondary`: Botón con solo texto, sombra en hover.
-       * - `edit`: Botón con sombra interna activa.
-       * - `ghost`: Fondo claro, hover suave.
-       * - `mono`: Solo modifica el color del texto en hover.
-       * - `combobox`: Estilo de botón para un combobox.
+       * - `primary`: Button with solid background and highlighted text.
+       * - `secondary`: Button with only text, shadow on hover.
+       * - `edit`: Button with active internal shadow.
+       * - `ghost`: Clear background, soft hover.
+       * - `mono`: It only modifies the color of the hover text.
+       * - `combobox`: Button style for a combobox.
        */
       variant: {
         primary: 'text-base font-bold',
@@ -34,13 +34,13 @@ const buttonVariants = cva(
         combobox: 'text-base border border-input bg-zinc-100',
       },
       /**
-       * Tamaños disponibles para el botón.
+       * Available sizes for the button.
        *
-       * - `default`: Medidas estándar.
-       * - `sm`: Botón compacto.
-       * - `lg`: Botón grande.
-       * - `icon`: Botón cuadrado ideal para íconos.
-       * - `sm_icon`: Botón cuadrado compacto ideal para íconos.
+       * - `default`: Standard measurements.
+       * - `sm`: Compact button.
+       * - `lg`: Large button.
+       * - `icon`: Square button ideal for icons.
+       * - `sm_icon`: Compact square button ideal for icons.
        */
       size: {
         default: 'px-4 py-3 rounded-md',
@@ -58,28 +58,28 @@ const buttonVariants = cva(
 );
 
 /**
- * Propiedades aceptadas por el componente Button.
+ * Properties accepted by the Button component.
  */
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   /**
-   * Si se establece en `true`, el botón renderiza como un elemento hijo (`Slot`)
-   * en lugar de un `<button>`, permitiendo usar elementos como `<Link>` de Next.js.
+   * If set to `true`, the button renders as a child element (`Slot`)
+   * instead of a `<button>`, allowing elements such as `<Link>` to be used.
    *
    * @default false
    */
   asChild?: boolean;
 
   /**
-   * Define la paleta de color que se aplica sobre la variante seleccionada.
-   * Afecta fondo, texto y/o borde dependiendo de la combinación con `variant`.
+   * Defines the color palette that is applied to the selected variant.
+   * Affects background, text and/or border depending on the combination with `variant`.
    *
-   * Valores permitidos:
-   * - `brand` (default): Color institucional principal.
-   * - `accent`: Color secundario o de énfasis.
-   * - `danger`: Indica acción destructiva o de alerta.
-   * - `gray`: Estilo neutro o desactivado.
+   * Allowable values:
+   * - `brand` (default): Main institutional color.
+   * - `accent`: Secondary or emphasis color.
+   * - `danger`: Indicates destructive or warning action.
+   * - `gray`: Neutral style.
    *
    * @default "brand"
    */
@@ -87,19 +87,19 @@ export interface ButtonProps
 }
 
 /**
- * Componente `Button`
+ * `Button` component.
  *
- * Botón reutilizable y completamente estilizado que admite múltiples variantes,
- * tamaños, colores y comportamientos. Compatible con accesibilidad, íconos,
- * composición con otros elementos y estilos dinámicos.
+ * Reusable and fully stylized button that supports multiple variations,
+ * sizes, colors and behaviors. Compatible with accessibility, icons,
+ * composition with other elements and dynamic styles.
  */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, color = 'brand', asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button';
 
     /**
-     * Mapa de clases por variante y color.
-     * Determina el estilo final del botón combinando ambas propiedades.
+     * Class map by variant and color.
+     * Determines the final style of the button by combining both properties.
      */
     const colorClasses = {
       primary: {

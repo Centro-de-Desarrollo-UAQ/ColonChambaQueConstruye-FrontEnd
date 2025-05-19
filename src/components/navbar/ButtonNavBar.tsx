@@ -28,14 +28,14 @@ const buttonVariants = cva(
   },
 );
 
-// Definimos la interfaz de las props del botón
+// Define the interface of the button props
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
 }
 
-// Componente de botón principal
+// Main button component
 const ButtonNavBar = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button';

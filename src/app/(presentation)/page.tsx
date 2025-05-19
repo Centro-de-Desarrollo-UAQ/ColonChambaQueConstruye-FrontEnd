@@ -1,13 +1,13 @@
-import { Advertising } from '@/components/ui/landing-page/Advertising';
-import { Hero } from '@/components/ui/landing-page/Hero';
-import { Indicators } from '@/components/ui/landing-page/Indicators';
+import { Advertising } from '@/components/landing-page/Advertising';
+import { Hero } from '@/components/landing-page/Hero';
+import { Indicators } from '@/components/landing-page/Indicators';
 import { CompanyAdvertising } from '@/interfaces';
 import { fakeAdsCompanies } from '@/constants';
-import { AppropriateJob } from '@/components/ui/landing-page/AppropriateJob';
-import { TargetGroups } from '@/components/ui/landing-page/TargetGroups';
-import { CompanyService } from '@/components/ui/landing-page/CompanyService';
-import { UaqOffers } from '@/components/ui/landing-page/UaqOffers';
-import { ContactUs } from '@/components/ui/landing-page/ContactUs';
+import { AppropriateJob } from '@/components/landing-page/AppropriateJob';
+import { TargetGroups } from '@/components/landing-page/TargetGroups';
+import { CompanyService } from '@/components/landing-page/CompanyService';
+import { UaqOffers } from '@/components/landing-page/UaqOffers';
+import { ContactUs } from '@/components/landing-page/ContactUs';
 
 async function getAdvertisingCompanies(): Promise<CompanyAdvertising[] | void> {
   // fetch to have companies that have purchased the ads section
