@@ -1,5 +1,5 @@
+//TODO: Instead of using variants, pass through props the icon, title and description
 import { Diploma, Documents, ShieldKeyholeMinimalistic } from '@solar-icons/react';
-import { ReactNode } from 'react';
 
 type VariantType = 'curriculum' | 'perfil' | 'seguridad';
 

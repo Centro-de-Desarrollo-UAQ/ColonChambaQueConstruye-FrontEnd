@@ -2,7 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import CustomSelect from '../select';
+import CustomSelect from '../toreview/select';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { currencyOptions } from '@/data/selectOptions';

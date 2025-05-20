@@ -1,11 +1,12 @@
+//? I dont know whats the purpose of this component
 'use client';
 import { useState, useRef } from 'react';
 import { UploadMinimalistic } from '@solar-icons/react';
-import TabOptions from '@/components/tabOptions';
+import TabOptions from '@/components/toreview/tabOptions';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { InfoCard } from './settings/InfoCard';
+import { InfoCard } from '../settings/InfoCard';
 
-export default function UserTabs() {
+export default function ApplicantTabs() {
   const [avatarSrc, setAvatarSrc] = useState('https://github.com/shadcn.png');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
