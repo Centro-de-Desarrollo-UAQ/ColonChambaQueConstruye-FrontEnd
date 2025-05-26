@@ -133,6 +133,34 @@ Estos son los comandos disponibles en `package.json`:
 3. Haz tus cambios, formatea (`npm run format`) y comprueba lint (`npm run lint`).  
 4. Abre un **Pull Request** desde tu fork hacia `main`.  
 
+### Formato de Pull Requests
+
+Para mantener un flujo de trabajo limpio y consistente, por favor sigue este formato al crear una PR:
+
+#### Titulo
+`[feat|fix|chore|docs|refactor|test|style] breve descripción del cambio`
+
+#### Descripción
+Incluye una descripción clara de la tarea realizada.
+
+##### Componentes / Pantallas modificadas o creadas
+Lista los archivos modificados o agregados. Ejemplo:
+
+- `src/components/NombreComponente.tsx`
+- `src/app/NombreRuta/page.tsx`
+- `src/services/apiService.ts`
+
+##### Capturas (si aplica)
+Si el cambio afecta el diseño, interfaz o interacción, añade capturas de pantalla o GIFs.
+
+**Antes:**
+
+[imagen o descripción]
+
+**Después:**
+
+[imagen o descripción]
+
 ---
 
 ## Equipo
