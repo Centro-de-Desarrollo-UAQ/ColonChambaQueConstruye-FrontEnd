@@ -4,19 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ClockCircle, Gps, AddCircle, MapPoint } from "@solar-icons/react";
-
-interface JobCardProps {
-    title: string;
-    company: string;
-    location?: string;
-    description: string;
-    salaryRange?: string;
-    schedule: string;
-    modality: string;
-    logoUrl?: string;
-    companyUrl?: string;
-    information?: string;
-}
+import { JobCardProps } from "@/interfaces";
 
 export default function JobCard({
     title,
