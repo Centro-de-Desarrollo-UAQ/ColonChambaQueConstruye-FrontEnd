@@ -1,13 +1,13 @@
-import { Advertising } from "@/components/ui/landing-page/Advertising";
-import { Hero } from "@/components/ui/landing-page/Hero" 
-import { Indicators } from "@/components/ui/landing-page/Indicators";
-import { CompanyAdvertising } from "@/interfaces";
-import { fakeAdsCompanies } from "@/constants";
-import { AppropriateJob } from "@/components/ui/landing-page/AppropriateJob";
-import { TargetGroups } from "@/components/ui/landing-page/TargetGroups";
-import { CompanyService } from "@/components/ui/landing-page/CompanyService";
-import { UaqOffers } from "@/components/ui/landing-page/UaqOffers";
-import { ContactUs } from "@/components/ui/landing-page/ContactUs";
+import { Advertising } from '@/components/landing-page/Advertising';
+import { Hero } from '@/components/landing-page/Hero';
+import { Indicators } from '@/components/landing-page/Indicators';
+import { CompanyAdvertising } from '@/interfaces';
+import { fakeAdsCompanies } from '@/constants';
+import { AppropriateJob } from '@/components/landing-page/AppropriateJob';
+import { TargetGroups } from '@/components/landing-page/TargetGroups';
+import { CompanyService } from '@/components/landing-page/CompanyService';
+import { UaqOffers } from '@/components/landing-page/UaqOffers';
+import { ContactUs } from '@/components/landing-page/ContactUs';
 
 async function getAdvertisingCompanies(): Promise<CompanyAdvertising[] | void> {
   // fetch to have companies that have purchased the ads section
@@ -23,14 +23,10 @@ export default async function LandingPage() {
     <>
       <div className="bg-zinc-50">
         <div className="space-y-4 pt-20 pb-20">
-          <Hero/>
+          <Hero />
         </div>
         <div className="space-y-4 pt-20 pb-20">
-        {
-            advertisingCompanies
-              ? <Advertising companies={advertisingCompanies} />
-              : <></>
-        }
+          {advertisingCompanies ? <Advertising companies={advertisingCompanies} /> : <></>}
         </div>
         <div className="space-y-4 pt-20 pb-20">
           <Indicators />
@@ -41,16 +37,16 @@ export default async function LandingPage() {
         <div className="space-y-4 pt-20 pb-20">
           <TargetGroups />
         </div>
-        <div className="space-y-4 pt-20 pb-20 bg-uaq-brand text-white">
+        <div className="bg-uaq-brand space-y-4 pt-20 pb-20 text-white">
           <CompanyService />
         </div>
         <div className="space-y-4 pt-20 pb-20">
           <UaqOffers />
         </div>
-        <div className="space-y-4 pt-10 pb-10 bg-zinc-200">
+        <div className="space-y-4 bg-zinc-200 pt-10 pb-10">
           <ContactUs />
         </div>
-    </div>
+      </div>
     </>
   );
 }

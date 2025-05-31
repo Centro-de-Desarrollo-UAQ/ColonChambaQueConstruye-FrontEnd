@@ -1,0 +1,35 @@
+# Node
+node_modules
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Next.js build output
+.next
+out
+
+# Public assets
+public/**/*
+
+# Static exports
+dist
+build
+
+# Env files
+*.env
+*.env.*
+
+# VSCode config or OS-generated files
+.vscode
+.DS_Store
+
+# Coverage and test snapshots
+coverage
+*.snap
+
+# Git and metadata
+.git
+.gitignore
+
+# Logs
+*.log

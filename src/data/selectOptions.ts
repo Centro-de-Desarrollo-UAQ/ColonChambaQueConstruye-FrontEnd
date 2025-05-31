@@ -1,20 +1,18 @@
 // Opciones para los selects
 export const currencyOptions = [
-  { value: "mxn", label: "MXN" },
-  { value: "usd", label: "USD" },
+  { value: 'mxn', label: 'MXN' },
+  { value: 'usd', label: 'USD' },
 ];
 
-export const ageOptions = [
-  { value: "age", label: "Edad" },
-];
+export const ageOptions = [{ value: 'age', label: 'Edad' }];
 
 export const phoneExtensions = [
-  { value: "+52", label: "MX (+52)" },
-  { value: "+1", label: "US (+1)" }
+  { value: '+52', label: 'MX (+52)' },
+  { value: '+1', label: 'US (+1)' },
 ];
 // Función para verificar si un año es bisiesto
 export function isLeapYear(year: number) {
-  return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 }
 
 // Opciones de días (1-31), ajustadas según el mes y año
@@ -43,18 +41,18 @@ export function getDaysInMonth(month: number, year: number) {
 
 // Opciones de meses
 export const monthOptions = [
-  { label: "Enero", value: "1" },
-  { label: "Febrero", value: "2" },
-  { label: "Marzo", value: "3" },
-  { label: "Abril", value: "4" },
-  { label: "Mayo", value: "5" },
-  { label: "Junio", value: "6" },
-  { label: "Julio", value: "7" },
-  { label: "Agosto", value: "8" },
-  { label: "Septiembre", value: "9" },
-  { label: "Octubre", value: "10" },
-  { label: "Noviembre", value: "11" },
-  { label: "Diciembre", value: "12" },
+  { label: 'Enero', value: '1' },
+  { label: 'Febrero', value: '2' },
+  { label: 'Marzo', value: '3' },
+  { label: 'Abril', value: '4' },
+  { label: 'Mayo', value: '5' },
+  { label: 'Junio', value: '6' },
+  { label: 'Julio', value: '7' },
+  { label: 'Agosto', value: '8' },
+  { label: 'Septiembre', value: '9' },
+  { label: 'Octubre', value: '10' },
+  { label: 'Noviembre', value: '11' },
+  { label: 'Diciembre', value: '12' },
 ];
 
 // Opciones de años (desde 1970 hasta año actual + 10 años)
@@ -62,8 +60,8 @@ export const yearOptions = Array.from(
   { length: new Date().getFullYear() + 10 - 1970 + 1 },
   (_, i) => ({
     label: `${1970 + i}`,
-    value: `${1970 + i}`
-  })
+    value: `${1970 + i}`,
+  }),
 ).reverse();
 
 export const vacancyOptions = [
@@ -71,5 +69,5 @@ export const vacancyOptions = [
   { value: 'part-time', label: 'Medio tiempo (20-30 hrs)' },
   { value: 'freelance', label: 'Freelance/Proyectos' },
   { value: 'internship', label: 'Prácticas profesionales' },
-  { value: 'flexible', label: 'Horario flexible' }
-]
+  { value: 'flexible', label: 'Horario flexible' },
+];

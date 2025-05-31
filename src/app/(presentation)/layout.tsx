@@ -1,14 +1,12 @@
-import Navbar from '@/components/linkerNavBar'; 
-import FooterLanding from '@/components/footerLanding';
+import Navbar from '@/components/linkerNavBar';
+import FooterLanding from '@/components/landing-page/FooterLanding';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <Navbar />
-      <main className="flex-grow">
-        {children}
-      </main>
-      <div className="pt-40 bg-zinc-50">
+      <main className="flex-grow">{children}</main>
+      <div className="bg-zinc-50 pt-40">
         <FooterLanding />
       </div>
     </div>
