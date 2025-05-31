@@ -14,7 +14,7 @@ export default function JobCard({
     description,
     modality,
     schedule,
-    logoUrl = '/deloitte-logo.svg', // TODO: Add a default logo if the company doesn't have one,
+    logoUrl = '/Deloitte.svg', // TODO: Add a default logo if the company doesn't have one,
     companyUrl, // Only add this if the company has a website
     information, // Only add this if you want to show the information link
 }: JobCardProps) {
