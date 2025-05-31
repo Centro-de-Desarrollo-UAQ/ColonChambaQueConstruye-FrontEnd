@@ -1,56 +1,47 @@
 'use client';
 import { VerticalTabs, VerticalTabsList, VerticalTabsTrigger } from './ui/tabs';
-import { Documents, Diploma, UserCircle, ShieldKeyholeMinimalistic } from '@solar-icons/react';
 import { usePathname, useRouter } from 'next/navigation';
+import { ReactElement } from 'react';
 
-export default function TabOptions() {
+interface TabItem {
+  value: string;
+  route: string;
+  icon: ReactElement;
+  label: string;
+}
+
+interface TabOptionsProps {
+  tabs: TabItem[];
+  defaultTab?: string;
+}
+
+export default function TabOptions({ tabs, defaultTab }: TabOptionsProps) {
   const pathname = usePathname();
   const router = useRouter();
 
-  // Mapeo de valores a rutas
-  const valueToRoute = {
-    profile: '/profile',
-    professional: '/professionalProfile',
-    curriculum: '/curriculum',
-    control: '/control',
-  };
-
-  // Determinar el valor activo basado en la URL
   const activeValue =
-    Object.entries(valueToRoute).find(([_, route]) => pathname.startsWith(route))?.[0] || 'profile';
+    tabs.find((tab) => pathname.startsWith(tab.route))?.value || defaultTab || tabs[0]?.value;
 
   // Manejador de clic para redirección
-  const handleTabClick = (value: string) => {
-    router.push(valueToRoute[value as keyof typeof valueToRoute]);
+  const handleTabClick = (route: string) => {
+    router.push(route);
   };
 
   return (
     <VerticalTabs defaultValue={activeValue} value={activeValue}>
       <VerticalTabsList>
-        <VerticalTabsTrigger value="profile" onClick={() => handleTabClick('profile')}>
-          <div className="flex items-center gap-3">
-            <UserCircle size={24} weight="Bold" />
-            <span>Información de contacto</span>
-          </div>
-        </VerticalTabsTrigger>
-        <VerticalTabsTrigger value="professional" onClick={() => handleTabClick('professional')}>
-          <div className="flex items-center gap-3">
-            <Diploma size={24} weight="Bold" />
-            <span>Perfil profesional</span>
-          </div>
-        </VerticalTabsTrigger>
-        <VerticalTabsTrigger value="curriculum" onClick={() => handleTabClick('curriculum')}>
-          <div className="flex items-center gap-3">
-            <Documents size={24} weight="Bold" />
-            <span>Curriculum</span>
-          </div>
-        </VerticalTabsTrigger>
-        <VerticalTabsTrigger value="control" onClick={() => handleTabClick('control')}>
-          <div className="flex items-center gap-3">
-            <ShieldKeyholeMinimalistic size={24} weight="Bold" />
-            <span>Acceso de seguridad</span>
-          </div>
-        </VerticalTabsTrigger>
+        {tabs.map((tab) => (
+          <VerticalTabsTrigger
+            key={tab.value}
+            value={tab.value}
+            onClick={() => handleTabClick(tab.route)}
+          >
+            <div className="flex items-center gap-3">
+              {tab.icon}
+              <span>{tab.label}</span>
+            </div>
+          </VerticalTabsTrigger>
+        ))}
       </VerticalTabsList>
     </VerticalTabs>
   );

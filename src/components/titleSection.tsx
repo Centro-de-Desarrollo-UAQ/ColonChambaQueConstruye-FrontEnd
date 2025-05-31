@@ -1,33 +1,22 @@
-import { Diploma, Documents, ShieldKeyholeMinimalistic } from '@solar-icons/react';
-import { ReactNode } from 'react';
+import { ReactElement } from 'react';
 
-type VariantType = 'curriculum' | 'perfil' | 'seguridad';
-
-interface TitleSectionProps {
-  variant: VariantType;
+interface SectionConfig {
+  icon: ReactElement;
+  title: string;
+  description: string;
 }
 
-const variantConfig = {
-  curriculum: {
-    icon: <Documents size={24} weight="Bold" />,
-    title: 'CURRICULUM',
-    description: 'Cree, suba y administre sus CV para postular empleos',
-  },
-  perfil: {
-    icon: <Diploma size={24} weight="Bold" />,
-    title: 'PERFIL PROFESIONAL',
-    description:
-      'Edite los detalles de su experiencia profesional y habilidades destacadas, además de sus preferencias laborales',
-  },
-  seguridad: {
-    icon: <ShieldKeyholeMinimalistic size={24} weight="Bold" />,
-    title: 'ACCESO Y SEGURIDAD',
-    description: 'Administre la información de acceso a su cuenta',
-  },
-};
+interface TitleSectionProps {
+  sections: Record<string, SectionConfig>;
+  currentSection: string;
+}
 
-export default function TitleSection({ variant }: TitleSectionProps) {
-  const { icon, title, description } = variantConfig[variant];
+export default function TitleSection({ sections, currentSection }: TitleSectionProps) {
+  const { icon, title, description } = sections[currentSection] || {
+    icon: null,
+    title: 'Sección no encontrada sin props',
+    description: 'No hay no existe'
+  };
 
   return (
     <>
@@ -35,7 +24,7 @@ export default function TitleSection({ variant }: TitleSectionProps) {
         {icon}
         <span>{title}</span>
       </div>
-      <p className="py-1">{description}</p>
+      <p className="py-1 text-uaq-default-700">{description}</p>
     </>
   );
 }

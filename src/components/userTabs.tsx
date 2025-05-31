@@ -1,26 +1,35 @@
 'use client';
-import { useState, useRef } from 'react';
-import { UploadMinimalistic } from '@solar-icons/react';
+import { Documents, Diploma, UserCircle, ShieldKeyholeMinimalistic } from '@solar-icons/react';
 import TabOptions from '@/components/tabOptions';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { InfoCard } from './settings/InfoCard';
 
 export default function UserTabs() {
-  const [avatarSrc, setAvatarSrc] = useState('https://github.com/shadcn.png');
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event.target?.result) {
-          setAvatarSrc(event.target.result as string);
-        }
-      };
-      reader.readAsDataURL(file);
+  const tabsConfig = [
+    {
+      value: 'profile',
+      route: '/applicant/profile',
+      icon: <UserCircle size={24} weight="Bold" />,
+      label: 'Información de contacto'
+    },
+    {
+      value: 'professional',
+      route: '/applicant/professionalSummary',
+      icon: <Diploma size={24} weight="Bold" />,
+      label: 'Perfil profesional'
+    },
+    {
+      value: 'curriculum',
+      route: '/applicant/resume',
+      icon: <Documents size={24} weight="Bold" />,
+      label: 'Curriculum'
+    },
+    {
+      value: 'control',
+      route: '/applicant/control',
+      icon: <ShieldKeyholeMinimalistic size={24} weight="Bold" />,
+      label: 'Acceso de seguridad'
     }
-  };
+  ];
 
   return (
     <div className="mx-auto max-w-md bg-white">
@@ -32,7 +41,10 @@ export default function UserTabs() {
       />
 
       <div className="w-full px-4 pb-8">
-        <TabOptions />
+        <TabOptions 
+          tabs={tabsConfig} 
+          defaultTab="profile" 
+        />
       </div>
     </div>
   );

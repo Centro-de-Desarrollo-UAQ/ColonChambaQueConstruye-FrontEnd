@@ -1,12 +1,17 @@
 'use client';
 import UserTabs from '@/components/userTabs';
-import { useState } from 'react';
 import TitleSection from '@/components/titleSection';
 import { ConfigRow } from '@/components/settings/ConfigRow';
+import { ShieldKeyholeMinimalistic } from '@solar-icons/react';
 
 export default function Control() {
-  const [selectedVacancy, setSelectedVacancy] = useState<string | null>(null);
-
+  const sectionConfig = {
+    profile: {
+      icon: <ShieldKeyholeMinimalistic size={24} weight="Bold" />,
+      title: 'ACCESO Y SEGURIDAD',
+      description: 'Administra la información de acceso a su cuenta'
+    }
+  };
   return (
     <div className="flex w-full flex-col gap-1 md:flex-row">
       {/* Columna izquierda - Tabs */}
@@ -17,8 +22,10 @@ export default function Control() {
       {/* Columna derecha - Contenido principal */}
       <div className="mr-20 flex-1 space-y-6 p-4 md:p-6">
         {/* Encabezado */}
-        <TitleSection variant="seguridad" />
-
+       <TitleSection 
+          sections={sectionConfig} 
+          currentSection="profile" 
+        />   
         {/* Sección de Experiencia */}
         <div className="border-uaq-default-300 rounded-lg border shadow-sm">
           <ConfigRow
@@ -38,7 +45,7 @@ export default function Control() {
               isTitle={false}
               placeholder="Contenido"
               isEditable={true}
-              editInput={true}
+              editInput={false}
             />
           </div>
           <div className="px-6">
@@ -48,7 +55,7 @@ export default function Control() {
               isTitle={false}
               placeholder="Contenido"
               isEditable={true}
-              editInput={true}
+              editInput={false}
             />
           </div>
           <div className="px-6">
@@ -58,7 +65,7 @@ export default function Control() {
               isTitle={false}
               placeholder="Contenido"
               isEditable={true}
-              editInput={true}
+              editInput={false}
             />
           </div>
         </div>

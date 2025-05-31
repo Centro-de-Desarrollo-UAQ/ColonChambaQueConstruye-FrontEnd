@@ -1,12 +1,17 @@
 'use client';
 import UserTabs from '@/components/userTabs';
-import { useState } from 'react';
 import TitleSection from '@/components/titleSection';
 import { ConfigRow } from '@/components/settings/ConfigRow';
+import { UserCircle } from '@solar-icons/react';
 
-export default function ProfessionalProfile() {
-  const [selectedVacancy, setSelectedVacancy] = useState<string | null>(null);
-
+export default function Profile() {
+  const sectionConfig = {
+    profile: {
+      icon: <UserCircle size={24} weight="Bold" />,
+      title: 'INFORMACIÓN DE CONTACTO',
+      description: 'Consulte y actualice su información personal'
+    }
+};
   return (
     <div className="flex w-full flex-col gap-1 md:flex-row">
       {/* Columna izquierda - Tabs */}
@@ -17,12 +22,14 @@ export default function ProfessionalProfile() {
       {/* Columna derecha - Contenido principal */}
       <div className="mr-20 flex-1 space-y-6 p-4 md:p-6">
         {/* Encabezado */}
-        <TitleSection variant="seguridad" />
-
+        <TitleSection 
+          sections={sectionConfig} 
+          currentSection="profile" 
+        />     
         {/* Sección de Experiencia */}
         <div className="border-uaq-default-300 rounded-lg border shadow-sm">
           <ConfigRow
-            title="Experiencia"
+            title="Perfil"
             valueinput=""
             isTitle={true}
             placeholder=""
@@ -33,68 +40,40 @@ export default function ProfessionalProfile() {
           {/* Fila 1 - Carrera */}
           <div className="px-6">
             <ConfigRow
-              title="Carrera"
-              valueinput=""
+              title="Expediente"
+              valueinput="307024"
               isTitle={false}
-              placeholder="Ingeniería en Software"
+              placeholder="Contenido"
               isEditable={false}
               editInput={false}
             />
           </div>
-
-          {/* Fila 2 - Resumen personal */}
           <div className="px-6">
             <ConfigRow
-              title="Resumen personal"
-              valueinput=""
+              title="Nombre"
+              valueinput="Jane Daw"
               isTitle={false}
-              placeholder="Describa su perfil profesional en una pequeña oración"
+              placeholder="Contenido"
               isEditable={false}
               editInput={false}
             />
           </div>
-
-          {/* Sección de Preferencias */}
-          <ConfigRow
-            title="Preferencias"
-            valueinput=""
-            isTitle={true}
-            placeholder=""
-            isEditable={true}
-            editInput={true}
-          />
-
-          {/* Fila 1 - Ubicación laboral */}
           <div className="px-6">
             <ConfigRow
-              title="Preferencia de ubicación laboral"
-              valueinput=""
+              title="Dirección"
+              valueinput="88605 Shanelle Viaduct"
               isTitle={false}
-              placeholder="¿En qué ubicación preferiría explorar ofertas de trabajo?"
+              placeholder="Contenido"
               isEditable={false}
               editInput={false}
             />
           </div>
-
-          {/* Fila 2 - Horas preferentes */}
           <div className="px-6">
             <ConfigRow
-              title="Horas preferentes"
-              valueinput=""
+              title="Fecha de nacimiento"
+              valueinput="27/10/2002"
               isTitle={false}
-              placeholder="¿Qué horario laboral prefiere?"
-              isEditable={false}
-              editInput={false}
-            />
-          </div>
-
-          {/* Fila 3 - Modalidad de empleo */}
-          <div className="px-6">
-            <ConfigRow
-              title="Modalidad de empleo preferente"
-              valueinput=""
-              isTitle={false}
-              placeholder="Seleccione una opción"
+              placeholder="Contenido"
               isEditable={false}
               editInput={false}
             />

@@ -3,8 +3,17 @@ import UserTabs from '@/components/userTabs';
 import { ResumeElement } from '@/components/toreview/ResumeElement';
 import TitleSection from '@/components/titleSection';
 import { ConfigRow } from '@/components/settings/ConfigRow';
+import { Documents } from '@solar-icons/react';
 
 export default function Curriculum() {
+  const sectionConfig = {
+    profile: {
+      icon: <Documents size={24} weight="Bold" />,
+      title: 'CURRICULUM',
+      description: 'Crre, suba y administre sus CV para postular empleos'
+    }
+  };
+
   return (
     <div className="flex w-full flex-col gap-1 md:flex-row">
       {/* Columna izquierda - Tabs */}
@@ -14,7 +23,10 @@ export default function Curriculum() {
 
       {/* Columna derecha - Contenido principal */}
       <div className="mr-20 flex-1 space-y-6 p-10 md:p-6">
-        <TitleSection variant="curriculum" />
+        <TitleSection 
+          sections={sectionConfig} 
+          currentSection="profile" 
+        /> 
 
         {/* Sección de CV actual */}
         <div className="border-uaq-default-300 rounded-lg border shadow-sm">
