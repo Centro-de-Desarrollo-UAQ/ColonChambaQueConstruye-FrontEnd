@@ -1,11 +1,11 @@
 import Image from 'next/image';
 
-interface LinkerUserButtonProps {
+interface CompanyProfileButtonProps {
   imageUrl: string;
   title: string;
 }
 
-export default function LinkerUserButton({ imageUrl, title }: LinkerUserButtonProps) {
+export default function CompanyProfileButton({ imageUrl, title }: CompanyProfileButtonProps) {
   return (
     <button className="hover:bg-uaq-default-200 flex items-center gap-2 rounded-sm p-2 transition-colors">
       <div className="h-8 w-8 overflow-hidden">

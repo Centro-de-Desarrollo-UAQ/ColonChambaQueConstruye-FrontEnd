@@ -1,5 +1,5 @@
 //! Using Shadcn's DatePicker, as well as converting it into a reusable component by using the form wrapper
-import CustomSelect from '../select';
+import CustomSelect from './select';
 import { Label } from '@/components/ui/label';
 import { monthOptions, yearOptions, getDayOptions } from '@/data/selectOptions';
 import { useState, useEffect, useCallback, useMemo } from 'react';

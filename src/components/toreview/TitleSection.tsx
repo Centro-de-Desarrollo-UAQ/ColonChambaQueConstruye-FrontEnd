@@ -1,4 +1,9 @@
+<<<<<<< HEAD:src/components/titleSection.tsx
 import { ReactElement } from 'react';
+=======
+//TODO: Instead of using variants, pass through props the icon, title and description
+import { Diploma, Documents, ShieldKeyholeMinimalistic } from '@solar-icons/react';
+>>>>>>> c508517c5640d3fb9871a3cebe102db9c5a8ac08:src/components/toreview/TitleSection.tsx
 
 interface SectionConfig {
   icon: ReactElement;

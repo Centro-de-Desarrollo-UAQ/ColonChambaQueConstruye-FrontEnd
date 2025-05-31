@@ -28,7 +28,11 @@ export const employerSchema = z
         .regex(/^\d+$/, "Ingrese solo números")
         .min(10, "Número inválido")
     }),
-    accountPassword: z.string().min(8, 'La contraseña debe tener al menos 8 caracteres.'),
+    accountPassword: z
+      .string()
+      .min(8, 'La contraseña debe tener al menos 8 caracteres.')
+      .regex(/(?:(?=.\d)|(?=.\W+))(?![.\n])(?=.[A-Z])(?=.[a-z]).*$/,
+        'La contraseña debe tener una letra mayúscula, una minúscula y un número.'),
     accountPasswordConfirm: z.string().min(1, 'Confirma la contraseña.'),
     image: z.string().nullable(),
   })

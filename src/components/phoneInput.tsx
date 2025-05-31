@@ -1,6 +1,6 @@
 'use client';
 
-import CustomSelect from './select';
+import CustomSelect from './toreview/select';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { phoneExtensions } from '@/data/selectOptions';

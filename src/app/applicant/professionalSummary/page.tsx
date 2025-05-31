@@ -1,7 +1,7 @@
 'use client';
-import UserTabs from '@/components/userTabs';
+import ApplicantTabs from '@/components/toreview/ApplicantTabs';
 import { useState } from 'react';
-import TitleSection from '@/components/titleSection';
+import TitleSection from '@/components/toreview/TitleSection';
 import { ConfigRow } from '@/components/settings/ConfigRow';
 import { Diploma } from '@solar-icons/react';
 
@@ -18,7 +18,7 @@ export default function professionalSummary() {
     <div className="flex w-full flex-col gap-1 md:flex-row">
       {/* Columna izquierda - Tabs */}
       <div className="w-xl shrink-0 px-6">
-        <UserTabs />
+        <ApplicantTabs />
       </div>
 
       {/* Columna derecha - Contenido principal */}

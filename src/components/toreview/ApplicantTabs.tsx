@@ -1,9 +1,10 @@
+//? I dont know whats the purpose of this component
 'use client';
 import { Documents, Diploma, UserCircle, ShieldKeyholeMinimalistic } from '@solar-icons/react';
-import TabOptions from '@/components/tabOptions';
-import { InfoCard } from './settings/InfoCard';
+import TabOptions from './tabOptions';
 
-export default function UserTabs() {
+import { InfoCard } from '../settings/InfoCard';
+export default function ApplicantTabs() {
   const tabsConfig = [
     {
       value: 'profile',

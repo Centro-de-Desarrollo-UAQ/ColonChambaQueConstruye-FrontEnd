@@ -1,4 +1,4 @@
-import UserNavBar from '@/components/userNavBar';
+import ApplicantNavBar from '@/components/applicant/ApplicantNavBar';
 export default function CurriculumLayout({
   children,
 }: Readonly<{
@@ -7,7 +7,7 @@ export default function CurriculumLayout({
   return (
     <div className="flex min-h-screen flex-col">
       <header className="border-b">
-        <UserNavBar />
+        <ApplicantNavBar />
       </header>
 
       <main className="flex-grow py-10">{children}</main>

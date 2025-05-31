@@ -1,4 +1,4 @@
-import UserNavBar from '@/components/userNavBar';
+import ApplicantNavBar from '@/components/applicant/ApplicantNavBar';
 export default function CurriculumLayout({
   children,
 }: Readonly<{
@@ -8,7 +8,7 @@ export default function CurriculumLayout({
     <div className="flex min-h-screen flex-col">
       {/* Stepper en la parte superior */}
       <header className="border-b">
-        <UserNavBar />
+        <ApplicantNavBar />
       </header>
 
       {/* Contenido principal */}

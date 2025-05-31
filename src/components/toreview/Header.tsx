@@ -1,13 +1,14 @@
+//TODO: Make this component reusable (variables for company and email linker)
 import Image from 'next/image';
 import Link from 'next/link';
 import { User } from '@solar-icons/react';
-import LinkerUserButton from './linkerUserButton';
+import CompanyProfileButton from '../employer/CompanyProfileButton';
 
-interface LinkerHeaderProps {
+interface HeaderProps {
   isCompany?: boolean;
 }
 
-export default function LinkerHeader({ isCompany = false }: LinkerHeaderProps) {
+export default function Header({ isCompany = false }: HeaderProps) {
   return (
     <nav className="border-uaq-default-200 flex items-center justify-between border-b px-20 py-4 drop-shadow-md">
       <div className="flex items-center gap-4">
@@ -26,7 +27,7 @@ export default function LinkerHeader({ isCompany = false }: LinkerHeaderProps) {
       </div>
 
       {isCompany ? (
-        <LinkerUserButton imageUrl="/Deloitte.svg" title="Deloitte Qro" />
+        <CompanyProfileButton imageUrl="/Deloitte.svg" title="Deloitte Qro" />
       ) : (
         <div className="flex items-center justify-center gap-2 pb-1">
           <User weight="Bold" className="h-5 w-5" />

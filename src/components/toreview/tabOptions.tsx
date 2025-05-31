@@ -1,5 +1,7 @@
+//TODO: Make this component reusable. Remove the hardcoded values and use props to pass the values.
+//? Whats the point of using tabs if we are changing the URL?
 'use client';
-import { VerticalTabs, VerticalTabsList, VerticalTabsTrigger } from './ui/tabs';
+import { VerticalTabs, VerticalTabsList, VerticalTabsTrigger } from '../ui/tabs';
 import { usePathname, useRouter } from 'next/navigation';
 import { ReactElement } from 'react';
 

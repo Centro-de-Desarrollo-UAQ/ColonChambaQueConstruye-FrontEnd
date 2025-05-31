@@ -1,3 +1,4 @@
+//TODO: Refactor this component to use the right form inputs
 'use client';
 import { Button } from '@/components/ui/button';
 import { Stepper } from '@/components/toreview/stepper';
@@ -5,7 +6,7 @@ import { Separator } from '@/components/ui/separator';
 import { FormField } from '@/components/toreview/input';
 import InputBirthDate from '@/components/toreview/inputBirthDate';
 import PhoneInput from '@/components/phoneInput';
-import CustomSelect from '@/components/select';
+import CustomSelect from '@/components/toreview/select';
 import { useCallback, useState } from 'react';
 import { vacancyOptions } from '@/data/selectOptions';
 import { Label } from '@/components/ui/label';

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ButtonNavBar } from '@/components/navbar/ButtonNavBar';
 import { Badge } from '@/components/ui/badge';
 import LinkerNavBar from '@/components/linkerNavBar';
-import UserNavBar from '@/components/userNavBar';
+import ApplicantNavBar from '@/components/applicant/ApplicantNavBar';
 import FooterLanding from '@/components/landing-page/FooterLanding';
 import DropdownSelect from '@/components/toreview/dropdownselect';
 import Toggle from '@/components/toreview/toggle';
@@ -17,9 +17,9 @@ import { FormField } from '@/components/toreview/input';
 import { InfoCard } from '@/components/settings/InfoCard';
 import { ConfigRow } from '@/components/settings/ConfigRow';
 import CompanyCard from '@/components/linker/CompanyCard';
-import StepperRegister from '@/components/stepperRegister';
-import LinkerHeader from '@/components/linkerHeader';
-import QuestionItem from '@/components/questionItem';
+import StepperRegister from '@/components/toreview/stepperRegister';
+import LinkerHeader from '@/components/toreview/Header';
+import QuestionItem from '@/components/landing-page/QuestionItem';
 import SearchBar from '@/components/toreview/searchbar';
 
 export default function Home() {
@@ -42,7 +42,7 @@ export default function Home() {
       <div>
         <LinkerNavBar />
         <div className="bg-white p-2"></div>
-        <UserNavBar />
+        <ApplicantNavBar />
         <div className="bg-black p-2"></div>
         <LinkerHeader isCompany={true} />
         <div className="bg-white p-2"></div>

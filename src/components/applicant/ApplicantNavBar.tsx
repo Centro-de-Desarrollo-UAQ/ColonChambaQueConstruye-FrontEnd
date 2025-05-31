@@ -1,3 +1,4 @@
+//TODO: Add the new profile button
 'use client';
 
 import { usePathname } from 'next/navigation';
@@ -5,9 +6,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Bell, Case, Document, HomeAngle } from '@solar-icons/react';
-import { ButtonNavBar } from './navbar/ButtonNavBar';
+import { ButtonNavBar } from '../navbar/ButtonNavBar';
 
-export default function UserNavBar() {
+export default function ApplicantNavBar() {
   const pathname = usePathname();
 
   const navLinks = [
