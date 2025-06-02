@@ -1,8 +1,8 @@
 'use client';
 import { ConfigRow } from '@/components/settings/ConfigRow';
 import { InfoCard } from '@/components/settings/InfoCard';
-import TabOptions from '@/components/tabOptions';
-import TitleSection from '@/components/titleSection';
+import TabOptions from '@/components/common/TabOptions';
+import TitleSection from '@/components/common/TitleSection';
 import { UserCircle, Buildings } from '@solar-icons/react';
 
 export default function ProfileEmployer() {

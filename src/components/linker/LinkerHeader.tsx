@@ -1,4 +1,3 @@
-//TODO: Make this component reusable (variables for company and email linker)
 import Image from 'next/image';
 import Link from 'next/link';
 import { User } from '@solar-icons/react';
@@ -6,9 +5,19 @@ import CompanyProfileButton from '../employer/CompanyProfileButton';
 
 interface HeaderProps {
   isCompany?: boolean;
+  userIcon?: React.ReactNode;
+  userEmail?: string;
+  companyImageUrl?: string;
+  companyTitle?: string;
 }
 
-export default function Header({ isCompany = false }: HeaderProps) {
+export default function LinkerHeader({
+  isCompany = false,
+  userIcon = <User weight="Bold" className="h-5 w-5" />,
+  userEmail = "vinculadorx@gmail.com",
+  companyImageUrl = "/Deloitte.svg",
+  companyTitle = "Deloitte Qro"
+}: HeaderProps) {
   return (
     <nav className="border-uaq-default-200 flex items-center justify-between border-b px-20 py-4 drop-shadow-md">
       <div className="flex items-center gap-4">
@@ -27,11 +36,11 @@ export default function Header({ isCompany = false }: HeaderProps) {
       </div>
 
       {isCompany ? (
-        <CompanyProfileButton imageUrl="/Deloitte.svg" title="Deloitte Qro" />
+        <CompanyProfileButton imageUrl={companyImageUrl} title={companyTitle} />
       ) : (
         <div className="flex items-center justify-center gap-2 pb-1">
-          <User weight="Bold" className="h-5 w-5" />
-          <span className="text-sm">vinculadorx@gmail.com</span>
+          {userIcon}
+          <span className="text-sm">{userEmail}</span>
         </div>
       )}
     </nav>

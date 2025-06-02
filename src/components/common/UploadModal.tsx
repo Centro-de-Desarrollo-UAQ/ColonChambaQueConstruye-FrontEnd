@@ -3,8 +3,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useCallback, useEffect, useState } from 'react';
-import { UploadFile } from '@/components/uploadFile';
-import { UploadedFile } from '@/components/uploadedFile';
+import { UploadFile } from './uploadFile';
+import { UploadedFile } from './uploadedFile';
+
 
 interface UploadModalProps {
   onClose: () => void;

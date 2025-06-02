@@ -1,7 +1,6 @@
-//? I dont know whats the purpose of this component
 'use client';
 import { Documents, Diploma, UserCircle, ShieldKeyholeMinimalistic } from '@solar-icons/react';
-import TabOptions from './tabOptions';
+import TabOptions from '../common/TabOptions';
 
 import { InfoCard } from '../settings/InfoCard';
 export default function ApplicantTabs() {

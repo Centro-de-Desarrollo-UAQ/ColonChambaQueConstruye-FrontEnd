@@ -4,7 +4,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { CloseSquare, Pen2, Upload, Refresh } from '@solar-icons/react';
 import { useEffect, useState } from 'react';
 import { Image as ImageIcon } from 'lucide-react';
-import { ResumeElement } from './toreview/ResumeElement';
+import { ResumeElement } from './ResumeElement';
 
 interface UploadedFileProps {
   file: File | string;

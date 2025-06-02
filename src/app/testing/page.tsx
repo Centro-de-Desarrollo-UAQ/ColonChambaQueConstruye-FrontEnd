@@ -4,23 +4,31 @@ import { useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { ButtonNavBar } from '@/components/navbar/ButtonNavBar';
 import { Badge } from '@/components/ui/badge';
-import LinkerNavBar from '@/components/linkerNavBar';
+import LinkerNavBar from '@/components/linker/LinkerNavBar';
 import ApplicantNavBar from '@/components/applicant/ApplicantNavBar';
 import FooterLanding from '@/components/landing-page/FooterLanding';
 import DropdownSelect from '@/components/toreview/dropdownselect';
 import Toggle from '@/components/toreview/toggle';
 import SimpleSelect from '@/components/toreview/simpleselect';
-import { Eye, AddCircle } from '@solar-icons/react';
-import InputSelect from '@/components/toreview/inputSelect';
-import InputBirthDate from '@/components/toreview/inputBirthDate';
-import { FormField } from '@/components/toreview/input';
+import { Eye, AddCircle, User } from '@solar-icons/react';
+import { FormField } from '@/components/forms/FormField';
 import { InfoCard } from '@/components/settings/InfoCard';
 import { ConfigRow } from '@/components/settings/ConfigRow';
 import CompanyCard from '@/components/linker/CompanyCard';
-import StepperRegister from '@/components/toreview/stepperRegister';
-import LinkerHeader from '@/components/toreview/Header';
+import StepperRegister from '@/components/applicant/ApplicantSignUp';
+import LinkerHeader from '@/components/linker/LinkerHeader';
 import QuestionItem from '@/components/landing-page/QuestionItem';
 import SearchBar from '@/components/toreview/searchbar';
+import FormAge from '@/components/forms/FormAge';
+import { useForm, FormProvider} from 'react-hook-form';
+import FormSalaryRange from '@/components/forms/FormRangeSalary';
+
+interface FormValues {
+  ageRange: string; // para el grupo
+  minAge: number;
+  maxAge: number;
+  // otros campos...
+}
 
 export default function Home() {
   const [visibleBadges, setVisibleBadges] = useState({
@@ -30,7 +38,15 @@ export default function Home() {
     destructiveClosable: true,
   });
   const inputRef = useRef<HTMLInputElement>(null);
+  const methods = useForm();
 
+  const formMethods = useForm<FormValues>({
+    defaultValues: {
+      minAge: 18,
+      maxAge: 65
+    }
+  });
+  
   const handleClose = (badge: string) => {
     setVisibleBadges((prevState) => ({
       ...prevState,
@@ -44,12 +60,21 @@ export default function Home() {
         <div className="bg-white p-2"></div>
         <ApplicantNavBar />
         <div className="bg-black p-2"></div>
-        <LinkerHeader isCompany={true} />
+        <LinkerHeader 
+          isCompany 
+          companyImageUrl="/Deloitte.svg" 
+          companyTitle="Deloitte Qro" 
+        />
+        <LinkerHeader 
+          isCompany={false}
+          userIcon={<User weight="Bold" className="h-5 w-5" />}
+          userEmail="vinculadorx@gmail.com"
+        />
         <div className="bg-white p-2"></div>
         <QuestionItem question="Pregunta" description="Descripción" />
       </div>
       <div className="space-y-4">
-        <StepperRegister />
+        <StepperRegister /> 
 
         <CompanyCard
           title="Deloitte"
@@ -616,10 +641,29 @@ export default function Home() {
       </div>
 
       <div className="mt-10 w-1/2">
-        <InputSelect />
-      </div>
-      <div className="mt-10 w-1/2">
-        <InputBirthDate />
+        
+        <FormProvider {...formMethods}>
+          <form onSubmit={formMethods.handleSubmit(data => console.log(data))}>
+            <FormAge<FormValues>
+              name="ageRange"
+              minAgeName="minAge"
+              maxAgeName="maxAge"
+              label="Rango de edad"
+            />
+          </form>
+        </FormProvider>
+
+        <FormProvider {...methods}>
+          <FormSalaryRange
+            name="salaryInfo"
+            currencyName="currency"
+            minSalaryName="minSalary"
+            maxSalaryName="maxSalary"
+            label="Rango salarial"
+          />
+        </FormProvider>
+
+
       </div>
       <div className="mt-10">
         <FooterLanding />

@@ -16,7 +16,7 @@ import {
   SelectLabel
 } from '@/components/ui/select';
 import { FieldValues } from 'react-hook-form';
-import { Combobox } from '../ui/combobox';
+import { Combobox } from '../ui/comboBox';
 import React from 'react';
 import { Button } from '../ui/button';
 import { TrashBinTrash } from '@solar-icons/react';
