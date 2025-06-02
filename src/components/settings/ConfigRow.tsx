@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 
@@ -9,37 +9,60 @@ interface ConfigRowProps {
   placeholder: string;
   isEditable: boolean;
   editInput: boolean;
+  multiline?: boolean; 
 }
 
 export const ConfigRow = ({
   title,
-  valueinput,
+  valueinput = '',
   isTitle,
   placeholder,
   isEditable,
   editInput,
+  multiline = false, 
 }: ConfigRowProps) => {
-  const [valueInputA, setValueInputA] = useState(`${valueinput}`);
+  const [valueInputA, setValueInputA] = useState(valueinput);
   const [editInputA, setEditInputA] = useState(editInput);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (multiline && textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [valueInputA, multiline]);
+
   return (
     <div
       className={`flex w-full items-center ${isTitle ? 'px-6' : 'px-4'} border-uaq-default-100 border-b ${isTitle && isEditable ? 'bg-uaq-default-50' : isTitle ? 'bg-uaq-default-50 py-4' : ''}`}
     >
       {isTitle ? (
         <>
-          <h3 className="text-uaq-default-800 flex-1 text-[16px]">{title}</h3>
+          <h3 className="font-[800] flex-1 text-[16px]">{title}</h3>
         </>
       ) : (
         <div className="flex min-w-0 flex-1 items-center">
           <p className="min-w-[150px] py-3">{title}</p>
-          <Input
-            className="h-[4rem] min-w-0 flex-1 border-none"
-            value={valueInputA}
-            placeholder={placeholder}
-            onChange={(e) => setValueInputA(e.target.value)}
-            disabled={!editInputA}
-            style={{ color: 'black', backgroundColor: 'transparent', opacity: 1 }}
-          />
+          {multiline ? (
+            <textarea
+              ref={textareaRef}
+              className="min-w-0 flex-1 border-none resize-none overflow-hidden p-4 focus:outline-none"
+              value={valueInputA}
+              placeholder={placeholder}
+              onChange={(e) => setValueInputA(e.target.value)}
+              style={{ color: 'black', backgroundColor: 'transparent', opacity: 1 }}
+              rows={1}
+            />
+          ) : (
+            <Input
+              className={`min-w-0 flex-1 border-none ${multiline ? 'h-auto' : 'h-[4rem]'}`}
+              value={valueInputA}
+              placeholder={placeholder}
+              onChange={(e) => setValueInputA(e.target.value)}
+              disabled={!editInputA}
+              style={{ color: 'black', backgroundColor: 'transparent', opacity: 1 }}
+            />
+          )}
         </div>
       )}
       <div className={`ml-auto ${isEditable ? 'py-4' : 'py-6'} shrink-0`}>

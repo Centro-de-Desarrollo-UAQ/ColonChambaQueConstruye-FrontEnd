@@ -20,10 +20,10 @@ export function ResumeElement({
   onRemove,
 }: ResumeElementProps) {
   return (
-    <div className="flex w-full min-w-0 rounded-xl border transition-shadow hover:shadow-md">
+    <div className="group flex w-full min-w-0 rounded-xl border transition-shadow hover:shadow-md">
       {/* Sección izquierda - Información del archivo */}
       <div
-        className="group-hover:bg-uaq-default-100/90 flex min-w-0 flex-1 cursor-pointer items-center gap-3 p-3 transition-colors"
+        className="flex min-w-0 flex-1 cursor-pointer items-center gap-3 p-3 transition-colors group-hover:bg-uaq-default-100"
         onClick={onView}
         role="button"
         tabIndex={0}
@@ -67,16 +67,16 @@ export function ResumeElement({
       {action !== 'none' && (
         <div className="flex shrink-0 items-center gap-1 px-2">
           {action === 'upload' && (
-            <Button variant="ghost" size="icon" onClick={onView} className="h-9 w-9" color="gray">
+            <Button variant="mono" size="icon" onClick={onView} className="h-9 w-9" color="accent">
               <Upload className="h-4 w-4" weight="Bold" />
             </Button>
           )}
           {action === 'edit' && (
-            <Button variant="ghost" size="icon" onClick={onView} className="h-9 w-9" color="gray">
+            <Button variant="mono" size="icon" onClick={onView} className="h-9 w-9" color="accent">
               <Pen2 className="h-4 w-4" weight="Bold" />
             </Button>
           )}
-          <Button variant="ghost" size="icon" onClick={onRemove} className="h-9 w-9" color="gray">
+          <Button variant="mono" size="icon" onClick={onRemove} className="h-9 w-9" color="danger">
             <CloseSquare className="h-4 w-4" weight="Bold" />
           </Button>
         </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import SignUpEmployer from '@/components/employer/SignUpEmployer';
-import LinkerNavBar from '@/components/linkerNavBar';
+import LinkerNavBar from '@/components/linker/LinkerNavBar';
 
 export default function Signup() {
   return (
