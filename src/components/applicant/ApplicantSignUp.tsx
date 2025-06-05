@@ -31,113 +31,94 @@ export default function ApplicantSignUp() {
       profilePhoto: null,
       cvFile: undefined
     },
-    mode: 'onChange'
+    mode: 'onSubmit'
   });
 
-  const { control, handleSubmit, trigger, formState, watch } = methods;
-  const { isValid, errors, touchedFields } = formState;
-
-  // Debug completo
-  useEffect(() => {
-    console.group('Form State');
-    console.log('isValid:', isValid);
-    console.log('Errors:', errors);
-    console.log('Touched Fields:', touchedFields);
-    console.log('Values:', watch());
-    console.groupEnd();
-  }, [isValid, errors, touchedFields, watch]);
+  const { control, handleSubmit, trigger, watch } = methods;
 
   const onSubmit = (data: ApplicantFormType) => {
     console.log('Form submitted:', data);
   };
 
-  // Validación específica por paso
   useEffect(() => {
-    const subscription = watch((value, { name }) => {
-      if (!name) return;
-
-      let currentStepFields: (keyof ApplicantFormType)[] = [];
+    const subscription = watch((value) => {
       if (step === 1) {
-        currentStepFields = ['name', 'lastName', 'address', 'birthDate', 'email', 'password'];
-      } else if (step === 2) {
-        currentStepFields = ['career', 'professionalSummary', 'jobLocationPreference', 'preferredHours', 'employmentMode'];
-      }
+        const requiredFields: (keyof ApplicantFormType)[] = [
+          'name', 'lastName', 'address', 'birthDate', 'email', 'password'
+        ];
 
-      if (currentStepFields.includes(name as keyof ApplicantFormType)) {
-        trigger(currentStepFields).then(isValid => {
-          setStepValid(isValid);
+        const isFilled = requiredFields.every((field) => {
+          const val = value[field];
+          return val !== undefined && val !== null && val !== '';
         });
+
+        setStepValid(isFilled);
+      } else {
+        setStepValid(true);
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [step, watch, trigger]);
+  }, [step, watch]);
 
   const handleNextStep = async () => {
-    const fieldsToValidate: (keyof ApplicantFormType)[] = 
-      step === 1 
+    const fieldsToValidate: (keyof ApplicantFormType)[] =
+      step === 1
         ? ['name', 'lastName', 'address', 'birthDate', 'email', 'password']
-        : ['career', 'professionalSummary', 'jobLocationPreference', 'preferredHours', 'employmentMode'];
+        : []; 
 
-    const isValidStep = await trigger(fieldsToValidate);
+    const isValidStep = step === 1 ? await trigger(fieldsToValidate) : true;
     setStepValid(isValidStep);
 
     if (isValidStep) {
       setStep(prev => prev + 1);
-      setStepValid(false); 
+      setStepValid(false);
     }
   };
 
-  const handlePrevStep = () => {
-    setStep(prev => prev - 1);
-    setStepValid(false);
+  const getButtonText = () => {
+    if (step === 1) return 'Registrar tu usuario';
+    if (step === 2) return 'Continuar';
+    return 'Finalizar registro';
   };
 
   return (
-  <div className="container mx-auto p-12 max-w-4xl border border-uaq-default-200 rounded-lg shadow-sm bg-white">
-    <div className="text-center space-y-8 mb-8"> 
-      <h1 className="text-3xl font-bold text-[800]">
-        Completa tu registro
-      </h1>
-      <h2 className="text-lg text-[600] max-w-2xl mx-auto">
-        Rellena los campos para completar tu registro y acceder a todas las funciones que ofrece la plataforma
-      </h2>
-    </div>
+    <div className="container mx-auto p-12 max-w-2xl border border-uaq-default-200 rounded-lg shadow-sm bg-white">
+      <div className="text-center space-y-8 mb-8"> 
+        <h1 className="text-3xl font-bold text-[800]">Completa tu registro</h1>
+        <h2 className="text-lg text-[600] max-w-2xl mx-auto">
+          Rellena los campos para completar tu registro y acceder a todas las funciones que ofrece la plataforma
+        </h2>
+      </div>
 
-    <div className="mt-4 text-center">
-      <Stepper size={3} activeStep={step} />
+      <div className="mt-4 text-center">
+        <Stepper size={3} activeStep={step} />
+      </div>
+      
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
+          {step === 1 && <PersonalInfoStep control={control} />}
+          {step === 2 && <ProfessionalInfoStep control={control} />}
+          {step === 3 && <ProfilePhotoStep />}
+
+          <div className="mt-8 flex justify-between">
+            {step < 3 ? (
+              <Button 
+                type="button" 
+                onClick={handleNextStep} 
+                className="ml-auto"
+                disabled={!stepValid}
+              >
+                {getButtonText()}
+              </Button>
+            ) : (
+              <Button type="submit" className="ml-auto">
+                {getButtonText()}
+              </Button>
+            )}
+          </div>
+        </form>
+      </FormProvider>
     </div>
-    
-    <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
-        {step === 1 && <PersonalInfoStep control={control}/>}
-        {step === 2 && <ProfessionalInfoStep control={control}/>}
-        {step === 3 && <ProfilePhotoStep />}
-       
-        <div className="mt-8 flex justify-between">
-          {step > 1 && (
-            <Button type="button" variant="secondary" onClick={handlePrevStep}>
-              Anterior
-            </Button>
-          )}
-          
-          {step < 3 ? (
-            <Button 
-              type="button" 
-              onClick={handleNextStep} 
-              className="ml-auto"
-              disabled={!stepValid}
-            >
-              Siguiente
-            </Button>
-          ) : (
-            <Button type="submit" className="ml-auto">
-              Finalizar registro
-            </Button>
-          )}
-        </div>
-      </form>
-    </FormProvider>
-  </div>
-);
+  );
 }

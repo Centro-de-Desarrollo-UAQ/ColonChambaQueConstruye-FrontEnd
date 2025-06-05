@@ -1,8 +1,7 @@
-// layout.tsx
 import ApplicantNavBar from '@/components/applicant/ApplicantNavBar';
 import ApplicantTabs from '@/components/applicant/ApplicantTabs';
 
-export default function CurriculumLayout({
+export default function ApplicantLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

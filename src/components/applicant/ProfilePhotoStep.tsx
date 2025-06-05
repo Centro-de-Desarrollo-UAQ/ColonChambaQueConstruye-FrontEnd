@@ -25,11 +25,6 @@ export default function ProfilePhotoStep() {
     <div>
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-xl font-bold">Foto de perfil</h3>
-        <div className="flex items-center">
-          <span className="text-uaq-default-400 text-sm">
-            <span className="text-300 text-uaq-danger mr-1">*</span>Campos obligatorios
-          </span>
-        </div>
       </div>
 
       <p className="mb-4">
