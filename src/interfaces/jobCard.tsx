@@ -1,12 +1,11 @@
 export interface JobCardProps {
     title: string;
     company: string;
-    location?: string;
+    location: string;
     description: string;
-    salaryRange?: string;
+    salaryRange: string;
     schedule: string;
     modality: string;
     logoUrl?: string;
-    companyUrl?: string;
     information?: string;
 }
