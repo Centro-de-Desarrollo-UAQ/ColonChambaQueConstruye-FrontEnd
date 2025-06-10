@@ -1,46 +1,37 @@
-// Opciones para los selects
-export const currencyOptions = [
-  { value: 'mxn', label: 'MXN' },
-  { value: 'usd', label: 'USD' },
-];
+// types/selectOptions.ts
+export interface SelectOption {
+  value: string;
+  label: string;
+}
 
-export const ageOptions = [{ value: 'age', label: 'Edad' }];
-
-export const phoneExtensions = [
-  { value: '+52', label: 'MX (+52)' },
-  { value: '+1', label: 'US (+1)' },
-];
 // Función para verificar si un año es bisiesto
-export function isLeapYear(year: number) {
+export function isLeapYear(year: number): boolean {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 }
 
-// Opciones de días (1-31), ajustadas según el mes y año
-export const getDayOptions = (month: number, year: number) => {
-  const daysInMonth = getDaysInMonth(month, year);
-  return Array.from({ length: daysInMonth }, (_, i) => ({
-    label: `${i + 1}`,
-    value: `${i + 1}`,
-  }));
-};
-
 // Función que devuelve el número de días en un mes específico de un año
-export function getDaysInMonth(month: number, year: number) {
+export function getDaysInMonth(month: number, year: number): number {
   switch (month) {
     case 2: // Febrero
       return isLeapYear(year) ? 29 : 28;
-    case 4: // Abril
-    case 6: // Junio
-    case 9: // Septiembre
-    case 11: // Noviembre
+    case 4: case 6: case 9: case 11: // Abril, Junio, Septiembre, Noviembre
       return 30;
     default: // Todos los demás meses
       return 31;
   }
 }
 
-// Opciones de meses
-export const monthOptions = [
+// Opciones de días (1-31), ajustadas según el mes y año
+export function getDayOptions(month: number, year: number): SelectOption[] {
+  const daysInMonth = getDaysInMonth(month, year);
+  return Array.from({ length: daysInMonth }, (_, i) => ({
+    label: (i + 1).toString(),
+    value: (i + 1).toString(),
+  }));
+}
+
+// Opciones de meses (valor numérico como string)
+export const monthOptions: SelectOption[] = [
   { label: 'Enero', value: '1' },
   { label: 'Febrero', value: '2' },
   { label: 'Marzo', value: '3' },
@@ -55,14 +46,25 @@ export const monthOptions = [
   { label: 'Diciembre', value: '12' },
 ];
 
-// Opciones de años (desde 1970 hasta año actual + 10 años)
-export const yearOptions = Array.from(
-  { length: new Date().getFullYear() + 10 - 1970 + 1 },
-  (_, i) => ({
-    label: `${1970 + i}`,
-    value: `${1970 + i}`,
-  }),
-).reverse();
+// Opciones de años (valor numérico como string)
+export function getYearOptions(startYear = 1970, yearsToAdd = 10): SelectOption[] {
+  const currentYear = new Date().getFullYear();
+  return Array.from(
+    { length: currentYear + yearsToAdd - startYear + 1 },
+    (_, i) => ({
+      label: (startYear + i).toString(),
+      value: (startYear + i).toString(),
+    })
+  ).reverse();
+}
+
+export const yearOptions = getYearOptions();
+
+// Otras opciones
+export const currencyOptions: SelectOption[] = [
+  { value: 'mxn', label: 'MXN' },
+  { value: 'usd', label: 'USD' },
+];
 
 export const vacancyOptions = [
   { value: 'full-time', label: 'Tiempo completo (40+ hrs)' },

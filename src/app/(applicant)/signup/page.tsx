@@ -1,5 +1,5 @@
 import React from 'react';
-import SignUpEmployer from '@/components/employer/SignUpEmployer';
+import ApplicantSignUp from '@/components/applicant/ApplicantSignUp';
 import LinkerNavBar from '@/components/linker/LinkerNavBar';
 
 export default function Signup() {
@@ -16,7 +16,7 @@ export default function Signup() {
           backgroundBlendMode: 'overlay',
         }}
       >
-        <SignUpEmployer />
+        <ApplicantSignUp />
       </div>
     </>
   );
