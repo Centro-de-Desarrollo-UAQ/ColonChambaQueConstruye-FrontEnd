@@ -6,13 +6,11 @@ export function UaqOffers() {
   return (
     <div className="flex flex-col items-center gap-12 px-6 sm:px-12 lg:px-48">
       <h3 className="text-center text-2xl font-bold sm:text-3xl lg:text-4xl">
-        Conoce la oferta educativa de la UAQ
+        En la UAQ también creemos en ti
       </h3>
 
       <p className="mx-4 text-center text-sm leading-loose sm:mx-12 sm:text-base lg:mx-24 lg:text-lg">
-        Explora la amplia gama de programas académicos que ofrecemos. Desde licenciaturas hasta
-        maestrías y doctorados, nuestra universidad te brinda la educación de calidad que necesitas
-        para alcanzar tus metas.
+        Un puente abierto para ti, que buscas crecer, conectar y encontrar un espacio donde tu talento cuente.
       </p>
 
       <Link
@@ -24,7 +22,8 @@ export function UaqOffers() {
       </Link>
 
       <Image
-        src="https://wizi.academy/assets/img/landings/Fondo-UAQ.webp"
+        //src="https://wizi.academy/assets/img/landings/Fondo-UAQ.webp"
+        src="/Foto_Propuesta_JA.jpg"
         alt="Oferta Educativa UAQ"
         width={700}
         height={400}
