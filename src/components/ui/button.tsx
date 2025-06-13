@@ -1,6 +1,6 @@
 // * Styles with customized color variants
 import * as React from 'react';
-import { Slot } from '@radix-ui/react-slot';
+import { Slot as SlotPrimitive } from 'radix-ui';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
@@ -64,7 +64,7 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   /**
-   * If set to `true`, the button renders as a child element (`Slot`)
+   * If set to `true`, the button renders as a child element (`SlotPrimitive.Slot`)
    * instead of a `<button>`, allowing elements such as `<Link>` to be used.
    *
    * @default false
@@ -84,6 +84,11 @@ export interface ButtonProps
    * @default "brand"
    */
   color?: 'brand' | 'accent' | 'danger' | 'gray';
+  'data-day'?: string;
+  'data-selected-single'?: boolean;
+  'data-range-start'?: boolean;
+  'data-range-end'?: boolean;
+  'data-range-middle'?: boolean;
 }
 
 /**
@@ -95,7 +100,7 @@ export interface ButtonProps
  */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, color = 'brand', asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : 'button';
+    const Comp = asChild ? SlotPrimitive.Slot : 'button';
 
     /**
      * Class map by variant and color.
