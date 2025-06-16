@@ -11,7 +11,7 @@ export function TargetGroups() {
   return (
     <>
       {targetGroups.map(
-        ({ adviceHref, adviceText, description, image, signInHref, signInText, title }, index) => (
+        ({ /*adviceHref, adviceText,*/ description, image, signInHref, signInText, title }, index) => (
           <div
             key={index}
             className="flex flex-col items-center gap-12 px-6 pt-10 pb-10 lg:flex-row lg:px-48 lg:pt-20 lg:pb-20"
@@ -23,12 +23,6 @@ export function TargetGroups() {
               )}
             >
               <h3 className="mt-[-5] mb-5 text-3xl font-bold">{title}</h3>
-              <Link
-                className="text-uaq-brand mx-auto mb-5 w-fit transition-all hover:scale-105 lg:mx-0"
-                href={adviceHref}
-              >
-                {adviceText}
-              </Link>
               <p className="mb-5 leading-loose">{description}</p>
               <Button
                 onClick={() => router.push(signInHref)}
