@@ -1,6 +1,6 @@
 // * Styles with customized color variants
 import * as React from 'react';
-import { Slot } from '@radix-ui/react-slot';
+import { Slot as SlotPrimitive } from 'radix-ui';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
@@ -49,10 +49,25 @@ const buttonVariants = cva(
         icon: 'p-3 rounded-md',
         sm_icon: 'size-9 p-3 rounded-md',
       },
+      color: {
+        /**
+         * Color palette applied to the button.
+         *
+         * - `brand`: Main institutional color.
+         * - `accent`: Secondary or emphasis color.
+         * - `danger`: Indicates destructive or warning action.
+         * - `gray`: Neutral style.
+         */
+        brand: '',
+        accent: '',
+        danger: '',
+        gray: '',
+      },
     },
     defaultVariants: {
       variant: 'primary',
       size: 'default',
+      color: 'brand',
     },
   },
 );
@@ -64,7 +79,7 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   /**
-   * If set to `true`, the button renders as a child element (`Slot`)
+   * If set to `true`, the button renders as a child element (`SlotPrimitive.Slot`)
    * instead of a `<button>`, allowing elements such as `<Link>` to be used.
    *
    * @default false
@@ -95,7 +110,7 @@ export interface ButtonProps
  */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, color = 'brand', asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : 'button';
+    const Comp = asChild ? SlotPrimitive.Slot : 'button';
 
     /**
      * Class map by variant and color.
@@ -143,7 +158,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <Comp
         className={cn(
-          buttonVariants({ variant, size }),
+          buttonVariants({ variant, size, color }),
           colorClasses[variant ?? 'primary']?.[color],
           className,
         )}
