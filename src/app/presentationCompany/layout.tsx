@@ -1,5 +1,5 @@
 //import Navbar from '@/components/linker/LinkerNavBar';
-import Navbar from '@/components/employer/EmployerNavBar';
+import Navbar from '@/components/landing-page-company/EmployerNavBar';
 import FooterLanding from '@/components/landing-page/FooterLanding';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
