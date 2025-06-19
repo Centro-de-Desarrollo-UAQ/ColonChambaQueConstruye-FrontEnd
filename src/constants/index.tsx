@@ -87,6 +87,39 @@ export const targetGroups: TargetGroup[] = [
     adviceHref: '/advices/student',
     adviceText: 'Consejos para estudiantes',
     description:
+      'Sabemos que estás pensando en lo que sigue. Es momento de empezar a escribir tu historia profesional, aquí puedes encontrar oportunidades para aplicar las habilidades que has desarrollado.',
+    image:
+      '/Graduacion_Psico_JP_7.jpg',
+    signInHref: 'signin/uaq',
+    signInText: 'Regístrate como estudiante UAQ',
+    title: 'Tu carrera comienza antes de egresar',
+  },
+  {
+    adviceHref: '/advices/student',
+    adviceText: 'Consejos para egresados',
+    description:
+      'Egresaste, pero la UAQ siempre te acompaña. Encuentra empleos, la forma de seguir creciendo profesionalmente y mantente cerca de nuevas oportunidades.',
+    image:
+      '/GRADUACION_BACH_BICEN_RG_5.jpg',
+    signInHref: 'signin/uaq',
+    signInText: 'Regístrate como egresado UAQ',
+    title: 'La UAQ sigue contigo',
+  },
+  {
+    adviceHref: '/advices/student',
+    adviceText: 'Consejos al buscar empleo',
+    description:
+      'En la UAQ creemos en el talento sin fronteras. Si estás en busca de empleo, aquí puedes registrarte y encontrar oportunidades que se adapten a ti.',
+    image:
+      '/Found_15.jpg',
+    signInHref: 'signin/uaq',
+    signInText: 'Regístrate',
+    title: 'Abierta a toda persona que busca crecer',
+  },
+  /*{
+    adviceHref: '/advices/student',
+    adviceText: 'Consejos para estudiantes',
+    description:
       'Estás a punto de culminar una etapa crucial en tu vida académica. Es el momento de poner en práctica todo lo que has aprendido y comenzar tu carrera profesional con el pie derecho.',
     image:
       'https://images.pexels.com/photos/1438081/pexels-photo-1438081.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
@@ -115,7 +148,7 @@ export const targetGroups: TargetGroup[] = [
     signInHref: 'signin/uaq',
     signInText: 'Regístrate',
     title: 'Para público en general',
-  },
+  },*/
 ];
 
 export const faculties: { name: string; color: string; href: string }[] = [
