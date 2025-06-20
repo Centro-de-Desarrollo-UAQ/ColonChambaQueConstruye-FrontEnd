@@ -26,7 +26,7 @@ export default function PublicSignup() {
   const onSubmit = (data: SignupFormType) => console.log(data);
 
   return (
-    <div className="min-h-screen flex flex-col border-[6px] border-gray-400">
+    <div className="min-h-screen flex flex-col">
       <LinkerNavBar />
 
       {/* Contenido principal */}
