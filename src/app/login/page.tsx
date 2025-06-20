@@ -26,23 +26,23 @@ export default function PublicLogin() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col border-6 border-gray-400">
+        <div className="min-h-screen flex flex-col">
             {/* Contenido principal */}
-            <main className="flex flex-col items-center justify-center flex-grow px-4">
-                <div className="flex gap-10">
+            <main className="flex flex-col items-center justify-center flex-grow py-20">
+                <div className="flex gap-10 p-15">
                     <Image 
                         src="/UAQBlack.svg" 
                         alt="UAQ Logo" 
                         width={100} 
                         height={100} 
-                        className="h-18 w-auto mb-15" 
+                        className="h-18 w-auto" 
                     />
                     <Image 
                         src="/BTBlack.svg" 
                         alt="UAQ Logo" 
                         width={100} 
                         height={100} 
-                        className="h-18 w-auto mb-15" 
+                        className="h-18 w-auto" 
                     />
                 </div>
                 
