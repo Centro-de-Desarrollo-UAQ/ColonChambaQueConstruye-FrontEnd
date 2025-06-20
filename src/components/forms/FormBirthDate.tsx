@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-} from '@/components/ui/form';
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Label } from '@/components/ui/label';
 import { useFormContext } from 'react-hook-form';
 import { format } from 'date-fns';
@@ -18,7 +12,6 @@ import { cn } from '@/lib/utils';
 import { ApplicantFormType } from '@/validations/applicantSchema';
 import React from 'react';
 import { es } from 'date-fns/locale';
-
 
 interface FormBirthDateProps {
   name: keyof ApplicantFormType;
@@ -38,24 +31,18 @@ export function FormBirthDate({
   optional = false,
 }: FormBirthDateProps) {
   const { control } = useFormContext<ApplicantFormType>();
-  const [date, setDate] = React.useState<Date | undefined>(new Date())
+  const [date, setDate] = React.useState<Date | undefined>(new Date());
   return (
-    
     <FormField
       control={control}
       name={name}
       render={({ field }) => {
-        const parsedDate =
-          typeof field.value === 'string' ? new Date(field.value) : undefined;
-
         return (
           <FormItem className={className}>
             {label && (
               <FormLabel className="font-medium">
                 {label}
-                {optional && (
-                  <span className="text-gray-500 text-sm font-light"> Opcional</span>
-                )}
+                {optional && <span className="text-sm font-light text-gray-500"> Opcional</span>}
               </FormLabel>
             )}
 
@@ -65,28 +52,30 @@ export function FormBirthDate({
                   <Button
                     variant="combobox"
                     className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !field.value && "text-muted-foreground"
+                      'w-full justify-start text-left font-normal',
+                      !field.value && 'text-muted-foreground',
                     )}
                     disabled={disabled}
                     size="sm"
                     color="gray"
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {field.value && typeof field.value === 'string'
-                      ? format(new Date(field.value), 'dd/MM/yyyy', { locale: es })
-                      : <span>Selecciona una fecha</span>}
-
+                    {field.value && typeof field.value === 'string' ? (
+                      format(new Date(field.value), 'dd/MM/yyyy', { locale: es })
+                    ) : (
+                      <span>Selecciona una fecha</span>
+                    )}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
-                   <Calendar
+                  <Calendar
                     mode="single"
                     selected={date}
+                    captionLayout="dropdown"
                     onSelect={(selectedDate) => {
                       if (!selectedDate) return;
                       setDate(selectedDate);
-                      field.onChange(selectedDate.toISOString()); 
+                      field.onChange(selectedDate.toISOString());
                     }}
                     className="rounded-md border"
                   />

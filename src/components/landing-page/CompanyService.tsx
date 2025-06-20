@@ -10,8 +10,7 @@ export function CompanyService() {
         ¿Eres una empresa que desea publicar vacantes?
       </h3>
       <p className="max-w-prose text-center text-base leading-relaxed sm:text-lg lg:text-xl">
-        Si estás buscando candidatos motivados, bien formados y listos para contribuir al éxito de
-        tu empresa, has llegado al lugar adecuado.
+        Fortalece tu equipo con perfiles listos para aportar valor desde el primer día.
       </p>
       <Button
         variant="ghost"

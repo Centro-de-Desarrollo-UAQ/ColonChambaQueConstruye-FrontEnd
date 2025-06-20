@@ -49,10 +49,25 @@ const buttonVariants = cva(
         icon: 'p-3 rounded-md',
         sm_icon: 'size-9 p-3 rounded-md',
       },
+      color: {
+        /**
+         * Color palette applied to the button.
+         *
+         * - `brand`: Main institutional color.
+         * - `accent`: Secondary or emphasis color.
+         * - `danger`: Indicates destructive or warning action.
+         * - `gray`: Neutral style.
+         */
+        brand: '',
+        accent: '',
+        danger: '',
+        gray: '',
+      },
     },
     defaultVariants: {
       variant: 'primary',
       size: 'default',
+      color: 'brand',
     },
   },
 );
@@ -84,11 +99,6 @@ export interface ButtonProps
    * @default "brand"
    */
   color?: 'brand' | 'accent' | 'danger' | 'gray';
-  'data-day'?: string;
-  'data-selected-single'?: boolean;
-  'data-range-start'?: boolean;
-  'data-range-end'?: boolean;
-  'data-range-middle'?: boolean;
 }
 
 /**
@@ -148,7 +158,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <Comp
         className={cn(
-          buttonVariants({ variant, size }),
+          buttonVariants({ variant, size, color }),
           colorClasses[variant ?? 'primary']?.[color],
           className,
         )}
