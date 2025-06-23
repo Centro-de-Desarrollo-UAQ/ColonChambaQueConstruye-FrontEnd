@@ -218,3 +218,18 @@ export const faculties: { name: string; color: string; href: string }[] = [
     href: 'https://quimica.unam.mx/',
   },
 ];
+
+export const stepsLandingPage: { title: string; description: string }[] = [
+  {
+    title: '1 Crea una cuenta',
+    description: 'Tu empresa tendra un perfil mas visible y atractivo.',
+  },
+  {
+    title: '2 Describe tu vacante',
+    description: 'Podrá visualizar los requerimientos de la misma',
+  },
+  {
+    title: '3 Publica una vacante',
+    description: 'El candidato ideal esta afuera esperando, ¡publica ahora!',
+  },
+];
