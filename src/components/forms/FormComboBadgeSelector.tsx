@@ -44,7 +44,7 @@ export default function FormComboBadgeSelector<T extends FieldValues>({
             />
 
             {selected.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-2">
+                <div className="flex flex-wrap gap-2 mt-4">
                     {selected.map((item) => {
                         const opt = options.find((o) => o.value === item);
                         return (

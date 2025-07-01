@@ -13,6 +13,7 @@ import FormInput from '@/components/forms/FormInput';
 import FormOptions from '@/components/forms/FormOptions';
 import { useEffect } from 'react';
 import { FormExperienceListProps } from '@/interfaces';
+import { listYearsOptionsConstants } from '@/constants';
 
 export default function FormExperienceList<T extends FieldValues>({
     control,
@@ -40,7 +41,7 @@ export default function FormExperienceList<T extends FieldValues>({
     // Auto fill the first field if none exists
     useEffect(() => {
         if (fields.length === 0) {
-            append({ skill: '', years: '' } as unknown as T[keyof T]);
+            append({ skill: '', years: '0 years' } as unknown as T[keyof T]);
         }
     }, [append, fields]);
 
@@ -65,8 +66,7 @@ export default function FormExperienceList<T extends FieldValues>({
                             name={`${name}.${index}.years` as Path<T>}
                             placeholder="Años"
                             type="select"
-                            options={[
-                                { label: 'Menos de 1 año', value: '0' }]}
+                            options={listYearsOptionsConstants}
                         />
                     </div>
 
@@ -88,7 +88,7 @@ export default function FormExperienceList<T extends FieldValues>({
                 variant="secondary"
                 color="brand"
                 type="button"
-                onClick={() => append({ skill: '', years: '' } as unknown as T[keyof T])}
+                onClick={() => append({ skill: '', years: '0 years' } as unknown as T[keyof T])}
             >
                 <AddCircle weight="Bold" />
                 Añadir conocimiento

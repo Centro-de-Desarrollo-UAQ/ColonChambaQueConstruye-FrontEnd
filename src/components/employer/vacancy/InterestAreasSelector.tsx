@@ -4,6 +4,8 @@ import { Control } from 'react-hook-form';
 import FormSectionHeader from './FormSectionHeader';
 import { VacancyFormType } from '@/validations/registerVacancy';
 import FormComboBadgeSelector from '@/components/forms/FormComboBadgeSelector';
+import { listAreasOptionsConstants } from '@/constants';
+import { useState } from 'react';
 
 type InterestAreasSelectorProps = {
     control: Control<VacancyFormType>;
@@ -21,13 +23,7 @@ export default function InterestAreasSelector({ control }: InterestAreasSelector
                     control={control}
                     name="areasOfInterest"
                     label="Carreras afines"
-                    options={[
-                        // TODO: Add more options as needed in constants
-                        { label: 'Ingeniería en Software aaaaaaaaaaa prueba', value: 'software' },
-                        { label: 'Ingeniería Industrial xdxddxdd', value: 'industrial' },
-                        { label: 'Arquitectura', value: 'arquitectura' },
-                        { label: 'Administración', value: 'administracion' },
-                    ]}
+                    options={listAreasOptionsConstants}
                 />
             </div>
         </section>

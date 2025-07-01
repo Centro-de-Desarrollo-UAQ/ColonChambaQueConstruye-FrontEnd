@@ -7,12 +7,13 @@ import FormOptions from '@/components/forms/FormOptions';
 import FormSectionHeader from './FormSectionHeader';
 import FormAge from '@/components/forms/FormAge';
 import FormSalaryRange from '@/components/forms/FormRangeSalary';
+import { listGenderOptionsConstants } from '@/constants';
 
 type Props = {
     control: Control<VacancyFormType>;
 };
 
-export default function VacancInfoSection({ control }: Props) {
+export default function VacancyInfoSection({ control }: Props) {
     return (
         <section className="space-y-4">
             <FormSectionHeader
@@ -29,12 +30,7 @@ export default function VacancInfoSection({ control }: Props) {
                     type="select"
                     description='Indique si es requerido la preferencia.'
                     className='w-full'
-                    options={[
-                        { value: 'Selecciona una opción', label: 'Selecciona una opción' },
-                        { value: 'masculino', label: 'Masculino' },
-                        { value: 'femenino', label: 'Femenino' },
-                        { value: 'otro', label: 'Otro' },
-                    ]}
+                    options={listGenderOptionsConstants}
                 />
                 <FormAge
                     control={control}
@@ -49,7 +45,7 @@ export default function VacancInfoSection({ control }: Props) {
             </div>
             <FormSalaryRange
                 control={control}
-                name='salaryRange'
+                name='currency'
                 currencyName="currency"
                 minSalaryName="minSalary"
                 maxSalaryName="maxSalary"

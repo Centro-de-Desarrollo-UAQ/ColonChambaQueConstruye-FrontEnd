@@ -5,6 +5,7 @@ import FormSectionHeader from './FormSectionHeader';
 import { VacancyFormType } from '@/validations/registerVacancy';
 import FormOptions from '@/components/forms/FormOptions';
 import FormWeekSelector from '@/components/forms/FormWeekSelector';
+import { listWorkingHoursOptionsConstants } from '@/constants';
 
 type JobConditionsSectionProps = {
     control: Control<VacancyFormType>;
@@ -29,12 +30,7 @@ export default function JobConditionsSection({ control }: JobConditionsSectionPr
                     name="workingHours"
                     type="select"
                     className='w-full'
-                    options={[
-                        { value: 'Tiempo completo', label: 'Tiempo completo' },
-                        { value: 'Medio tiempo', label: 'Medio Tiempo' },
-                        { value: 'Pago por Hora', label: 'Pago por Hora' },
-                        { value: 'Horario Flexible', label: 'Horario Flexible' },
-                    ]} />
+                    options={listWorkingHoursOptionsConstants} />
             </div>
         </section>
     );

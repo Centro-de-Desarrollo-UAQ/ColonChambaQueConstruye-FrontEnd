@@ -5,6 +5,7 @@ import { VacancyFormType } from '@/validations/registerVacancy';
 import FormInput from '@/components/forms/FormInput';
 import FormOptions from '@/components/forms/FormOptions';
 import FormSectionHeader from './FormSectionHeader';
+import { listModalityOptionsConstants } from '@/constants';
 
 type Props = {
   control: Control<VacancyFormType>;
@@ -25,11 +26,7 @@ export default function GeneralInfoSection({ control }: Props) {
           label="Modalidad"
           name="modality"
           type="select"
-          options={[
-            { value: 'presencial', label: 'Presencial' },
-            { value: 'remoto', label: 'Remoto' },
-            { value: 'hibrido', label: 'Híbrido' },
-          ]}
+          options={listModalityOptionsConstants}
           className="w-full"
         />
         <FormInput

@@ -20,13 +20,7 @@ export default function RequiredSkills({ control }: RequiredSkillsProps) {
                 <FormExperienceList
                     control={control}
                     name="requiredSkills"
-                    availableSkills={[
-                        { label: 'JavaScript', value: 'js' },
-                        { label: 'React', value: 'react' },
-                        { label: 'Node.js', value: 'node' },
-                        { label: 'Kotlin', value: 'kotlin' },
-                        { label: 'Gestión de equipos', value: 'liderazgo' },
-                    ]}
+                    availableSkills={[]} 
                 />
             </div>
         </section>
