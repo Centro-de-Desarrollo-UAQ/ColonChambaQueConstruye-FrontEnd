@@ -4,9 +4,9 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { registerVacancy, VacancyFormType } from '@/validations/registerVacancy';
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import GeneralInfoSection from './GeneralInfoSection';
-import VacancInfoSection from './VacancyInfoSection';
+import VacancyInfoSection from './VacancyInfoSection';
 import BenefitsSection from './BenefitsSection';
 import DescriptionSection from './DescriptionSection';
 import JobConditionsSection from './JobConditionsSection';
@@ -14,49 +14,47 @@ import InterestAreasSelector from './InterestAreasSelector';
 import RequiredSkills from './RequiredExperience';
 
 export default function PostJobForm() {
-
-    const [visibleBadges, setVisibleBadges] = useState({
-        outlineClosable: true,
-        defaultClosable: true,
-        secondaryClosable: true,
-        destructiveClosable: true,
-    });
-
     const methods = useForm<VacancyFormType>({
         resolver: zodResolver(registerVacancy),
         defaultValues: {
             name: '',
-            modality: 'presencial',
+            modality: 'Presencial',
             sector: '',
             location: '',
-            numberVacancies: '',
-            maxApplications: '',
+            numberVacancies: "",
+            maxApplications: "",
+            description: '',
             gender: 'Selecciona una opción',
-            salaryRange: 'MXN',
-            profile: '',
+            ageRange: '',
             minAge: '',
             maxAge: '',
+            profile: '',
             benefits: '',
             additionalBenefits: '',
-            description: '',
+            minSalary: '',
+            maxSalary: '',
+            currency: "mxn",
             workingHours: 'Selecciona una opción',
-            workingDays: '',
+            workingDays: [],
             areasOfInterest: [],
-            requiredSkills: [],
+            requiredSkills: []
         },
     });
 
-    const { control, handleSubmit, watch, setValue, trigger } = methods;
+    // Uncomment the following lines to log form errors
+    // This can help in debugging validation issues
+    
+    // const { formState } = methods;
+    // useEffect(() => {
+    //     console.log('Errores:', formState.errors);
+    // }, [formState.errors]);
+
+    const { control, handleSubmit } = methods;
+    const [submittedData, setSubmittedData] = useState<VacancyFormType | null>(null);
 
     const onSubmit = (data: VacancyFormType) => {
+        setSubmittedData(data);
         console.log('Formulario enviado:', data);
-    };
-
-    const handleClose = (badge: string) => {
-        setVisibleBadges((prevState) => ({
-            ...prevState,
-            [badge]: false,
-        }));
     };
 
     return (
@@ -71,7 +69,7 @@ export default function PostJobForm() {
                 </p>
 
                 <GeneralInfoSection control={control} />
-                <VacancInfoSection control={control} />
+                <VacancyInfoSection control={control} />
                 <BenefitsSection control={control} />
                 <DescriptionSection control={control} />
                 <JobConditionsSection control={control} />
