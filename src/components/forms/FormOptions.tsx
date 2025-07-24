@@ -34,7 +34,8 @@ export default function FormOptions<T extends FieldValues>({
   width,
   className,
   optional = false,
-  options
+  options,
+  onSelect
 }: FormOptionsProps<T>) {
   return (
     <FormField
@@ -56,7 +57,10 @@ export default function FormOptions<T extends FieldValues>({
               {type === 'combobox' ? (
                 <Combobox
                   value={field.value}
-                  onChange={field.onChange}
+                  onChange={(val) => {
+                    field.onChange(val);
+                    onSelect?.(val);
+                  }}
                   options={options}
                   width={width}
                   placeholder={placeholder}
