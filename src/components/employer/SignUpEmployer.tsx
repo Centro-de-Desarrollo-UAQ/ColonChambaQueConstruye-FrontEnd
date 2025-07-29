@@ -36,7 +36,7 @@ export default function SignUpEmployer() {
     },
   });
 
-  const { control, handleSubmit, watch, setValue, trigger } = methods;
+  const { control, handleSubmit, setValue, trigger } = methods;
 
   const onSubmit = (data: EmployerFormType) => {
     console.log(data);
@@ -73,7 +73,6 @@ export default function SignUpEmployer() {
               <Stepper size={2} activeStep={2} />
             </div>
             <ImageUploadStep
-              selectedImage={watch('image')}
               setSelectedImage={(image) => setValue('image', image)}
             />
           </>
