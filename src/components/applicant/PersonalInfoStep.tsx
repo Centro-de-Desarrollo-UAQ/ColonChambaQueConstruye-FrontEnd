@@ -15,32 +15,24 @@ export default function PersonalInfoStep({ control }: ApplicantDetailsStepProps)
     <div>
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-xl font-bold">Información Personal</h3>
-        <div className="flex items-center">
-          <span className="text-uaq-default-400 text-sm">
-            <span className="text-300 text-uaq-danger mr-1">*</span>Campos obligatorios
-          </span>
-        </div>
       </div>
 
       <Separator />
 
       <div className="mb-6 space-y-4">
         <FormInput
-        control={control}
+          control={control}
           name="name"
           label="Nombre"
           type="text"
-          placeholder="Bryan Gersain"
           className="mt-6"
         />
 
         <FormInput
-                control={control}
-
+          control={control}
           name="lastName"
           label="Apellido"
           type="text"
-          placeholder="Bonilla Nandayapa"
         />
 
         <FormInput
@@ -50,7 +42,6 @@ export default function PersonalInfoStep({ control }: ApplicantDetailsStepProps)
           label="Dirección"
           description="Ingresa tu dirección..."
           type="text"
-          placeholder="Av. De las ciencias"
         />
 
         <FormBirthDate
@@ -70,7 +61,6 @@ export default function PersonalInfoStep({ control }: ApplicantDetailsStepProps)
           name="email"
           label="Correo Electrónico"
           type="email"
-          placeholder="correo@ejemplo.com"
         />
 
         <FormInput
@@ -79,7 +69,6 @@ export default function PersonalInfoStep({ control }: ApplicantDetailsStepProps)
           name="password"
           label="Contraseña"
           type="password"
-          placeholder="***********"
         />
       </div>
 

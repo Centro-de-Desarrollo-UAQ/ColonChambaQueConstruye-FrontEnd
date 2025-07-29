@@ -3,13 +3,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useCallback, useEffect, useState } from 'react';
-import { UploadFile } from './uploadFile';
-import { UploadedFile } from './uploadedFile';
+import { UploadFile } from './UploadFile';
+import { UploadedFile } from './UploadedFile';
 
 
 interface UploadModalProps {
   onClose: () => void;
+  onSave: (files: { spanishCV: File | null; englishCV: File | null }) => void;
 }
+
 
 export type Language = 'spanish' | 'english';
 
@@ -31,11 +33,11 @@ export const LANGUAGE_SPECIFIC_TEXTS = {
   },
 };
 
-export default function UploadModal({ onClose }: UploadModalProps) {
+export default function UploadModal({ onClose , onSave}: UploadModalProps) {
   const [spanishCV, setSpanishCV] = useState<File | null>(null);
   const [englishCV, setEnglishCV] = useState<File | null>(null);
+  const [tabValue, setTabValue] = useState<Language>('spanish');
 
-  // Configuración del evento Escape
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -48,6 +50,14 @@ export default function UploadModal({ onClose }: UploadModalProps) {
     setSpanishCV(acceptedFiles[0]);
   }, []);
 
+   const handleContinue = () => {
+    onSave({ spanishCV, englishCV });
+    onClose();
+  };
+
+  const canContinue = !!spanishCV || !!englishCV;
+
+
   const onDropEnglish = useCallback((acceptedFiles: File[]) => {
     setEnglishCV(acceptedFiles[0]);
   }, []);
@@ -56,13 +66,8 @@ export default function UploadModal({ onClose }: UploadModalProps) {
     language === 'spanish' ? setSpanishCV(null) : setEnglishCV(null);
   };
 
-  const handleSave = (language: Language) => {
-    const file = language === 'spanish' ? spanishCV : englishCV;
-    if (file) {
-      console.log(`Guardando CV ${language}:`, file.name);
-      //lógica para subir el archivo
-    }
-  };
+  
+
 
   const handleFileChange = (language: Language, newFile: File) => {
     language === 'spanish' ? setSpanishCV(newFile) : setEnglishCV(newFile);
@@ -113,8 +118,8 @@ export default function UploadModal({ onClose }: UploadModalProps) {
             <Button variant="ghost" onClick={onClose}>
               {texts.cancel}
             </Button>
-            <Button onClick={() => handleSave(language)} disabled={!hasFile}>
-              {texts.continue}
+            <Button onClick={handleContinue} disabled={!canContinue}>
+              {COMMON_TEXTS.continue}
             </Button>
           </CardFooter>
         </Card>
@@ -127,7 +132,7 @@ export default function UploadModal({ onClose }: UploadModalProps) {
       className="relative mx-auto w-full max-w-2xl shadow-md"
       onClick={(e) => e.stopPropagation()}
     >
-      <Tabs defaultValue="spanish">
+      <Tabs value={tabValue} onValueChange={(val) => setTabValue(val as Language)}>
         {renderTabContent('spanish')}
         {renderTabContent('english')}
       </Tabs>

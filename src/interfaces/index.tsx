@@ -1,5 +1,5 @@
 export * from './form';
-export * from './common';
+export * from './jobCard';
 
 export interface TargetGroup {
   adviceHref: string;
