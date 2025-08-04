@@ -77,7 +77,7 @@ function ImageUploadStep({ selectedImage, setSelectedImage }: ImageUploadStepPro
           </Button>
         )}
         {selectedImage && (
-          <Button variant="ghost" color='accent' onClick={handleRemoveImage}>
+          <Button variant="ghost" color="accent" onClick={handleRemoveImage}>
             Borrar
           </Button>
         )}

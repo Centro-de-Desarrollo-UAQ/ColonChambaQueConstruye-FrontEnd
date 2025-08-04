@@ -14,7 +14,10 @@ export function getDaysInMonth(month: number, year: number): number {
   switch (month) {
     case 2: // Febrero
       return isLeapYear(year) ? 29 : 28;
-    case 4: case 6: case 9: case 11: // Abril, Junio, Septiembre, Noviembre
+    case 4:
+    case 6:
+    case 9:
+    case 11: // Abril, Junio, Septiembre, Noviembre
       return 30;
     default: // Todos los demás meses
       return 31;
@@ -49,13 +52,10 @@ export const monthOptions: SelectOption[] = [
 // Opciones de años (valor numérico como string)
 export function getYearOptions(startYear = 1970, yearsToAdd = 10): SelectOption[] {
   const currentYear = new Date().getFullYear();
-  return Array.from(
-    { length: currentYear + yearsToAdd - startYear + 1 },
-    (_, i) => ({
-      label: (startYear + i).toString(),
-      value: (startYear + i).toString(),
-    })
-  ).reverse();
+  return Array.from({ length: currentYear + yearsToAdd - startYear + 1 }, (_, i) => ({
+    label: (startYear + i).toString(),
+    value: (startYear + i).toString(),
+  })).reverse();
 }
 
 export const yearOptions = getYearOptions();

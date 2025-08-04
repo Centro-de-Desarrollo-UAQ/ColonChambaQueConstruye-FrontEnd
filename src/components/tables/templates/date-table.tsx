@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import {
   ColumnDef,
@@ -10,7 +10,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from '@tanstack/react-table';
 import {
   Table,
   TableBody,
@@ -18,38 +18,33 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from '@/components/ui/table';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
-} from "@/components/ui/select"
-import { Button } from "@/components/ui/legacyButton"
-import { Input } from "@/components/ui/input"
+  SelectValue,
+} from '@/components/ui/select';
+import { Button } from '@/components/ui/legacyButton';
+import { Input } from '@/components/ui/input';
 import {
   AltArrowLeft,
   AltArrowRight,
   DoubleAltArrowLeft,
   DoubleAltArrowRight,
   MinimalisticMagnifer,
-} from "@solar-icons/react"
-import { useState } from "react"
+} from '@solar-icons/react';
+import { useState } from 'react';
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
 }
 
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-    []
-  )
+export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
     data,
@@ -64,25 +59,23 @@ export function DataTable<TData, TValue>({
       sorting,
       columnFilters,
     },
-  })
+  });
 
   return (
-    <div className="flex flex-col space-y-4 content-end items-end">
-      <div className="flex items-center space-x-2 mr-auto">
+    <div className="flex flex-col content-end items-end space-y-4">
+      <div className="mr-auto flex items-center space-x-2">
         <Input
           placeholder="Buscar..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
+          value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
+          onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
           className="h-8 w-[200px] lg:w-[300px]"
           icon={MinimalisticMagnifer}
-          onClear ={() => {
-            table.getColumn("name")?.setFilterValue("")
+          onClear={() => {
+            table.getColumn('name')?.setFilterValue('');
           }}
         />
       </div>
-      <div className="overflow-hidden rounded-md border w-full">
+      <div className="w-full overflow-hidden rounded-md border">
         <Table className="bg-white">
           <TableHeader className="bg-gray-100">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -92,12 +85,9 @@ export function DataTable<TData, TValue>({
                     <TableHead key={header.id} className="text-uaq-brand font-bold">
                       {header.isPlaceholder
                         ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                        : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
-                  )
+                  );
                 })}
               </TableRow>
             ))}
@@ -105,10 +95,7 @@ export function DataTable<TData, TValue>({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
+                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -126,14 +113,14 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      
+
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium">Filas por vista</p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
-              table.setPageSize(Number(value))
+              table.setPageSize(Number(value));
             }}
           >
             <SelectTrigger className="h-8 w-[70px]">
@@ -149,8 +136,7 @@ export function DataTable<TData, TValue>({
           </Select>
         </div>
         <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-          Pagina {table.getState().pagination.pageIndex + 1} de{" "}
-          {table.getPageCount()}
+          Pagina {table.getState().pagination.pageIndex + 1} de {table.getPageCount()}
         </div>
         <div className="flex items-center space-x-2">
           <Button
@@ -195,7 +181,6 @@ export function DataTable<TData, TValue>({
           </Button>
         </div>
       </div>
-
     </div>
-  )
+  );
 }

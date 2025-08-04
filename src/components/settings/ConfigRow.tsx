@@ -9,7 +9,7 @@ interface ConfigRowProps {
   placeholder: string;
   isEditable: boolean;
   editInput: boolean;
-  multiline?: boolean; 
+  multiline?: boolean;
 }
 
 export const ConfigRow = ({
@@ -19,7 +19,7 @@ export const ConfigRow = ({
   placeholder,
   isEditable,
   editInput,
-  multiline = false, 
+  multiline = false,
 }: ConfigRowProps) => {
   const [valueInputA, setValueInputA] = useState(valueinput);
   const [editInputA, setEditInputA] = useState(editInput);
@@ -34,11 +34,11 @@ export const ConfigRow = ({
 
   return (
     <div
-      className={`flex w-full items-center ${isTitle ? 'px-6' : 'px-4'} border-zinc-100 border-b ${isTitle && isEditable ? 'bg-zinc-50' : isTitle ? 'bg-zinc-50 py-4' : ''}`}
+      className={`flex w-full items-center ${isTitle ? 'px-6' : 'px-4'} border-b border-zinc-100 ${isTitle && isEditable ? 'bg-zinc-50' : isTitle ? 'bg-zinc-50 py-4' : ''}`}
     >
       {isTitle ? (
         <>
-          <h3 className="font-[800] flex-1 text-[16px]">{title}</h3>
+          <h3 className="flex-1 text-[16px] font-[800]">{title}</h3>
         </>
       ) : (
         <div className="flex min-w-0 flex-1 items-center">
@@ -46,7 +46,7 @@ export const ConfigRow = ({
           {multiline ? (
             <textarea
               ref={textareaRef}
-              className="min-w-0 flex-1 border-none resize-none overflow-hidden p-4 focus:outline-none"
+              className="min-w-0 flex-1 resize-none overflow-hidden border-none p-4 focus:outline-none"
               value={valueInputA}
               placeholder={placeholder}
               onChange={(e) => setValueInputA(e.target.value)}

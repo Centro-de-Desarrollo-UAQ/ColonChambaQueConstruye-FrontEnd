@@ -6,36 +6,36 @@ Un front-end en **Next.js + TypeScript** para el **Sistema General de Bolsa de T
 
 ## Tabla de contenidos
 
-- [Tecnologías](#tecnologías)  
-- [Prerrequisitos](#prerrequisitos)  
-- [Instalación](#instalación)  
-- [Scripts](#scripts)  
-- [Variables de entorno](#variables-de-entorno)  
-- [Estructura de carpetas y convenciones](#estructura-de-carpetas-y-convenciones)  
-- [Flujo de contribución](#flujo-de-contribión)  
-- [Equipo](#equipo)  
-- [Licencia](#licencia)  
+- [Tecnologías](#tecnologías)
+- [Prerrequisitos](#prerrequisitos)
+- [Instalación](#instalación)
+- [Scripts](#scripts)
+- [Variables de entorno](#variables-de-entorno)
+- [Estructura de carpetas y convenciones](#estructura-de-carpetas-y-convenciones)
+- [Flujo de contribución](#flujo-de-contribión)
+- [Equipo](#equipo)
+- [Licencia](#licencia)
 
 ---
 
 ## Tecnologías
 
-- **Node.js** ≥ 22.12.0  
-- **npm** ≥ 11.3.0  
-- **Next.js** 15.2.1  
-- **React** 19.0.0  
-- **TypeScript** 5.x  
-- **Tailwind CSS**, **Prettier**, **ESLint**  
-- **Zod** (validaciones)  
-- **Shadcn/UI** (componentes)  
-- Diversas librerías Radix UI y NextUI (Remover o actualizar NextUI a futuro) 
+- **Node.js** ≥ 22.12.0
+- **npm** ≥ 11.3.0
+- **Next.js** 15.2.1
+- **React** 19.0.0
+- **TypeScript** 5.x
+- **Tailwind CSS**, **Prettier**, **ESLint**
+- **Zod** (validaciones)
+- **Shadcn/UI** (componentes)
+- Diversas librerías Radix UI y NextUI (Remover o actualizar NextUI a futuro)
 
 ---
 
 ## Prerrequisitos
 
-- Tener instalado Node.js (22.12.0 o superior) y npm (11.3.0 o superior).  
-- Git para clonar y trabajar con forks.  
+- Tener instalado Node.js (22.12.0 o superior) y npm (11.3.0 o superior).
+- Git para clonar y trabajar con forks.
 
 ---
 
@@ -62,11 +62,11 @@ Estos son los comandos disponibles en `package.json`:
 ```json
 {
   "scripts": {
-    "dev": "next dev --turbopack",   // desarrollo con recarga en caliente
-    "build": "next build",           // genera la versión de producción
-    "start": "next start",           // sirve la build en producción
-    "lint": "next lint",             // revisa con ESLint
-    "format": "prettier --write ."   // formatea con Prettier
+    "dev": "next dev --turbopack", // desarrollo con recarga en caliente
+    "build": "next build", // genera la versión de producción
+    "start": "next start", // sirve la build en producción
+    "lint": "next lint", // revisa con ESLint
+    "format": "prettier --write ." // formatea con Prettier
   }
 }
 ```
@@ -107,43 +107,48 @@ Estos son los comandos disponibles en `package.json`:
 
 ### Convenciones de código
 
-1. **Componentes**  
-   - Los que creas **desde cero**: nombre en **Mayúscula** (`MyButton.tsx`).  
+1. **Componentes**
+
+   - Los que creas **desde cero**: nombre en **Mayúscula** (`MyButton.tsx`).
    - Los de **Shadcn/UI**: nombre en **minúscula** (`button.tsx`), y si los modificas añade al inicio:
      ```tsx
      //* New styles added
      ```
    - La carpeta `ui/` es **solo** para Shadcn.
 
-2. **Idioma**  
-   - **Código** (variables, funciones, archivos, interfaces…) en **inglés**.  
+2. **Idioma**
+
+   - **Código** (variables, funciones, archivos, interfaces…) en **inglés**.
    - **Textos** mostrados al usuario en **español**.
 
-3. **Interfaces y constantes**  
-   - Cada dominio en su propio archivo dentro de `interfaces/` o `constants/`.  
-   - Reexportar todo en `interfaces/index.ts` y `constants/index.ts`.  
+3. **Interfaces y constantes**
+   - Cada dominio en su propio archivo dentro de `interfaces/` o `constants/`.
+   - Reexportar todo en `interfaces/index.ts` y `constants/index.ts`.
    - **No declarar nada más** en los archivos `index.ts`.
 
 ---
 
 ## Flujo de contribución
 
-1. **Fork** del repositorio oficial.  
-2. Crea una rama `feature/tu-descripción` o `fix/tu-descripción`.  
-3. Haz tus cambios, formatea (`npm run format`) y comprueba lint (`npm run lint`).  
-4. Abre un **Pull Request** desde tu fork hacia `main`.  
+1. **Fork** del repositorio oficial.
+2. Crea una rama `feature/tu-descripción` o `fix/tu-descripción`.
+3. Haz tus cambios, formatea (`npm run format`) y comprueba lint (`npm run lint`).
+4. Abre un **Pull Request** desde tu fork hacia `main`.
 
 ### Formato de Pull Requests
 
 Para mantener un flujo de trabajo limpio y consistente, por favor sigue este formato al crear una PR:
 
 #### Titulo
+
 `[feat|fix|chore|docs|refactor|test|style] breve descripción del cambio`
 
 #### Descripción
+
 Incluye una descripción clara de la tarea realizada.
 
 ##### Componentes / Pantallas modificadas o creadas
+
 Lista los archivos modificados o agregados. Ejemplo:
 
 - `src/components/NombreComponente.tsx`
@@ -151,6 +156,7 @@ Lista los archivos modificados o agregados. Ejemplo:
 - `src/services/apiService.ts`
 
 ##### Capturas (si aplica)
+
 Si el cambio afecta el diseño, interfaz o interacción, añade capturas de pantalla o GIFs.
 
 **Antes:**
@@ -165,9 +171,9 @@ Si el cambio afecta el diseño, interfaz o interacción, añade capturas de pant
 
 ## Equipo
 
-- **Frontend**:  
-  - @JuanAntonioHR  
-  - @AJesusMG  
+- **Frontend**:
+  - @JuanAntonioHR
+  - @AJesusMG
   - @ElianJ09
   - @BryanBonilla
   - @DaniPau19

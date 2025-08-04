@@ -25,7 +25,7 @@ export default function ProfessionalInfoStep({ control }: ApplicantDetailsStepPr
 
   const handleModalSave = (files: { spanishCV: File | null; englishCV: File | null }) => {
     setUploadedFiles(files);
-    setIsModalOpen(false); 
+    setIsModalOpen(false);
   };
 
   const openModal = () => setIsModalOpen(true);
@@ -92,8 +92,11 @@ export default function ProfessionalInfoStep({ control }: ApplicantDetailsStepPr
         </div>
 
         <h3 className="mt-8 mb-2 text-xl font-bold">Currículum</h3>
-        <span>Añade tu currículum para mostrar tus habilidades a las empresas, o crea uno desde 0 en pocos minutos con nuestro generador de currículums</span>
-        <Separator className='mt-4'/>
+        <span>
+          Añade tu currículum para mostrar tus habilidades a las empresas, o crea uno desde 0 en
+          pocos minutos con nuestro generador de currículums
+        </span>
+        <Separator className="mt-4" />
 
         {(uploadedFiles.spanishCV || uploadedFiles.englishCV) && (
           <div className="mt-6 space-y-4">
@@ -128,8 +131,6 @@ export default function ProfessionalInfoStep({ control }: ApplicantDetailsStepPr
             Crea tu CV
           </Button>
         </div>
-
-        
       </div>
 
       {/* Renderizar modal */}

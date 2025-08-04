@@ -14,14 +14,12 @@ export default function ApplicantLayout({
 
       <main className="flex flex-grow">
         {/* Columna izquierda - Tabs */}
-        <div className="w-120 py-12"> 
+        <div className="w-120 py-12">
           <ApplicantTabs />
         </div>
-        
+
         {/* Columna derecha - Contenido */}
-        <div className="flex-1 py-10">
-          {children}
-        </div>
+        <div className="flex-1 py-10">{children}</div>
       </main>
     </div>
   );

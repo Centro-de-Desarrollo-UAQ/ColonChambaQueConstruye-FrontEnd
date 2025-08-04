@@ -15,12 +15,12 @@ export default function TitleSection({ sections, currentSection }: TitleSectionP
   const { icon, title, description } = sections[currentSection] || {
     icon: null,
     title: 'Sección no encontrada sin props',
-    description: 'No hay no existe'
+    description: 'No hay no existe',
   };
 
   return (
     <>
-      <div className="bg-zinc-100 flex items-center gap-3 border-l-2 border-black p-3">
+      <div className="flex items-center gap-3 border-l-2 border-black bg-zinc-100 p-3">
         {icon}
         <span>{title}</span>
       </div>

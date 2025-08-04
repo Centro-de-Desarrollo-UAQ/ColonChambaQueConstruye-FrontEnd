@@ -34,7 +34,7 @@ export default function LinkerNavBar() {
       </div>
 
       {/* Categorías */}
-      <div className="text-zinc-50 font-futura flex font-[400]">
+      <div className="font-futura flex font-[400] text-zinc-50">
         {navLinks.map(({ href, label }) => (
           <ButtonNavBar
             key={href}

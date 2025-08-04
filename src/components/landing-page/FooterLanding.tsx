@@ -23,7 +23,7 @@ export default function FooterLanding() {
 
           {/* Columna 2: Institucional */}
           <div className="p-4">
-            <h3 className="text-zinc-800 mb-4 text-lg font-bold">Institucional</h3>
+            <h3 className="mb-4 text-lg font-bold text-zinc-800">Institucional</h3>
             <p className="mt-8">
               <Link href="/oferta-educativa" className="text-uaq-primary hover:underline">
                 Oferta educativa
@@ -43,7 +43,7 @@ export default function FooterLanding() {
 
           {/* Columna 3: Empresas */}
           <div className="p-4">
-            <h3 className="text-zinc-800 mb-4 text-lg font-bold">Empresas</h3>
+            <h3 className="mb-4 text-lg font-bold text-zinc-800">Empresas</h3>
             <p className="mt-8">
               <Link href="/registro-empresas" className="text-uaq-primary hover:underline">
                 Registro de empresas
@@ -63,7 +63,7 @@ export default function FooterLanding() {
 
           {/* Columna 4: Candidatos */}
           <div className="p-4">
-            <h3 className="text-zinc-800 mb-4 text-lg font-bold">Candidatos</h3>
+            <h3 className="mb-4 text-lg font-bold text-zinc-800">Candidatos</h3>
             <p className="mt-8">
               <Link href="/registro-candidatos" className="text-uaq-primary hover:underline">
                 Registro de candidatos

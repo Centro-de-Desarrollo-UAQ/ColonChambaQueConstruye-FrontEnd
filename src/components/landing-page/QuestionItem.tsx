@@ -5,8 +5,8 @@ interface QuestionItemProps {
 
 export default function QuestionItem({ question, description }: QuestionItemProps) {
   return (
-    <div className="border-zinc-200 flex w-[800px] rounded-lg border p-4">
-      <div className="border-zinc-100 w-1/3 border-r pr-4">
+    <div className="flex w-[800px] rounded-lg border border-zinc-200 p-4">
+      <div className="w-1/3 border-r border-zinc-100 pr-4">
         <h3 className="font-[800]">{question}</h3>
       </div>
       <div className="w-2/3 pl-4">

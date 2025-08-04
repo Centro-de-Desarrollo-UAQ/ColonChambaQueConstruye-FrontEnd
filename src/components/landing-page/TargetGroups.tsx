@@ -11,7 +11,10 @@ export function TargetGroups() {
   return (
     <>
       {targetGroups.map(
-        ({ /*adviceHref, adviceText,*/ description, image, signInHref, signInText, title }, index) => (
+        (
+          { /*adviceHref, adviceText,*/ description, image, signInHref, signInText, title },
+          index,
+        ) => (
           <div
             key={index}
             className="flex flex-col items-center gap-12 px-6 pt-10 pb-10 lg:flex-row lg:px-48 lg:pt-20 lg:pb-20"

@@ -88,8 +88,7 @@ export const targetGroups: TargetGroup[] = [
     adviceText: 'Consejos para estudiantes',
     description:
       'Sabemos que estás pensando en lo que sigue. Es momento de empezar a escribir tu historia profesional, aquí puedes encontrar oportunidades para aplicar las habilidades que has desarrollado.',
-    image:
-      '/Graduacion_Psico_JP_7.jpg',
+    image: '/Graduacion_Psico_JP_7.jpg',
     signInHref: 'signin/uaq',
     signInText: 'Regístrate como estudiante UAQ',
     title: 'Tu carrera comienza antes de egresar',
@@ -99,8 +98,7 @@ export const targetGroups: TargetGroup[] = [
     adviceText: 'Consejos para egresados',
     description:
       'Egresaste, pero la UAQ siempre te acompaña. Encuentra empleos, la forma de seguir creciendo profesionalmente y mantente cerca de nuevas oportunidades.',
-    image:
-      '/GRADUACION_BACH_BICEN_RG_5.jpg',
+    image: '/GRADUACION_BACH_BICEN_RG_5.jpg',
     signInHref: 'signin/uaq',
     signInText: 'Regístrate como egresado UAQ',
     title: 'La UAQ sigue contigo',
@@ -110,8 +108,7 @@ export const targetGroups: TargetGroup[] = [
     adviceText: 'Consejos al buscar empleo',
     description:
       'En la UAQ creemos en el talento sin fronteras. Si estás en busca de empleo, aquí puedes registrarte y encontrar oportunidades que se adapten a ti.',
-    image:
-      '/Found_15.jpg',
+    image: '/Found_15.jpg',
     signInHref: 'signin/uaq',
     signInText: 'Regístrate',
     title: 'Abierta a toda persona que busca crecer',

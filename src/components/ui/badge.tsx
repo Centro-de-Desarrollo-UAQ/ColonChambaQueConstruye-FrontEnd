@@ -32,7 +32,7 @@ function Badge({ className, variant, onClose, ...props }: BadgeProps) {
     <div className={cn(badgeVariants({ variant }), className)} {...props}>
       {props.children}
       {onClose && (
-        <CloseCircle onClick={onClose} size={14} weight="Bold" className="cursor-pointer center" />
+        <CloseCircle onClick={onClose} size={14} weight="Bold" className="center cursor-pointer" />
       )}
     </div>
   );

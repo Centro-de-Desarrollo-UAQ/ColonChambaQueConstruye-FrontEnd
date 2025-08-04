@@ -51,7 +51,7 @@ export default function ProfileEmployer() {
         <TitleSection sections={sectionConfig} currentSection="employerProfile" />
 
         {/* Sección de Información */}
-        <div className="border-zinc-300 rounded-lg border shadow-sm">
+        <div className="rounded-lg border border-zinc-300 shadow-sm">
           <ConfigRow
             title="Información de la empresa"
             valueinput=""
@@ -119,17 +119,17 @@ export default function ProfileEmployer() {
               editInput={true}
             />
           </div>
-          <div className='px-6'>
-             <ConfigRow
+          <div className="px-6">
+            <ConfigRow
               title="Código postal"
               valueinput="76100"
               isTitle={false}
               placeholder="Contenido"
               isEditable={false}
-              editInput={false  }
+              editInput={false}
             />
           </div>
-          <div className='px-6'>
+          <div className="px-6">
             <ConfigRow
               title="País"
               valueinput="México"
@@ -139,7 +139,7 @@ export default function ProfileEmployer() {
               editInput={false}
             />
           </div>
-          <div className='px-6'>
+          <div className="px-6">
             <ConfigRow
               title="Dirección"
               valueinput="Av. Antea 1090-Piso 7, Santiago de Querétaro, Qro."
@@ -159,8 +159,8 @@ export default function ProfileEmployer() {
               editInput={true}
             />
           </div>
-          <div className='px-6'>
-             <ConfigRow
+          <div className="px-6">
+            <ConfigRow
               title="RFC"
               valueinput="ABC123456T78"
               isTitle={false}
@@ -169,8 +169,8 @@ export default function ProfileEmployer() {
               editInput={false}
             />
           </div>
-          <div className='px-6'>
-             <ConfigRow
+          <div className="px-6">
+            <ConfigRow
               title="Razón Social"
               valueinput="Deloitte"
               isTitle={false}

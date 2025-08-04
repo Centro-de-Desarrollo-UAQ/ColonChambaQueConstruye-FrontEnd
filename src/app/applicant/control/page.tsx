@@ -8,20 +8,17 @@ export default function Control() {
     profile: {
       icon: <ShieldKeyholeMinimalistic size={24} weight="Bold" />,
       title: 'ACCESO Y SEGURIDAD',
-      description: 'Administra la información de acceso a su cuenta'
-    }
+      description: 'Administra la información de acceso a su cuenta',
+    },
   };
 
   return (
     <div className="mr-20 space-y-6 p-4 md:p-6">
       {/* Encabezado */}
-      <TitleSection 
-        sections={sectionConfig} 
-        currentSection="profile" 
-      />   
-      
+      <TitleSection sections={sectionConfig} currentSection="profile" />
+
       {/* Sección de Acceso */}
-      <div className="border-zinc-300 rounded-lg border shadow-sm">
+      <div className="rounded-lg border border-zinc-300 shadow-sm">
         <ConfigRow
           title="Acceso"
           valueinput=""

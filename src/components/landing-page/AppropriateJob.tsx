@@ -38,9 +38,9 @@ export function AppropriateJob() {
       <div className="flex flex-1 flex-col items-center justify-center gap-8 text-center">
         <h2 className="text-3xl font-bold">El mundo laboral ya te está buscando</h2>
         <p className="leading-loose">
-          No se trata de cualquier empleo, sino del que conecta contigo. 
-          Usa los filtros, conoce las vacantes activas y postúlate a lo que sí hace sentido con tu perfil. 
-          Tú eliges hacia dónde quieres ir, nosotros te ayudamos a llegar.
+          No se trata de cualquier empleo, sino del que conecta contigo. Usa los filtros, conoce las
+          vacantes activas y postúlate a lo que sí hace sentido con tu perfil. Tú eliges hacia dónde
+          quieres ir, nosotros te ayudamos a llegar.
         </p>
       </div>
 

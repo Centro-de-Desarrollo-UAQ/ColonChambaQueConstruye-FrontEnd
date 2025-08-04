@@ -32,12 +32,12 @@ export default function TabOptions({ tabs, defaultTab }: TabOptionsProps) {
           key={tab.value}
           onClick={() => handleTabClick(tab.route)}
           className={cn(
-            'w-full rounded-sm px-4 py-3 text-left transition-all cursor-pointer',
-            'focus-visible:ring-zinc-500 focus-visible:ring-2 focus-visible:outline-none',
+            'w-full cursor-pointer rounded-sm px-4 py-3 text-left transition-all',
+            'focus-visible:ring-2 focus-visible:ring-zinc-500 focus-visible:outline-none',
             'disabled:pointer-events-none disabled:opacity-50',
             activeValue === tab.value
               ? 'bg-zinc-600 text-zinc-50' // Estilos para tab activo
-              : 'text-foreground hover:bg-zinc-100 hover:text-zinc-700' // Estilos para tabs inactivos (incluye hover)
+              : 'text-foreground hover:bg-zinc-100 hover:text-zinc-700', // Estilos para tabs inactivos (incluye hover)
           )}
         >
           <div className="flex items-center gap-3">

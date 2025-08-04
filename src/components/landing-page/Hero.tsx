@@ -10,9 +10,9 @@ export function Hero() {
         </h1>
 
         <p className="w-[400px] text-zinc-800">
-          Tu talento merece volar alto. 
-          Esta plataforma es el puente entre lo que eres y lo que sueñas. 
-          Explora vacantes, postúlate fácilmente y haz que tu historia profesional despegue con la fuerza UAQ.
+          Tu talento merece volar alto. Esta plataforma es el puente entre lo que eres y lo que
+          sueñas. Explora vacantes, postúlate fácilmente y haz que tu historia profesional despegue
+          con la fuerza UAQ.
         </p>
 
         <div className="mt-12 flex gap-4">
@@ -41,4 +41,3 @@ export function Hero() {
     </div>
   );
 }
-

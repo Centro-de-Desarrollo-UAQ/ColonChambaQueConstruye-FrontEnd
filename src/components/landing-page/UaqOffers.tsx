@@ -10,7 +10,8 @@ export function UaqOffers() {
       </h3>
 
       <p className="mx-4 text-center text-sm leading-loose sm:mx-12 sm:text-base lg:mx-24 lg:text-lg">
-        Un puente abierto para ti, que buscas crecer, conectar y encontrar un espacio donde tu talento cuente.
+        Un puente abierto para ti, que buscas crecer, conectar y encontrar un espacio donde tu
+        talento cuente.
       </p>
 
       <Link

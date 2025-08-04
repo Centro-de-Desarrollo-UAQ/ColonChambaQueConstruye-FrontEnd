@@ -30,7 +30,7 @@ export const InfoCard = ({ avatar, name, email, cellphone }: InfoCardProps) => {
       </Avatar>
 
       <div className="flex flex-col justify-center pl-6">
-        <p className="text-zinc-800 text-xl font-bold">{name}</p>
+        <p className="text-xl font-bold text-zinc-800">{name}</p>
         <p className="text-zinc-800 italic">{email}</p>
         {cellphone ?? <p className="text-zinc-800 italic">{cellphone}</p>}
       </div>

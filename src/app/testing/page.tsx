@@ -20,7 +20,7 @@ import LinkerHeader from '@/components/linker/LinkerHeader';
 import QuestionItem from '@/components/landing-page/QuestionItem';
 import SearchBar from '@/components/toreview/searchbar';
 import FormAge from '@/components/forms/FormAge';
-import { useForm, FormProvider} from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import FormSalaryRange from '@/components/forms/FormRangeSalary';
 
 interface FormValues {
@@ -43,10 +43,10 @@ export default function Home() {
   const formMethods = useForm<FormValues>({
     defaultValues: {
       minAge: 18,
-      maxAge: 65
-    }
+      maxAge: 65,
+    },
   });
-  
+
   const handleClose = (badge: string) => {
     setVisibleBadges((prevState) => ({
       ...prevState,
@@ -60,12 +60,8 @@ export default function Home() {
         <div className="bg-white p-2"></div>
         <ApplicantNavBar />
         <div className="bg-black p-2"></div>
-        <LinkerHeader 
-          isCompany 
-          companyImageUrl="/Deloitte.svg" 
-          companyTitle="Deloitte Qro" 
-        />
-        <LinkerHeader 
+        <LinkerHeader isCompany companyImageUrl="/Deloitte.svg" companyTitle="Deloitte Qro" />
+        <LinkerHeader
           isCompany={false}
           userIcon={<User weight="Bold" className="h-5 w-5" />}
           userEmail="vinculadorx@gmail.com"
@@ -74,7 +70,7 @@ export default function Home() {
         <QuestionItem question="Pregunta" description="Descripción" />
       </div>
       <div className="space-y-4">
-        <StepperRegister /> 
+        <StepperRegister />
 
         <CompanyCard
           title="Deloitte"
@@ -641,9 +637,8 @@ export default function Home() {
       </div>
 
       <div className="mt-10 w-1/2">
-        
         <FormProvider {...formMethods}>
-          <form onSubmit={formMethods.handleSubmit(data => console.log(data))}>
+          <form onSubmit={formMethods.handleSubmit((data) => console.log(data))}>
             <FormAge<FormValues>
               name="ageRange"
               minAgeName="minAge"
@@ -662,8 +657,6 @@ export default function Home() {
             label="Rango salarial"
           />
         </FormProvider>
-
-
       </div>
       <div className="mt-10">
         <FooterLanding />

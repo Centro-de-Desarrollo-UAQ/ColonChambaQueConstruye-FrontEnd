@@ -71,7 +71,7 @@ export function UploadedFile({
                   <AvatarImage src={previewUrl} className="object-cover" />
                 ) : (
                   <AvatarFallback className="bg-zinc-100">
-                    <ImageIcon className="text-zinc-400 h-12 w-12" />
+                    <ImageIcon className="h-12 w-12 text-zinc-400" />
                   </AvatarFallback>
                 )}
               </Avatar>

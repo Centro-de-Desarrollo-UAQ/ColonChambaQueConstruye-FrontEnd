@@ -29,7 +29,7 @@ export default function SignUpEmployer() {
       employerName: '',
       employerLastName: '',
       employerEmail: '',
-      employerPhone: {code: '+52', number: '' },
+      employerPhone: { code: '+52', number: '' },
       accountPassword: '',
       accountPasswordConfirm: '',
       image: null,
@@ -60,7 +60,7 @@ export default function SignUpEmployer() {
         {/* UI paso a paso */}
         {step === 1 && (
           <>
-            <div className='mb-7 mx-auto w-2/3'>
+            <div className="mx-auto mb-7 w-2/3">
               <Stepper size={2} activeStep={1} />
             </div>
             <EmployerDetailsStep control={control} />
@@ -69,7 +69,7 @@ export default function SignUpEmployer() {
 
         {step === 2 && (
           <>
-            <div className='mb-7 mx-auto w-2/3'>
+            <div className="mx-auto mb-7 w-2/3">
               <Stepper size={2} activeStep={2} />
             </div>
             <ImageUploadStep
@@ -79,7 +79,7 @@ export default function SignUpEmployer() {
           </>
         )}
 
-        <div className="mt-4 flex justify-between items-center">
+        <div className="mt-4 flex items-center justify-between">
           {step === 1 && (
             <>
               <Link href="" className="text-zinc-600 underline">
@@ -94,7 +94,9 @@ export default function SignUpEmployer() {
 
           {step === 2 && (
             <>
-              <Button className='ml-auto' type="submit">Finalizar</Button>
+              <Button className="ml-auto" type="submit">
+                Finalizar
+              </Button>
             </>
           )}
         </div>

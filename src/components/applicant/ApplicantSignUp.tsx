@@ -29,9 +29,9 @@ export default function ApplicantSignUp() {
       preferredHours: '',
       employmentMode: '',
       profilePhoto: null,
-      cvFile: undefined
+      cvFile: undefined,
     },
-    mode: 'onSubmit'
+    mode: 'onSubmit',
   });
 
   const { control, handleSubmit, trigger, watch } = methods;
@@ -44,7 +44,12 @@ export default function ApplicantSignUp() {
     const subscription = watch((value) => {
       if (step === 1) {
         const requiredFields: (keyof ApplicantFormType)[] = [
-          'name', 'lastName', 'address', 'birthDate', 'email', 'password'
+          'name',
+          'lastName',
+          'address',
+          'birthDate',
+          'email',
+          'password',
         ];
 
         const isFilled = requiredFields.every((field) => {
@@ -63,15 +68,13 @@ export default function ApplicantSignUp() {
 
   const handleNextStep = async () => {
     const fieldsToValidate: (keyof ApplicantFormType)[] =
-      step === 1
-        ? ['name', 'lastName', 'address', 'birthDate', 'email', 'password']
-        : []; 
+      step === 1 ? ['name', 'lastName', 'address', 'birthDate', 'email', 'password'] : [];
 
     const isValidStep = step === 1 ? await trigger(fieldsToValidate) : true;
     setStepValid(isValidStep);
 
     if (isValidStep) {
-      setStep(prev => prev + 1);
+      setStep((prev) => prev + 1);
       setStepValid(false);
     }
   };
@@ -83,18 +86,19 @@ export default function ApplicantSignUp() {
   };
 
   return (
-    <div className="container mx-auto p-12 max-w-2xl border border-zinc-200 rounded-lg shadow-sm bg-white">
-      <div className="text-center space-y-8 mb-8"> 
+    <div className="container mx-auto max-w-2xl rounded-lg border border-zinc-200 bg-white p-12 shadow-sm">
+      <div className="mb-8 space-y-8 text-center">
         <h1 className="text-3xl font-bold text-[800]">Completa tu registro</h1>
-        <h2 className="text-lg text-[600] max-w-2xl mx-auto">
-          Rellena los campos para completar tu registro y acceder a todas las funciones que ofrece la plataforma
+        <h2 className="mx-auto max-w-2xl text-lg text-[600]">
+          Rellena los campos para completar tu registro y acceder a todas las funciones que ofrece
+          la plataforma
         </h2>
       </div>
 
       <div className="mt-4 text-center">
         <Stepper size={3} activeStep={step} />
       </div>
-      
+
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
           {step === 1 && <PersonalInfoStep control={control} />}
@@ -103,9 +107,9 @@ export default function ApplicantSignUp() {
 
           <div className="mt-8 flex justify-between">
             {step < 3 ? (
-              <Button 
-                type="button" 
-                onClick={handleNextStep} 
+              <Button
+                type="button"
+                onClick={handleNextStep}
                 className="ml-auto"
                 disabled={!stepValid}
               >

@@ -6,12 +6,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { UploadFile } from './UploadFile';
 import { UploadedFile } from './UploadedFile';
 
-
 interface UploadModalProps {
   onClose: () => void;
   onSave: (files: { spanishCV: File | null; englishCV: File | null }) => void;
 }
-
 
 export type Language = 'spanish' | 'english';
 
@@ -33,7 +31,7 @@ export const LANGUAGE_SPECIFIC_TEXTS = {
   },
 };
 
-export default function UploadModal({ onClose , onSave}: UploadModalProps) {
+export default function UploadModal({ onClose, onSave }: UploadModalProps) {
   const [spanishCV, setSpanishCV] = useState<File | null>(null);
   const [englishCV, setEnglishCV] = useState<File | null>(null);
   const [tabValue, setTabValue] = useState<Language>('spanish');
@@ -50,13 +48,12 @@ export default function UploadModal({ onClose , onSave}: UploadModalProps) {
     setSpanishCV(acceptedFiles[0]);
   }, []);
 
-   const handleContinue = () => {
+  const handleContinue = () => {
     onSave({ spanishCV, englishCV });
     onClose();
   };
 
   const canContinue = !!spanishCV || !!englishCV;
-
 
   const onDropEnglish = useCallback((acceptedFiles: File[]) => {
     setEnglishCV(acceptedFiles[0]);
@@ -65,9 +62,6 @@ export default function UploadModal({ onClose , onSave}: UploadModalProps) {
   const handleRemove = (language: Language) => {
     language === 'spanish' ? setSpanishCV(null) : setEnglishCV(null);
   };
-
-  
-
 
   const handleFileChange = (language: Language, newFile: File) => {
     language === 'spanish' ? setSpanishCV(newFile) : setEnglishCV(newFile);
@@ -86,7 +80,7 @@ export default function UploadModal({ onClose , onSave}: UploadModalProps) {
     return (
       <TabsContent key={language} value={language}>
         <Card
-          className={`bg-zinc-50 flex flex-col pt-10 ${hasFile ? 'min-h-[300px]' : 'min-h-[500px]'}`}
+          className={`flex flex-col bg-zinc-50 pt-10 ${hasFile ? 'min-h-[300px]' : 'min-h-[500px]'}`}
         >
           <CardHeader>
             <TabsList className="grid w-full grid-cols-2">

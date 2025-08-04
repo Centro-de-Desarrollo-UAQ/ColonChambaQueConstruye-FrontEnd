@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-} from '@/components/ui/form';
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -50,7 +44,7 @@ export default function FormSalaryRange<T extends FieldValues>({
 }: FormSalaryRangeProps<T>) {
   // 1. Intenta obtener el control del contexto
   const context = useFormContext<T>();
-  
+
   // 2. Determina qué control usar (prop o contexto)
   const control = propControl ?? context?.control;
 
@@ -59,7 +53,7 @@ export default function FormSalaryRange<T extends FieldValues>({
     console.error('Error: Missing control prop. Component must be either:');
     console.error('1. Wrapped in a FormProvider, or');
     console.error('2. Receive a control prop directly');
-    
+
     return (
       <div className={className}>
         <p className="text-red-500">Error: Missing form control configuration</p>
@@ -76,15 +70,11 @@ export default function FormSalaryRange<T extends FieldValues>({
           {label && (
             <FormLabel className="font-medium">
               {label}
-              {optional && (
-                <span className="text-gray-500 text-sm font-light">
-                  {' Opcional'}
-                </span>
-              )}
+              {optional && <span className="text-sm font-light text-gray-500">{' Opcional'}</span>}
             </FormLabel>
           )}
 
-          <div className="flex items-center gap-2 mt-2">
+          <div className="mt-2 flex items-center gap-2">
             {/* Selector de moneda */}
             <div className="w-[120px]">
               <Controller

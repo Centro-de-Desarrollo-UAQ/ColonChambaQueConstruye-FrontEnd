@@ -54,6 +54,5 @@ export interface FormPhoneProps<T extends FieldValues> {
 }
 
 export interface FormAgeProps<T extends FieldValues> {
-    control: Control<T>;
-
+  control: Control<T>;
 }

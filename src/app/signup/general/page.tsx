@@ -1,24 +1,24 @@
-'use client'
+'use client';
 
-import FormInput from "@/components/forms/FormInput";
-import { Button } from "@/components/ui/button";
-import LinkerNavBar from "@/components/linker/LinkerNavBar";
-import Link from "next/link";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, useForm } from "react-hook-form";
-import { signupSchema, SignupFormType } from "@/validations/signupSchema";
+import FormInput from '@/components/forms/FormInput';
+import { Button } from '@/components/ui/button';
+import LinkerNavBar from '@/components/linker/LinkerNavBar';
+import Link from 'next/link';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { FormProvider, useForm } from 'react-hook-form';
+import { signupSchema, SignupFormType } from '@/validations/signupSchema';
 
 export default function PublicSignup() {
   const methods = useForm<SignupFormType>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      name: "",
-      lastname: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
+      name: '',
+      lastname: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
     },
-    mode: "onSubmit",
+    mode: 'onSubmit',
   });
 
   const { control, handleSubmit } = methods;
@@ -26,25 +26,24 @@ export default function PublicSignup() {
   const onSubmit = (data: SignupFormType) => console.log(data);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-screen flex-col">
       <LinkerNavBar />
 
       {/* Contenido principal */}
-       <main className="flex flex-col items-center justify-center flex-grow px-4 py-20">
-            <div className="w-full max-w-2xl border border-gray-300 space-y-8 rounded-md shadow-sm p-12">
-                <div className="flex flex-col items-center space-y-2">
-                    <h1 className="text-3xl font-bold">Encuentra el empleo perfecto para ti.</h1>
-                    <span className="text-sm">Regístrate y accede a las ofertas de trabajo ofrecidas para la comunidad UAQ</span>
-                </div>
-                <div className="flex justify-end">
-                    <Link
-                        href="#"
-                        className="font-medium text-[color:var(--color-uaq-brand)]"
-                    >
-                        Soy estudiante o egresado UAQ
-                    </Link>
-                </div>
-                    
+      <main className="flex flex-grow flex-col items-center justify-center px-4 py-20">
+        <div className="w-full max-w-2xl space-y-8 rounded-md border border-gray-300 p-12 shadow-sm">
+          <div className="flex flex-col items-center space-y-2">
+            <h1 className="text-3xl font-bold">Encuentra el empleo perfecto para ti.</h1>
+            <span className="text-sm">
+              Regístrate y accede a las ofertas de trabajo ofrecidas para la comunidad UAQ
+            </span>
+          </div>
+          <div className="flex justify-end">
+            <Link href="#" className="font-medium text-[color:var(--color-uaq-brand)]">
+              Soy estudiante o egresado UAQ
+            </Link>
+          </div>
+
           {/* Formulario */}
           <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
@@ -96,7 +95,7 @@ export default function PublicSignup() {
               </div>
 
               <div className="flex items-center justify-between">
-                <p className="text-sm flex items-center gap-1">
+                <p className="flex items-center gap-1 text-sm">
                   ¿Ya tienes cuenta?
                   <Link href="#" className="font-medium underline">
                     Inicia Sesión
@@ -112,10 +111,7 @@ export default function PublicSignup() {
 
           <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
             <p>¿Eres una empresa?</p>
-            <Link
-              href="#"
-              className="font-medium underline text-[color:var(--color-uaq-brand)]"
-            >
+            <Link href="#" className="font-medium text-[color:var(--color-uaq-brand)] underline">
               Regístrate aquí
             </Link>
           </div>
@@ -123,7 +119,7 @@ export default function PublicSignup() {
       </main>
 
       {/* Footer */}
-      <footer className="w-full text-center text-sm border-t border-gray-300 bg-zinc-100 py-6">
+      <footer className="w-full border-t border-gray-300 bg-zinc-100 py-6 text-center text-sm">
         <span>Centro de Desarrollo © 2025</span>
       </footer>
     </div>
