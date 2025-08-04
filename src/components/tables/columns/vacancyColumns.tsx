@@ -1,6 +1,7 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
+import { accentInsensitiveTextFilter } from "@/validations/filtersTanStack"
 import {
   MenuDots,
   Document,
@@ -11,7 +12,6 @@ import {
   Star2,
   CloseCircle,
 } from "@solar-icons/react"
-
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -48,6 +48,7 @@ export const candidateColumns: ColumnDef<Candidate>[] = [
         </Button>
       )
     },
+    filterFn: accentInsensitiveTextFilter,
   },
   {
     accessorKey: 'status',

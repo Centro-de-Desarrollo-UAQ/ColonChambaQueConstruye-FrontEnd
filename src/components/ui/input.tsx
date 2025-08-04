@@ -1,17 +1,20 @@
 // * Adding a password variant
 import * as React from 'react';
 import { cn } from '@/lib/utils';
-import { Eye, EyeClosed } from '@solar-icons/react';
+import { Eye, EyeClosed, CloseCircle } from '@solar-icons/react';
+import { Button } from './button';
 
 interface InputProps extends React.ComponentProps<'input'> {
   icon?: React.ComponentType<{ className?: string }>;
   iconPosition?: 'left' | 'right';
   currency?: boolean;
+  onClear?: () => void;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, icon: Icon, iconPosition = 'left', currency = false, ...props }, ref) => {
+  ({ className, type, icon: Icon, iconPosition = 'left', currency = false, onClear = null, ...props }, ref) => {
     const [showPassword, setShowPassword] = React.useState(false);
+
 
     const isPassword = type === 'password';
     const isNumber = type === 'number' && currency;
@@ -56,6 +59,17 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
         {Icon && !isPassword && iconPosition === 'right' && (
           <Icon className="text-muted-foreground absolute right-3 h-5 w-5" />
+        )}
+
+        {onClear && props.value && (
+          <Button
+            variant="mono"
+            size="sm_icon"
+            onClick={onClear}
+            className="absolute right-1"
+          >
+            <CloseCircle />
+          </Button>
         )}
       </div>
     );

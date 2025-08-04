@@ -2,9 +2,11 @@
 
 import {
   ColumnDef,
+  ColumnFiltersState,
   SortingState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
@@ -25,7 +27,14 @@ import {
   SelectValue
 } from "@/components/ui/select"
 import { Button } from "@/components/ui/legacyButton"
-import { AltArrowLeft, AltArrowRight, DoubleAltArrowLeft, DoubleAltArrowRight } from "@solar-icons/react"
+import { Input } from "@/components/ui/input"
+import {
+  AltArrowLeft,
+  AltArrowRight,
+  DoubleAltArrowLeft,
+  DoubleAltArrowRight,
+  MinimalisticMagnifer,
+} from "@solar-icons/react"
 import { useState } from "react"
 
 interface DataTableProps<TData, TValue> {
@@ -38,6 +47,9 @@ export function DataTable<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
+    []
+  )
 
   const table = useReactTable({
     data,
@@ -46,13 +58,30 @@ export function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
+      columnFilters,
     },
   })
 
   return (
     <div className="flex flex-col space-y-4 content-end items-end">
+      <div className="flex items-center space-x-2 mr-auto">
+        <Input
+          placeholder="Buscar..."
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          onChange={(event) =>
+            table.getColumn("name")?.setFilterValue(event.target.value)
+          }
+          className="h-8 w-[200px] lg:w-[300px]"
+          icon={MinimalisticMagnifer}
+          onClear ={() => {
+            table.getColumn("name")?.setFilterValue("")
+          }}
+        />
+      </div>
       <div className="overflow-hidden rounded-md border w-full">
         <Table className="bg-white">
           <TableHeader className="bg-gray-100">
