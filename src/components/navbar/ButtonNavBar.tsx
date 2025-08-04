@@ -10,11 +10,11 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-uaq-accent text-uaq-default-50 shadow-sm font-base-bold hover:after:content-[''] hover:after:block hover:after:h-[0.1875rem] hover:after:w-full hover:after:bg-uaq-default-200 hover:after:absolute hover:after:bottom-0 hover:after:left-0",
+          "bg-uaq-accent text-zinc-50 shadow-sm font-base-bold hover:after:content-[''] hover:after:block hover:after:h-[0.1875rem] hover:after:w-full hover:after:bg-zinc-200 hover:after:absolute hover:after:bottom-0 hover:after:left-0",
         hover:
-          'bg-uaq-accent text-uaq-default-50 shadow-sm font-base-bold hover:bg-uaq-default-50 hover:text-uaq-accent [&_svg]:fill-uaq-accent', // Cambiar color de texto e icono en hover
+          'bg-uaq-accent text-zinc-50 shadow-sm font-base-bold hover:bg-zinc-50 hover:text-uaq-accent [&_svg]:fill-uaq-accent', // Cambiar color de texto e icono en hover
         active:
-          "bg-uaq-accent text-uaq-default-50 shadow-sm font-base-bold font-bold after:content-[''] after:block after:h-[0.1875rem] after:w-full after:bg-uaq-default-200 after:absolute after:bottom-0 after:left-0",
+          "bg-uaq-accent text-zinc-50 shadow-sm font-base-bold font-bold after:content-[''] after:block after:h-[0.1875rem] after:w-full after:bg-zinc-200 after:absolute after:bottom-0 after:left-0",
       },
       size: {
         default: 'px-3 py-8',

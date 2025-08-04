@@ -20,11 +20,11 @@ export default function TitleSection({ sections, currentSection }: TitleSectionP
 
   return (
     <>
-      <div className="bg-uaq-default-100 flex items-center gap-3 border-l-2 border-black p-3">
+      <div className="bg-zinc-100 flex items-center gap-3 border-l-2 border-black p-3">
         {icon}
         <span>{title}</span>
       </div>
-      <p className="py-1 text-uaq-default-700">{description}</p>
+      <p className="py-1 text-zinc-700">{description}</p>
     </>
   );
 }

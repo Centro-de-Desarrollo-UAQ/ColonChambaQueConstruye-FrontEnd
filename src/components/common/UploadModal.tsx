@@ -86,7 +86,7 @@ export default function UploadModal({ onClose , onSave}: UploadModalProps) {
     return (
       <TabsContent key={language} value={language}>
         <Card
-          className={`bg-uaq-default-50 flex flex-col pt-10 ${hasFile ? 'min-h-[300px]' : 'min-h-[500px]'}`}
+          className={`bg-zinc-50 flex flex-col pt-10 ${hasFile ? 'min-h-[300px]' : 'min-h-[500px]'}`}
         >
           <CardHeader>
             <TabsList className="grid w-full grid-cols-2">

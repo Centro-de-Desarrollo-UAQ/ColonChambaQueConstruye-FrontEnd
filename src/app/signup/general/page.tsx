@@ -123,7 +123,7 @@ export default function PublicSignup() {
       </main>
 
       {/* Footer */}
-      <footer className="w-full text-center text-sm border-t border-gray-300 bg-uaq-default-100 py-6">
+      <footer className="w-full text-center text-sm border-t border-gray-300 bg-zinc-100 py-6">
         <span>Centro de Desarrollo © 2025</span>
       </footer>
     </div>

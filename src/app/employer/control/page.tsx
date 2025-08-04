@@ -57,7 +57,7 @@ export default function ProfileEmployer() {
                 />        
                 
                 {/* Sección de Información */}
-                <div className="border-uaq-default-300 rounded-lg border shadow-sm">
+                <div className="border-zinc-300 rounded-lg border shadow-sm">
                     <ConfigRow
                         title="Información personal"
                         valueinput=""

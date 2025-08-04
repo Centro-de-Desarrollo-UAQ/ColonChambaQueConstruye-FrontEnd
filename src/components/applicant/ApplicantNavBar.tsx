@@ -39,7 +39,7 @@ export default function ApplicantNavBar() {
       {/* Categorías y avatar alineados a la derecha */}
       <div className="ml-auto flex h-full items-center gap-6">
         {/* Categorías */}
-        <div className="text-uaq-default-50 font-futura flex h-full font-[400]">
+        <div className="text-zinc-50 font-futura flex h-full font-[400]">
           {navLinks.map(({ href, label, icon }) => (
             <Link key={href} href={href} className="h-full">
               <ButtonNavBar

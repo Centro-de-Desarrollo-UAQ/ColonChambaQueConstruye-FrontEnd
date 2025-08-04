@@ -439,9 +439,9 @@ export default function Home() {
       <div className="space-y-4">
         {/* Badges sin onClose */}
         <div className="flex flex-wrap gap-2">
-          <Badge variant="default">Abierto</Badge>
-          <Badge variant="secondary">Cerrado</Badge>
-          <Badge variant="destructive">En Revisión</Badge>
+          <Badge variant="success">Abierto</Badge>
+          <Badge variant="warning">Cerrado</Badge>
+          <Badge variant="danger">En Revisión</Badge>
           <Badge variant="outline">Ingeniería en Software</Badge>
         </div>
 
@@ -454,19 +454,19 @@ export default function Home() {
           )}
 
           {visibleBadges.defaultClosable && (
-            <Badge variant="defaultClosable" onClose={() => handleClose('defaultClosable')}>
+            <Badge variant="success" onClose={() => handleClose('defaultClosable')}>
               Default Badge with Close
             </Badge>
           )}
 
           {visibleBadges.secondaryClosable && (
-            <Badge variant="secondaryClosable" onClose={() => handleClose('secondaryClosable')}>
+            <Badge variant="warning" onClose={() => handleClose('secondaryClosable')}>
               Secondary Badge with Close
             </Badge>
           )}
 
           {visibleBadges.destructiveClosable && (
-            <Badge variant="destructiveClosable" onClose={() => handleClose('destructiveClosable')}>
+            <Badge variant="danger" onClose={() => handleClose('destructiveClosable')}>
               Destructive Badge with Close
             </Badge>
           )}

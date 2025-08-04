@@ -128,9 +128,9 @@ function StepperControls({ activeStep, stepsLength, onPrev, onNext }: StepperCon
 export function Stepper({
   steps,
   activeColor = 'bg-uaq-brand',
-  inactiveColor = 'bg-uaq-default-200',
+  inactiveColor = 'bg-zinc-200',
   textColor = 'text-white',
-  lineColor = 'bg-uaq-default-200',
+  lineColor = 'bg-zinc-200',
   headerTitle,
   headerSubtitle,
 }: StepperProps) {

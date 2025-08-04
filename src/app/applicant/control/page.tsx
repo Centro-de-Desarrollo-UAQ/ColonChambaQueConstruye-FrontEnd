@@ -21,7 +21,7 @@ export default function Control() {
       />   
       
       {/* Sección de Acceso */}
-      <div className="border-uaq-default-300 rounded-lg border shadow-sm">
+      <div className="border-zinc-300 rounded-lg border shadow-sm">
         <ConfigRow
           title="Acceso"
           valueinput=""

@@ -51,7 +51,7 @@ export default function ProfileEmployer() {
         <TitleSection sections={sectionConfig} currentSection="employerProfile" />
 
         {/* Sección de Información */}
-        <div className="border-uaq-default-300 rounded-lg border shadow-sm">
+        <div className="border-zinc-300 rounded-lg border shadow-sm">
           <ConfigRow
             title="Información de la empresa"
             valueinput=""

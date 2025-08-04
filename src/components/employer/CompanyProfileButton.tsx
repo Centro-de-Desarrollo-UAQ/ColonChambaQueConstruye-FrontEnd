@@ -7,7 +7,7 @@ interface CompanyProfileButtonProps {
 
 export default function CompanyProfileButton({ imageUrl, title }: CompanyProfileButtonProps) {
   return (
-    <button className="hover:bg-uaq-default-200 flex items-center gap-2 rounded-sm p-2 transition-colors">
+    <button className="hover:bg-zinc-200 flex items-center gap-2 rounded-sm p-2 transition-colors">
       <div className="h-8 w-8 overflow-hidden">
         <Image
           src={imageUrl}
@@ -18,7 +18,7 @@ export default function CompanyProfileButton({ imageUrl, title }: CompanyProfile
         />
       </div>
 
-      <span className="text-uaq-default-800 text-sm font-medium">{title}</span>
+      <span className="text-zinc-800 text-sm font-medium">{title}</span>
     </button>
   );
 }

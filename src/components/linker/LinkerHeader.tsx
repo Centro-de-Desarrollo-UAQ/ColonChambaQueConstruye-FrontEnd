@@ -19,7 +19,7 @@ export default function LinkerHeader({
   companyTitle = "Deloitte Qro"
 }: HeaderProps) {
   return (
-    <nav className="border-uaq-default-200 flex items-center justify-between border-b px-20 py-4 drop-shadow-md">
+    <nav className="border-zinc-200 flex items-center justify-between border-b px-20 py-4 drop-shadow-md">
       <div className="flex items-center gap-4">
         <Link href="/">
           <Image src="/UAQBlack.svg" alt="UAQ Logo" width={120} height={120} className="h-7 w-6" />

@@ -54,19 +54,6 @@
   --color-uaq-success-hover: var(--uaq-success-hover);
   --color-uaq-warning-hover: var(--uaq-warning-hover);
   --color-uaq-danger-hover: var(--uaq-danger-hover);
-  --color-uaq-success-transparent: var(--uaq-success-transparent);
-  --color-uaq-warning-transparent: var(--uaq-warning-transparent);
-  --color-uaq-danger-transparent: var(--uaq-danger-transparent);
-  --color-uaq-default-50: var(--uaq-default-50);
-  --color-uaq-default-100: var(--uaq-default-100);
-  --color-uaq-default-200: var(--uaq-default-200);
-  --color-uaq-default-300: var(--uaq-default-300);
-  --color-uaq-default-400: var(--uaq-default-400);
-  --color-uaq-default-500: var(--uaq-default-500);
-  --color-uaq-default-600: var(--uaq-default-600);
-  --color-uaq-default-700: var(--uaq-default-700);
-  --color-uaq-default-800: var(--uaq-default-800);
-  --color-uaq-default-900: var(--uaq-default-900);
 }
 
 :root {
@@ -107,26 +94,13 @@
   --uaq-brand: oklch(50.67% 0.1071 261.11);
   --uaq-success: oklch(73.29% 0.1935 150.81);
   --uaq-warning: oklch(78.19% 0.1585 72.33);
-  --uaq-danger: oklch(61.92% 0.2419 11.33);
+  --uaq-danger: oklch(0.5845 0.232 12.98);
   --uaq-white: oklch(100% 0 0);
   --uaq-accent-hover: oklch(19.82% 0.0528 258.85);
   --uaq-brand-hover: oklch(44.17% 0.091 261.59);
-  --uaq-success-hover: oklch(58.57% 0.1611 149.78);
-  --uaq-warning-hover: oklch(68.97% 0.1493 68.65);
-  --uaq-danger-hover: oklch(54.22% 0.2105 10.69);
-  --uaq-success-transparent: oklch(73.29% 0.1935 150.81 / 20%);
-  --uaq-warning-transparent: oklch(78.19% 0.1585 72.33 / 20%);
-  --uaq-danger-transparent: oklch(61.92% 0.2419 11.33 / 20%);
-  --uaq-default-50: oklch(98.82% 0 0);
-  --uaq-default-100: oklch(96.08% 0 0);
-  --uaq-default-200: oklch(89.41% 0 0);
-  --uaq-default-300: oklch(82.35% 0 0);
-  --uaq-default-400: oklch(63.14% 0 0);
-  --uaq-default-500: oklch(47.06% 0 0);
-  --uaq-default-600: oklch(36.47% 0 0);
-  --uaq-default-700: oklch(29.02% 0 0);
-  --uaq-default-800: oklch(16.08% 0 0);
-  --uaq-default-900: oklch(10.2% 0 0);
+  --uaq-success-hover: oklch(0.5112 0.1819 153.21);
+  --uaq-warning-hover: oklch(0.5515 0.140162 66.5167);
+  --uaq-danger-hover: oklch(0.5361 0.2142 13.65);
 }
 
 .dark {
@@ -172,19 +146,6 @@
   --uaq-success-hover: oklch(50.58% 0.25 145.04);
   --uaq-warning-hover: oklch(66.37% 0.19 70.98);
   --uaq-danger-hover: oklch(49.41% 0.25 12.34);
-  --uaq-success-transparent: oklch(70.67% 0.25 145.04 / 20%);
-  --uaq-warning-transparent: oklch(74.61% 0.2 70.98 / 20%);
-  --uaq-danger-transparent: oklch(52.92% 0.26 12.34 / 20%);
-  --uaq-default-50: oklch(98.82% 0 0);
-  --uaq-default-100: oklch(96.08% 0 0);
-  --uaq-default-200: oklch(89.41% 0 0);
-  --uaq-default-300: oklch(82.35% 0 0);
-  --uaq-default-400: oklch(63.14% 0 0);
-  --uaq-default-500: oklch(47.06% 0 0);
-  --uaq-default-600: oklch(36.47% 0 0);
-  --uaq-default-700: oklch(29.02% 0 0);
-  --uaq-default-800: oklch(16.08% 0 0);
-  --uaq-default-900: oklch(10.2% 0 0);
 }
 
 @font-face {

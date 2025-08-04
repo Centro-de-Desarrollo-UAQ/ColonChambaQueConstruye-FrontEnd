@@ -34,7 +34,7 @@ export const ConfigRow = ({
 
   return (
     <div
-      className={`flex w-full items-center ${isTitle ? 'px-6' : 'px-4'} border-uaq-default-100 border-b ${isTitle && isEditable ? 'bg-uaq-default-50' : isTitle ? 'bg-uaq-default-50 py-4' : ''}`}
+      className={`flex w-full items-center ${isTitle ? 'px-6' : 'px-4'} border-zinc-100 border-b ${isTitle && isEditable ? 'bg-zinc-50' : isTitle ? 'bg-zinc-50 py-4' : ''}`}
     >
       {isTitle ? (
         <>

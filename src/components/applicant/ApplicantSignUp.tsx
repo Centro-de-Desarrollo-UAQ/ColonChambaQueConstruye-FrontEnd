@@ -83,7 +83,7 @@ export default function ApplicantSignUp() {
   };
 
   return (
-    <div className="container mx-auto p-12 max-w-2xl border border-uaq-default-200 rounded-lg shadow-sm bg-white">
+    <div className="container mx-auto p-12 max-w-2xl border border-zinc-200 rounded-lg shadow-sm bg-white">
       <div className="text-center space-y-8 mb-8"> 
         <h1 className="text-3xl font-bold text-[800]">Completa tu registro</h1>
         <h2 className="text-lg text-[600] max-w-2xl mx-auto">
