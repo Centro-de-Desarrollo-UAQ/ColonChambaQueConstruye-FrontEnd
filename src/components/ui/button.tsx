@@ -124,10 +124,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         gray: 'bg-zinc-100 text-zinc-800 hover:bg-zinc-200',
       },
       secondary: {
-        brand: 'text-uaq-brand',
-        accent: 'text-uaq-accent',
-        danger: 'text-uaq-danger',
-        gray: 'text-zinc-800',
+        brand: 'text-uaq-brand border-uaq-brand',
+        accent: 'text-uaq-accent border-uaq-accent',
+        danger: 'text-uaq-danger border-uaq-danger',
+        gray: 'text-zinc-800 border-zinc-800',
       },
       edit: {
         brand: 'bg-uaq-brand text-zinc-50 border border-uaq-brand-hover',

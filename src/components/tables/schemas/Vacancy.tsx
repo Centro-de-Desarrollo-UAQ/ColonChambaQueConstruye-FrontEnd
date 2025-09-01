@@ -1,5 +1,6 @@
 'use client';
 
+import { dateToLocaleDateString } from '@/lib/utils';
 import { ColumnDef } from '@tanstack/react-table';
 import { accentInsensitiveTextFilter } from '@/validations/filtersTanStack';
 import {
@@ -7,12 +8,12 @@ import {
   Document,
   MedalRibbonStar,
   TrashBinMinimalistic,
-  SortVertical,
   CheckRead,
   Star2,
   CloseCircle,
 } from '@solar-icons/react';
 import { Button } from '@/components/ui/button';
+import SortButton from '../ui/SortButton';
 import { Badge } from '@/components/ui/badge';
 import {
   DropdownMenu,
@@ -22,49 +23,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
-export type Candidate = {
-  id: string;
-  name: string;
-  status: 'toreview' | 'candidate' | 'rejected' | 'approved';
-  email: string;
-  phone: string;
-  createdAt: string;
-};
+import { Candidate } from '@/interfaces';
 
 export const candidateColumns: ColumnDef<Candidate>[] = [
   {
     accessorKey: 'name',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          color="brand"
-          size="sm"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Nombre
-          <SortVertical />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <SortButton column={column} name="Nombre" />
+    ),
     filterFn: accentInsensitiveTextFilter,
   },
   {
     accessorKey: 'status',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          color="brand"
-          size="sm"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Estado
-          <SortVertical />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <SortButton column={column} name="Estado" />
+    ),
     cell: ({ getValue }) => {
       const status = getValue() as Candidate['status'];
       const statusMap: Record<Candidate['status'], string> = {
@@ -110,27 +83,12 @@ export const candidateColumns: ColumnDef<Candidate>[] = [
   },
   {
     accessorKey: 'createdAt',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          color="brand"
-          size="sm"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Fecha de publicación
-          <SortVertical />
-        </Button>
-      );
-    },
-    cell: ({ getValue }) => {
-      const date = new Date(getValue() as string);
-      return date.toLocaleDateString('es-MX', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      });
-    },
+    header: ({ column }) => (
+      <SortButton column={column} name="Fecha de postulación" />
+    ),
+    cell: ({ getValue }) => (
+      dateToLocaleDateString(getValue() as string)
+    )
   },
   {
     id: 'actions',

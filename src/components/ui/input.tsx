@@ -1,14 +1,21 @@
 // * Adding a password variant
+// * Added a clear button
+// * Added filter and sort buttons
 import * as React from 'react';
 import { cn } from '@/lib/utils';
-import { Eye, EyeClosed, CloseCircle } from '@solar-icons/react';
+import { Eye, EyeClosed, CloseCircle, Filter, Sort } from '@solar-icons/react';
 import { Button } from './button';
+import { Toggle } from './toggle';
 
 interface InputProps extends React.ComponentProps<'input'> {
   icon?: React.ComponentType<{ className?: string }>;
   iconPosition?: 'left' | 'right';
   currency?: boolean;
   onClear?: () => void;
+  filter?: boolean;
+  handleFilter?: () => void;
+  sort?: boolean;
+  handleSort?: () => void;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -20,6 +27,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       iconPosition = 'left',
       currency = false,
       onClear = null,
+      filter = null,
+      handleFilter = null,
+      sort = null,
+      handleSort = null,
       ...props
     },
     ref,
@@ -76,6 +87,35 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             <CloseCircle />
           </Button>
         )}
+
+        <div className='absolute right-2 flex items-center space-x-1'>
+          {handleFilter && filter?.valueOf && (
+            <Toggle
+              pressed={filter}
+              onPressedChange={() => {
+                if (handleFilter) {
+                  handleFilter();
+                }
+              }}
+            >
+              <Filter />
+            </Toggle>
+          )}
+
+          {handleSort && sort?.valueOf && (
+            <Toggle
+              pressed={sort}
+              onPressedChange={() => {
+                if (handleSort) {
+                  handleSort();
+                }
+              }}
+            >
+              <Sort />
+            </Toggle>
+          )}
+
+        </div>
       </div>
     );
   },

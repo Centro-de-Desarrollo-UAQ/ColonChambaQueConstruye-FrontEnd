@@ -8,7 +8,6 @@ import LinkerNavBar from '@/components/linker/LinkerNavBar';
 import ApplicantNavBar from '@/components/applicant/ApplicantNavBar';
 import FooterLanding from '@/components/landing-page/FooterLanding';
 import DropdownSelect from '@/components/toreview/dropdownselect';
-import Toggle from '@/components/toreview/toggle';
 import SimpleSelect from '@/components/toreview/simpleselect';
 import { Eye, AddCircle, User } from '@solar-icons/react';
 import { FormField } from '@/components/forms/FormField';
@@ -617,11 +616,6 @@ export default function Home() {
         <h2 className="mb-4 text-xl font-semibold">Dropdown Select Aspect</h2>
         <DropdownSelect color="gray" />
         <DropdownSelect color="blue" />
-      </div>
-
-      <div className="my-10">
-        <h2 className="mb-4 text-xl font-semibold">Toggle Aspect</h2>
-        <Toggle />
       </div>
 
       <div className="my-10">
