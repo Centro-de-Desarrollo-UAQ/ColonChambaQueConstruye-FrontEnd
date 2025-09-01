@@ -88,7 +88,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           </Button>
         )}
 
-        <div className='absolute right-2 flex items-center space-x-1'>
+        <div className="absolute right-2 flex items-center space-x-1">
           {handleFilter && filter?.valueOf && (
             <Toggle
               pressed={filter}
@@ -114,7 +114,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               <Sort />
             </Toggle>
           )}
-
         </div>
       </div>
     );

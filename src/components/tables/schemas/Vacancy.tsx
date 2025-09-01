@@ -28,16 +28,12 @@ import { Candidate } from '@/interfaces';
 export const candidateColumns: ColumnDef<Candidate>[] = [
   {
     accessorKey: 'name',
-    header: ({ column }) => (
-      <SortButton column={column} name="Nombre" />
-    ),
+    header: ({ column }) => <SortButton column={column} name="Nombre" />,
     filterFn: accentInsensitiveTextFilter,
   },
   {
     accessorKey: 'status',
-    header: ({ column }) => (
-      <SortButton column={column} name="Estado" />
-    ),
+    header: ({ column }) => <SortButton column={column} name="Estado" />,
     cell: ({ getValue }) => {
       const status = getValue() as Candidate['status'];
       const statusMap: Record<Candidate['status'], string> = {
@@ -83,12 +79,8 @@ export const candidateColumns: ColumnDef<Candidate>[] = [
   },
   {
     accessorKey: 'createdAt',
-    header: ({ column }) => (
-      <SortButton column={column} name="Fecha de postulación" />
-    ),
-    cell: ({ getValue }) => (
-      dateToLocaleDateString(getValue() as string)
-    )
+    header: ({ column }) => <SortButton column={column} name="Fecha de postulación" />,
+    cell: ({ getValue }) => dateToLocaleDateString(getValue() as string),
   },
   {
     id: 'actions',
