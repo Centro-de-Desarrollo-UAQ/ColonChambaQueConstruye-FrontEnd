@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input';
 
-import { Textarea } from '@/components/ui/textarea';
+import { Textarea } from '@/components/ui/textArea';
 import { Label } from '@/components/ui/label';
 import { ComponentType, forwardRef, RefObject } from 'react';
 

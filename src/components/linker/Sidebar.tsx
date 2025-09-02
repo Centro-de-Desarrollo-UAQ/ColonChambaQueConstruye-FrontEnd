@@ -1,3 +1,5 @@
+'use client';
+
 import { cn } from '@/lib/utils';
 import { SidebarButton } from './SidebarButton';
 import { Chart, Buildings2, Case } from '@solar-icons/react';

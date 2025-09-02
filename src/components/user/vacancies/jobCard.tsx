@@ -15,8 +15,7 @@ export default function JobCard({
     modality,
     schedule,
     logoUrl = '/Deloitte.svg', // TODO: Add a default logo if the company doesn't have one,
-    companyUrl, // Only add this if the company has a website
-    information, // Only add this if you want to show the information link
+    information, // Only add this if you want to show more about the Job details
 }: JobCardProps) {
     return (
         <div className="w-full max-w-[560px] border rounded-xl shadow-sm p-8 bg-white transition hover:shadow-md hover:border-zinc-400">
@@ -24,13 +23,7 @@ export default function JobCard({
                 <Image src={logoUrl} alt="Company Logo" width={60} height={60} className="rounded-md self-center" />
                 <div className="flex-1">
                     <h2 className="text-lg font-semibold leading-tight">{title}</h2>
-                    {companyUrl ? (
-                        <Link href={companyUrl} className="text-sm underline text-blue-600 hover:text-blue-800">
-                            {company}
-                        </Link>
-                    ) : (
-                        <span className="text-sm underline">{company}</span>
-                    )}
+                    <span className="text-sm underline">{company}</span>
                 </div>
                 <div className="flex flex-col gap-3 text-xs self-center text-right text-zinc-800">
                     <div className="flex items-center gap-1">
