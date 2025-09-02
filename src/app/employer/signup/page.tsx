@@ -1,6 +1,7 @@
 import React from 'react';
 import SignUpEmployer from '@/components/employer/SignUpEmployer';
 import LinkerNavBar from '@/components/linker/LinkerNavBar';
+import { Toaster } from '@/components/ui/sonner';
 
 export default function Signup() {
   return (
@@ -17,6 +18,7 @@ export default function Signup() {
         }}
       >
         <SignUpEmployer />
+        <Toaster />
       </div>
     </>
   );
