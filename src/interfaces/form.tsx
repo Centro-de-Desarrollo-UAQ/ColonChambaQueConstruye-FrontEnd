@@ -1,5 +1,5 @@
 import { ComponentType } from 'react';
-import { Control, FieldPath, FieldValues } from 'react-hook-form';
+import { ArrayPath, Control, FieldPath, FieldValues, Path } from 'react-hook-form';
 
 export interface FormInputProps<T extends FieldValues> {
   control: Control<T>;
@@ -39,6 +39,7 @@ export interface FormOptionsProps<T extends FieldValues> {
   className?: string;
   optional?: boolean;
   options: SelectOption[];
+  onSelect?: (value: string) => void; // For combobox optional field
 }
 
 export interface FormPhoneProps<T extends FieldValues> {
@@ -56,3 +57,36 @@ export interface FormPhoneProps<T extends FieldValues> {
 export interface FormAgeProps<T extends FieldValues> {
   control: Control<T>;
 }
+
+// For Experience List Component
+type SkillOption = { label: string; value: string };
+type ExperienceItem = { skill: string; years: string };
+
+export interface FormExperienceListProps<T extends FieldValues> {
+  control: Control<T>;
+  name: ArrayPath<T>;
+  availableSkills: SkillOption[];
+  className?: string;
+  onChangeList?: (list: ExperienceItem[]) => void;
+};
+
+// For Combo Badge Selector Component
+type Option = { label: string; value: string };
+
+export interface FormComboBadgeSelectorProps<T extends FieldValues> {
+  control: Control<T>;
+  name: Path<T>;
+  label?: string;
+  description?: string;
+  options: Option[];
+};
+
+// For Week Selector Component
+export interface FormWeekSelectorProps<T extends FieldValues> {
+  control: Control<T>;
+  name: Path<T>;
+  label?: string;
+  description?: string;
+  className?: string;
+  optional?: boolean;
+};

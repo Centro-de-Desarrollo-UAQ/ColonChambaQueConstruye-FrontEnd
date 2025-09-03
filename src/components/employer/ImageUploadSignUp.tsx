@@ -1,49 +1,15 @@
-import { GalleryAdd } from '@solar-icons/react';
-import { Button } from '../ui/button';
+import ImageDropzone from "../common/ImageDropzone";
 
 interface ImageUploadStepProps {
-  selectedImage: string | null;
   setSelectedImage: (image: string | null) => void;
 }
 
-function ImageUploadStep({ selectedImage, setSelectedImage }: ImageUploadStepProps) {
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    const file = event.dataTransfer.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-  };
-
-  const handleRemoveImage = () => {
-    setSelectedImage(null);
-  };
-
+function ImageUploadStep({ setSelectedImage }: ImageUploadStepProps) {
   return (
     <div className="w-full">
       <h3 className="text-xl font-bold">Foto de perfil</h3>
       <p className="mb-4">
-        Añade una foto alusiva a la empresa como foto de perfil. Si no cuentas con una ahora, podrás
-        hacerlo más adelante.
+        Añade una foto alusiva a la empresa como foto de perfil. Si no cuentas con una ahora, podrás hacerlo más adelante.
       </p>
       <div className="my-4 h-[1px] w-full rounded bg-gray-300"></div>
       <div
