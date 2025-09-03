@@ -28,7 +28,7 @@ export default function SearchBar({ showFilter = false, showSort = false }: Sear
       {/* Opcional: Íconos de filtros */}
       {showFilter && (
         <button className="text-gray-600 transition hover:text-black">
-          <Filter size={18} weight='Bold' />
+          <Filter size={18} weight="Bold" />
         </button>
       )}
 

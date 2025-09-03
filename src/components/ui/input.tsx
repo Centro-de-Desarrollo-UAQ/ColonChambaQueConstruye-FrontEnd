@@ -1,16 +1,40 @@
 // * Adding a password variant
+// * Added a clear button
+// * Added filter and sort buttons
 import * as React from 'react';
 import { cn } from '@/lib/utils';
-import { Eye, EyeClosed } from '@solar-icons/react';
+import { Eye, EyeClosed, CloseCircle, Filter, Sort } from '@solar-icons/react';
+import { Button } from './button';
+import { Toggle } from './toggle';
 
 interface InputProps extends React.ComponentProps<'input'> {
   icon?: React.ComponentType<{ className?: string }>;
   iconPosition?: 'left' | 'right';
   currency?: boolean;
+  onClear?: () => void;
+  filter?: boolean;
+  handleFilter?: () => void;
+  sort?: boolean;
+  handleSort?: () => void;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, icon: Icon, iconPosition = 'left', currency = false, ...props }, ref) => {
+  (
+    {
+      className,
+      type,
+      icon: Icon,
+      iconPosition = 'left',
+      currency = false,
+      onClear = null,
+      filter = null,
+      handleFilter = null,
+      sort = null,
+      handleSort = null,
+      ...props
+    },
+    ref,
+  ) => {
     const [showPassword, setShowPassword] = React.useState(false);
 
     const isPassword = type === 'password';
@@ -30,7 +54,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <input
           type={inputType}
           className={cn(
-            'border-input bg-zinc-100 file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring disabled:tex-base flex h-9 w-full rounded-md border px-4 py-3 text-base transition-colors file:border-0 file:bg-transparent file:text-sm file:font-[400] focus-visible:ring-1 focus-visible:outline-none disabled:cursor-not-allowed disabled:border-none disabled:bg-transparent',
+            'border-input file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring disabled:tex-base flex h-9 w-full rounded-md border bg-zinc-100 px-4 py-3 text-base transition-colors file:border-0 file:bg-transparent file:text-sm file:font-[400] focus-visible:ring-1 focus-visible:outline-none disabled:cursor-not-allowed disabled:border-none disabled:bg-transparent',
             Icon && iconPosition === 'left' ? 'pl-10' : '',
             isPassword ? 'pr-10' : '',
             isNumber ? 'pl-7' : '',
@@ -57,6 +81,40 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {Icon && !isPassword && iconPosition === 'right' && (
           <Icon className="text-muted-foreground absolute right-3 h-5 w-5" />
         )}
+
+        {onClear && props.value && (
+          <Button variant="mono" size="sm_icon" onClick={onClear} className="absolute right-1">
+            <CloseCircle />
+          </Button>
+        )}
+
+        <div className="absolute right-2 flex items-center space-x-1">
+          {handleFilter && filter?.valueOf && (
+            <Toggle
+              pressed={filter}
+              onPressedChange={() => {
+                if (handleFilter) {
+                  handleFilter();
+                }
+              }}
+            >
+              <Filter />
+            </Toggle>
+          )}
+
+          {handleSort && sort?.valueOf && (
+            <Toggle
+              pressed={sort}
+              onPressedChange={() => {
+                if (handleSort) {
+                  handleSort();
+                }
+              }}
+            >
+              <Sort />
+            </Toggle>
+          )}
+        </div>
       </div>
     );
   },

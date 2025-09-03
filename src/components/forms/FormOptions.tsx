@@ -1,10 +1,4 @@
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage
-} from '@/components/ui/form';
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -13,7 +7,7 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel
+  SelectLabel,
 } from '@/components/ui/select';
 import { FieldValues } from 'react-hook-form';
 import { Combobox } from '../ui/comboBox';
@@ -35,7 +29,6 @@ export default function FormOptions<T extends FieldValues>({
   className,
   optional = false,
   options,
-  onSelect
 }: FormOptionsProps<T>) {
   return (
     <FormField
@@ -46,9 +39,7 @@ export default function FormOptions<T extends FieldValues>({
           {label && (
             <FormLabel htmlFor={htmlFor} className="justify-between font-medium">
               {label}
-              {optional && (
-                <span className="text-gray-500 text-sm font-light"> Opcional</span>
-              )}
+              {optional && <span className="text-sm font-light text-gray-500"> Opcional</span>}
             </FormLabel>
           )}
 
@@ -66,11 +57,7 @@ export default function FormOptions<T extends FieldValues>({
                   placeholder={placeholder}
                 />
               ) : (
-                <Select
-                  onValueChange={field.onChange}
-                  value={field.value}
-                  disabled={disabled}
-                >
+                <Select onValueChange={field.onChange} value={field.value} disabled={disabled}>
                   <SelectTrigger className={width}>
                     <SelectValue placeholder={placeholder} />
                   </SelectTrigger>
@@ -91,9 +78,9 @@ export default function FormOptions<T extends FieldValues>({
               {optional && (
                 <Button
                   type="button"
-                  color='gray'
+                  color="gray"
                   size="sm_icon"
-                  onClick={() => field.onChange("")}
+                  onClick={() => field.onChange('')}
                 >
                   <TrashBinTrash className="h-4 w-4" />
                 </Button>

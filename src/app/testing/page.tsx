@@ -8,7 +8,6 @@ import LinkerNavBar from '@/components/linker/LinkerNavBar';
 import ApplicantNavBar from '@/components/applicant/ApplicantNavBar';
 import FooterLanding from '@/components/landing-page/FooterLanding';
 import DropdownSelect from '@/components/toreview/dropdownselect';
-import Toggle from '@/components/toreview/toggle';
 import SimpleSelect from '@/components/toreview/simpleselect';
 import { Eye, AddCircle, User } from '@solar-icons/react';
 import { FormField } from '@/components/forms/FormField';
@@ -20,7 +19,7 @@ import LinkerHeader from '@/components/linker/LinkerHeader';
 import QuestionItem from '@/components/landing-page/QuestionItem';
 import SearchBar from '@/components/toreview/searchbar';
 import FormAge from '@/components/forms/FormAge';
-import { useForm, FormProvider} from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import FormSalaryRange from '@/components/forms/FormRangeSalary';
 
 interface FormValues {
@@ -43,10 +42,10 @@ export default function Home() {
   const formMethods = useForm<FormValues>({
     defaultValues: {
       minAge: 18,
-      maxAge: 65
-    }
+      maxAge: 65,
+    },
   });
-  
+
   const handleClose = (badge: string) => {
     setVisibleBadges((prevState) => ({
       ...prevState,
@@ -60,12 +59,8 @@ export default function Home() {
         <div className="bg-white p-2"></div>
         <ApplicantNavBar />
         <div className="bg-black p-2"></div>
-        <LinkerHeader 
-          isCompany 
-          companyImageUrl="/Deloitte.svg" 
-          companyTitle="Deloitte Qro" 
-        />
-        <LinkerHeader 
+        <LinkerHeader isCompany companyImageUrl="/Deloitte.svg" companyTitle="Deloitte Qro" />
+        <LinkerHeader
           isCompany={false}
           userIcon={<User weight="Bold" className="h-5 w-5" />}
           userEmail="vinculadorx@gmail.com"
@@ -74,7 +69,7 @@ export default function Home() {
         <QuestionItem question="Pregunta" description="Descripción" />
       </div>
       <div className="space-y-4">
-        <StepperRegister /> 
+        <StepperRegister />
 
         <CompanyCard
           title="Deloitte"
@@ -439,9 +434,9 @@ export default function Home() {
       <div className="space-y-4">
         {/* Badges sin onClose */}
         <div className="flex flex-wrap gap-2">
-          <Badge variant="default">Abierto</Badge>
-          <Badge variant="secondary">Cerrado</Badge>
-          <Badge variant="destructive">En Revisión</Badge>
+          <Badge variant="success">Abierto</Badge>
+          <Badge variant="warning">Cerrado</Badge>
+          <Badge variant="danger">En Revisión</Badge>
           <Badge variant="outline">Ingeniería en Software</Badge>
         </div>
 
@@ -454,19 +449,19 @@ export default function Home() {
           )}
 
           {visibleBadges.defaultClosable && (
-            <Badge variant="defaultClosable" onClose={() => handleClose('defaultClosable')}>
+            <Badge variant="success" onClose={() => handleClose('defaultClosable')}>
               Default Badge with Close
             </Badge>
           )}
 
           {visibleBadges.secondaryClosable && (
-            <Badge variant="secondaryClosable" onClose={() => handleClose('secondaryClosable')}>
+            <Badge variant="warning" onClose={() => handleClose('secondaryClosable')}>
               Secondary Badge with Close
             </Badge>
           )}
 
           {visibleBadges.destructiveClosable && (
-            <Badge variant="destructiveClosable" onClose={() => handleClose('destructiveClosable')}>
+            <Badge variant="danger" onClose={() => handleClose('destructiveClosable')}>
               Destructive Badge with Close
             </Badge>
           )}
@@ -625,11 +620,6 @@ export default function Home() {
 
       <div className="my-10">
         <h2 className="mb-4 text-xl font-semibold">Toggle Aspect</h2>
-        <Toggle />
-      </div>
-
-      <div className="my-10">
-        <h2 className="mb-4 text-xl font-semibold">Toggle Aspect</h2>
         <SimpleSelect />
       </div>
 
@@ -641,9 +631,8 @@ export default function Home() {
       </div>
 
       <div className="mt-10 w-1/2">
-        
         <FormProvider {...formMethods}>
-          <form onSubmit={formMethods.handleSubmit(data => console.log(data))}>
+          <form onSubmit={formMethods.handleSubmit((data) => console.log(data))}>
             <FormAge<FormValues>
               name="ageRange"
               minAgeName="minAge"
@@ -662,8 +651,6 @@ export default function Home() {
             label="Rango salarial"
           />
         </FormProvider>
-
-
       </div>
       <div className="mt-10">
         <FooterLanding />

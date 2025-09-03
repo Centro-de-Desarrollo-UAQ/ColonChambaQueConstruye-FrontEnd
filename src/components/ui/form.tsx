@@ -129,7 +129,12 @@ function FormMessage({ className, ...props }: React.ComponentProps<'p'>) {
   // Auxiliary function to convert any error into an array of strings
   const parseErrorMessages = (err: unknown): string[] => {
     if (typeof err === 'string') return [err];
-    if (typeof err === 'object' && err !== null && 'message' in err && typeof (err as { message: unknown }).message === 'string') {
+    if (
+      typeof err === 'object' &&
+      err !== null &&
+      'message' in err &&
+      typeof (err as { message: unknown }).message === 'string'
+    ) {
       return [(err as { message: string }).message];
     }
 
@@ -138,7 +143,12 @@ function FormMessage({ className, ...props }: React.ComponentProps<'p'>) {
       return Object.values(err as Record<string, unknown>)
         .map((subErr) => {
           if (typeof subErr === 'string') return subErr;
-          if (typeof subErr === 'object' && subErr !== null && 'message' in subErr && typeof (subErr as { message: unknown }).message === 'string') {
+          if (
+            typeof subErr === 'object' &&
+            subErr !== null &&
+            'message' in subErr &&
+            typeof (subErr as { message: unknown }).message === 'string'
+          ) {
             return (subErr as { message: string }).message;
           }
           return null;
@@ -155,7 +165,7 @@ function FormMessage({ className, ...props }: React.ComponentProps<'p'>) {
     <div
       data-slot="form-message"
       id={formMessageId}
-      className={cn('text-destructive text-sm space-y-1', className)}
+      className={cn('text-destructive space-y-1 text-sm', className)}
       {...props}
     >
       {messages.map((msg, i) => (

@@ -30,11 +30,7 @@ export default function FormInput<T extends FieldValues>({
           {label && (
             <FormLabel htmlFor={htmlFor} className="justify-between font-medium">
               {label}
-              {optional && (
-                <span className="text-gray-500 text-sm font-light">
-                  {' Opcional'}
-                </span>
-              )}
+              {optional && <span className="text-sm font-light text-gray-500">{' Opcional'}</span>}
             </FormLabel>
           )}
 

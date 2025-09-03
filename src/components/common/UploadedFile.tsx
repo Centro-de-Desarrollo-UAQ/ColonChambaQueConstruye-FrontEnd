@@ -70,8 +70,8 @@ export function UploadedFile({
                 {previewUrl ? (
                   <AvatarImage src={previewUrl} className="object-cover" />
                 ) : (
-                  <AvatarFallback className="bg-uaq-default-100">
-                    <ImageIcon className="text-uaq-default-400 h-12 w-12" />
+                  <AvatarFallback className="bg-zinc-100">
+                    <ImageIcon className="h-12 w-12 text-zinc-400" />
                   </AvatarFallback>
                 )}
               </Avatar>

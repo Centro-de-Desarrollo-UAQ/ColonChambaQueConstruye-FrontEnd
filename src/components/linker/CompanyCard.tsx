@@ -18,7 +18,7 @@ export default function CompanyCard({
   logoUrl,
 }: CompanyCardProps) {
   return (
-    <div className="border-uaq-default-300 hover:border-uaq-brand-800 group w-[800px] cursor-pointer rounded-lg border shadow-sm transition-all duration-300 hover:translate-y-[-2px] hover:shadow-md">
+    <div className="hover:border-uaq-brand-800 group w-[800px] cursor-pointer rounded-lg border border-zinc-300 shadow-sm transition-all duration-300 hover:translate-y-[-2px] hover:shadow-md">
       <div className="flex flex-row items-center">
         <div className="w-[100px] flex-shrink-0 rounded-l-lg p-4 transition-colors duration-300">
           <Image

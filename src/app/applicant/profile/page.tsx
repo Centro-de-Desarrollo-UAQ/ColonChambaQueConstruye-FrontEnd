@@ -8,20 +8,17 @@ export default function Profile() {
     profile: {
       icon: <UserCircle size={24} weight="Bold" />,
       title: 'INFORMACIÓN DE CONTACTO',
-      description: 'Consulte y actualice su información personal'
-    }
+      description: 'Consulte y actualice su información personal',
+    },
   };
-  
+
   return (
     <div className="mr-20 space-y-6 p-4 md:p-6">
       {/* Encabezado */}
-      <TitleSection 
-        sections={sectionConfig} 
-        currentSection="profile" 
-      />     
-      
+      <TitleSection sections={sectionConfig} currentSection="profile" />
+
       {/* Sección de Experiencia */}
-      <div className="border-uaq-default-300 rounded-lg border shadow-sm">
+      <div className="rounded-lg border border-zinc-300 shadow-sm">
         <ConfigRow
           title="Perfil"
           valueinput=""

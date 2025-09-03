@@ -5,24 +5,18 @@ import { cn } from '@/lib/utils';
 import { CloseCircle } from '@solar-icons/react';
 
 const badgeVariants = cva(
-  'inline-flex items-center rounded-lg px-2.5 py-0.5 text-xs font-[400] font-futura transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+  'gap-1 flex items-center w-fit rounded-lg px-2.5 py-0.5 text-xs transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
   {
     variants: {
       variant: {
-        default: 'bg-uaq-success-transparent text-uaq-success',
-        secondary: 'bg-uaq-warning-transparent text-uaq-warning',
-        destructive: 'bg-uaq-danger-transparent text-uaq-danger',
-        outline: 'border border-uaq-default-800 text-foreground',
-
-        // Variantes con el onClose
-        defaultClosable: 'bg-uaq-success-transparent text-uaq-success',
-        secondaryClosable: 'bg-uaq-warning-transparent text-uaq-warning',
-        destructiveClosable: 'bg-uaq-danger-transparent text-uaq-danger',
-        outlineClosable: 'border border-uaq-default-800 text-foreground',
+        success: 'bg-uaq-success/10 text-uaq-success-hover',
+        warning: 'bg-uaq-warning/10 text-uaq-warning-hover',
+        danger: 'bg-uaq-danger/10 text-uaq-danger-hover',
+        outline: 'border border-zinc-800 text-foreground',
       },
     },
     defaultVariants: {
-      variant: 'default',
+      variant: 'success',
     },
   },
 );
@@ -38,7 +32,7 @@ function Badge({ className, variant, onClose, ...props }: BadgeProps) {
     <div className={cn(badgeVariants({ variant }), className)} {...props}>
       {props.children}
       {onClose && (
-        <CloseCircle onClick={onClose} size={14} weight="Bold" className="ml-2 cursor-pointer" />
+        <CloseCircle onClick={onClose} size={14} weight="Bold" className="center cursor-pointer" />
       )}
     </div>
   );

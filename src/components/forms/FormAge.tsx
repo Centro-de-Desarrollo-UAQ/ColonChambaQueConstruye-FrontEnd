@@ -48,11 +48,7 @@ export default function FormAge<T extends FieldValues>({
           {label && (
             <FormLabel className="font-medium">
               {label}
-              {optional && (
-                <span className="text-gray-500 text-sm font-light">
-                  {' Opcional'}
-                </span>
-              )}
+              {optional && <span className="text-sm font-light text-gray-500">{' Opcional'}</span>}
             </FormLabel>
           )}
 

@@ -1,10 +1,4 @@
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-} from '@/components/ui/form';
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -27,7 +21,7 @@ export default function FormPhone<T extends FieldValues>({
   placeholder,
   disabled = false,
   className,
-  optional = false
+  optional = false,
 }: FormPhoneProps<T>) {
   return (
     <FormField
@@ -49,9 +43,7 @@ export default function FormPhone<T extends FieldValues>({
             {label && (
               <FormLabel htmlFor={htmlFor} className="justify-between font-medium">
                 {label}
-                {optional && (
-                  <span className="text-gray-500 text-sm font-light"> Opcional</span>
-                )}
+                {optional && <span className="text-sm font-light text-gray-500"> Opcional</span>}
               </FormLabel>
             )}
 
@@ -91,7 +83,7 @@ export default function FormPhone<T extends FieldValues>({
                 {description}
               </Label>
             )}
-            
+
             <FormMessage />
           </FormItem>
         );

@@ -29,7 +29,7 @@ const buttonVariants = cva(
         primary: 'text-base font-bold',
         secondary: 'text-base font-normal hover:drop-shadow-lg',
         edit: 'text-base font-normal shadow-md active:shadow-none active:shadow-[0px_6px_10px_rgba(0,_0,_0,_0.20)_inset]',
-        ghost: 'bg-zinc-100 text-base font-bold hover:bg-zinc-200',
+        ghost: 'text-base font-bold hover:bg-zinc-200',
         mono: 'text-zinc-800',
         combobox: 'text-base border border-input bg-zinc-100',
       },
@@ -124,10 +124,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         gray: 'bg-zinc-100 text-zinc-800 hover:bg-zinc-200',
       },
       secondary: {
-        brand: 'text-uaq-brand',
-        accent: 'text-uaq-accent',
-        danger: 'text-uaq-danger',
-        gray: 'text-zinc-800',
+        brand: 'text-uaq-brand border-uaq-brand',
+        accent: 'text-uaq-accent border-uaq-accent',
+        danger: 'text-uaq-danger border-uaq-danger',
+        gray: 'text-zinc-800 border-zinc-800',
       },
       edit: {
         brand: 'bg-uaq-brand text-zinc-50 border border-uaq-brand-hover',

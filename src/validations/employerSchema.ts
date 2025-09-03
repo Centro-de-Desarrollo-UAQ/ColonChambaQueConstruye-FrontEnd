@@ -14,19 +14,18 @@ export const employerSchema = z
       .string()
       .min(12, 'RFC inválido.')
       .toUpperCase()
-      .regex(/^([A-Z,Ñ,&]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[A-Z|\d]{3})$/,
-        'RFC inválido.'),
+      .regex(
+        /^([A-Z,Ñ,&]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[A-Z|\d]{3})$/,
+        'RFC inválido.',
+      ),
     companyRazonSocial: z.string().min(1, DEFAULT_ERROR_MESSAGE),
     companySector: z.string(),
     employerName: z.string().min(1, DEFAULT_ERROR_MESSAGE),
     employerLastName: z.string().min(1, DEFAULT_ERROR_MESSAGE),
     employerEmail: z.string().email('Correo del empleador inválido.'),
     employerPhone: z.object({
-      code: z.string().min(1, "Selecciona una lada"),
-      number: z
-        .string()
-        .regex(/^\d+$/, "Ingrese solo números")
-        .min(10, "Número inválido")
+      code: z.string().min(1, 'Selecciona una lada'),
+      number: z.string().regex(/^\d+$/, 'Ingrese solo números').min(10, 'Número inválido'),
     }),
     accountPassword: z
       .string()

@@ -10,20 +10,18 @@ export default function ProfessionalSummary() {
     profile: {
       icon: <Diploma size={24} weight="Bold" />,
       title: 'PERFIL PROFESIONAL',
-      description: 'Edita los detalles de su experiencia profesional y habilidades destacadas, además de sus preferencias laborales'
-    }
+      description:
+        'Edita los detalles de su experiencia profesional y habilidades destacadas, además de sus preferencias laborales',
+    },
   };
 
   return (
     <div className="mr-20 space-y-6 p-4 md:p-6">
       {/* Encabezado */}
-      <TitleSection 
-        sections={sectionConfig} 
-        currentSection="profile" 
-      />  
+      <TitleSection sections={sectionConfig} currentSection="profile" />
 
       {/* Sección de Experiencia */}
-      <div className="border-uaq-default-300 rounded-lg border shadow-sm">
+      <div className="rounded-lg border border-zinc-300 shadow-sm">
         <ConfigRow
           title="Experiencia"
           valueinput=""

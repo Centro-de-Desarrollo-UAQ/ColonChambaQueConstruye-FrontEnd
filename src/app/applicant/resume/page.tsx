@@ -9,19 +9,16 @@ export default function Curriculum() {
     profile: {
       icon: <Documents size={24} weight="Bold" />,
       title: 'CURRICULUM',
-      description: 'Crre, suba y administre sus CV para postular empleos'
-    }
+      description: 'Crre, suba y administre sus CV para postular empleos',
+    },
   };
 
   return (
     <div className="mr-20 space-y-6 p-4 md:p-6">
-      <TitleSection 
-        sections={sectionConfig} 
-        currentSection="profile" 
-      /> 
+      <TitleSection sections={sectionConfig} currentSection="profile" />
 
       {/* Sección de CV actual */}
-      <div className="border-uaq-default-300 rounded-lg border shadow-sm">
+      <div className="rounded-lg border border-zinc-300 shadow-sm">
         <ConfigRow
           title="CVs Subidos"
           valueinput=""

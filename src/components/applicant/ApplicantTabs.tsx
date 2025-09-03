@@ -9,26 +9,26 @@ export default function ApplicantTabs() {
       value: 'profile',
       route: '/applicant/profile',
       icon: <UserCircle size={24} weight="Bold" />,
-      label: 'Información de contacto'
+      label: 'Información de contacto',
     },
     {
       value: 'professional',
       route: '/applicant/professionalSummary',
       icon: <Diploma size={24} weight="Bold" />,
-      label: 'Perfil profesional'
+      label: 'Perfil profesional',
     },
     {
       value: 'curriculum',
       route: '/applicant/resume',
       icon: <Documents size={24} weight="Bold" />,
-      label: 'Curriculum'
+      label: 'Curriculum',
     },
     {
       value: 'control',
       route: '/applicant/control',
       icon: <ShieldKeyholeMinimalistic size={24} weight="Bold" />,
-      label: 'Acceso de seguridad'
-    }
+      label: 'Acceso de seguridad',
+    },
   ];
 
   return (
@@ -41,10 +41,7 @@ export default function ApplicantTabs() {
       />
 
       <div className="w-full px-4 pb-8">
-        <TabOptions 
-          tabs={tabsConfig} 
-          defaultTab="profile" 
-        />
+        <TabOptions tabs={tabsConfig} defaultTab="profile" />
       </div>
     </div>
   );

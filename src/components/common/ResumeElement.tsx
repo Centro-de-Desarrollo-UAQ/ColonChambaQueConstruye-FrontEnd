@@ -23,7 +23,7 @@ export function ResumeElement({
     <div className="group flex w-full min-w-0 rounded-xl border transition-shadow hover:shadow-md">
       {/* Sección izquierda - Información del archivo */}
       <div
-        className="flex min-w-0 flex-1 cursor-pointer items-center gap-3 p-3 transition-colors group-hover:bg-uaq-default-100"
+        className="flex min-w-0 flex-1 cursor-pointer items-center gap-3 p-3 transition-colors group-hover:bg-zinc-100"
         onClick={onView}
         role="button"
         tabIndex={0}

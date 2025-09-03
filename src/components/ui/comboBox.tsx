@@ -1,11 +1,11 @@
 // * custom combobox component
-"use client"
- 
-import * as React from "react"
-import { Check, ChevronsUpDown } from "lucide-react"
- 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+'use client';
+
+import * as React from 'react';
+import { Check, ChevronsUpDown } from 'lucide-react';
+
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import {
   Command,
   CommandEmpty,
@@ -13,12 +13,8 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+} from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 interface ComboboxOption {
   value: string;
@@ -38,7 +34,7 @@ export function Combobox({
   onChange,
   options,
   width = 'w-full',
-  placeholder = 'Selecciona una opción...'
+  placeholder = 'Selecciona una opción...',
 }: ComboboxProps) {
   const [open, setOpen] = React.useState(false);
 
@@ -53,9 +49,7 @@ export function Combobox({
           aria-expanded={open}
           className={`${width} justify-between`}
         >
-          {value
-            ? options.find((opt) => opt.value === value)?.label
-            : placeholder}
+          {value ? options.find((opt) => opt.value === value)?.label : placeholder}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -76,10 +70,7 @@ export function Combobox({
                 >
                   {opt.label}
                   <Check
-                    className={cn(
-                      'ml-auto',
-                      value === opt.value ? 'opacity-100' : 'opacity-0'
-                    )}
+                    className={cn('ml-auto', value === opt.value ? 'opacity-100' : 'opacity-0')}
                   />
                 </CommandItem>
               ))}
