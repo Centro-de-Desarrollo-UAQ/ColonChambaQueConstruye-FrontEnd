@@ -1,20 +1,47 @@
+// * Styles with customized color variants
 import * as React from 'react';
 import { Slot as SlotPrimitive } from 'radix-ui';
 import { cva, type VariantProps } from 'class-variance-authority';
+
 import { cn } from '@/lib/utils';
 
+/**
+ * Style and size variants of the Button component.
+ *
+ * - `variant`: defines the visual style of the button.
+ * - `size`: defines the dimensions of the button.
+ */
 const buttonVariants = cva(
   'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-5 [&_svg]:shrink-0 cursor-pointer',
   {
     variants: {
+      /**
+       * Visual styles available for the button.
+       *
+       * - `primary`: Button with solid background and highlighted text.
+       * - `secondary`: Button with only text, shadow on hover.
+       * - `edit`: Button with active internal shadow.
+       * - `ghost`: Clear background, soft hover.
+       * - `mono`: It only modifies the color of the hover text.
+       * - `combobox`: Button style for a combobox.
+       */
       variant: {
         primary: 'text-base font-bold',
-        secondary: 'text-base font-normal hover:drop-shadow-lg',
+        secundary: 'text-base font-normal hover:drop-shadow-lg',
         edit: 'text-base font-normal shadow-md active:shadow-none active:shadow-[0px_6px_10px_rgba(0,_0,_0,_0.20)_inset]',
         ghost: 'text-base font-bold hover:bg-zinc-200',
         mono: 'text-zinc-800',
         combobox: 'text-base border border-input bg-zinc-100',
       },
+      /**
+       * Available sizes for the button.
+       *
+       * - `default`: Standard measurements.
+       * - `sm`: Compact button.
+       * - `lg`: Large button.
+       * - `icon`: Square button ideal for icons.
+       * - `sm_icon`: Compact square button ideal for icons.
+       */
       size: {
         default: 'px-4 py-3 rounded-md',
         sm: 'h-9 rounded-md px-3 text-sm',
@@ -23,12 +50,19 @@ const buttonVariants = cva(
         sm_icon: 'size-9 p-3 rounded-md',
       },
       color: {
-        brand: null,
-        'brand-tertiary': null,
-        secondary: null,
-        accent: null,
-        danger: null,
-        gray: null,
+        /**
+         * Color palette applied to the button.
+         *
+         * - `brand`: Main institutional color.
+         * - `accent`: Secondary or emphasis color.
+         * - `danger`: Indicates destructive or warning action.
+         * - `gray`: Neutral style.
+         */
+        brand: '',
+        accent: '',
+        danger: '',
+        gray: '',
+        secundary: '',
       },
     },
     defaultVariants: {
@@ -36,89 +70,105 @@ const buttonVariants = cva(
       size: 'default',
       color: 'brand',
     },
-  }
+  },
 );
 
+/**
+ * Properties accepted by the Button component.
+ */
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
+  /**
+   * If set to `true`, the button renders as a child element (`SlotPrimitive.Slot`)
+   * instead of a `<button>`, allowing elements such as `<Link>` to be used.
+   *
+   * @default false
+   */
   asChild?: boolean;
-  color?: 'brand' | 'brand-tertiary' | 'secondary' | 'accent' | 'danger' | 'gray';
+
+  /**
+   * Defines the color palette that is applied to the selected variant.
+   * Affects background, text and/or border depending on the combination with `variant`.
+   *
+   * Allowable values:
+   * - `brand` (default): Main institutional color.
+   * - `accent`: Secondary or emphasis color.
+   * - `danger`: Indicates destructive or warning action.
+   * - `gray`: Neutral style.
+   *
+   * @default "brand"
+   */
+  color?: 'brand' | 'accent' | 'danger' | 'gray' | 'secundary';
 }
 
+/**
+ * `Button` component.
+ *
+ * Reusable and fully stylized button that supports multiple variations,
+ * sizes, colors and behaviors. Compatible with accessibility, icons,
+ * composition with other elements and dynamic styles.
+ */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, color = 'brand', asChild = false, ...props }, ref) => {
     const Comp = asChild ? SlotPrimitive.Slot : 'button';
 
-    // Definir colores directamente en el componente
-    const colorClasses: Record<string, Record<string, string>> = {
+    /**
+     * Class map by variant and color.
+     * Determines the final style of the button by combining both properties.
+     */
+    const colorClasses = {
       primary: {
-        brand: 'background:#470A68;color:#ffffff;',
-        'brand-tertiary': 'background:#8028A2;color:#ffffff;',
-        secondary: 'background:#FF7F40;color:#ffffff;',
-        accent: 'background:#ffffff;color:#470A68;',
-        danger: 'background:#D32F2F;color:#ffffff;',
-        gray: 'background:#F5F5F5;color:#333333;',
+        brand: 'bg-brand text-uaq-white hover:bg-uaq-brand-hover',
+        accent: 'bg-accent text-uaq-white hover:bg-accent-hover',
+        danger: 'bg-uaq-danger text-uaq-white',
+        gray: 'bg-zinc-100 text-zinc-800 hover:bg-zinc-200',
+        secundary: 'bg-secundary text-uaq-white hover:bg-secundary-hover',
       },
       secondary: {
-        brand: 'background:#470A68;color:#ffffff;border:1px solid #470A68;',
-        'brand-tertiary': 'background:#8028A2;color:#ffffff;border:1px solid #8028A2;',
-        secondary: 'background:#FF7F40;color:#ffffff;border:1px solid #FF7F40;',
-        accent: 'background:#ffffff;color:#470A68;border:1px solid #470A68;',
-        danger: 'background:#D32F2F;color:#ffffff;border:1px solid #D32F2F;',
-        gray: 'background:#F5F5F5;color:#333333;border:1px solid #333333;',
+        brand: 'text-uaq-brand border-uaq-brand',
+        accent: 'text-uaq-accent border-uaq-accent',
+        danger: 'text-uaq-danger border-uaq-danger',
+        gray: 'text-zinc-800 border-zinc-800',
       },
       edit: {
-        brand: 'background:#470A68;color:#ffffff;border:1px solid #8028A2;',
-        'brand-tertiary': 'background:#8028A2;color:#ffffff;border:1px solid #470A68;',
-        secondary: 'background:#FF7F40;color:#ffffff;border:1px solid #470A68;',
-        accent: 'background:#ffffff;color:#470A68;border:1px solid #470A68;',
-        danger: 'background:#D32F2F;color:#ffffff;border:1px solid #8028A2;',
-        gray: 'background:#F5F5F5;color:#333333;border:1px solid #333333;',
+        brand: 'bg-brand text-zinc-50 border border-uaq-brand-hover',
+        accent: 'bg-uaq-accent text-zinc-50 border border-uaq-accent-hover',
+        danger: 'bg-uaq-danger text-zinc-50 border border-uaq-danger-hover',
+        gray: 'bg-zinc-100 text-zinc-800 border border-zinc-200',
       },
       ghost: {
-        brand: 'background:transparent;color:#470A68;',
-        'brand-tertiary': 'background:transparent;color:#8028A2;',
-        secondary: 'background:transparent;color:#FF7F40;',
-        accent: 'background:transparent;color:#ffffff;',
-        danger: 'background:transparent;color:#D32F2F;',
-        gray: 'background:transparent;color:#333333;',
+        brand: 'text-brand',
+        accent: 'text-uaq-accent',
+        danger: 'text-uaq-danger',
+        gray: 'text-zinc-800',
       },
       mono: {
-        brand: 'color:#470A68;',
-        'brand-tertiary': 'color:#8028A2;',
-        secondary: 'color:#FF7F40;',
-        accent: 'color:#ffffff;',
-        danger: 'color:#D32F2F;',
-        gray: 'color:#333333;',
+        brand: 'hover:text-brand',
+        accent: 'hover:text-uaq-accent',
+        danger: 'hover:text-uaq-danger',
+        gray: 'hover:text-zinc-500',
       },
       combobox: {
-        brand: 'background:#470A68;color:#ffffff;border:1px solid #470A68;',
-        'brand-tertiary': 'background:#8028A2;color:#ffffff;border:1px solid #8028A2;',
-        secondary: 'background:#FF7F40;color:#ffffff;border:1px solid #FF7F40;',
-        accent: 'background:#ffffff;color:#470A68;border:1px solid #470A68;',
-        danger: 'background:#D32F2F;color:#ffffff;border:1px solid #D32F2F;',
-        gray: 'background:#F5F5F5;color:#333333;border:1px solid #333333;',
+        brand: 'text-brand',
+        accent: 'text-accent',
+        danger: 'text-uaq-danger',
+        gray: 'text-zinc-800',
       },
     };
 
-    // Aplicar los estilos inline para los colores
-    const style = { ...props.style, ...Object.fromEntries(
-      (colorClasses[variant ?? 'primary'][color] || '')
-        .split(';')
-        .filter(Boolean)
-        .map(s => s.split(':').map(x => x.trim()))
-    )};
-
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, color }), className)}
-        style={style}
+        className={cn(
+          buttonVariants({ variant, size, color }),
+          colorClasses[variant ?? 'primary']?.[color],
+          className,
+        )}
         ref={ref}
         {...props}
       />
     );
-  }
+  },
 );
 
 Button.displayName = 'Button';
