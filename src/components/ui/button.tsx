@@ -63,6 +63,7 @@ const buttonVariants = cva(
         danger: '',
         gray: '',
         secundary: '',
+        terniary: '', // 👈 nuevo
       },
     },
     defaultVariants: {
@@ -99,7 +100,7 @@ export interface ButtonProps
    *
    * @default "brand"
    */
-  color?: 'brand' | 'accent' | 'danger' | 'gray' | 'secundary';
+  color?: 'brand' | 'accent' | 'danger' | 'gray' | 'secundary' | 'terniary';
 }
 
 /**
@@ -124,6 +125,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         danger: 'bg-uaq-danger text-uaq-white hover:bg-uaq-danger-hover hover:border-uaq-danger-hover border-uaq-danger',
         gray: 'bg-zinc-100 text-zinc-800 hover:bg-zinc-200',
         secundary: 'bg-secundary text-uaq-white hover:bg-secundary-hover',
+        terniary: 'bg-uaq-terniary text-uaq-white hover:bg-uaq-terniary-hover border-uaq-terniary hover:border-uaq-terniary-hover',
+
       },
       secundary: {
         brand: 'text-uaq-brand border-uaq-brand',

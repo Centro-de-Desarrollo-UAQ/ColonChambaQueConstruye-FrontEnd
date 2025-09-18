@@ -29,7 +29,8 @@ export function TargetGroups() {
               <p className="mb-5 leading-loose">{description}</p>
               <Button
                 onClick={() => router.push(signInHref)}
-                variant="default"
+                variant="primary"
+                color='terniary'
                 className="mx-auto w-fit lg:mx-0"
               >
                 {signInText}
