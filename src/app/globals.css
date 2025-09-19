@@ -108,6 +108,8 @@
   --uaq-success-hover: oklch(0.5112 0.1819 153.21);
   --uaq-warning-hover: oklch(0.5515 0.140162 66.5167);
   --uaq-danger-hover: oklch(0.5361 0.2142 13.65);
+  --uaq-selected-hover: oklch(0.68 0.17 39.5);
+
 
   /* Nuevo color terniary */
   --uaq-terniary: #8028A2;
