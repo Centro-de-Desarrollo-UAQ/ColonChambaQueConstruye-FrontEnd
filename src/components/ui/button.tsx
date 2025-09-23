@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils';
  * - `size`: defines the dimensions of the button.
  */
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-5 [&_svg]:shrink-0 cursor-pointer',
+  'inline-flex items-center justify-center border-1 gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-5 [&_svg]:shrink-0 cursor-pointer',
   {
     variants: {
       /**
@@ -29,8 +29,8 @@ const buttonVariants = cva(
         primary: 'text-base font-bold',
         secundary: 'text-base font-normal hover:drop-shadow-lg',
         edit: 'text-base font-normal shadow-md active:shadow-none active:shadow-[0px_6px_10px_rgba(0,_0,_0,_0.20)_inset]',
-        ghost: 'text-base font-bold hover:bg-zinc-200',
-        mono: 'text-zinc-800',
+        ghost: 'text-base font-bold hover:bg-zinc-200 border-0',
+        mono: 'text-zinc-800 border-0',
         combobox: 'text-base border border-input bg-zinc-100',
       },
       /**
@@ -63,6 +63,7 @@ const buttonVariants = cva(
         danger: '',
         gray: '',
         secundary: '',
+        terniary: '', // 👈 nuevo
       },
     },
     defaultVariants: {
@@ -99,7 +100,7 @@ export interface ButtonProps
    *
    * @default "brand"
    */
-  color?: 'brand' | 'accent' | 'danger' | 'gray' | 'secundary';
+  color?: 'brand' | 'accent' | 'danger' | 'gray' | 'secundary' | 'terniary';
 }
 
 /**
@@ -119,32 +120,34 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
      */
     const colorClasses = {
       primary: {
-        brand: 'bg-brand text-uaq-white hover:bg-uaq-brand-hover',
-        accent: 'bg-accent text-uaq-white hover:bg-accent-hover',
-        danger: 'bg-uaq-danger text-uaq-white',
+        brand: 'bg-brand text-uaq-white hover:bg-uaq-brand-hover border-brand hover:border-uaq-brand-hover',
+        accent: 'bg-accent text-uaq-brand-hover  hover:bg-accent-hover hover:text-uaq-white hover:border-uaq-brand-hover border-brand',
+        danger: 'bg-uaq-danger text-uaq-white hover:bg-uaq-danger-hover hover:border-uaq-danger-hover border-uaq-danger',
         gray: 'bg-zinc-100 text-zinc-800 hover:bg-zinc-200',
         secundary: 'bg-secundary text-uaq-white hover:bg-secundary-hover',
+        terniary: 'bg-uaq-terniary text-uaq-white hover:bg-uaq-terniary-hover border-uaq-terniary hover:border-uaq-terniary-hover',
+
       },
-      secondary: {
+      secundary: {
         brand: 'text-uaq-brand border-uaq-brand',
-        accent: 'text-uaq-accent border-uaq-accent',
-        danger: 'text-uaq-danger border-uaq-danger',
+        accent: 'text-brand border-uaq-accent hover:text-uaq-brand-hover border-0',
+        danger: 'text-uaq-danger border-0 hover:text-uaq-danger-hover',
         gray: 'text-zinc-800 border-zinc-800',
       },
       edit: {
         brand: 'bg-brand text-zinc-50 border border-uaq-brand-hover',
-        accent: 'bg-uaq-accent text-zinc-50 border border-uaq-accent-hover',
-        danger: 'bg-uaq-danger text-zinc-50 border border-uaq-danger-hover',
-        gray: 'bg-zinc-100 text-zinc-800 border border-zinc-200',
+        accent: 'bg-uaq-accent text-zinc-50 border border-uaq-accent-hover text-uaq-danger',
+        danger: 'bg-uaq-danger-hover text-zinc-50 border border-uaq-danger-hover active:bg-uaq-danger',
+        gray: 'bg-zinc-100 text-zinc-800 border border-zinc-200 text-brand',
       },
       ghost: {
-        brand: 'text-brand',
-        accent: 'text-uaq-accent',
+        brand: 'text-brand bg-uaq-white-ghost',
+        accent: 'text-accent bg-uaq-white-ghost',
         danger: 'text-uaq-danger',
-        gray: 'text-zinc-800',
+        gray: 'text-uaq-gray bg-uaq-white-ghost',
       },
       mono: {
-        brand: 'hover:text-brand',
+        brand: 'hover:text-uaq-brand-hover',
         accent: 'hover:text-uaq-accent',
         danger: 'hover:text-uaq-danger',
         gray: 'hover:text-zinc-500',
