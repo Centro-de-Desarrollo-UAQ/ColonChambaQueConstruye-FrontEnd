@@ -3,9 +3,8 @@
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { BriefcaseBusiness, Building2 } from 'lucide-react';
 import { SidebarNavButton } from './SidebarNavButton';
-import { UserPlusBroken } from 'solar-icons';
+import { Case,AddSquare,CaseRoundMinimalistic,Settings  } from '@solar-icons/react'
 
 
 export default function EmployerSideBar() {
@@ -13,13 +12,14 @@ export default function EmployerSideBar() {
 
   //Vinculos creados en base al figma
   const navLinks = [
-    { href: '/vacantes', label: 'Empresas', icon:Building2 },
-    { href: '/publicar-vacantes', label: 'Vacantes', icon:BriefcaseBusiness},
-    { href: '/ajustes', label: 'Usuarios' , icon: UserPlusBroken},
+    { href: '/vacantes', label: 'Vacantes', icon:Case},
+    { href: '/publicar-vacantes', label: 'Publicar vacantes', icon:AddSquare },
+    { href: '/cartera-usuarios', label: 'Cartera de usuarios' , icon: CaseRoundMinimalistic },
+    { href: '/ajustes', label: 'Ajustes',icon: Settings  },
   ];
 
   return (
-    <nav className="group/sidebar bg-uaq-accent h-screen w-15 hover:w-64 transition-all duration-300 ease-in-out flex flex-col justify-start pt-5 pl-4 overflow-hidden">
+    <nav className="group/sidebar bg-uaq-accent h-screen w-15 hover:w-64 transition-all duration-300 ease-in-out flex flex-col justify-start pt-5 pl-2 pr-2 overflow-hidden stroke-3 shadow-[4px_0_8px_rgba(0,0,0,0.3)]">
     
 
       {/* Logos alineados */}
@@ -41,7 +41,7 @@ export default function EmployerSideBar() {
       </div>
 
       {/* Vinculos a posibles nuevas paginas */}
-      <div className="text-[var(--uaq-selected-hover)] font-futura flex flex-col font-[400] pt-5 items-center pl-2">
+      <div className="text-[var(--uaq-selected-hover)] font-futura flex flex-col font-[400] pt-5 items-center group-hover/sidebar:items-stretch">
         {navLinks.map(({ href, label, icon:Icon }) => (
           <SidebarNavButton key={href} href={href} label={label} icon={Icon} active={pathname === href} />
         ))}
