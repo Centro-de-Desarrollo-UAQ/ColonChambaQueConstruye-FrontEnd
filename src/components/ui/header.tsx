@@ -15,9 +15,15 @@ import {
 interface HeaderProps{
     userIcon?: React.ReactNode;
     logOut?: React.ReactNode;
+    companyImageUrl?: string;
+    companyTitle?: string;
 }
 
-export default function Header({ userIcon = <User className="h-5 w-5"/> , logOut = <Logout2 className='h-5 w-5'/> }: HeaderProps) {
+export default function Header({ 
+    companyTitle='Deloitte Qro', //Obtener el nombre de la compañía
+    companyImageUrl='/Deloitte.svg', //Obtener el logo de la compañía
+    userIcon = <User className="h-5 w-5"/> , 
+    logOut = <Logout2 className='h-5 w-5'/> }: HeaderProps) {
   return (
     <>
         <header className='bg--accent flex items-center justify-between px-10 border-b border-zinc-200 drop-shadow-md'>
@@ -32,17 +38,22 @@ export default function Header({ userIcon = <User className="h-5 w-5"/> , logOut
             <div className="flex items-center justify-center">
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="mono">Empleador</Button>
+                        <Button variant="mono">
+                            <Image src={companyImageUrl} alt={companyTitle} width={32} height={32} className="h-8 w-8 rounded-full" />
+                            {companyTitle}
+                        </Button>
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent>
                         <DropdownMenuItem onClick={() => console.log("Página de perfil")}>
                             {userIcon}
-                            Perfil
+                            Perfil {//Acceder a la página de perfil del empleador
+                            }
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => console.log("Cerrar sesión")} variant="destructive">
                             {logOut}
-                            Cerrar sesión
+                            Cerrar sesión {//Procedimiento de cierre de sesión del empleador
+                            }
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
