@@ -3,6 +3,7 @@ import React from "react";
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Eye, AddCircle, User } from '@solar-icons/react';
 import { createContext } from "react";
+import { AdminNavbarMenu } from "@/components/navigation/AdminNavbarMenu";
 
 
 export default function App() {
@@ -23,6 +24,10 @@ export default function App() {
                     </Button>
                 </div>
                 <br />
+                <div className="flex gap-2">
+                    <h3 className="m-3">Third Buttons</h3>
+                    <Button variant="third" color="accent" className="m-2">Button</Button>
+                </div>
                 <div className="flex gap-2">
                     <h3 className="m-3">Edit Buttons</h3>
                     <Button variant="edit" color="gray" className="m-2">Button</Button>
@@ -77,6 +82,11 @@ export default function App() {
                         <AddCircle weight="Bold" />
                     </Button>
                 </div>
+            </div>
+            <div className="my-8">
+                <h2 className="font-bold text-2xl mx-8">NavBar Admin</h2>
+                <br />
+                <AdminNavbarMenu/>
             </div>
         </>
     );
