@@ -24,6 +24,7 @@ const buttonVariants = cva(
        * - `ghost`: Clear background, soft hover.
        * - `mono`: It only modifies the color of the hover text.
        * - `combobox`: Button style for a combobox.
+       * - `third`: Button style used in Admin NavBar Menu
        */
       variant: {
         primary: 'text-base font-bold',
@@ -32,6 +33,7 @@ const buttonVariants = cva(
         ghost: 'text-base font-bold hover:bg-zinc-200 border-0',
         mono: 'text-zinc-800 border-0',
         combobox: 'text-base border border-input bg-zinc-100',
+        third: 'text-white text-base font-bold border-white'
       },
       /**
        * Available sizes for the button.
@@ -155,6 +157,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         danger: 'text-uaq-danger',
         gray: 'text-zinc-800',
       },
+      third: {
+        accent: 'text-white',
+        brand: 'bg-white text-uaq-brand text-uaq-brand-hover border-brand'
+      }
     };
 
     return (
