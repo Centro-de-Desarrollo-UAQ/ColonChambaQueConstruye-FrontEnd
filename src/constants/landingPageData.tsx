@@ -85,134 +85,23 @@ export const targetGroups: TargetGroup[] = [
     adviceHref: '/advices/student',
     adviceText: 'Consejos para estudiantes',
     description:
-      'Sabemos que estás pensando en lo que sigue. Es momento de empezar a escribir tu historia profesional, aquí puedes encontrar oportunidades para aplicar las habilidades que has desarrollado.',
+      'Conéctate con las mejores vacantes de tu municipio y acércate a empresas que buscan talento local. Mantén tu información actualizada y aplica solo a los puestos que realmente se adapten a tus habilidades: así aumentarás tus posibilidades de ser contratado más rápido.',
     image:
-      '/Graduacion_Psico_JP_7.jpg',
+      '/Hero-3.png',
     signInHref: 'signin/uaq',
-    signInText: 'Regístrate como estudiante UAQ',
-    title: 'Tu carrera comienza antes de egresar',
+    signInText: 'Regístrate gratis y encuentra vacantes locales',
+    title: 'Encuentra tu oportunidad en Colón, Querétaro',
   },
   {
     adviceHref: '/advices/student',
     adviceText: 'Consejos para egresados',
     description:
-      'Egresaste, pero la UAQ siempre te acompaña. Encuentra empleos, la forma de seguir creciendo profesionalmente y mantente cerca de nuevas oportunidades.',
+      'Publica tus vacantes y conecta con candidatos locales en Colón, Querétaro. Nuestra plataforma facilita el proceso de reclutamiento, ayudándote a llegar a las personas correctas de manera rápida y sencilla.',
     image:
-      '/GRADUACION_BACH_BICEN_RG_5.jpg',
+      '/Hero-4.png',
     signInHref: 'signin/uaq',
-    signInText: 'Regístrate como egresado UAQ',
-    title: 'La UAQ sigue contigo',
+    signInText: 'Registra tu empresa y publica vacantes',
+    title: 'Encuentra al talento que tu empresa necesita',
   },
-  {
-    adviceHref: '/advices/student',
-    adviceText: 'Consejos al buscar empleo',
-    description:
-      'En la UAQ creemos en el talento sin fronteras. Si estás en busca de empleo, aquí puedes registrarte y encontrar oportunidades que se adapten a ti.',
-    image:
-      '/Found_15.jpg',
-    signInHref: 'signin/uaq',
-    signInText: 'Regístrate',
-    title: 'Abierta a toda persona que busca crecer',
-  },
-  /*{
-    adviceHref: '/advices/student',
-    adviceText: 'Consejos para estudiantes',
-    description:
-      'Estás a punto de culminar una etapa crucial en tu vida académica. Es el momento de poner en práctica todo lo que has aprendido y comenzar tu carrera profesional con el pie derecho.',
-    image:
-      'https://images.pexels.com/photos/1438081/pexels-photo-1438081.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    signInHref: 'signin/uaq',
-    signInText: 'Regístrate como estudiante UAQ',
-    title: 'Para estudiantes UAQ de últimos semestres',
-  },
-  {
-    adviceHref: '/advices/student',
-    adviceText: 'Consejos para egresados',
-    description:
-      'Tu tiempo en la universidad te ha preparado bien, y ahora es el momento de avanzar en tu carrera. Conéctate con empleadores que valoran tu formación y habilidades.',
-    image:
-      'https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    signInHref: 'signin/uaq',
-    signInText: 'Regístrate como egresado UAQ',
-    title: 'Para egresados UAQ',
-  },
-  {
-    adviceHref: '/advices/student',
-    adviceText: 'Consejos al buscar empleo',
-    description:
-      'Nuestra plataforma no solo es para estudiantes y egresados. Cualquier persona que busque mejorar su situación laboral o explorar nuevas oportunidades es bienvenida.',
-    image:
-      'https://images.pexels.com/photos/7578686/pexels-photo-7578686.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    signInHref: 'signin/uaq',
-    signInText: 'Regístrate',
-    title: 'Para público en general',
-  },*/
-];
-
-export const faculties: { name: string; color: string; href: string }[] = [
-  {
-    color: 'facArtes',
-    name: 'Facultad de artes',
-    href: 'https://fa.uaq.mx/',
-  },
-  {
-    color: 'facInformatica',
-    name: 'Facultad de informática',
-    href: 'https://www.uaq.mx/informatica/',
-  },
-  {
-    color: 'facIngenieria',
-    name: 'Facultad de ingniería',
-    href: 'https://ingenieria.uaq.mx/',
-  },
-  {
-    color: 'facConta',
-    name: 'Facultad de contaduría y administración',
-    href: 'https://fca.uaq.mx/',
-  },
-  {
-    color: 'facFilosofia',
-    name: 'Facultad de filosofía',
-    href: 'https://filosofia.uaq.mx/ffi_home/',
-  },
-  {
-    color: 'facLenguas',
-    name: 'Facultad de lenguas y letras',
-    href: 'https://fll.uaq.mx/',
-  },
-  {
-    color: 'facDerecho',
-    name: 'Facultad de derecho',
-    href: '',
-  },
-  {
-    color: 'facEnfermeria',
-    name: 'Facultad de enfermería',
-    href: 'https://enfermeria.uaq.mx/',
-  },
-  {
-    color: 'facMedicina',
-    name: 'Facultad de medicina',
-    href: 'https://derecho.uaq.mx/',
-  },
-  {
-    color: 'facCiencias',
-    name: 'Facultad de ciencias naturales',
-    href: 'https://fcn.uaq.mx/',
-  },
-  {
-    color: 'facPoliticas',
-    name: 'Facultad de ciencias políticas y sociales',
-    href: 'https://fcps.uaq.mx/',
-  },
-  {
-    color: 'facPsicologia',
-    name: 'Facultad de psicología',
-    href: 'https://psicologia.uaq.mx/',
-  },
-  {
-    color: 'facQuimica',
-    name: 'Facultad de química',
-    href: 'https://quimica.unam.mx/',
-  },
+  
 ];

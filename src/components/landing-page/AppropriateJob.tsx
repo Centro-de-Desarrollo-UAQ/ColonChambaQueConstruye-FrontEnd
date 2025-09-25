@@ -36,11 +36,9 @@ export function AppropriateJob() {
 
       {/* Principal Text */}
       <div className="flex flex-1 flex-col items-center justify-center gap-8 text-center">
-        <h2 className="text-3xl font-bold">El mundo laboral ya te está buscando</h2>
+        <h2 className="text-3xl font-bold">Encuentra el empleo adecuado</h2>
         <p className="leading-loose">
-          No se trata de cualquier empleo, sino del que conecta contigo. Usa los filtros, conoce las
-          vacantes activas y postúlate a lo que sí hace sentido con tu perfil. Tú eliges hacia dónde
-          quieres ir, nosotros te ayudamos a llegar.
+        En la era moderna, encontrar el empleo perfecto puede ser un desafío, pero no tiene por qué serlo. Nuestra plataforma de bolsa de trabajo, especialmente diseñada para la comunidad del municipio de colon, está aquí para facilitar tu búsqueda y conectar talento con oportunidades.
         </p>
       </div>
 

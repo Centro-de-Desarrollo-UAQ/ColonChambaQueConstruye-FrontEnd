@@ -56,7 +56,15 @@
   --color-secundary-hover: var(--secundary-hover);
   --color-uaq-warning-hover: var(--uaq-warning-hover);
   --color-uaq-danger-hover: var(--uaq-danger-hover);
+<<<<<<< HEAD
   --color-uaq-sidebar-selected-hover: var(--uaq-selected-hover-sidebar)
+=======
+  --color-uaq-white-ghost: var(--uaq-white-ghost);
+  --color-uaq-gray: var(--uaq-gray);
+  --color-uaq-terniary: var(--uaq-terniary);
+  --color-uaq-terniary-hover: var(--uaq-terniary-hover);
+
+>>>>>>> dda20065b2e93cfe01797aa06e80da5a79f653d4
 }
 
 :root {
@@ -95,20 +103,22 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
   /*Aqui son los colores de los componentes*/
-  --accent: #470A68;
-  --brand: #8028A2;
+  --accent: #FFFFFF;
+  --brand: #470A68;
   --secundary: #FF7F40;
   --uaq-warning: oklch(78.19% 0.1585 72.33);
-  --uaq-danger: oklch(0.5845 0.232 12.98);
+  --uaq-danger: #FE4141;
   --uaq-white: oklch(100% 0 0);
+  --uaq-gray: #71717A; /*Gris de botones ghost*/
+  --uaq-white-ghost: #FAFAFA; /*Fondo botones ghost*/
   /*Estos son los colores de el hover*/
-  --accent-hover: #401250;
-  --uaq-brand-hover: #5A1E7F;
+  --accent-hover: #AD42D0;
+  --uaq-brand-hover: #AD42D0;
   --uaq-success-hover: oklch(0.5112 0.1819 153.21);
   --uaq-warning-hover: oklch(0.5515 0.140162 66.5167);
+
   --uaq-danger-hover: oklch(0.5361 0.2142 13.65);
   --uaq-selected-hover: oklch(0.68 0.17 39.5);
-
 
   /* Nuevo color terniary */
   --uaq-terniary: #8028A2;

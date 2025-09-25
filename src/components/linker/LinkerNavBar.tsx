@@ -19,18 +19,7 @@ export default function LinkerNavBar() {
     <nav className="bg-uaq-accent flex items-center justify-between px-20">
       {/* Logos alineados */}
       <div className="flex items-center gap-4">
-        <Link href="/">
-          <Image src="/UAQ logo.svg" alt="UAQ Logo" width={120} height={120} className="h-7 w-6" />
-        </Link>
-        <Link href="/">
-          <Image
-            src="/BTWhite.svg"
-            alt="Bolsa de Trabajo Logo"
-            width={120}
-            height={120}
-            className="h-8 w-30"
-          />
-        </Link>
+        
       </div>
 
       {/* Categorías */}
