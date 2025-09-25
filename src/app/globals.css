@@ -1,6 +1,4 @@
 @import 'tailwindcss';
-@tailwind base;
-@tailwind components;
 @tailwind utilities;
 
 
@@ -58,6 +56,7 @@
   --color-secundary-hover: var(--secundary-hover);
   --color-uaq-warning-hover: var(--uaq-warning-hover);
   --color-uaq-danger-hover: var(--uaq-danger-hover);
+  --color-uaq-sidebar-selected-hover: var(--uaq-selected-hover-sidebar)
   --color-uaq-white-ghost: var(--uaq-white-ghost);
   --color-uaq-gray: var(--uaq-gray);
   --color-uaq-terniary: var(--uaq-terniary);
@@ -121,6 +120,7 @@
   /* Nuevo color terniary */
   --uaq-terniary: #8028A2;
   --uaq-terniary-hover: #9933BF; /* opcional, para hover */
+  --uaq-selected-hover-sidebar: #ffb48f;
 }
 
 @font-face {
