@@ -62,6 +62,7 @@
   --color-uaq-gray: var(--uaq-gray);
   --color-uaq-terniary: var(--uaq-terniary);
   --color-uaq-terniary-hover: var(--uaq-terniary-hover);
+}
 
 
 :root {
