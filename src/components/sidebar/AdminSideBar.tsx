@@ -1,26 +1,27 @@
-  'use client';
+'use client';
 
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { SidebarNavButton } from './SidebarNavButton';
-import { Case,AddSquare,CaseRoundMinimalistic,Settings  } from '@solar-icons/react'
+import { SidebarNavButtonAdmin } from './SidebarNavButtonAdmin';
+import { UserPlusRounded } from '@solar-icons/react'
+import { Case } from '@solar-icons/react'
+import { Buildings2 } from '@solar-icons/react'
 
 
-export default function EmployerSideBar() {
+export default function AdminSideBar() {
   const pathname = usePathname();
 
   //Vinculos creados en base al figma
   const navLinks = [
-    { href: '/testing/plantilla/Omar', label: 'Vacantes', icon:Case},
-    { href: '/publicar-vacantes', label: 'Publicar vacantes', icon:AddSquare },
-    { href: '/cartera-usuarios', label: 'Cartera de usuarios' , icon: CaseRoundMinimalistic },
-    { href: '/ajustes', label: 'Ajustes',icon: Settings  },
+    { href: '/testing/plantilla/Mateo', label: 'Empresas', icon: Buildings2 },
+    { href: '/publicar-vacantes', label: 'Vacantes', icon: Case },
+    { href: '/Cartera de usuarios', label: 'Usuarios', icon: UserPlusRounded }, 
+  
   ];
 
   return (
     <nav className="group/sidebar bg-uaq-accent h-screen w-15 hover:w-64 transition-all duration-300 ease-in-out flex flex-col justify-start pt-5 pl-2 pr-2 overflow-hidden stroke-3 shadow-[4px_0_8px_rgba(0,0,0,0.3)]">
-    
 
       {/* Logos alineados */}
       <div className="flex items-center gap-4">
@@ -41,9 +42,9 @@ export default function EmployerSideBar() {
       </div>
 
       {/* Vinculos a posibles nuevas paginas */}
-      <div className="text-[var(--uaq-selected-hover)] font-futura flex flex-col font-[400] pt-5 items-center group-hover/sidebar:items-stretch">
-        {navLinks.map(({ href, label, icon:Icon }) => (
-          <SidebarNavButton key={href} href={href} label={label} icon={Icon} active={pathname === href} />
+      <div className="text-[var(--uaq-terniary)] font-futura flex flex-col font-[400] pt-5 items-center pl-2">
+        {navLinks.map(({ href, label, icon: Icon }) => (
+          <SidebarNavButtonAdmin key={href} href={href} label={label} icon={Icon} active={pathname === href} />
         ))}
       </div>
     </nav>
