@@ -125,7 +125,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         brand: 'bg-brand text-uaq-white hover:bg-uaq-brand-hover border-brand hover:border-uaq-brand-hover',
         accent: 'bg-accent text-uaq-brand-hover  hover:bg-accent-hover hover:text-uaq-white hover:border-uaq-brand-hover border-brand',
         danger: 'bg-uaq-danger text-uaq-white hover:bg-uaq-danger-hover hover:border-uaq-danger-hover border-uaq-danger',
-        gray: 'bg-zinc-100 text-zinc-800 hover:bg-zinc-200',
+        gray: 'bg-zinc-100 text-brand hover:bg-zinc-200',
         secundary: 'bg-secundary text-uaq-white hover:bg-secundary-hover',
         terniary: 'bg-uaq-terniary text-uaq-white hover:bg-uaq-terniary-hover border-uaq-terniary hover:border-uaq-terniary-hover',
 
