@@ -28,10 +28,16 @@ export default function FormInput<T extends FieldValues>({
         <FormItem className={className}>
           {/* Label superior */}
           {label && (
-            <FormLabel htmlFor={htmlFor} className="justify-between font-medium">
-              {label}
-              {optional && <span className="text-sm font-light text-gray-500">{' Opcional'}</span>}
-            </FormLabel>
+            <FormLabel
+      htmlFor={htmlFor}
+      className="!inline-flex !justify-start items-center gap-1 font-medium"
+    >
+      {label}
+      {!optional && <span className="text-red-500">*</span>}
+      {optional && (
+        <span className="text-sm font-light text-gray-500 ml-1">Opcional</span>
+      )}
+    </FormLabel>
           )}
 
           <FormControl>
@@ -53,7 +59,7 @@ export default function FormInput<T extends FieldValues>({
 
           {/* Label de descripción */}
           {description && (
-            <Label htmlFor={htmlFor} variant="description">
+            <Label htmlFor={htmlFor} className="font-thin text-[14px]" variant="description">
               {description}
             </Label>
           )}

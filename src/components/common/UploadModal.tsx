@@ -8,10 +8,10 @@ import { UploadedFile } from './UploadedFile';
 
 interface UploadModalProps {
   onClose: () => void;
-  onSave: (files: { spanishCV: File | null; englishCV: File | null }) => void;
+  onSave: (files: { spanishCV: File | null}) => void;
 }
 
-export type Language = 'spanish' | 'english';
+export type Language = 'spanish';
 
 export const COMMON_TEXTS = {
   dropText: 'Arrastra y suelta tu curriculum aquí ó',
@@ -25,15 +25,10 @@ export const LANGUAGE_SPECIFIC_TEXTS = {
     tabTitle: 'CV Español',
     fileName: 'CV_ESP.pdf',
   },
-  english: {
-    tabTitle: 'CV Inglés',
-    fileName: 'CV_ENG.pdf',
-  },
 };
 
 export default function UploadModal({ onClose, onSave }: UploadModalProps) {
   const [spanishCV, setSpanishCV] = useState<File | null>(null);
-  const [englishCV, setEnglishCV] = useState<File | null>(null);
   const [tabValue, setTabValue] = useState<Language>('spanish');
 
   useEffect(() => {
@@ -49,22 +44,19 @@ export default function UploadModal({ onClose, onSave }: UploadModalProps) {
   }, []);
 
   const handleContinue = () => {
-    onSave({ spanishCV, englishCV });
+    onSave({ spanishCV });
     onClose();
   };
 
-  const canContinue = !!spanishCV || !!englishCV;
+  const canContinue = !!spanishCV ;
 
-  const onDropEnglish = useCallback((acceptedFiles: File[]) => {
-    setEnglishCV(acceptedFiles[0]);
-  }, []);
 
   const handleRemove = (language: Language) => {
-    language === 'spanish' ? setSpanishCV(null) : setEnglishCV(null);
+    setSpanishCV(null);
   };
 
   const handleFileChange = (language: Language, newFile: File) => {
-    language === 'spanish' ? setSpanishCV(newFile) : setEnglishCV(newFile);
+    setSpanishCV(newFile);
   };
 
   const getTexts = (language: Language) => ({
@@ -73,27 +65,21 @@ export default function UploadModal({ onClose, onSave }: UploadModalProps) {
   });
 
   const renderTabContent = (language: Language) => {
-    const hasFile = language === 'spanish' ? !!spanishCV : !!englishCV;
-    const file = language === 'spanish' ? spanishCV : englishCV;
+    const hasFile = spanishCV;
+    const file = spanishCV;
     const texts = getTexts(language);
 
     return (
-      <TabsContent key={language} value={language}>
+      <TabsContent value={language}>
         <Card
           className={`flex flex-col bg-zinc-50 pt-10 ${hasFile ? 'min-h-[300px]' : 'min-h-[500px]'}`}
         >
-          <CardHeader>
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="spanish">{LANGUAGE_SPECIFIC_TEXTS.spanish.tabTitle}</TabsTrigger>
-              <TabsTrigger value="english">{LANGUAGE_SPECIFIC_TEXTS.english.tabTitle}</TabsTrigger>
-            </TabsList>
-          </CardHeader>
 
           <CardContent className="flex flex-1 flex-col items-center justify-center py-4">
             {!hasFile ? (
               <UploadFile
                 language={language}
-                onDrop={language === 'spanish' ? onDropSpanish : onDropEnglish}
+                onDrop={onDropSpanish}
                 dropText={texts.dropText}
                 buttonText={texts.buttonText}
               />
@@ -128,7 +114,6 @@ export default function UploadModal({ onClose, onSave }: UploadModalProps) {
     >
       <Tabs value={tabValue} onValueChange={(val) => setTabValue(val as Language)}>
         {renderTabContent('spanish')}
-        {renderTabContent('english')}
       </Tabs>
     </div>
   );
