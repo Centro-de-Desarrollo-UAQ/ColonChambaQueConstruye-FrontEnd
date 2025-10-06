@@ -1,18 +1,18 @@
-import React from 'react';
+
 import ApplicantSignUp from '@/components/applicant/ApplicantSignUp';
-import LinkerNavBar from '@/components/linker/LinkerNavBar';
+import Headersimple from '@/components/ui/header-simple';
 
 export default function Signup() {
   return (
     <>
-      <LinkerNavBar />
+      <Headersimple />
       <div
         className="flex min-h-screen flex-col items-center justify-center py-15"
         style={{
-          backgroundImage: 'url("/backgroundSignUp.jpg")',
+          backgroundImage: 'url("/backgroundSignUp.png")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          backgroundColor: '',
           backgroundBlendMode: 'overlay',
         }}
       >
