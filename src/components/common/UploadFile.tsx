@@ -81,7 +81,7 @@ export function UploadFile({ language, onDrop, dropText, buttonText }: UploadFil
         unoptimized
       />
       <p className="text-muted-foreground text-center">{dropText}</p>
-      <Button variant="primary" color="accent" className="">
+      <Button type='button' variant="primary" color="accent" className="">
         {buttonText}
       </Button>
     </div>

@@ -20,7 +20,7 @@ const navLinks: Button[] = [
 const AdminNavbarMenu = () => {
 
     //Manejador de eventos de clic
-    const[button, setButton] = useState<number | null>(navLinks[0].id);
+    const[button, setButton] = useState<number | null>(null);
 
     const handleClick = (linkId: number) => {
         setButton(linkId);
@@ -32,8 +32,8 @@ const AdminNavbarMenu = () => {
         <div className='h-[43px]'><Separator orientation='vertical'/></div>
         {navLinks.map((link) => (
             <div key={link.id}>
-                {/*Condición terniaria que identifica el botón que está activo para cambiarle el color*/}
-                <Button onClick={() => handleClick(link.id)} variant='third' color={button === link.id ? 'brand' : 'accent'} >{link.text}</Button>
+                    {/*Condición terniaria que identifica el botón que está activo para cambiarle el color*/}
+                    <Button onClick={() => handleClick(link.id)} variant='third' color={button === link.id ? 'brand' : 'accent'} >{link.text}</Button>
             </div>
 
         ))}

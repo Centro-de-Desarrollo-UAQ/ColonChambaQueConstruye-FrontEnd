@@ -1,93 +1,52 @@
 'use client';
-import React from "react";
-import { Button, buttonVariants } from '@/components/ui/button';
-import { Eye, AddCircle, User } from '@solar-icons/react';
-import { createContext } from "react";
-import { AdminNavbarMenu } from "@/components/navigation/AdminNavbarMenu";
 
+import { Control, FormProvider, useForm } from 'react-hook-form';
+import Headersimple from '@/components/ui/header-simple';
+import { ApplicantFormType } from '@/validations/applicantSchema';
+import { useState } from 'react';
+import ApplicantSignUpTwo from '@/components/applicant/ApplicantSignUpTwo';
 
-export default function App() {
-    return (
-        <>
-            <div className="m-8">
-                <h2 className="font-bold text-2xl">Button Variants</h2>
-                <br />
-                <div className="flex gap-2">
-                    <h3 className="m-3">Primary Buttons</h3>
-                    <Button variant='primary' color="brand">Button</Button> 
-                    <Button variant='primary' color="brand" disabled>Button</Button>
-                    <br />
-                    <Button variant="primary" color="accent">Button</Button>
-                    <Button variant="primary" color="danger">Button</Button>
-                    <Button variant="primary" color="accent" size="icon">
-                        <AddCircle weight="Bold" />Button 
-                    </Button>
-                </div>
-                <br />
-                <div className="flex gap-2">
-                    <h3 className="m-3">Third Buttons</h3>
-                    <Button variant="third" color="accent" className="m-2">Button</Button>
-                </div>
-                <div className="flex gap-2">
-                    <h3 className="m-3">Edit Buttons</h3>
-                    <Button variant="edit" color="gray" className="m-2">Button</Button>
-                    <Button variant="edit" color="accent" className="m-2">Button</Button>
-                    <Button variant="edit" color="danger" className="m-2">Button</Button>
-                    <Button variant="edit" color="gray" size="icon" className="m-2">
-                        <AddCircle weight="Bold" />Button 
-                    </Button>
-                    <Button variant="edit" color="accent" size="icon" className="m-2">
-                        <AddCircle weight="Bold" />Button 
-                    </Button>
-                </div>
-                <br />
-                <div className="flex gap-2">
-                    <h3 className="m-3">Secondary Buttons</h3>
-                    <Button variant="secundary" color="accent">
-                        Button<AddCircle weight="Bold" />
-                    </Button>
-                    <Button variant="secundary" color="accent">
-                        <AddCircle weight="Bold" />Button
-                    </Button>
-                    <Button variant="secundary" color="accent">
-                        <AddCircle weight="Bold" />
-                    </Button>
-                    <Button variant="secundary" color="danger">
-                        <AddCircle weight="Bold" />
-                    </Button>
-                </div>
-                <br />
-                <div className="flex gap-2">
-                    <h3 className="m-3">Ghost Buttons</h3>
-                    <Button variant="ghost" color="brand">
-                        <AddCircle weight="Bold" />Button
-                    </Button>
-                    <Button variant="ghost" color="brand">
-                        <AddCircle weight="Bold" />
-                    </Button>
-                    <Button variant="ghost" color="gray">
-                        <AddCircle weight="Bold" />
-                    </Button>
-                    <Button variant="ghost" color="accent">
-                        <AddCircle weight="Bold" />
-                    </Button>
-                </div>
-                <br />
-                <div className="flex gap-2">
-                    <h2 className="m-3">Mono Buttons</h2>
-                    <Button variant="mono" color="brand" size="icon">
-                        <AddCircle weight="Bold" />
-                    </Button>
-                    <Button variant="mono" color="danger" size="icon">
-                        <AddCircle weight="Bold" />
-                    </Button>
-                </div>
-            </div>
-            <div className="my-8">
-                <h2 className="font-bold text-2xl mx-8">NavBar Admin</h2>
-                <br />
-                <AdminNavbarMenu/>
-            </div>
-        </>
-    );
+interface ApplicantSchoolInfoProps {
+    control: Control<ApplicantFormType>;
 }
+
+export default function SignUpDos({ control }: ApplicantSchoolInfoProps) {
+    const [uploadedFiles, setUploadedFiles] = useState<{
+        spanishCV: File | null;
+      }>({ spanishCV: null});
+
+      const handleModalSave = (files: { spanishCV: File | null; englishCV: File | null }) => {
+        setUploadedFiles(files);
+        setIsModalOpen(false);
+  };
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+
+  return (
+    <div className="flex min-h-screen flex-col">
+        <Headersimple />
+        <div
+            className="flex min-h-screen flex-col items-center justify-center py-15"
+            style={{
+                backgroundImage: 'url("/backgroundSignUp.png")',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundBlendMode: 'overlay',
+            }}
+        >
+            <main className="flex h-fit flex-col items-center justify-center gap-10">
+
+                    <div className="mb-6 space-y-4">
+                        <ApplicantSignUpTwo />
+                    </div>
+            </main>
+        </div>
+    </div>
+  );
+}
+function setIsModalOpen(arg0: boolean) {
+    throw new Error('Function not implemented.');
+}
+

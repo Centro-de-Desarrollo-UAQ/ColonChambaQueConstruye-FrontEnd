@@ -77,7 +77,7 @@ export function UploadedFile({
               </Avatar>
             </div>
             <div className="flex w-full justify-center gap-2 py-6">
-              <Button variant="secondary" color="gray" size="sm" onClick={onRemove}>
+              <Button variant="secundary" color="gray" size="sm" onClick={onRemove}>
                 <CloseSquare className="mr-2 h-4 w-4" />
                 Eliminar
               </Button>
@@ -88,7 +88,6 @@ export function UploadedFile({
             displayName={displayName}
             file={file}
             action={action}
-            onView={onView}
             onRemove={onRemove}
           />
         )}
