@@ -1,16 +1,23 @@
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
+'use client';
+
+import { useFormContext, FieldValues } from 'react-hook-form';
+import {
+  FormField, FormItem, FormLabel, FormControl, FormMessage,
+} from '@/components/ui/form';
 import { Label } from '@/components/ui/label';
 import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
+  Select, SelectTrigger, SelectValue, SelectContent, SelectItem,
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { FieldValues } from 'react-hook-form';
-import { FormPhoneProps } from '@/interfaces/form';
 import { countryCodes } from '@/constants';
+import { FormPhoneProps } from '@/interfaces/form';
+
+const digits = (s: string) => (s ?? '').replace(/\D/g, '');
+
+type Props<T extends FieldValues> = FormPhoneProps<T> & {
+
+  codeName?: keyof T & string;
+};
 
 export default function FormPhone<T extends FieldValues>({
   control,
@@ -22,20 +29,26 @@ export default function FormPhone<T extends FieldValues>({
   disabled = false,
   className,
   optional = false,
-}: FormPhoneProps<T>) {
+  codeName = 'telefonoCode' as keyof T & string,
+}: Props<T>) {
+  const { setValue, getValues } = useFormContext();
+
   return (
     <FormField
       control={control}
-      name={name}
+      name={name}  
       render={({ field }) => {
-        const value = field.value || { code: '+52', number: '' };
+        const numberStr = typeof field.value === 'string' ? field.value : '';
+        const currentCode = (getValues(codeName) as string) || '+52';
 
         const handleCodeChange = (newCode: string) => {
-          field.onChange({ ...value, code: newCode });
+          // persistimos la LADA aparte
+          setValue(codeName as string, newCode, { shouldValidate: true, shouldDirty: true });
         };
 
         const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-          field.onChange({ ...value, number: e.target.value });
+          // guardamos solo dígitos y máximo 10
+          field.onChange(digits(e.target.value).slice(0, 10));
         };
 
         return (
@@ -50,9 +63,8 @@ export default function FormPhone<T extends FieldValues>({
             <FormControl>
               <div className="flex gap-2">
                 <Select
-                  defaultValue={value.code}
+                  value={currentCode}
                   onValueChange={handleCodeChange}
-                  value={value.code}
                   disabled={disabled}
                 >
                   <SelectTrigger className="w-[120px]">
@@ -68,12 +80,13 @@ export default function FormPhone<T extends FieldValues>({
                 </Select>
 
                 <Input
-                  type="string"
+                  type="tel"
                   placeholder={placeholder}
-                  value={value.number}
+                  value={numberStr}
                   onChange={handleNumberChange}
                   disabled={disabled}
                   maxLength={10}
+                  inputMode="numeric"
                 />
               </div>
             </FormControl>

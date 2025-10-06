@@ -18,6 +18,12 @@ export const applicantSchema = z.object({
     .regex(/[A-Z]/, 'Requiere mayúscula')
     .regex(/[a-z]/, 'Requiere minúscula')
     .regex(/[0-9]/, 'Requiere número'),
+  confirmPassword:z
+    .string()
+    .min(8, 'Mínimo 8 caracteres')
+    .regex(/[A-Z]/, 'Requiere mayúscula')
+    .regex(/[a-z]/, 'Requiere minúscula')
+    .regex(/[0-9]/, 'Requiere número'),
 
   // Paso 2
   career: z.string().min(1, DEFAULT_ERROR_MESSAGE),
@@ -25,10 +31,20 @@ export const applicantSchema = z.object({
   jobLocationPreference: z.string().min(1, DEFAULT_ERROR_MESSAGE),
   preferredHours: z.string().min(1, DEFAULT_ERROR_MESSAGE),
   employmentMode: z.string().min(1, DEFAULT_ERROR_MESSAGE),
-
+  telefonoCode: z.string(),
   // Paso 3
   profilePhoto: z.instanceof(File).optional().nullable(),
   cvFile: z.instanceof(File).optional(),
-});
+  telefono: z
+  .string()
+  .regex(/^\d{10}$/, 'El número debe tener exactamente 10 dígitos'),
+  
+
+
+})
+.refine((data) => data.password === data.confirmPassword, {
+    path: ['confirmPassword'], 
+    message: 'Las contraseñas no coinciden',
+  });
 
 export type ApplicantFormType = z.infer<typeof applicantSchema>;
