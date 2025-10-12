@@ -27,6 +27,7 @@ interface ComboboxProps {
   options: ComboboxOption[];
   width?: string;
   placeholder?: string;
+  onSelect?: (value: string) => void;
 }
 
 export function Combobox({

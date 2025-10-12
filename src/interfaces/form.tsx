@@ -79,6 +79,9 @@ export interface FormComboBadgeSelectorProps<T extends FieldValues> {
   label?: string;
   description?: string;
   options: Option[];
+  className?: string;
+  multiple?: boolean;
+  showBadges?: boolean;
 };
 
 // For Week Selector Component
