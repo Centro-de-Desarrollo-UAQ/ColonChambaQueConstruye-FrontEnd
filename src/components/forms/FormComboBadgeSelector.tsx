@@ -21,7 +21,7 @@ export default function FormComboBadgeSelector<T extends FieldValues>({
     } = useController({ name, control });
 
 
-  // ---- Rama SINGLE (string) ----
+  // Para una sola opción
   if (!multiple) {
     const current = (value ?? '') as string;
 
@@ -34,18 +34,19 @@ export default function FormComboBadgeSelector<T extends FieldValues>({
         options={options}
         type="combobox"
         placeholder="Seleccione una opción"
-        // Aquí guardamos STRING directo:
         onSelect={(val: string) => onChange(val)}
         className={className}
       />
     );
   }
 
+  //Multiples opciones
+
     const selected = (value ?? []) as string[];
 
   const handleAdd = (selectedValue: string) => {
     if (!selected.includes(selectedValue)) {
-      onChange([...selected, selectedValue]); // guarda array
+      onChange([...selected, selectedValue]); 
     }
   };
 
