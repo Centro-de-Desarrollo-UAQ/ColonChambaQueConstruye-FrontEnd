@@ -29,6 +29,7 @@ export default function FormOptions<T extends FieldValues>({
   className,
   optional = false,
   options,
+  onSelect = () => {},  
 }: FormOptionsProps<T>) {
   return (
     <FormField
@@ -37,9 +38,12 @@ export default function FormOptions<T extends FieldValues>({
       render={({ field }) => (
         <FormItem className={className}>
           {label && (
-            <FormLabel htmlFor={htmlFor} className="justify-between font-medium">
-              {label}
-              {optional && <span className="text-sm font-light text-gray-500"> Opcional</span>}
+            <FormLabel htmlFor={htmlFor} className="j!inline-flex !justify-start items-center gap-1 font-medium">
+                {label}
+                {!optional && <span className="text-red-500">*</span>}
+                {optional && (
+                  <span className="text-sm font-light text-gray-500 ml-1">Opcional</span>
+                )}
             </FormLabel>
           )}
 
