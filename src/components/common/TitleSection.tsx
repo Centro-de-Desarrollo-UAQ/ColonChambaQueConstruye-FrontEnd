@@ -20,9 +20,9 @@ export default function TitleSection({ sections, currentSection }: TitleSectionP
 
   return (
     <>
-      <div className="flex items-center gap-3 border-l-2 border-black bg-zinc-100 p-3">
-        {icon}
-        <span>{title}</span>
+      <div className="flex items-center gap-3 border-l-2 border-uaq-terniary bg-zinc-100 p-3">
+        
+        <span className="text-brand flex font-bold">{icon}{title}</span>
       </div>
       <p className="py-1 text-zinc-700">{description}</p>
     </>

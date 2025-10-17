@@ -31,8 +31,8 @@ export default function Profile() {
         {/* Fila 1 - Carrera */}
         <div className="px-6">
           <ConfigRow
-            title="Expediente"
-            valueinput="307024"
+            title="Nombre"
+            valueinput="Jane"
             isTitle={false}
             placeholder="Contenido"
             isEditable={false}
@@ -41,8 +41,8 @@ export default function Profile() {
         </div>
         <div className="px-6">
           <ConfigRow
-            title="Nombre"
-            valueinput="Jane Daw"
+            title="Apellido"
+            valueinput="Daw"
             isTitle={false}
             placeholder="Contenido"
             isEditable={false}

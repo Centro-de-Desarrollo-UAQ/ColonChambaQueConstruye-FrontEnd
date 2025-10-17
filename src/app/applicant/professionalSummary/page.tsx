@@ -11,7 +11,7 @@ export default function ProfessionalSummary() {
       icon: <Diploma size={24} weight="Bold" />,
       title: 'PERFIL PROFESIONAL',
       description:
-        'Edita los detalles de su experiencia profesional y habilidades destacadas, además de sus preferencias laborales',
+        'Edite los detalles de su experiencia profesional y habilidades destacadas, además de sus preferencias laborales',
     },
   };
 
@@ -23,7 +23,7 @@ export default function ProfessionalSummary() {
       {/* Sección de Experiencia */}
       <div className="rounded-lg border border-zinc-300 shadow-sm">
         <ConfigRow
-          title="Experiencia"
+          title="Mi perfil"
           valueinput=""
           isTitle={true}
           placeholder=""
@@ -34,10 +34,10 @@ export default function ProfessionalSummary() {
         {/* Fila 1 - Carrera */}
         <div className="px-6">
           <ConfigRow
-            title="Carrera"
+            title="Escolaridad"
             valueinput=""
             isTitle={false}
-            placeholder="Ingeniería en Software"
+            placeholder="Licenciatura"
             isEditable={false}
             editInput={false}
           />
@@ -46,32 +46,22 @@ export default function ProfessionalSummary() {
         {/* Fila 2 - Resumen personal */}
         <div className="px-6">
           <ConfigRow
-            title="Resumen personal"
+            title="Carrera"
             valueinput=""
             isTitle={false}
-            placeholder="Describa su perfil profesional en una pequeña oración"
+            placeholder="Ingeniería de Software"
             isEditable={false}
             editInput={false}
           />
         </div>
 
-        {/* Sección de Preferencias */}
-        <ConfigRow
-          title="Preferencias"
-          valueinput=""
-          isTitle={true}
-          placeholder=""
-          isEditable={true}
-          editInput={true}
-        />
-
         {/* Fila 1 - Ubicación laboral */}
         <div className="px-6">
           <ConfigRow
-            title="Preferencia de ubicación laboral"
+            title="Experiencia Previa"
             valueinput=""
             isTitle={false}
-            placeholder="¿En qué ubicación preferiría explorar ofertas de trabajo?"
+            placeholder="Describa su experiencia profesional"
             isEditable={false}
             editInput={false}
           />
@@ -80,24 +70,31 @@ export default function ProfessionalSummary() {
         {/* Fila 2 - Horas preferentes */}
         <div className="px-6">
           <ConfigRow
-            title="Horas preferentes"
+            title="Puesto de interés"
             valueinput=""
             isTitle={false}
-            placeholder="¿Qué horario laboral prefiere?"
+            placeholder="¿Qué puesto le interesa para trabajar?"
             isEditable={false}
-            editInput={false}
+            editInput={true}
           />
         </div>
 
-        {/* Fila 3 - Modalidad de empleo */}
-        <div className="px-6">
+         <ConfigRow
+          title="Curriculum"
+          valueinput=""
+          isTitle={true}
+          placeholder=""
+          isEditable={true}
+          editInput={true}
+        />
+         <div className="px-6">
           <ConfigRow
-            title="Modalidad de empleo preferente"
+            title=""
             valueinput=""
             isTitle={false}
-            placeholder="Seleccione una opción"
+            placeholder="Seleccione una opción" //Archivo del Curriculum del usuario
             isEditable={false}
-            editInput={false}
+            editInput={true}
           />
         </div>
       </div>

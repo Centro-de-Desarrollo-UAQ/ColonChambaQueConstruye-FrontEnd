@@ -8,7 +8,7 @@ export default function Control() {
     profile: {
       icon: <ShieldKeyholeMinimalistic size={24} weight="Bold" />,
       title: 'ACCESO Y SEGURIDAD',
-      description: 'Administra la información de acceso a su cuenta',
+      description: 'Administre la información de acceso a su cuenta',
     },
   };
 
@@ -24,7 +24,7 @@ export default function Control() {
           valueinput=""
           isTitle={true}
           placeholder=""
-          isEditable={false}
+          isEditable={true}
           editInput={true}
         />
 
@@ -35,7 +35,7 @@ export default function Control() {
             valueinput="bryanbona0406@gmail.com"
             isTitle={false}
             placeholder="Contenido"
-            isEditable={true}
+            isEditable={false}
             editInput={false}
           />
         </div>
@@ -43,11 +43,11 @@ export default function Control() {
         {/* Fila 2 - Número telefónico */}
         <div className="px-6">
           <ConfigRow
-            title="Número teléfonico"
+            title="Número telefónico"
             valueinput="4423464978"
             isTitle={false}
             placeholder="Contenido"
-            isEditable={true}
+            isEditable={false}
             editInput={false}
           />
         </div>
@@ -59,7 +59,7 @@ export default function Control() {
             valueinput="*************"
             isTitle={false}
             placeholder="Contenido"
-            isEditable={true}
+            isEditable={false}
             editInput={false}
           />
         </div>

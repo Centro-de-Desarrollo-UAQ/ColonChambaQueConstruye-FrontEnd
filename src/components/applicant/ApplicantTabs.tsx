@@ -18,12 +18,6 @@ export default function ApplicantTabs() {
       label: 'Perfil profesional',
     },
     {
-      value: 'curriculum',
-      route: '/applicant/resume',
-      icon: <Documents size={24} weight="Bold" />,
-      label: 'Curriculum',
-    },
-    {
       value: 'control',
       route: '/applicant/control',
       icon: <ShieldKeyholeMinimalistic size={24} weight="Bold" />,
@@ -32,7 +26,7 @@ export default function ApplicantTabs() {
   ];
 
   return (
-    <div className="mx-auto max-w-md bg-white">
+    <div className="mx-auto max-w-md bg-white text-brand">
       <InfoCard
         avatar="https://github.com/shadcn.png"
         name="Jane Daw"
