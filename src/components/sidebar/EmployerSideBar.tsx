@@ -19,7 +19,7 @@ export default function EmployerSideBar() {
   ];
 
   return (
-    <nav className="group/sidebar bg-uaq-accent h-screen w-15 hover:w-64 transition-all duration-300 ease-in-out flex flex-col justify-start pt-5 pl-2 pr-2 overflow-hidden stroke-3 shadow-[4px_0_8px_rgba(0,0,0,0.3)]">
+    <nav className="group/sidebar bg-uaq-accent h-screen w-15 hover:w-64 transition-all duration-300 ease-in-out flex flex-col justify-start pt-5 pl-2 pr-2 overflow-hidden stroke-3 shadow-[4px_0_8px_-4px_rgba(0,0,0,0.3)] ">
     
 
       {/* Logos alineados */}
