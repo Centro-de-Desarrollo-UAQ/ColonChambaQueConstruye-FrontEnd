@@ -12,13 +12,13 @@ export default function LandingHeader() {
         <>
             <header className='bg--accent flex items-center justify-between px-10 border-b border-zinc-200 drop-shadow-md'>
                 <div className='flex items-center gap-4 py-4'>
-                    <Link href="/" className="text-lg font-bold">
-                        <Image src="/UCQC.png" alt="Colon" width={120} height={120} className="h-10 w-28" />
-                    </Link>
-                    <Link href="/" className="text-lg font-bold">
-                        <Image src="/ADMON24-27-1-03.png" alt="Colon" width={120} height={120} className="h-10 w-28" />
-                    </Link>
-                </div> 
+                <Link href="/" className="text-lg font-bold">
+                    <img src="/UCQC.png" alt="Colon"  className="h-10 w-28 scale-100"/>
+                </Link>
+                <Link href="/" className="text-lg font-bold">
+                    <img src="/ADMON24-27-1-03.png" alt="Colon" className="h-10 w-28 scale-100"/>
+                </Link>
+             </div> 
                 <div className="flex items-center gap-2 py-4 text-base leading-loose">
         
                     <span style={{ color: colorEmpresa }}>
