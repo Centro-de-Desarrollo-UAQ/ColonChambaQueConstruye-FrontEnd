@@ -42,7 +42,7 @@ export default function AdminSideBar() {
       </div>
 
       {/* Vinculos a posibles nuevas paginas */}
-      <div className="text-[var(--uaq-terniary)] font-futura flex flex-col font-[400] pt-5 items-center pl-2">
+      <div className="text-[var(--uaq-terniary)] font-futura flex flex-col font-[400] pt-5 items-center group-hover/sidebar:items-stretch">
         {navLinks.map(({ href, label, icon: Icon }) => (
           <SidebarNavButtonAdmin key={href} href={href} label={label} icon={Icon} active={pathname === href} />
         ))}

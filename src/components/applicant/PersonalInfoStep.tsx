@@ -98,7 +98,7 @@ export default function PersonalInfoStep({ control }: ApplicantDetailsStepProps)
       <div className="my-6 text-sm font-bold text-gray-600">
         <p>
           ¿Ya tienes cuenta?{' '}
-          <Link href={'/login'} className="text-orange-400 hover:text-orange-300">
+          <Link href={'/login/applicant'} className="text-orange-400 hover:text-orange-300">
             Inicia sesión
           </Link>
         </p>
