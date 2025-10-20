@@ -10,11 +10,11 @@ import { Case,AddSquare,CaseRoundMinimalistic,Settings  } from '@solar-icons/rea
 export default function EmployerSideBar() {
   const pathname = usePathname();
 
-  //Vinculos creados en base al figma
+  // Aqui tienen que cambiar el href a la ruta definida de su pantalla pueden tomar de ejemplo el de cartera de usuario
   const navLinks = [
     { href: '/testing/plantilla/Omar', label: 'Vacantes', icon:Case},
     { href: '/publicar-vacantes', label: 'Publicar vacantes', icon:AddSquare },
-    { href: '/cartera-usuarios', label: 'Cartera de usuarios' , icon: CaseRoundMinimalistic },
+    { href: '/employer/home/users', label: 'Cartera de usuarios' , icon: CaseRoundMinimalistic },
     { href: '/ajustes', label: 'Ajustes',icon: Settings  },
   ];
 
