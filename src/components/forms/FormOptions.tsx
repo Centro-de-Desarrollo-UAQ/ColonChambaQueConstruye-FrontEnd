@@ -15,6 +15,7 @@ import React from 'react';
 import { Button } from '../ui/button';
 import { TrashBinTrash } from '@solar-icons/react';
 import { FormOptionsProps, SelectOption } from '@/interfaces/form';
+import { cn } from '@nextui-org/react';
 
 export default function FormOptions<T extends FieldValues>({
   control,
@@ -29,6 +30,7 @@ export default function FormOptions<T extends FieldValues>({
   className,
   optional = false,
   options,
+  color = "gray",
   onSelect = () => {},  
 }: FormOptionsProps<T>) {
   return (
@@ -59,10 +61,13 @@ export default function FormOptions<T extends FieldValues>({
                   options={options}
                   width={width}
                   placeholder={placeholder}
+                  color={color}
                 />
               ) : (
                 <Select onValueChange={field.onChange} value={field.value} disabled={disabled}>
-                  <SelectTrigger className={width}>
+                  <SelectTrigger className={cn(
+                        className, width,
+                      )}>
                     <SelectValue placeholder={placeholder} />
                   </SelectTrigger>
                   <SelectContent>

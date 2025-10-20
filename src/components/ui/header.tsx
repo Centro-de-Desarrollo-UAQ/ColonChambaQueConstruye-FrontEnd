@@ -26,8 +26,8 @@ export default function Header({
     logOut = <Logout2 className='h-5 w-5'/> }: HeaderProps) {
   return (
     <>
-        <header className='bg--accent flex items-center justify-between px-10 border-b border-zinc-200 drop-shadow-md'>
-           <div className='flex items-center gap-4 py-4'>
+        <header className='bg-accent flex items-center justify-between px-10 border-b border-zinc-200 drop-shadow-md'>
+            <div className='flex items-center gap-4 py-4'>
                 <Link href="/" className="text-lg font-bold">
                     <img src="/UCQC.png" alt="Colon"  className="h-10 w-28 scale-100"/>
                 </Link>
