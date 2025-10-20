@@ -43,7 +43,7 @@ export default function Page() {
        <main className="flex h-fit flex-col items-center justify-center gap-10">
 
         <div className='h-full w-full max-w-2xl space-y-8 rounded-md border border-gray-300 bg-white px-12 py-6 shadow-sm'>
-            <Link href="/login">
+            <Link href="/login/recovery">
               <Button variant="ghost" className='scale-150'>
                 <ArrowLeft className="h-50 w-50" />
               </Button>
