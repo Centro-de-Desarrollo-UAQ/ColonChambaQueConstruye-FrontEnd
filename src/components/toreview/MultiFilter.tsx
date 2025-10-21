@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
@@ -12,27 +12,58 @@ type Variant = 'checkbox' | 'date';
 interface MultiFilterProps {
   variant?: Variant;
   label?: string;
-  options?: string[]; // solo si variant === "checkbox"
+  options?: { label: string; value: string }[];
+  value?: unknown;
+  onChange?: (value: unknown) => void;
 }
 
 export function MultiFilter({
   variant = 'checkbox',
   label = 'Filtro',
   options = [],
+  value,
+  onChange,
 }: MultiFilterProps) {
-  const [selected, setSelected] = useState<string[]>([]);
-  const [date, setDate] = useState<Date | undefined>();
+  const [selected, setSelected] = useState<string[]>(() => (Array.isArray(value) ? value : []));
+  const [date, setDate] = useState<Date | undefined>(() =>
+    value instanceof Date ? value : undefined,
+  );
+
+  useEffect(() => {
+    if (variant === 'checkbox' && Array.isArray(value)) {
+      setSelected(value);
+    }
+    if (variant === 'date' && value instanceof Date) {
+      setDate(value);
+    }
+  }, [value, variant]);
 
   const isActive = variant === 'checkbox' ? selected.length > 0 : !!date;
 
   const toggleOption = (option: string) => {
-    setSelected((prev) =>
-      prev.includes(option) ? prev.filter((o) => o !== option) : [...prev, option],
-    );
+    const newSelected = selected.includes(option)
+      ? selected.filter((o) => o !== option)
+      : [...selected, option];
+    setSelected(newSelected);
+    onChange?.(newSelected);
+
+    console.log('Selected options:', newSelected);
+  };
+
+  const handleDateChange = (newDate: Date | undefined) => {
+    setDate(newDate);
+    onChange?.(newDate);
   };
 
   const displayValue = () => {
-    if (variant === 'checkbox') return selected.join(', ');
+    if (variant === 'checkbox' && selected.length > 0) {
+      // Convert values to labels for display
+      const selectedLabels = selected.map(value => {
+        const option = options.find(opt => opt.value === value);
+        return option ? option.label : value;
+      });
+      return selectedLabels.join(', ');
+    }
     if (variant === 'date' && date) return format(date, 'dd MMM yyyy');
     return '';
   };
@@ -59,13 +90,13 @@ export function MultiFilter({
         {variant === 'checkbox' && (
           <div className="items-start space-y-2">
             {options.map((option) => (
-              <div key={option} className="flex space-x-2">
+              <div key={option.value} className="flex space-x-2">
                 <Checkbox
-                  id={option}
-                  checked={selected.includes(option)}
-                  onCheckedChange={() => toggleOption(option)}
+                  id={option.value}
+                  checked={selected.includes(option.value)}
+                  onCheckedChange={() => toggleOption(option.value)}
                 />
-                <Label htmlFor={option}>{option}</Label>
+                <Label htmlFor={option.value}>{option.label}</Label>
               </div>
             ))}
             <div className="mt-3 h-[1px] w-full bg-zinc-300" />
@@ -74,7 +105,10 @@ export function MultiFilter({
               size="sm"
               color="gray"
               className="mt-1"
-              onClick={() => setSelected([])}
+              onClick={() => {
+                setSelected([]);
+                onChange?.([]);
+              }}
             >
               Borrar selección
             </Button>
@@ -87,15 +121,16 @@ export function MultiFilter({
               className="rounded"
               mode="single"
               selected={date}
-              onSelect={setDate}
-              initialFocus
+              onSelect={handleDateChange}
+              captionLayout="dropdown"
+              autoFocus
             />
             <Button
               variant="secondary"
               size="sm"
               color="gray"
               className="mt-2"
-              onClick={() => setDate(undefined)}
+              onClick={() => handleDateChange(undefined)}
             >
               Borrar fecha
             </Button>
