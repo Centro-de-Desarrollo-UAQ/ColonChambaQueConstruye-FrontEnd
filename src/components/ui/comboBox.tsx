@@ -28,6 +28,8 @@ interface ComboboxProps {
   width?: string;
   placeholder?: string;
   onSelect?: (value: string) => void;
+  className?: string;
+  color: "secundary" | "brand" | "accent" | "gray";
 }
 
 export function Combobox({
@@ -36,6 +38,8 @@ export function Combobox({
   options,
   width = 'w-full',
   placeholder = 'Selecciona una opción...',
+  className,
+  color
 }: ComboboxProps) {
   const [open, setOpen] = React.useState(false);
 
@@ -44,11 +48,11 @@ export function Combobox({
       <PopoverTrigger asChild>
         <Button
           variant="combobox"
-          color="gray"
+          color={color}
           size="sm"
           role="combobox"
           aria-expanded={open}
-          className={`${width} justify-between`}
+          className={`${width} justify-between rounded-full`}
         >
           {value ? options.find((opt) => opt.value === value)?.label : placeholder}
           <ChevronsUpDown className="opacity-50" />

@@ -10,16 +10,16 @@ import { Case,AddSquare,CaseRoundMinimalistic,Settings  } from '@solar-icons/rea
 export default function EmployerSideBar() {
   const pathname = usePathname();
 
-  //Vinculos creados en base al figma
+  // Aqui tienen que cambiar el href a la ruta definida de su pantalla pueden tomar de ejemplo el de cartera de usuario
   const navLinks = [
     { href: '/testing/plantilla/Omar', label: 'Vacantes', icon:Case},
     { href: '/publicar-vacantes', label: 'Publicar vacantes', icon:AddSquare },
-    { href: '/cartera-usuarios', label: 'Cartera de usuarios' , icon: CaseRoundMinimalistic },
+    { href: '/employer/home/users', label: 'Cartera de usuarios' , icon: CaseRoundMinimalistic },
     { href: '/ajustes', label: 'Ajustes',icon: Settings  },
   ];
 
   return (
-    <nav className="group/sidebar bg-uaq-accent h-screen w-15 hover:w-64 transition-all duration-300 ease-in-out flex flex-col justify-start pt-5 pl-2 pr-2 overflow-hidden stroke-3 shadow-[4px_0_8px_rgba(0,0,0,0.3)]">
+    <nav className="group/sidebar bg-uaq-accent h-screen w-15 hover:w-64 transition-all duration-300 ease-in-out flex flex-col justify-start pt-5 pl-2 pr-2 overflow-hidden stroke-3 shadow-[4px_0_8px_-4px_rgba(0,0,0,0.3)] ">
     
 
       {/* Logos alineados */}

@@ -2,7 +2,6 @@
 import * as React from 'react';
 import { Slot as SlotPrimitive } from 'radix-ui';
 import { cva, type VariantProps } from 'class-variance-authority';
-
 import { cn } from '@/lib/utils';
 
 /**
@@ -155,8 +154,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         gray: 'hover:text-zinc-500',
       },
       combobox: {
-        brand: 'text-brand',
-        accent: 'text-accent',
+        brand: 'text-brand border-brand bg-uaq-white-ghost',
+        accent: 'text-accent border-accent',
         danger: 'text-uaq-danger',
         gray: 'text-zinc-800',
       },

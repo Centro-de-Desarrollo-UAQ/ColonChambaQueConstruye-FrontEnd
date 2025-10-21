@@ -39,6 +39,7 @@ export interface FormOptionsProps<T extends FieldValues> {
   className?: string;
   optional?: boolean;
   options: SelectOption[];
+  color?: "secundary" | "brand" | "accent" | "gray";
   onSelect?: (value: string) => void; // For combobox optional field
 }
 
