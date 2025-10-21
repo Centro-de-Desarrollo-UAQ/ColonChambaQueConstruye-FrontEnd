@@ -1,68 +1,59 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, KeyboardEvent, ChangeEvent } from 'react';
 import { Input } from '../ui/input';
+import { Button } from '@/components/ui/button'; // si tienes shadcn/ui
 import { MinimalisticMagnifer } from '@solar-icons/react';
-import { MultiFilter } from '../toreview/MultiFilter';
 
-type filterType = {
-  value: string;
-  name: string;
-  options?: string[];
-  isDate?: boolean;
-};
-
-interface SearchBarProps {
-  filters: filterType[];
+export interface SearchBarProps {
+  onSearch?: (query: string) => void;
+  placeholder?: string;
 }
 
-function SearchBar({ filters }: SearchBarProps) {
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [isSortOpen, setIsSortOpen] = useState(false);
+export default function SearchBar({
+  onSearch,
+  placeholder = '¿Qué puesto estás buscando?',
+}: SearchBarProps) {
   const [searchTerm, setSearchTerm] = useState('');
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
   };
-  const handleFilterToggle = () => {
-    if (isSortOpen) {
-      setIsSortOpen(false);
-    }
-    setIsFilterOpen(!isFilterOpen);
+
+  const triggerSearch = () => {
+    onSearch?.(searchTerm.trim()); // '' => que el padre muestre toda la data
   };
-  const handleSortToggle = () => {
-    if (isFilterOpen) {
-      setIsFilterOpen(false);
-    }
-    setIsSortOpen(!isSortOpen);
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') triggerSearch();
   };
+
   return (
-    <div className="flex flex-col items-start gap-3">
-      <Input
-        type="text"
-        placeholder="Buscar..."
-        value={searchTerm}
-        onChange={handleSearchChange}
-        className="h-fit w-full"
-        icon={MinimalisticMagnifer}
-        filter={isFilterOpen}
-        handleFilter={handleFilterToggle}
-        sort={isSortOpen}
-        handleSort={handleSortToggle}
-      />
-      <div className="flex flex-wrap gap-2">
-        {isFilterOpen &&
-          filters.map((filter, index) => (
-            <MultiFilter
-              key={index}
-              variant={filter.isDate ? 'date' : 'checkbox'}
-              label={filter.name}
-              options={filter.options}
-            />
-          ))}
+    <div className="w-8/12">
+      <div className="flex items-center gap-2">
+        {/* Input ocupa todo el espacio disponible */}
+        <div className="flex-1">
+          <Input
+            type="text"
+            placeholder={placeholder}
+            value={searchTerm}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            className="h-11 w-full"
+            icon={MinimalisticMagnifer}
+          />
+        </div>
+
+        {/* Botón a la derecha */}
+        <Button
+          type="button"
+          onClick={triggerSearch}
+          className="h-11 px-4 rounded-xl"
+        >
+          Buscar
+        </Button>
+
       </div>
     </div>
   );
 }
-
-export default SearchBar;
