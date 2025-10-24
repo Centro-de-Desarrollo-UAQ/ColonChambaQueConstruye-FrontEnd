@@ -85,7 +85,7 @@ export default function JobsPage() {
     },
   });
 
-  const { control, handleSubmit } = methods;
+  const { control } = methods;
 
 
   const [searchTags, setSearchTags] = useState<string[]>([]);
