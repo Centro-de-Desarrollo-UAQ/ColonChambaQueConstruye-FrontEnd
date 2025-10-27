@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from 'react'
 import { Button } from '../ui/button'
 import { Separator } from '../ui/separator';
@@ -9,6 +11,10 @@ interface Button {
     ref: string; //URL del destino de la navegación
 }
 
+interface TitleAdminNavbar{
+    NameTitle:string
+}
+
 //Array de inlaces para la navegación
 const navLinks: Button[] = [
     { id: 1, text: 'Por aprobar', ref: '' },
@@ -17,7 +23,7 @@ const navLinks: Button[] = [
     { id:4, text: 'Todas', ref: '' }
 ]
 
-const AdminNavbarMenu = () => {
+const AdminNavbarMenu = ({NameTitle}:TitleAdminNavbar) => {
 
     //Manejador de eventos de clic
     const[button, setButton] = useState<number | null>(null);
@@ -28,7 +34,7 @@ const AdminNavbarMenu = () => {
 
   return (
     <nav className='flex justify-start gap-4 bg-uaq-terniary py-[8px] px-[48px] items-center'>
-        <p className='text-white font-bold  text-base'>texto</p>
+        <p className='text-white font-bold  text-base'>{NameTitle }</p>
         <div className='h-[43px]'><Separator orientation='vertical'/></div>
         {navLinks.map((link) => (
             <div key={link.id}>
