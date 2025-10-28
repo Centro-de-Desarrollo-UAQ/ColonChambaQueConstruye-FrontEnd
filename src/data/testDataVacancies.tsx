@@ -3,7 +3,7 @@ import { Vacancy } from "@/interfaces/vacancy";
 export const DataVacancies: Vacancy[] = [
   {
     id: 1,
-  LogoUrl: '/Deloitte.svg',
+    LogoUrl: '/Deloitte.svg',
     company: "Tech Solutions",
     name: 'Desarrollador Frontend Senior',
     state: 'Activo',
