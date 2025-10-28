@@ -21,7 +21,7 @@ export default function AdminSideBar() {
   ];
 
   return (
-    <nav className="group/sidebar bg-uaq-accent h-screen w-15 hover:w-64 transition-all duration-300 ease-in-out flex flex-col justify-start pt-5 pl-2 pr-2 overflow-hidden stroke-3 shadow-[4px_0_8px_rgba(0,0,0,0.3)]">
+    <nav className="group/sidebar peer fixed top-0 left-0 z-50 bg-white h-screen w-16 hover:w-64 transition-all duration-300 ease-in-out flex flex-col justify-start pt-5 pl-2 pr-2 overflow-hidden stroke-3 shadow-[4px_0_8px_rgba(0,0,0,0.3)]">
 
       {/* Logos alineados */}
       <div className="flex items-center gap-4">
