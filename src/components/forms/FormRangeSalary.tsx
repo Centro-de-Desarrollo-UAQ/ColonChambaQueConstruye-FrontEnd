@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { FieldValues, useFormContext, Controller } from 'react-hook-form';
-import { currencyOptions } from '@/data/selectOptions';
+
 
 interface FormSalaryRangeProps<T extends FieldValues> {
   control?: any; // Control explícito (opcional si se usa FormProvider)
@@ -36,8 +36,8 @@ export default function FormSalaryRange<T extends FieldValues>({
   maxSalaryName,
   label,
   description,
-  minPlaceholder = 'Mínimo',
-  maxPlaceholder = 'Máximo',
+  minPlaceholder = '',
+  maxPlaceholder = '',
   disabled = false,
   className,
   optional = false,
@@ -81,55 +81,55 @@ export default function FormSalaryRange<T extends FieldValues>({
                 control={control}
                 name={currencyName}
                 render={({ field: currencyField }) => (
-                  <Select
-                    onValueChange={currencyField.onChange}
-                    value={currencyField.value}
-                    disabled={disabled}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Moneda" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {currencyOptions.map((opt) => (
-                        <SelectItem key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <div className='font-bold w-[70px] '> 
+                    <Input
+                      type="text"
+                      value="MXN"
+                      readOnly
+                    />
+                  </div>
                 )}
               />
             </div>
 
             {/* Inputs de rango salarial */}
-            <div className="flex flex-1 items-center gap-2">
-              <Controller
-                control={control}
-                name={minSalaryName}
-                render={({ field: minField }) => (
-                  <Input
-                    type="number"
-                    placeholder={minPlaceholder}
-                    disabled={disabled}
-                    min={0}
-                    {...minField}
-                  />
-                )}
-              />
+            <div className="flex items-center gap-2">
+              <div className='bg-zinc-100 flex items-center rounded-md border bg-zinc-100'>
+                <span className="text-gray-700 ml-2">$</span>
+                <Controller
+                  control={control}
+                  name={minSalaryName}
+                  render={({ field: minField }) => (
+                    <Input
+                      type="number"
+                      placeholder={minPlaceholder}
+                      disabled={disabled}
+                      min={0}
+                      className='border-0 p-0'
+                      {...minField}
+                    />
+                  )}
+                />
+              </div>
+              
               <span className="text-gray-500">-</span>
-              <Controller
-                control={control}
-                name={maxSalaryName}
-                render={({ field: maxField }) => (
-                  <Input
-                    type="number"
-                    placeholder={maxPlaceholder}
-                    disabled={disabled}
-                    min={0}
-                    {...maxField}
-                  />
-                )}
-              />
+              <div className='bg-zinc-100 flex items-center rounded-md border bg-zinc-100'>
+                <span className="text-gray-700 ml-2">$</span>
+                <Controller
+                  control={control}
+                  name={maxSalaryName}
+                  render={({ field: maxField }) => (
+                    <Input
+                      type="number"
+                      placeholder={maxPlaceholder}
+                      disabled={disabled}
+                      min={0}
+                      className='border-0 px-1  '
+                      {...maxField}
+                    />
+                  )}
+                /> 
+              </div>
             </div>
           </div>
 

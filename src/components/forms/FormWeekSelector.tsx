@@ -61,7 +61,7 @@ export default function FormWeekSelector<T extends FieldValues>({
                     className={cn(
                       'w-10 h-10 flex items-center justify-center rounded-full border text-sm',
                       daysValue.includes(day.value)
-                        ? 'bg-uaq-brand text-white border-uaq-brand'
+                        ? 'bg-uaq-terniary text-white border-uaq-brand'
                         : 'bg-gray-100 border-gray-300 text-black hover:bg-gray-200'
                     )}
                   >

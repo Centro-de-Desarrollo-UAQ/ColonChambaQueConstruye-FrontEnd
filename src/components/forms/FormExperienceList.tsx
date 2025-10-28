@@ -74,7 +74,7 @@ export default function FormExperienceList<T extends FieldValues>({
                     <Button
                         type="button"
                         size="icon"
-                        variant="secondary"
+                        variant="secundary"
                         color="danger"
                         onClick={() => remove(index)}
                     >
@@ -85,7 +85,7 @@ export default function FormExperienceList<T extends FieldValues>({
 
             {/* Button */}
             <Button
-                variant="secondary"
+                variant="secundary"
                 color="brand"
                 type="button"
                 onClick={() => append({ skill: '', years: '0 years' } as unknown as T[keyof T])}
