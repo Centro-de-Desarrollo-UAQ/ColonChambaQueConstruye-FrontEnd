@@ -1,5 +1,6 @@
 import ApplicantNavBar from '@/components/applicant/ApplicantNavBar';
 import ApplicantTabs from '@/components/applicant/ApplicantTabs';
+import HeaderProfile from '@/components/ui/header-profile';
 
 export default function ApplicantLayout({
   children,
@@ -9,7 +10,7 @@ export default function ApplicantLayout({
   return (
     <div className="flex min-h-screen flex-col">
       <header className="border-b">
-        <ApplicantNavBar />
+        <HeaderProfile/>
       </header>
 
       <main className="flex flex-grow">

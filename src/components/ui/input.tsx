@@ -82,13 +82,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <Icon className="text-muted-foreground absolute right-3 h-5 w-5" />
         )}
 
-        {onClear && props.value && (
-          <Button variant="mono" size="sm_icon" onClick={onClear} className="absolute right-1">
-            <CloseCircle />
-          </Button>
-        )}
-
         <div className="absolute right-2 flex items-center space-x-1">
+          {onClear && props.value && (
+            <Button variant="mono" size="sm_icon" onClick={onClear}>
+              <CloseCircle />
+            </Button>
+          )}
+
           {handleFilter && filter?.valueOf && (
             <Toggle
               pressed={filter}
