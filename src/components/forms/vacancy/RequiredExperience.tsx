@@ -1,10 +1,11 @@
 'use client';
 
 import { Control } from 'react-hook-form';
-import FormSectionHeader from './FormSectionHeader';
+
 import { VacancyFormType } from '@/validations/registerVacancy';
 import FormExperienceList from '@/components/forms/FormExperienceList';
 import FormInput from '@/components/forms/FormInput';
+import FormSectionHeader from '@/components/forms/vacancy/FormSectionHeader';
 
 type RequiredSkillsProps = {
     control: Control<VacancyFormType>;

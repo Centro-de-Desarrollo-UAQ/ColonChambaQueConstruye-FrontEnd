@@ -5,13 +5,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { registerVacancy, VacancyFormType } from '@/validations/registerVacancy';
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
-import GeneralInfoSection from './GeneralInfoSection';
-import VacancyInfoSection from './VacancyInfoSection';
-import BenefitsSection from './BenefitsSection';
-import DescriptionSection from './DescriptionSection';
 import JobConditionsSection from './JobConditionsSection';
 import InterestAreasSelector from './AdditionalInformation';
-import RequiredSkills from './RequiredExperience';
+import GeneralInfoSection from './GeneralInfoSection';
+import BenefitsSection from './BenefitsSection';
+import VacancyInfoSection from './VacancyInfoSection';
+import RequiredExperience from './RequiredExperience';
+
 
 export default function PostJobForm() {
     const methods = useForm<VacancyFormType>({
@@ -71,7 +71,7 @@ export default function PostJobForm() {
                 </p>
 
                 <GeneralInfoSection control={control} />
-                <RequiredSkills control={control} />
+                <RequiredExperience control={control} />
                 <VacancyInfoSection control={control} />
                 <BenefitsSection control={control} />
                 <JobConditionsSection control={control} />

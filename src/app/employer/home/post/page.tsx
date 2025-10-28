@@ -1,5 +1,5 @@
 import React from 'react'
-import VacancyPublishForm from '@/components/employer/vacancy/VacancyPublishForm';
+import VacancyPublishForm from '@/components/forms/vacancy/VacancyPublishForm';
 
 export default function VacancyFormPage()  {
   return (
