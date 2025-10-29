@@ -1,17 +1,33 @@
 import { z } from 'zod';
 
 const DEFAULT_ERROR_MESSAGE = 'Este es un campo requerido.';
+const AGE_ERROR_MESSAGE = 'Ingrese una edad válida (mínimo 1).';
 
 export const registerVacancy = z.object({
   name: z.string().min(1, DEFAULT_ERROR_MESSAGE),
 
-  modality: z.enum(['Presencial', 'Remoto', 'Híbrido'], { required_error: DEFAULT_ERROR_MESSAGE }),
+  sector: z.enum([
+    'Ingeniería en Sistemas Computacionales', 
+    'Ingeniería en Software', 
+    'Ingeniería Industrial', 
+    'Arquitectura',
+    'Administración',
+    'Diseño Gráfico',
+    'Mercadotecnia',
+    'Psicología',
+    'Derecho',
+    'Ciencias de la Comunicación'
+], { 
+    // Mensaje para cuando es null o undefined
+    required_error: DEFAULT_ERROR_MESSAGE, 
+})
+.refine(value => value !== undefined, DEFAULT_ERROR_MESSAGE),
 
-  sector: z.string().min(1, DEFAULT_ERROR_MESSAGE),
+  modality: z.enum(['Presencial', 'Remoto', 'Híbrido'], { required_error: DEFAULT_ERROR_MESSAGE }),
 
   location: z.string().min(1, DEFAULT_ERROR_MESSAGE),
 
-  numberVacancies: z.string()
+  numberOpenings: z.string()
     .min(1, DEFAULT_ERROR_MESSAGE)
     .refine((val) => {
       const num = Number(val);
@@ -20,15 +36,11 @@ export const registerVacancy = z.object({
       message: 'Ingrese un número válido mayor a 0.',
     }),
 
-  maxApplications: z.string().optional().refine((val) => {
-    if (!val) return true;
-    const num = Number(val);
-    return !isNaN(num) && num > 0;
-  }, {
-    message: 'Ingrese un número válido mayor a 0.',
-  }),
+  description: z.string().min(1, DEFAULT_ERROR_MESSAGE),  
 
-  gender: z.enum(['', 'Selecciona una opción', 'Masculino', 'Femenino', 'Otro']).optional(),
+  experience: z.string().min(1, DEFAULT_ERROR_MESSAGE),
+
+  gender: z.string().min(1, DEFAULT_ERROR_MESSAGE),
 
   ageRange: z.string().optional(), // This field is not used in the form, but kept for consistency
 
@@ -46,6 +58,20 @@ export const registerVacancy = z.object({
     message: 'Ingrese una edad válida.',
   }),
 
+  requiredDegree: z.enum([
+    'INDIFERENTE', 
+    'TECNICA', 
+    'LICENCIATURA', 
+    'INGENIERIA',
+    'MAESTRIA',
+    'DOCTORADO'
+], { 
+    // Mensaje para cuando es null o undefined
+    required_error: DEFAULT_ERROR_MESSAGE, 
+})
+.refine(value => value !== undefined, DEFAULT_ERROR_MESSAGE)
+    ,
+
   salaryRange: z.string().optional(), // This field is not used in the form, but kept for consistency
 
   currency: z.enum(['mxn', 'usd'], { required_error: DEFAULT_ERROR_MESSAGE }),
@@ -62,29 +88,26 @@ export const registerVacancy = z.object({
       message: 'Ingrese un salario válido mayor a 0.',
     }),
 
-  profile: z.string().min(1, DEFAULT_ERROR_MESSAGE),
   benefits: z.string().min(1, DEFAULT_ERROR_MESSAGE),
-  additionalBenefits: z.string().min(1, DEFAULT_ERROR_MESSAGE),
-  description: z.string().min(1, DEFAULT_ERROR_MESSAGE),
-
-  workingHours: z.enum(
-    ['Selecciona una opción', 'Tiempo completo', 'Medio tiempo', 'Pago por hora', 'Horario flexible', 'Prácticas'],
-    { required_error: DEFAULT_ERROR_MESSAGE }
-  ),
 
   workingDays: z.array(z.string().min(1, DEFAULT_ERROR_MESSAGE)).min(1, 'Agrega al menos un día de trabajo'),
+  
+  workShift: z.enum(
+    ['Tiempo completo', 'Medio tiempo', 'Pago por hora', 'Horario flexible'],
+    { required_error: DEFAULT_ERROR_MESSAGE, 
+})
+.refine(value => value !== undefined, DEFAULT_ERROR_MESSAGE),
 
-  areasOfInterest: z.array(z.string().min(1, DEFAULT_ERROR_MESSAGE)).min(1, 'Agrega al menos un área de interés'),
+  workSchedule: z.string().optional(), // This field is not used in the form, but kept for consistency
 
-  requiredSkills: z.array(
-    z.object({
-      skill: z.string().min(1, 'Selecciona una habilidad'),
-      years: z.enum(
-        ['0 years', '-1 years', '1 year', '2 years', '3 years', '+3 years'],
-        { required_error: DEFAULT_ERROR_MESSAGE }
-      ),
-    })
-  ).min(1, 'Agrega al menos una habilidad requerida')
+  workHourStart: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Formato de hora inválido (HH:mm)"),
+
+  workHourEnd: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Formato de hora inválido (HH:mm)"),
+  
+  additionalInformation: z.string().min(1, DEFAULT_ERROR_MESSAGE),
+  
+
+
 }).superRefine((values, ctx) => {
 
   const minSalary = Number(values.minSalary);
@@ -109,11 +132,11 @@ export const registerVacancy = z.object({
     }
   }
 
-  if (values.workingHours === 'Selecciona una opción') {
+  if (values.workShift === undefined) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
       message: 'Debe seleccionar un horario de trabajo.',
-      path: ['workingHours'],
+      path: ['workShift'],
     });
   }
 

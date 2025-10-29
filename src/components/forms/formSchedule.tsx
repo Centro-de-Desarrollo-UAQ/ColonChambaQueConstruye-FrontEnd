@@ -5,11 +5,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Control, FieldValues, Path, useFormContext } from 'react-hook-form';
 
-interface FormAgeProps<T extends FieldValues> {
+interface FormScheduleProps<T extends FieldValues> {
   control?: Control<T>;
   name: Path<T>;
-  minAgeName: Path<T>;
-  maxAgeName: Path<T>;
+  minHourName: Path<T>;
+  maxHourName: Path<T>;
   label?: string;
   description?: string;
   minPlaceholder?: string;
@@ -19,11 +19,11 @@ interface FormAgeProps<T extends FieldValues> {
   optional?: boolean;
 }
 
-export default function FormAge<T extends FieldValues>({
+export default function FormSchedule<T extends FieldValues>({
   control: propControl,
   name,
-  minAgeName,
-  maxAgeName,
+  minHourName,
+  maxHourName,
   label,
   description,
   minPlaceholder = '',
@@ -31,7 +31,7 @@ export default function FormAge<T extends FieldValues>({
   disabled = false,
   className,
   optional = false,
-}: FormAgeProps<T>) {
+}: FormScheduleProps<T>) {
   const context = useFormContext<T>();
   const control = propControl || context.control;
 
@@ -54,16 +54,15 @@ export default function FormAge<T extends FieldValues>({
 
           <FormControl>
             <div className="flex w-full items-center gap-2">
-              <div className="flex-1">  
+              <div className="flex-1">
                 <FormField
                   control={control}
-                  name={minAgeName}
+                  name={minHourName}
                   render={({ field }) => (
                     <Input
-                      type="number"
+                      type="string"
                       placeholder={minPlaceholder}
                       disabled={disabled}
-                      min={0}
                       {...field}
                     />
                   )}
@@ -77,13 +76,12 @@ export default function FormAge<T extends FieldValues>({
               <div className="flex-1">
                 <FormField
                   control={control}
-                  name={maxAgeName}
+                  name={maxHourName}
                   render={({ field }) => (
                     <Input
-                      type="number"
+                      type="string"
                       placeholder={maxPlaceholder}
                       disabled={disabled}
-                      min={0}
                       {...field}
                     />
                   )}

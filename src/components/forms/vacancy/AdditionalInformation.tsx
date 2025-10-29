@@ -6,24 +6,27 @@ import { VacancyFormType } from '@/validations/registerVacancy';
 import FormComboBadgeSelector from '@/components/forms/FormComboBadgeSelector';
 import { listAreasOptionsConstants } from '@/constants';
 import { useState } from 'react';
+import { Input } from '@nextui-org/react';
+import FormInput from '@/components/forms/FormInput';
 
 type InterestAreasSelectorProps = {
     control: Control<VacancyFormType>;
 }
 
-export default function InterestAreasSelector({ control }: InterestAreasSelectorProps) {
+export default function AdditionalInformation({ control }: InterestAreasSelectorProps) {
     return (
         <section className="space-y-4">
             <FormSectionHeader
-                title="Áreas de Interés"
-                description="Selecciona las carreras de la UAQ que preferentemente pueden postular a la vacante."
+                title="Datos adicionales"
+                className='text-uaq-terniary font-normal'
             />
             <div className="space-y-4">
-                <FormComboBadgeSelector
+                <FormInput 
                     control={control}
-                    name="areasOfInterest"
-                    label="Carreras afines"
-                    options={listAreasOptionsConstants}
+                    type='textarea'
+                    name='additionalInformation'
+                    label='Detalles adicionales a considerar'
+                    description='Incluye información extra relevante que consideres para este puesto (ejemplo: disponibilidad para viajar o trabajo en fines de semana)'
                 />
             </div>
         </section>

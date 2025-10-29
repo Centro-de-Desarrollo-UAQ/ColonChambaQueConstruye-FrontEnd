@@ -42,7 +42,7 @@ export default function FormInput<T extends FieldValues>({
 
           <FormControl>
             {type === 'textarea' ? (
-              <Textarea placeholder={placeholder} disabled={disabled} {...field} />
+              <Textarea placeholder={placeholder} className='h-36' disabled={disabled} {...field} />
             ) : (
               <Input
                 type={type}

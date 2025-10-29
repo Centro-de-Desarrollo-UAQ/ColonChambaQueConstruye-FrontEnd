@@ -54,7 +54,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <input
           type={inputType}
           className={cn(
-            'border-input file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring disabled:tex-base flex h-9 w-full rounded-md border bg-zinc-100 px-4 py-3 text-base transition-colors file:border-0 file:bg-transparent file:text-sm file:font-[400] focus-visible:ring-1 focus-visible:outline-none disabled:cursor-not-allowed disabled:border-none disabled:bg-transparent',
+            'border-input file:text-foreground placeholder:text-muted-foreground focus-visible:ring-ring disabled:tex-base flex h-9 w-full rounded-md border bg-zinc-100 px-4 py-3 text-base transition-colors file:border-0 file:bg-transparent file:text-sm file:font-[400] focus-visible:outline-none disabled:cursor-not-allowed disabled:border-none disabled:bg-transparent',
             Icon && iconPosition === 'left' ? 'pl-10' : '',
             isPassword ? 'pr-10' : '',
             isNumber ? 'pl-7' : '',

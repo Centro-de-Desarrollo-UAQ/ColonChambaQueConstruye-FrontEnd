@@ -32,13 +32,20 @@ export const listAreasOptionsConstants = [
   { label: 'Ciencias de la Comunicación', value: 'Ciencias de la Comunicación' },
 ];
 
+export const listDegreesOptionsConstants = [
+  { label: 'Indiferente', value: 'INDIFERENTE' },
+  { label: 'Técnica', value: 'TECNICA' },
+  { label: 'Licenciatura', value: 'LICENCIATURA' },
+  { label: 'Ingeniería', value: 'INGENIERIA' },
+  { label: 'Maestría', value: 'MAESTRIA' },
+  { label: 'Doctorado', value: 'DOCTORADO' },
+];
+
 export const listWorkingHoursOptionsConstants = [
-  { value: 'Selecciona una opción', label: 'Selecciona una opción' },
   { value: 'Tiempo completo', label: 'Tiempo completo' },
   { value: 'Medio tiempo', label: 'Medio tiempo' },
   { value: 'Pago por hora', label: 'Pago por hora' },
-  { value: 'Horario flexible', label: 'Horario flexible' },
-  { value: 'Prácticas', label: 'Prácticas' }
+  { value: 'Horario flexible', label: 'Horario flexible' }
 ]
 
 export const listModalityOptionsConstants = [
@@ -48,7 +55,6 @@ export const listModalityOptionsConstants = [
 ]
 
 export const listGenderOptionsConstants = [
-  { value: 'Selecciona una opción', label: 'Selecciona una opción' },
   { value: 'Masculino', label: 'Masculino' },
   { value: 'Femenino', label: 'Femenino' },
   { value: 'Otro', label: 'Otro' },
