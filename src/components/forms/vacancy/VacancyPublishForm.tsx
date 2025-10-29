@@ -5,39 +5,41 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { registerVacancy, VacancyFormType } from '@/validations/registerVacancy';
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
-import GeneralInfoSection from './GeneralInfoSection';
-import VacancyInfoSection from './VacancyInfoSection';
-import BenefitsSection from './BenefitsSection';
-import DescriptionSection from './DescriptionSection';
 import JobConditionsSection from './JobConditionsSection';
-import InterestAreasSelector from './InterestAreasSelector';
-import RequiredSkills from './RequiredExperience';
+import InterestAreasSelector from './AdditionalInformation';
+import GeneralInfoSection from './GeneralInfoSection';
+import BenefitsSection from './BenefitsSection';
+import VacancyInfoSection from './VacancyInfoSection';
+import RequiredExperience from './RequiredExperience';
+
 
 export default function PostJobForm() {
     const methods = useForm<VacancyFormType>({
         resolver: zodResolver(registerVacancy),
         defaultValues: {
             name: '',
+            sector: undefined,
             modality: 'Presencial',
-            sector: '',
             location: '',
-            numberVacancies: "",
-            maxApplications: "",
+            numberOpenings: '', 
             description: '',
-            gender: 'Selecciona una opción',
+            experience: '',
+            gender: '',
             ageRange: '',
             minAge: '',
             maxAge: '',
-            profile: '',
-            benefits: '',
-            additionalBenefits: '',
+            requiredDegree: undefined,
+            salaryRange: '',
             minSalary: '',
             maxSalary: '',
             currency: "mxn",
-            workingHours: 'Selecciona una opción',
+            benefits: '',
             workingDays: [],
-            areasOfInterest: [],
-            requiredSkills: []
+            workShift: undefined,
+            workSchedule: '',
+            workHourStart: '',
+            workHourEnd: '',
+            additionalInformation: '',
         },
     });
 
@@ -61,23 +63,23 @@ export default function PostJobForm() {
         <FormProvider {...methods}>
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="max-w-3xl mx-auto bg-white p-8 space-y-4"
+                className="mx-12 bg-white pt-12 space-y-4"
             >
-                <h2 className="text-3xl font-bold text-center">Publica una nueva vacante</h2>
-                <p className="text-center text-sm leading-5 mb-6">
-                    Completa la información de la oferta de trabajo y conéctate con los mejores talentos.
+                <h2 className="text-4xl font-bold text-center text-[var(--secundary)]">Publica una nueva vacante</h2>
+                <p className="text-center text-xl mb-6 w-[578px] justify-self-center pb-5">
+                    Completa la información de la oferta de trabajo u conéctate con los mejores talentos
                 </p>
 
                 <GeneralInfoSection control={control} />
+                <RequiredExperience control={control} />
                 <VacancyInfoSection control={control} />
                 <BenefitsSection control={control} />
-                <DescriptionSection control={control} />
                 <JobConditionsSection control={control} />
                 <InterestAreasSelector control={control} />
-                <RequiredSkills control={control} />
+                
 
                 <div className="flex justify-end">
-                    <Button type="submit">Publicar</Button>
+                    <Button type="submit" onClick={handleSubmit(onSubmit)}>Publicar</Button>
                 </div>
             </form>
         </FormProvider>

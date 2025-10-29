@@ -1,4 +1,4 @@
-import VacancyPublishForm from '@/components/employer/vacancy/VacancyPublishForm';
+import VacancyPublishForm from '@/components/forms/vacancy/VacancyPublishForm';
 import { Sidebar } from '@/components/linker/Sidebar';
 
 export default function newVacancy() {
