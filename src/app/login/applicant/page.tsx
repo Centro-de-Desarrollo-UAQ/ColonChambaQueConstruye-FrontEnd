@@ -103,12 +103,15 @@ export default function PublicLogin() {
                     </Link>
                   </p>
 
-                  <Button variant="primary" 
-                          color="brand" 
-                          type="submit"
-                          >
-                    Iniciar sesión
-                  </Button>
+                  <Link href={"../applicant/jobs"}>
+                    <Button variant="primary" 
+                            color="brand" 
+                            type="submit"
+                            >
+                      Iniciar sesión
+                    </Button>
+                  </Link>
+                  
                 </div>
               </form>
             </FormProvider>

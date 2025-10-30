@@ -45,12 +45,18 @@ export default function Header({
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent>
-                        <DropdownMenuItem onClick={() => console.log("Página de perfil")}>
-                            {userIcon}
-                            Perfil {//Acceder a la página de perfil del empleador
-                            }
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => console.log("Cerrar sesión")} variant="destructive">
+                        <Link href={"user/profile"}>
+                
+                            <DropdownMenuItem onClick={() => console.log("Página de perfil")}>
+                            
+                                    {userIcon}
+                                    Perfil {//Acceder a la página de perfil del empleador
+                                    }
+                            
+                                
+                            </DropdownMenuItem>
+                        </Link>
+                        <DropdownMenuItem  onClick={() => console.log("Cerrar sesión")} variant="destructive">
                             {logOut}
                             Cerrar sesión {//Procedimiento de cierre de sesión del empleador
                             }

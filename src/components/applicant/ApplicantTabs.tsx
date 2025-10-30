@@ -7,19 +7,19 @@ export default function ApplicantTabs() {
   const tabsConfig = [
     {
       value: 'profile',
-      route: '/applicant/profile',
+      route: '/applicant/user/profile',
       icon: <UserCircle size={24} weight="Bold" />,
       label: 'Información de contacto',
     },
     {
       value: 'professional',
-      route: '/applicant/professionalSummary',
+      route: '/applicant/user/professionalSummary',
       icon: <Diploma size={24} weight="Bold" />,
       label: 'Perfil profesional',
     },
     {
       value: 'control',
-      route: '/applicant/control',
+      route: '/applicant/user/control',
       icon: <ShieldKeyholeMinimalistic size={24} weight="Bold" />,
       label: 'Acceso de seguridad',
     },
