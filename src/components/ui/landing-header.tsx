@@ -34,16 +34,22 @@ export default function LandingHeader() {
                     </Link>
                 </div>
                 <div className="flex items-center gap-4 py-4">
-                    <Button variant = "edit" color='gray'  onClick={() => console.log("Página de inicio de sesión")}>
-                        Registrate{
-                            //Redireccionamiento a la página de inicio de sesión
-                        }
-                    </Button>
-                    <Button variant="primary" className ="" onClick={() => console.log("Página de registro")}>
-                        Iniciar Sesión {
-                            //Redireccionamiento a la página de registro de usuarios
-                        }
-                    </Button>
+                    <Link href={"/signup/applicant"}>
+                        <Button variant = "edit" color='gray'  onClick={() => console.log("Página de inicio de sesión")}>
+                            Registrate{
+                                //Redireccionamiento a la página de inicio de sesión
+                            }
+                        </Button>
+                    </Link>
+                    
+                    <Link href={"/login/applicant"}>
+                        <Button variant="primary" className ="" onClick={() => console.log("Página de registro")}>
+                            Iniciar Sesión {
+                                //Redireccionamiento a la página de registro de usuarios
+                            }
+                        </Button>
+                    </Link>
+                    
                 </div>
                 
             </header>

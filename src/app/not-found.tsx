@@ -7,7 +7,7 @@ import Headersimple from '@/components/ui/header-simple';
 
 // Asegúrate de que el nombre del componente sea "NotFound" 
 // si este archivo es 'app/not-found.tsx'
-export default function NotFound() {
+export default function NotFound() {    
   
   // Eliminamos toda la lógica de useForm
   

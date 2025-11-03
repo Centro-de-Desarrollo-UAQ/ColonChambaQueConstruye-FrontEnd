@@ -59,7 +59,7 @@ export default function PublicLogin() {
                     <FormInput
                       control={control}
                       name="email"
-                      label="Correo *"
+                      label="Correo"
                       type="email"
                       maxChars={244}
                     />
@@ -74,7 +74,7 @@ export default function PublicLogin() {
                     <FormInput
                       control={control}
                       name="password"
-                      label="Contraseña *"
+                      label="Contraseña"
                       type="password"
                       maxChars={50}
                     />
@@ -103,12 +103,15 @@ export default function PublicLogin() {
                     </Link>
                   </p>
 
-                  <Button variant="primary" 
-                          color="brand" 
-                          type="submit"
-                          >
-                    Iniciar sesión
-                  </Button>
+                  <Link href={"../applicant/jobs"}>
+                    <Button variant="primary" 
+                            color="brand" 
+                            type="submit"
+                            >
+                      Iniciar sesión
+                    </Button>
+                  </Link>
+                  
                 </div>
               </form>
             </FormProvider>

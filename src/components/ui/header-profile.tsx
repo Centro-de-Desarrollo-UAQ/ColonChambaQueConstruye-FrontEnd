@@ -34,13 +34,16 @@ export default function HeaderProfile({userName = "Pedro Sola", userIcon = <User
                 </Link>
              </div>
             <div className="flex items-center justify-center">
-                <Button variant="mono" onClick={()=>console.log("Acceder a página de vacantes")}>
-                    {jobIcon}
-                    Vacantes {
-                    //Navegar a la página de vacantes
-                    }
-                    
-                </Button>
+                <Link href={"../jobs"}>
+                    <Button variant="mono" >
+                        {jobIcon}
+                        Vacantes {
+                        //Navegar a la página de vacantes
+                        }
+                        
+                    </Button>
+                </Link>
+                
             </div>
         </header>
     </>
