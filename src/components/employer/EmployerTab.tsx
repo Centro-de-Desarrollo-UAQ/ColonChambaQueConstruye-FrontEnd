@@ -16,7 +16,7 @@ export default function EmployerTab() {
     },
     {
         value:"profile",
-        route:"/employer/home/access",
+        route:"/employer/home/",
         title: 'Profile',
         icon: <UserCircle size={24} />,
         label:"Datos de acceso"

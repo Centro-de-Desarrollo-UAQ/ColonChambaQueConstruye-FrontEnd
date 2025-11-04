@@ -20,13 +20,13 @@ export default function LandingHeader() {
                 </Link>
              </div> 
                 <div className="flex items-center gap-2 py-4 text-base leading-loose">
-        
                     <span style={{ color: colorEmpresa }}>
                         ¿Eres Empresa?
                     </span>
+                   
                     
                     <Link 
-                        href="{AQQUI VA LA SIOGUIENTE PAGINA    }" 
+                        href={"/login/company"} 
                         className="underline hover:no-underline" 
                         style={{ color: colorLink }}
                     >

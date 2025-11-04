@@ -12,10 +12,10 @@ export default function EmployerSideBar() {
 
   // Aqui tienen que cambiar el href a la ruta definida de su pantalla pueden tomar de ejemplo el de cartera de usuario
   const navLinks = [
-    { href: '/testing/plantilla/Omar', label: 'Vacantes', icon:Case},
+    { href: '/employer/home/vacancies', label: 'Vacantes', icon:Case},
     { href: '/employer/home/post', label: 'Publicar vacantes', icon:AddSquare },
     { href: '/employer/home/users', label: 'Cartera de usuarios' , icon: CaseRoundMinimalistic },
-    { href: '/ajustes', label: 'Ajustes',icon: Settings  },
+    { href: '/employer/profileconfig/', label: 'Ajustes',icon: Settings  },
   ];
 
   return (

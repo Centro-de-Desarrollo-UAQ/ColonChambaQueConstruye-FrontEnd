@@ -1,18 +1,18 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
+import Link from 'next/link'; // Correcto
 import { targetGroups } from '@/constants';
 import { Button } from '../ui/button';
 import clsx from 'clsx';
-import router from 'next/router';
+// import router from 'next/router'; // --- ELIMINADO ---
 
 export function TargetGroups() {
   return (
     <>
       {targetGroups.map(
         (
-          { /*adviceHref, adviceText,*/ description, image, signInHref, signInText, title },
+          { /*adviceHref, adviceText,*/ description, image, signInHref, signInText, title, href },
           index,
         ) => (
           <div
@@ -27,14 +27,16 @@ export function TargetGroups() {
             >
               <h3 className="mt-[-5] mb-5 text-3xl font-bold">{title}</h3>
               <p className="mb-5 leading-loose">{description}</p>
-              <Button
-                onClick={() => router.push(signInHref)}
-                variant="primary"
-                color='terniary'
-                className="mx-auto w-fit lg:mx-0"
-              >
-                {signInText}
-              </Button>
+
+              <Link href={signInHref} >
+                <Button
+                  variant="primary"
+                  color='terniary'
+                  className="mx-auto w-fit lg:mx-0"
+                >
+                  {signInText}
+                </Button>
+              </Link>
             </div>
 
             <Image

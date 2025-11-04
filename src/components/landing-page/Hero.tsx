@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { Button } from '../ui/button';
-
+import Link from 'next/link';
 export function Hero() {
   return (
     <div className="relative flex flex-col items-center justify-between gap-8 p-10 md:flex-row md:px-16 lg:px-48">
@@ -15,7 +15,9 @@ export function Hero() {
         </p>
 
         <div className="mt-12 flex gap-4">
-          <Button variant="primary" color='terniary'>Regístrate ahora</Button>
+          <Link href={"/signup/applicant"}>
+              <Button variant="primary" color='terniary'>Regístrate ahora</Button>
+          </Link>
         </div>
       </div>
 
