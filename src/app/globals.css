@@ -47,7 +47,7 @@
   --radius-xl: calc(var(--radius) + 4px);
   --color-uaq-accent: var(--uaq-accent);
   --color-brand: var(--brand);
-  --color-success: var(--success);
+  --color-success: var(--uaq-success);
   --color-uaq-warning: var(--uaq-warning);
   --color-uaq-danger: var(--uaq-danger);
   --color-uaq-white: var(--uaq-white);
@@ -56,7 +56,7 @@
   --color-secundary-hover: var(--secundary-hover);
   --color-uaq-warning-hover: var(--uaq-warning-hover);
   --color-uaq-danger-hover: var(--uaq-danger-hover);
-
+  --color-uaq-danger: var(--uaq-danger);
   --color-uaq-sidebar-selected-hover: var(--uaq-selected-hover-sidebar)
   --color-uaq-white-ghost: var(--uaq-white-ghost);
   --color-uaq-gray: var(--uaq-gray);
@@ -115,6 +115,7 @@
   /*Estos son los colores de el hover*/
   --accent-hover: #AD42D0;
   --uaq-brand-hover: #AD42D0;
+  --uaq-success: #17C964;
   --uaq-success-hover: oklch(0.5112 0.1819 153.21);
   --uaq-warning-hover: oklch(0.5515 0.140162 66.5167);
 
