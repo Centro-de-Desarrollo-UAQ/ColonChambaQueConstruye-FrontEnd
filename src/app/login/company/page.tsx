@@ -95,7 +95,7 @@ export default function PublicLogin() {
                       Regístrate
                     </Link>
                   </p>
-                  <Link href={"/"}>
+                  <Link href={"/employer/home/users"}>
                     <Button variant="primary" 
                             color="brand" 
                             type="submit"

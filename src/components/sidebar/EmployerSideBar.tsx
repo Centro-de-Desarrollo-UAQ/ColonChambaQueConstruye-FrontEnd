@@ -15,7 +15,7 @@ export default function EmployerSideBar() {
     { href: '/employer/home/vacancies', label: 'Vacantes', icon:Case},
     { href: '/employer/home/post', label: 'Publicar vacantes', icon:AddSquare },
     { href: '/employer/home/users', label: 'Cartera de usuarios' , icon: CaseRoundMinimalistic },
-    { href: '/employer/profileconfig/', label: 'Ajustes',icon: Settings  },
+    { href: '/employer/profileconfig', label: 'Ajustes',icon: Settings  },
   ];
 
   return (
