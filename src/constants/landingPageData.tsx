@@ -88,9 +88,10 @@ export const targetGroups: TargetGroup[] = [
       'Conéctate con las mejores vacantes de tu municipio y acércate a empresas que buscan talento local. Mantén tu información actualizada y aplica solo a los puestos que realmente se adapten a tus habilidades: así aumentarás tus posibilidades de ser contratado más rápido.',
     image:
       '/Hero-3.png',
-    signInHref: 'signin/uaq',
+    signInHref: '/signup/applicant',
     signInText: 'Regístrate gratis y encuentra vacantes locales',
     title: 'Encuentra tu oportunidad en Colón, Querétaro',
+    href: "/signup/applicant"
   },
   {
     adviceHref: '/advices/student',
@@ -99,9 +100,10 @@ export const targetGroups: TargetGroup[] = [
       'Publica tus vacantes y conecta con candidatos locales en Colón, Querétaro. Nuestra plataforma facilita el proceso de reclutamiento, ayudándote a llegar a las personas correctas de manera rápida y sencilla.',
     image:
       '/Hero-4.png',
-    signInHref: 'signin/uaq',
+    signInHref: 'signup/employer/company',
     signInText: 'Registra tu empresa y publica vacantes',
     title: 'Encuentra al talento que tu empresa necesita',
+    href: "/signup/company",
   },
   
 ];

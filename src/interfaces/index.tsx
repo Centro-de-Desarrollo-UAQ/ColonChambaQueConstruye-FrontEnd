@@ -11,6 +11,7 @@ export interface TargetGroup {
   signInHref: string;
   signInText: string;
   title: string;
+  href: string;
 }
 
 export interface CompanyAdvertising {
@@ -27,4 +28,5 @@ export interface TargetGroup {
   signInHref: string;
   signInText: string;
   title: string;
+  href: string;
 }

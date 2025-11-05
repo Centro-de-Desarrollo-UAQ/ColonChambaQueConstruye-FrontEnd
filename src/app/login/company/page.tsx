@@ -81,9 +81,8 @@ export default function PublicLogin() {
 
                 <div >
                     <Link
-                    href="#"
+                    href={"recovery"}
                     className="block text-right font-medium no-underline hover:no-underline focus:no-underline"
-                    onClick={() => console.log("Le diste click a 'olvidaste contraseña' ")}
                   >
                     ¿Olvidaste tu contraseña?
                   </Link>
@@ -92,17 +91,19 @@ export default function PublicLogin() {
                   <p className="flex items-center gap-1 text-sm font-bold">
                     ¿No tienes cuenta?
                     <Link href="/signup/employer" className="font-bold no-underline text-[#FF7F40]"
-                    onClick={() => console.log("Le diste click a Registrate")}>
+                    >
                       Regístrate
                     </Link>
                   </p>
-
-                  <Button variant="primary" 
-                          color="brand" 
-                          type="submit"
-                          >
-                    Iniciar sesión
-                  </Button>
+                  <Link href={"/"}>
+                    <Button variant="primary" 
+                            color="brand" 
+                            type="submit"
+                            >
+                      Iniciar sesión
+                    </Button>
+                  </Link>
+                  
                 </div>
               </form>
             </FormProvider>
