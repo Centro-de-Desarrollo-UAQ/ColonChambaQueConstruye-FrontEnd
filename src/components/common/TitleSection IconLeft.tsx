@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 
 
 interface SectionConfig {
-  icon: ReactElement;
+  icon?: ReactElement;
   title: string;
   description: string;
 }
