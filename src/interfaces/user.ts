@@ -9,5 +9,7 @@ export interface User {
     email: string;
     phoneNumber: string;
     photoURL: string;
+    creadetAt: string;
+    academicLevel: string;
 
 }

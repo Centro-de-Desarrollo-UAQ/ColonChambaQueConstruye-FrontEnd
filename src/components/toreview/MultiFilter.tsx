@@ -72,7 +72,7 @@ export function MultiFilter({
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant="secondary"
+          variant="secundary"
           className="h-fit gap-1 rounded-4xl border py-1"
           color={isActive ? 'brand' : 'gray'}
           aria-expanded={isActive}
@@ -101,7 +101,7 @@ export function MultiFilter({
             ))}
             <div className="mt-3 h-[1px] w-full bg-zinc-300" />
             <Button
-              variant="secondary"
+              variant="secundary"
               size="sm"
               color="gray"
               className="mt-1"
@@ -126,7 +126,7 @@ export function MultiFilter({
               autoFocus
             />
             <Button
-              variant="secondary"
+              variant="secundary"
               size="sm"
               color="gray"
               className="mt-2"
