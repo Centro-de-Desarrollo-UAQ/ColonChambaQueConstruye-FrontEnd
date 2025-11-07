@@ -12,7 +12,7 @@ interface TitleSectionProps {
   currentSection: string;
 }
 
-export default function TitleSection({ sections, currentSection }: TitleSectionProps) {
+export default function TitleSectionLeft({ sections, currentSection }: TitleSectionProps) {
   const { icon, title, description } = sections[currentSection] || {
     icon: null,
     title: 'Sección no encontrada sin props',
