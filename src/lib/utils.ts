@@ -27,8 +27,10 @@ export function normalizeText(text: string): string {
  * @param date - The date to format, as a string.
  * @returns The formatted date string in 'es-MX' locale.
  */
-export function dateToLocaleDateString(date: string): string {
+export function dateToLocaleDateString(date?: string | Date | null): string {
+  if (!date) return '';
   const dateObj = typeof date === 'string' ? new Date(date) : date;
+  if (!(dateObj instanceof Date) || isNaN(dateObj.getTime())) return '';
   return dateObj.toLocaleDateString('es-MX', {
     year: 'numeric',
     month: 'short',

@@ -11,6 +11,8 @@ export const testDataUser = [
     email: 'lizeth.mejia@example.com',
     phoneNumber: '+52 55 2123 4567',
     photoURL: '/images/users/lizeth.jpg',
+    academicLevel: 'Licenciatura',
+    createdAt: '2022-01-15T10:00:00.000Z',
   },
   {
     id: 2,
@@ -22,6 +24,8 @@ export const testDataUser = [
     email: 'carlos.gonzalez@example.com',
     phoneNumber: '+52 55 3311 9988',
     photoURL: '/images/users/carlos.jpg',
+    academicLevel: 'Maestría',
+    createdAt: '2021-06-20T14:30:00.000Z',
   },
   {
     id: 3,
@@ -33,6 +37,8 @@ export const testDataUser = [
     email: 'maria.ruiz@example.com',
     phoneNumber: '+52 1 998 234 1122',
     photoURL: '/images/users/maria.jpg',
+    academicLevel: 'Licenciatura',
+    createdAt: '2020-11-05T09:15:00.000Z',
   },
   {
     id: 4,
@@ -44,6 +50,8 @@ export const testDataUser = [
     email: 'andres.perez@example.com',
     phoneNumber: '+52 81 1234 5678',
     photoURL: '/images/users/andres.jpg',
+    academicLevel: 'Ingeniería',
+    createdAt: '2023-03-10T11:45:00.000Z',
   },
   {
     id: 5,
@@ -55,6 +63,8 @@ export const testDataUser = [
     email: 'sofia.lopez@example.com',
     phoneNumber: '+52 55 6677 8899',
     photoURL: '/images/users/sofia.jpg',
+    academicLevel: 'Licenciatura',
+    createdAt: '2022-08-25T16:20:00.000Z',
   },
   {
     id: 6,
@@ -66,6 +76,8 @@ export const testDataUser = [
     email: 'javier.ramirez@example.com',
     phoneNumber: '+52 33 4411 2233',
     photoURL: '/images/users/javier.jpg',
+    academicLevel: 'Ingeniería',
+    createdAt: '2021-12-30T13:10:00.000Z',
   },
   {
     id: 7,
@@ -77,6 +89,8 @@ export const testDataUser = [
     email: 'ana.torres@example.com',
     phoneNumber: '+52 55 9000 1122',
     photoURL: '/images/users/ana.jpg',
+    academicLevel: 'Maestría',
+    createdAt: '2023-05-18T15:55:00.000Z',
   },
   {
     id: 8,
@@ -88,6 +102,8 @@ export const testDataUser = [
     email: 'miguel.santos@example.com',
     phoneNumber: '+52 55 7788 9900',
     photoURL: '/images/users/miguel.jpg',
+    academicLevel: 'Licenciatura',
+    createdAt: '2022-04-12T08:40:00.000Z',
   },
   {
     id: 9,
@@ -99,6 +115,8 @@ export const testDataUser = [
     email: 'paola.vargas@example.com',
     phoneNumber: '+52 55 3344 5566',
     photoURL: '/images/users/paola.jpg',
+    academicLevel: 'Licenciatura',
+    createdAt: '2021-09-22T12:25:00.000Z',
   },
   {
     id: 10,
@@ -110,5 +128,7 @@ export const testDataUser = [
     email: 'diego.morales@example.com',
     phoneNumber: '+52 55 2233 4455',
     photoURL: '/images/users/diego.jpg',
+    academicLevel: 'Ingeniería',
+    createdAt: '2023-02-14T17:05:00.000Z',
   },
 ];
