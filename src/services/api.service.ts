@@ -1,4 +1,3 @@
-import { ur } from "zod/v4/locales";
 
 export const API_BASE_URL = '';
 
@@ -65,3 +64,4 @@ export class ApiService {
 		});
 	}
 }
+
