@@ -10,6 +10,8 @@ import { LoginFormType, loginSchema } from '@/validations/loginSchema';
 import LinkerNavBar from '@/components/linker/LinkerNavBar';
 import Header from '@/components/ui/header';
 import Headersimple from '@/components/ui/header-simple';
+import { authService } from '@/services/auth.service';
+import { toast } from 'sonner';
 
 export default function PublicLogin() {
   const methods = useForm<LoginFormType>({
@@ -23,10 +25,17 @@ export default function PublicLogin() {
 
   const { control, handleSubmit } = methods;
 
-  const onSubmit = (data: LoginFormType) => {
-    console.log('Iniciaste sesión');
-    // Lógica de envío del formulario aquí
-  };
+const onSubmit = async (data: LoginFormType) => {
+  try {
+    const response = await authService.loginAccount(data.email, data.password, 'user');
+  
+    toast.success('Inicio de sesión exitoso');
+    console.log("Response:" , response);
+  } catch (error: any) {
+    console.error('Error en login:', error.message);
+    toast.error(error.message || 'Error al iniciar sesión');
+  }
+};
 
   return (
     <>
@@ -103,14 +112,12 @@ export default function PublicLogin() {
                     </Link>
                   </p>
 
-                  <Link href={"../applicant/jobs"}>
-                    <Button variant="primary" 
-                            color="brand" 
-                            type="submit"
-                            >
-                      Iniciar sesión
-                    </Button>
-                  </Link>
+                  <Button variant="primary" 
+        color="brand" 
+        type="submit"
+        >
+  Iniciar sesión
+</Button>
                   
                 </div>
               </form>
