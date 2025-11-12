@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/v1/:path*',
-        destination: 'https://emplea-colon-back-afcg-production.up.railway.app/api/v1/:path*',
+        destination: `${process.env.NEXT_PUBLIC_EMPLEATE_COLON_API_URL}/api/v1/:path*`,
       },
     ];
   },

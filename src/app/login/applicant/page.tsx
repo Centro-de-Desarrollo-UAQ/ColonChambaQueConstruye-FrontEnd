@@ -25,16 +25,17 @@ export default function PublicLogin() {
 
   const { control, handleSubmit } = methods;
 
-  const onSubmit = async (data: LoginFormType) => {
-    // Lógica de envío del formulario aquí
-    try{
-      const response = await authService.loginAccount(data.email, data.password, 'user');
-      toast.success('Inicio de sesión exitoso');
-      console.log("Response: ", response.data);
-    } catch(error){
-      console.log(error);
-    }
-  };
+const onSubmit = async (data: LoginFormType) => {
+  try {
+    const response = await authService.loginAccount(data.email, data.password, 'user');
+  
+    toast.success('Inicio de sesión exitoso');
+    console.log("Response:" , response);
+  } catch (error: any) {
+    console.error('Error en login:', error.message);
+    toast.error(error.message || 'Error al iniciar sesión');
+  }
+};
 
   return (
     <>

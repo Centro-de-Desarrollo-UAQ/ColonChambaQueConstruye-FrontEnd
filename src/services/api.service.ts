@@ -9,6 +9,13 @@ export class ApiService {
 		const headers: Record<string, string> = {
 			'Content-Type': 'application/json',
 		};
+
+		const token = localStorage.getItem('authToken');
+
+		if (token) {
+			headers['Authorization'] = `Bearer ${token}`;
+		}
+
 		return headers;
 	}
 
