@@ -1,13 +1,11 @@
-import { ApiService } from "./api.service";
+import { apiService } from './api.service';
 
 export class AuthService {
-	constructor(private apiService: ApiService) {
-	}
 
-	async loginAccount(email: string, password: string, profileType: 'users' | 'companies' | 'administrator') {
+	async loginAccount(email: string, password: string, profileType: 'user' | 'companies' | 'administrator') {
 		const endpoint = `/auth/${profileType}/login`;
 
-		const response: Response | undefined = await this.apiService.post(endpoint, { email, password });
+		const response: Response | undefined = await apiService.post(endpoint, { email, password });
 		if (!response || !response.ok) {
 			const errorData = response
 				? await response.json().catch(() => ({ message: 'Login failed' }))
@@ -16,6 +14,8 @@ export class AuthService {
 		}
 
 		const data = await response.json();
-		console.log('login', data);
+		return data;
 	}
 }
+
+export const authService = new AuthService();

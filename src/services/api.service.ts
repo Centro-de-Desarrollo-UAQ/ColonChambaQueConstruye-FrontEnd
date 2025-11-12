@@ -1,18 +1,14 @@
-
-export const API_BASE_URL = '';
-
 export class ApiService {
 	private readonly apiBaseUrl: string;
 
 	constructor() {
-		this.apiBaseUrl = API_BASE_URL;
+		this.apiBaseUrl = '/api/v1';
 	}
 
 	private getHeaders(): Record<string, string> {
 		const headers: Record<string, string> = {
 			'Content-Type': 'application/json',
 		};
-
 		return headers;
 	}
 
@@ -31,7 +27,6 @@ export class ApiService {
 			});
 			return response;
 		} catch (error) {
-			console.log(error);
 		}
 	}
 
@@ -42,6 +37,9 @@ export class ApiService {
 	async post(endpoint: string, data?: unknown) {
 		return this.request(endpoint, {
 			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json' // Indicate the content type
+			},
 			body: data ? JSON.stringify(data) : undefined,
 		});
 	}
@@ -65,3 +63,4 @@ export class ApiService {
 	}
 }
 
+export const apiService = new ApiService();
