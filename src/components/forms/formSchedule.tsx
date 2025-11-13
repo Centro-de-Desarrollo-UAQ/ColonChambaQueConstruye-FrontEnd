@@ -60,7 +60,7 @@ export default function FormSchedule<T extends FieldValues>({
                   name={minHourName}
                   render={({ field }) => (
                     <Input
-                      type="string"
+                      type="time"
                       placeholder={minPlaceholder}
                       disabled={disabled}
                       {...field}
@@ -79,7 +79,7 @@ export default function FormSchedule<T extends FieldValues>({
                   name={maxHourName}
                   render={({ field }) => (
                     <Input
-                      type="string"
+                      type="time"
                       placeholder={maxPlaceholder}
                       disabled={disabled}
                       {...field}

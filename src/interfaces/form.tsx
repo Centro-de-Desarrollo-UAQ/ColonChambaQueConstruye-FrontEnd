@@ -8,7 +8,7 @@ export interface FormInputProps<T extends FieldValues> {
   description?: string;
   htmlFor?: string;
   variant?: 'default' | 'count' | 'description';
-  type?: 'text' | 'email' | 'password' | 'textarea';
+  type?: 'text' | 'email' | 'password' | 'textarea' | 'number';
   placeholder?: string;
   maxChars?: number;
   disabled?: boolean;
@@ -16,6 +16,9 @@ export interface FormInputProps<T extends FieldValues> {
   iconPosition?: 'left' | 'right';
   className?: string;
   optional?: boolean;
+  min?: number | string;
+  max?: number | string;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 type OptionType = 'select' | 'combobox';

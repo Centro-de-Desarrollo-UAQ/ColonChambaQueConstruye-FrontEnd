@@ -64,8 +64,10 @@ export default function GeneralInfoSection({ control }: Props) {
           control={control}
           label="No. de plazas"
           name="numberOpenings"
-          type="text"
           maxChars={10}
+          max={10}
+          type="number"
+          min={1}
           className=""
           description='Cantidad de personas para cubrir el puesto'
         />

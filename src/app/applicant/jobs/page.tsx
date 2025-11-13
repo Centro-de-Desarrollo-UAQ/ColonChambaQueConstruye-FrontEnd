@@ -133,7 +133,7 @@ export default function JobsPage() {
   const sectionConfig2 = {
     talents: {
       icon: <MinimalisticMagnifer weight="Bold" size={24} />,
-      title: 'Busqueda de vaacntes',
+      title: 'Busqueda de vacantes',
       description: '',
     },
   };
