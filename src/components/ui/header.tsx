@@ -1,11 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import * as React from 'react';
+import * as React from 'react'; // <-- NUEVO (Importamos React completo para usar useState)
 import Image from 'next/image';
 import { User, Logout2 } from '@solar-icons/react';
 import { Button } from "@/components/ui/button"; 
-import { useRouter } from 'next/navigation'; // Importamos useRouter para la redirección
+import { useRouter } from 'next/navigation';
+import LogoutModal from './modal/LogoutModal';
 
 import {
   DropdownMenu,
@@ -14,14 +15,14 @@ import {
   DropdownMenuItem
 } from '@/components/ui/dropdown-menu';
 
+
 interface HeaderProps {
     userIcon?: React.ReactNode;
     logOut?: React.ReactNode;
     companyImageUrl?: string; 
     companyTitle?: string; 
-    // NUEVAS PROPS
-    showProfileButton?: boolean; // Controla la visibilidad del botón de Perfil (Opcional)
-    logoutRedirectPath?: string; // Ruta de redirección al cerrar sesión (Necesaria)
+    showProfileButton?: boolean;
+    logoutRedirectPath?: string; 
 }
 
 export default function Header({ 
@@ -29,25 +30,34 @@ export default function Header({
     companyImageUrl = '/Deloitte.svg', 
     userIcon = <User className="h-5 w-5"/>, 
     logOut = <Logout2 className='h-5 w-5'/>,
-    // Asignamos el valor por defecto a las nuevas props
-    showProfileButton = true, // Por defecto, el botón de Perfil es visible
-    logoutRedirectPath = '/' // Ruta de redirección por defecto
+    showProfileButton = true, 
+    logoutRedirectPath = '/' // Esta ruta ya apunta a la raíz (localhost:3000/)
 }: HeaderProps) {
     
-    const router = useRouter(); // Inicializamos el hook de redirección
+    const router = useRouter(); 
 
-    // Función que manejará el cierre de sesión y la redirección
-    const handleLogout = () => {
-        // Aquí iría tu lógica real de cerrar sesión (limpiar tokens, etc.)
+    // <-- NUEVO: Estado para controlar la visib
+    const [isLogoutModalOpen, setIsLogoutModalOpen] = React.useState(false);
+    const closeLogoutModal = () => {
+        setIsLogoutModalOpen(false);
+    };
+    const handleLogoutConfirm = () => {
+        closeLogoutModal(); 
+        
         console.log("Cerrar sesión y redirigir a:", logoutRedirectPath);
         
-        // Redirección real usando Next.js Router
         router.push(logoutRedirectPath); 
+    };
+    
+    
+    const handleLogoutClick = () => {
+        setIsLogoutModalOpen(true);
     };
 
     return (
         <>
             <header className='bg-accent !z-50 flex items-center justify-between px-10 border-b border-zinc-200 drop-shadow-md'>
+                {/* ... (Tu código de los logos de la izquierda no cambia) ... */}
                 <div className='flex items-center gap-4 py-4'>
                     <Link href="/" className="text-lg font-bold">
                         <img src="/UCQC.png" alt="Colon" className="h-10 w-28 scale-100"/>
@@ -56,6 +66,7 @@ export default function Header({
                         <img src="/ADMON24-27-1-03.png" alt="Colon" className="h-10 w-28 scale-100"/>
                     </Link>
                 </div>
+                
                 <div className="flex items-center justify-center">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -67,7 +78,6 @@ export default function Header({
 
                         <DropdownMenuContent>
                             
-                            {/* Renderizado condicional del botón de Perfil */}
                             {showProfileButton && (
                                 <Link href={"user/profile"}>
                                     <DropdownMenuItem onClick={() => console.log("Página de perfil")}>
@@ -77,8 +87,8 @@ export default function Header({
                                 </Link>
                             )}
                             
-                            {/* El botón de Cerrar Sesión siempre está visible */}
-                            <DropdownMenuItem onClick={handleLogout} variant="destructive">
+                           
+                            <DropdownMenuItem onClick={handleLogoutClick} variant="destructive">
                                 {logOut}
                                 Cerrar sesión 
                             </DropdownMenuItem>
@@ -87,6 +97,15 @@ export default function Header({
                     </DropdownMenu>
                 </div>
             </header>
+            {isLogoutModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                    <LogoutModal 
+                        onConfirm={handleLogoutConfirm} 
+                        onClose={closeLogoutModal} 
+                        open={isLogoutModalOpen}
+                    />
+                </div>
+            )}
         </>
     );
 }

@@ -1,31 +1,53 @@
-'use client';
-
-import FormInput from '@/components/forms/FormInput';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, FormProvider } from 'react-hook-form';
-import { LoginFormType, loginSchema } from '@/validations/loginSchema';
+// app/acceso-privado-b4x7/page.tsx
+import type { Metadata } from 'next';
+import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
 
 import Headersimple from '@/components/ui/header-simple';
+import { Button } from '@/components/ui/button';
 
-export default function PublicLogin() {
-  const methods = useForm<LoginFormType>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-    mode: 'onSubmit',
-  });
+// Credenciales
+const ADMIN_EMAIL = 'admin@test.com';
+const ADMIN_PASSWORD = 'testpass123';
 
-  const { control, handleSubmit } = methods;
+// Evitar indexación
+export const metadata: Metadata = {
+  title: 'Acceso privado',
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
-  const onSubmit = (data: LoginFormType) => {
-    console.log('Iniciaste sesión');
-    // Lógica de envío del formulario aquí
-  };
+async function adminLogin(formData: FormData) {
+  'use server';
 
+  const email = formData.get('email');
+  const password = formData.get('password');
+
+  // Comparar
+  if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+    
+    const cookieStore = await cookies();
+
+    cookieStore.set('admin-auth', 'true', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+      maxAge: 60 * 60 * 24, // 1 día
+    });
+
+    redirect('/linker/home/companies');
+  }
+
+  // Si es incorrecto
+  console.error('Intento de acceso admin fallido', { email });
+
+  // Redirigir a tu landing
+  redirect('/');
+}
+
+export default function AdminHiddenLoginPage() {
   return (
     <>
       <Headersimple />
@@ -39,83 +61,72 @@ export default function PublicLogin() {
         }}
       >
         <main className="flex h-fit flex-col items-center justify-center gap-10">
-
-
           <div className="h-full max-w-2xl space-y-8 rounded-md border border-gray-300 bg-white p-12 gap-8 w-[696px] shadow-sm">
             <div className="flex flex-col items-center gap-4">
               <h1 className="text-xl font-normal leading-none tracking-normal text-center text-[#FF7F40]">
-                Inicio de sesión
+                Acceso administrador
               </h1>
-
             </div>
 
-            <FormProvider {...methods}>
-              <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-4">
-                <div className="space-y-10">
-                  <div>
-                    
-                    <FormInput
-                      control={control}
-                      name="email"
-                      label="Correo"
-                      type="email"
-                      maxChars={244}
-                    />
-                    <p className="mt-2 text-xs text-zinc-700">
-                      Ingresa tu correo electrónico registrado.
-                    </p>
-
-                  </div>
-
-
-                  <div>
-                    <FormInput
-                      control={control}
-                      name="password"
-                      label="Contraseña"
-                      type="password"
-                      maxChars={50}
-                    />
-                    <p className="mt-2 text-xs text-zinc-700">
-                      Escribe tu contraseña de acceso.
-                    </p>
-                  </div>
-
-                </div>
-
-                <div >
-                  <Link
-                    href="/login/recovery"
-                    className="block text-right font-medium no-underline hover:no-underline focus:no-underline"
-                    onClick={() => console.log("Le diste click a 'olvidaste contraseña' ")}
+            
+            <form action={adminLogin} className="mt-8 space-y-4">
+              <div className="space-y-10">
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-zinc-900 mb-1"
                   >
-                    ¿Olvidaste tu contraseña?
-                  </Link>
-                </div>
-                <div className="flex items-center justify-between">
-                  <p className="flex items-center gap-1 text-sm">
-                    ¿No tienes cuenta?
-                    <Link href="../signup/applicant/" className="font-medium no-underline text-[#FF7F40]"
-                    onClick={() => console.log("Le diste click a Registrate")}>
-                      Regístrate
-                    </Link>
+                    Correo
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    maxLength={244}
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#FF7F40]"
+                    placeholder="admin@test.com"
+                  />
+                  <p className="mt-2 text-xs text-zinc-700">
+                    Ingresa el correo electrónico registrado.
                   </p>
-
-                  <Link href={"../applicant/jobs"}>
-                    <Button variant="primary" 
-                            color="brand" 
-                            type="submit"
-                            >
-                      Iniciar sesión
-                    </Button>
-                  </Link>
-                  
                 </div>
-              </form>
-            </FormProvider>
 
-            <div className="space-y-2 text-center text-sm text-gray-600">
-            </div>
+                <div>
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-zinc-900 mb-1"
+                  >
+                    Contraseña
+                  </label>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    required
+                    maxLength={50}
+                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#FF7F40]"
+                    placeholder="••••••••••"
+                  />
+                  <p className="mt-2 text-xs text-zinc-700">
+                    Escribe tu contraseña de acceso.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end">
+                {/* OJO: SIN Link, este botón dispara la Server Action */}
+                <Button
+                  variant="primary"
+                  color="brand"
+                  type="submit"
+                >
+                  Iniciar sesión
+                </Button>
+              </div>
+            </form>
+
+            <div className="space-y-2 text-center text-sm text-gray-600" />
           </div>
         </main>
       </div>

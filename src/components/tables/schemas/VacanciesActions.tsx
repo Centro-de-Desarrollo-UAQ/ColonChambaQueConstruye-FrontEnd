@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { MenuDots, Eye, UsersGroupRounded, CloseSquare } from '@solar-icons/react';
+import { MenuDots, Document,UsersGroupRounded, CloseSquare, DocumentAdd} from '@solar-icons/react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,19 +28,21 @@ export default function RowActions({ row }: { row: { original: Vacancy } }) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Acciones</DropdownMenuLabel>
           <DropdownMenuItem onSelect={(e) => e.preventDefault()} onClick={() => setOpen(true)}>
-            <Eye className="text-zinc-800" />
-            Información de la vacante
+            <Document className="text-zinc-800" />
+
+            Ver vacante
+
           </DropdownMenuItem>
 
           <DropdownMenuItem onClick={() => console.log('Ver candidatos', row.original.id)}>
-            <UsersGroupRounded className="text-zinc-800" />
-            Ver candidatos
+            <DocumentAdd className="text-zinc-800" />
+            Editar
           </DropdownMenuItem>
           <DropdownMenuSeparator />
 
           <DropdownMenuItem onClick={() => console.log('Eliminar', row.original.id)}>
             <CloseSquare className="text-zinc-800" />
-            Cerrar vacante
+            Cerrar
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
