@@ -1,3 +1,5 @@
+//Componente que adapta los datos de las cards al formato que espera TableSearchBar para filtrar y buscar entre las cards
+
 'use client';
 
 import * as React from 'react';
