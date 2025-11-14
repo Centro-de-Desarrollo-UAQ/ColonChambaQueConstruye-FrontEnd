@@ -8,4 +8,6 @@ export interface JobCardProps {
   modality: string;
   logoUrl?: string;
   information?: string;
+  createdAt: string;
+  sector: string;
 }
