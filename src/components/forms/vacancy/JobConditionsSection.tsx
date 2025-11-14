@@ -41,7 +41,8 @@ export default function JobConditionsSection({ control }: Props) {
                     minHourName="workHourStart"
                     maxHourName="workHourEnd"
                     label="Horario"
-                    description="Anote el horario de trabajo."
+                    
+                    description="Anote el horario de trabajo en formato 24 horas."
                     className='w-[50%]'
                 />
 

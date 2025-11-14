@@ -11,8 +11,12 @@ export default function Page(){
 
     const [isEditingPersonal, setIsEditingPersonal] = useState(false);
     const[isEditingGeneral,setIsEditingGeneral]=useState(false);
-
+    const [showPassword, setShowPassword] = useState(false);
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+   
     //Conectar con la API para poder acceder a los datos del contacto de la empresa
+
     const [form, setForm] = useState({
         nombres: 'Pedro',
         apellidos: 'Benajmin Parques',
@@ -26,8 +30,8 @@ export default function Page(){
     const [personalErrors, setPersonalErrors] = useState<Record<string, string>>({});
     const sectionConfig = {
         profile: {
+            title: 'DATOS DE ACCESO',
             icon: <UserCircle size={24} weight="Bold" />,
-            title: 'Datos de acceso',
             description: 'Consulte la información de sus datos de acceso',
         },
     };
@@ -142,7 +146,7 @@ export default function Page(){
                     externalError={personalErrors.apellidos}
                 />
                 <ConfigRow
-                    title='Puesto en la empresa'
+                    title='Puesto'
                     valueinput={form.puesto}
                     placeholder=''
                     isEditable={isEditingPersonal}
@@ -178,7 +182,7 @@ export default function Page(){
             </div>
             <div className='rounded-lg border border-zinc-300 shadow-sm'>
                 <ConfigRow
-                    title='Información general'
+                    title='Información de acceso' // (Título sugerido)
                     valueinput=''
                     isTitle={true}
                     placeholder=''
@@ -186,27 +190,50 @@ export default function Page(){
                     editInput={false}
                     onEditClick={() => {
                         setPersonalErrors({})
+                        // Resetea los campos al entrar o salir del modo edición
+                        setConfirmPassword('');
+                        setShowPassword(false);
+                        setShowConfirmPassword(false);
                         setIsEditingGeneral((s) => !s)
                     }}
                 />
                 <ConfigRow
                     title='Correo electrónico'
                     valueinput={form.correo}
-                    isEditable={false}
-                    editInput={false}
+                    placeholder='ejemplo@correo.com'
+                    isEditable={isEditingGeneral}
+                    editInput={isEditingGeneral}
                     onValueChange={(v) => handleChange('correo', v)}
                     externalError={personalErrors.correo}
                 />
                 <ConfigRow
                     title='Contraseña'
+                    inputType='password'
                     valueinput={form.contrasena}
-                    isEditable={false}
-                    editInput={false}
+                    isEditable={isEditingGeneral}
+                    editInput={isEditingGeneral}
                     onValueChange={(v) => handleChange('contrasena', v)}
                     externalError={personalErrors.contrasena}
+                    
+                    
                 />
+
+                
                 {isEditingGeneral && (
-                    <div className='flex justify-end px-6 pb-4 pt-2'>
+                    <ConfigRow
+                        title='Repite Contraseña'
+                        valueinput={confirmPassword}
+                        placeholder='Repite tu contraseña'
+                        isEditable={true} 
+                        editInput={true}
+                        onValueChange={(v) => setConfirmPassword(v)}
+                        inputType='password'
+                    />
+                )}
+                
+                {isEditingGeneral && (
+                    <div className='flex flex-wrap items-center justify-end gap-x-4 gap-y-2 px-6 pb-4 pt-2'>
+                        
                         <Button variant='primary' onClick={() => { handleSaveGeneral() }}>
                             Guardar Cambios
                         </Button>

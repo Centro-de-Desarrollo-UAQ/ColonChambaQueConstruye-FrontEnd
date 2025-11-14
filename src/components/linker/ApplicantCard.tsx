@@ -44,10 +44,13 @@ export default function ApplicantCard({ user }: ApplicantCardProps) {
         <div className='flex justify-between items-center py-3'>
             <p className="text-base text-zinc-800 flex-1 mr-5">{user.careerSummary}</p>
             <div className="flex flex-col gap-2">
-        
-            <Button variant='primary' color='brand'>
-              Ver CV
-            </Button>
+              {/** Esto es una prueba idealmente el hredf debe de ser el link de el cv del usuario */}
+              <a target="_blank" href='https://google.com/' rel="noopener noreferrer">
+              <Button variant='primary' color='brand'>
+                Ver CV
+              </Button>
+              </a>
+            
           </div>
         </div>
         {/* Columna derecha: contacto + botón */}

@@ -9,9 +9,7 @@ import { DataTableCustomSearchBar } from '@/components/tables/layouts/DateTableC
 import { DataVacancies } from '@/data/testDataVacancies';//
 import { filtersVacancies } from '@/data/filtersVacancies';//
 import NoteRemove from '@/components/common/hugeIcons';
-{
-  /Estado de la cuenta del empleador - cambiar para probar diferentes estados/
-}
+
 const accountStatus: 'approved' | 'reviewed' | 'rejected' = 'approved';
 
 
@@ -50,6 +48,7 @@ const VacanciesContent = ({
           filters={filtersVacancies}
         />
       </div>
+      
     ) : (
       <div className="flex w-full flex-col items-center justify-center text-center">
         {commonEmptyState}

@@ -83,13 +83,14 @@ export default function PersonalInfoStep({ control }: ApplicantDetailsStepProps)
           type="password"
           description="Tu contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número."
         />
+        
 
         <FormInput
           control={control}
           name="confirmPassword"
           label="Confirmar contraseña"
           type="password"
-          
+          description='Escribe tu contraseña nuevamente.'
         />
 
 
