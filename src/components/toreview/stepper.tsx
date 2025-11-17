@@ -107,7 +107,7 @@ function StepperControls({ activeStep, stepsLength, onPrev, onNext }: StepperCon
       <Button
         onClick={onPrev}
         disabled={activeStep === 0}
-        variant="secondary"
+        variant="secundary"
         color="brand"
         className="px-6 py-2"
       >
