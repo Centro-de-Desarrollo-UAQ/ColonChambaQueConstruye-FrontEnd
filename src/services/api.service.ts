@@ -29,11 +29,12 @@ export class ApiService {
 		this.getHeaders();
 
 		try {
-			const response = fetch(url, {
+			const response = await fetch(url, {
 				...options, headers
 			});
 			return response;
 		} catch (error) {
+			console.log(error)
 		}
 	}
 

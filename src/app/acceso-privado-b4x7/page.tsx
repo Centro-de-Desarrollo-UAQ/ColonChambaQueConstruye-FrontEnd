@@ -1,53 +1,53 @@
-// app/acceso-privado-b4x7/page.tsx
-import type { Metadata } from 'next';
-import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
+'use client';
+
+import FormInput from '@/components/forms/FormInput';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, FormProvider } from 'react-hook-form';
+import { LoginFormType, loginSchema } from '@/validations/loginSchema';
 
 import Headersimple from '@/components/ui/header-simple';
-import { Button } from '@/components/ui/button';
+import { apiService } from '@/services/api.service';
 
-// Credenciales
-const ADMIN_EMAIL = 'admin@test.com';
-const ADMIN_PASSWORD = 'testpass123';
 
-// Evitar indexación
-export const metadata: Metadata = {
-  title: 'Acceso privado',
-  robots: {
-    index: false,
-    follow: false,
-  },
-};
 
-async function adminLogin(formData: FormData) {
-  'use server';
+export default function PublicLogin() {
+  const methods = useForm<LoginFormType>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    mode: 'onSubmit',
+  });
 
-  const email = formData.get('email');
-  const password = formData.get('password');
+  const { control, handleSubmit } = methods;
 
-  // Comparar
-  if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+  const onSubmit = async (data: LoginFormType) => {
+    try {
+      console.log('Enviando datos de login...', data);
+
     
-    const cookieStore = await cookies();
+      const response = await apiService.post('/auth/linker/login', {
+        email: data.email,
+        password: data.password,
+      });
 
-    cookieStore.set('admin-auth', 'true', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      path: '/',
-      maxAge: 60 * 60 * 24, // 1 día
-    });
+      if (!response) {
+        console.error('No hubo respuesta del servidor');
+        return;
+      }
 
-    redirect('/linker/home/companies');
-  }
+      const json = await response.json();
 
-  // Si es incorrecto
-  console.error('Intento de acceso admin fallido', { email });
+    
+      console.log('Respuesta de login (SUCCESS):', json);
+    } catch (error) {
+      console.error('Error en login:', error);
+    }
+  };
 
-  // Redirigir a tu landing
-  redirect('/');
-}
-
-export default function AdminHiddenLoginPage() {
   return (
     <>
       <Headersimple />
@@ -64,67 +64,74 @@ export default function AdminHiddenLoginPage() {
           <div className="h-full max-w-2xl space-y-8 rounded-md border border-gray-300 bg-white p-12 gap-8 w-[696px] shadow-sm">
             <div className="flex flex-col items-center gap-4">
               <h1 className="text-xl font-normal leading-none tracking-normal text-center text-[#FF7F40]">
-                Acceso administrador
+                Inicio de sesión
               </h1>
             </div>
 
-            
-            <form action={adminLogin} className="mt-8 space-y-4">
-              <div className="space-y-10">
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-zinc-900 mb-1"
-                  >
-                    Correo
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    maxLength={244}
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#FF7F40]"
-                    placeholder="admin@test.com"
-                  />
-                  <p className="mt-2 text-xs text-zinc-700">
-                    Ingresa el correo electrónico registrado.
-                  </p>
+            <FormProvider {...methods}>
+              <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-4">
+                <div className="space-y-10">
+                  <div>
+                    <FormInput
+                      control={control}
+                      name="email"
+                      label="Correo"
+                      type="email"
+                      maxChars={244}
+                    />
+                    <p className="mt-2 text-xs text-zinc-700">
+                      Ingresa tu correo electrónico registrado.
+                    </p>
+                  </div>
+
+                  <div>
+                    <FormInput
+                      control={control}
+                      name="password"
+                      label="Contraseña"
+                      type="password"
+                      maxChars={50}
+                    />
+                    <p className="mt-2 text-xs text-zinc-700">
+                      Escribe tu contraseña de acceso.
+                    </p>
+                  </div>
                 </div>
 
                 <div>
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-medium text-zinc-900 mb-1"
+                  <Link
+                    href="/login/recovery"
+                    className="block text-right font-medium no-underline hover:no-underline focus:no-underline"
+                    onClick={() =>
+                      console.log("Le diste click a 'olvidaste contraseña'")
+                    }
                   >
-                    Contraseña
-                  </label>
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    required
-                    maxLength={50}
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-[#FF7F40]"
-                    placeholder="••••••••••"
-                  />
-                  <p className="mt-2 text-xs text-zinc-700">
-                    Escribe tu contraseña de acceso.
-                  </p>
+                    ¿Olvidaste tu contraseña?
+                  </Link>
                 </div>
-              </div>
 
-              <div className="flex items-center justify-end">
-                {/* OJO: SIN Link, este botón dispara la Server Action */}
-                <Button
-                  variant="primary"
-                  color="brand"
-                  type="submit"
-                >
-                  Iniciar sesión
-                </Button>
-              </div>
-            </form>
+                <div className="flex items-center justify-between">
+                  <p className="flex items-center gap-1 text-sm">
+                    ¿No tienes cuenta?
+                    <Link
+                      href="../signup/applicant/"
+                      className="font-medium no-underline text-[#FF7F40]"
+                      onClick={() => console.log('Le diste click a Registrate')}
+                    >
+                      Regístrate
+                    </Link>
+                  </p>
+
+                  <Button
+                    variant="primary"
+                    color="brand"
+                    type="submit"
+                  >
+                    Iniciar sesión
+                  </Button>
+                </div>
+              </form>
+            </FormProvider>
 
             <div className="space-y-2 text-center text-sm text-gray-600" />
           </div>
