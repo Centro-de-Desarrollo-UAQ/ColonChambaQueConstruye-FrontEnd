@@ -27,7 +27,6 @@ export default function BaseModalTemplate({
   className = '',
 }: BaseModalTemplateProps) {
   const handleConfirm = useCallback(() => {
-    console.log(`${texts.title}`);
     onConfirm();
   }, [onConfirm, texts.title]);
 

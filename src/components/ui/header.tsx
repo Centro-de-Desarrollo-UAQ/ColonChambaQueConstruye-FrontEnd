@@ -13,6 +13,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem
 } from '@/components/ui/dropdown-menu';
+import { useState } from 'react';
+import LogoutModal from './modal/LogoutModal';
 
 interface HeaderProps {
     userIcon?: React.ReactNode;
@@ -33,6 +35,8 @@ export default function Header({
     showProfileButton = true, // Por defecto, el botón de Perfil es visible
     logoutRedirectPath = '/' // Ruta de redirección por defecto
 }: HeaderProps) {
+
+    const [showLogout, setShowLogout] = useState(false);
     
     const router = useRouter(); // Inicializamos el hook de redirección
 
@@ -44,6 +48,9 @@ export default function Header({
         // Redirección real usando Next.js Router
         router.push(logoutRedirectPath); 
     };
+
+    const openLogoutModal = () => setShowLogout(true);
+    const closeLogoutModal = () => setShowLogout(false);
 
     return (
         <>
@@ -78,15 +85,22 @@ export default function Header({
                             )}
                             
                             {/* El botón de Cerrar Sesión siempre está visible */}
-                            <DropdownMenuItem onClick={handleLogout} variant="destructive">
+                            <DropdownMenuItem onClick={openLogoutModal} variant="destructive">
                                 {logOut}
-                                Cerrar sesión 
+                                Cerrar sesión
                             </DropdownMenuItem>
                             
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
             </header>
+            <div className="mb-6 space-y-4">
+                {showLogout && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                        <LogoutModal onConfirm={handleLogout} onClose={closeLogoutModal} />
+                    </div>
+                )}
+            </div>
         </>
     );
 }
