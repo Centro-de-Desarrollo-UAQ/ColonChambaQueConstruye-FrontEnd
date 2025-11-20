@@ -5,11 +5,11 @@ import { cn } from '@/lib/utils';
 import { CloseCircle } from '@solar-icons/react';
 
 const badgeVariants = cva(
-  'gap-1 flex items-center w-fit rounded-lg px-2.5 py-0.5 text-xs transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+  'gap-1 flex items-center w-fit rounded-lg px-2.5 py-0.5 text-s transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
   {
     variants: {
       variant: {
-        success: 'bg-uaq-success/10 text-uaq-success-hover',
+        success: 'bg-success/10 text-success-hover',
         warning: 'bg-uaq-warning/10 text-uaq-warning-hover',
         danger: 'bg-uaq-danger/10 text-uaq-danger-hover',
         outline: 'border border-zinc-800 text-foreground',

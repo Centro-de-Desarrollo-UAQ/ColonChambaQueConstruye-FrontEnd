@@ -20,6 +20,7 @@ export const listYearsOptionsConstants = [
 ];
 
 export const listAreasOptionsConstants = [
+  { label: 'Tecnología e informática', value: 'Tecnología e informática' },
   { label: 'Ingeniería en Sistemas Computacionales', value: 'Ingeniería en Sistemas Computacionales' },
   { label: 'Ingeniería en Software', value: 'Ingeniería en Software' },
   { label: 'Ingeniería Industrial', value: 'Ingeniería Industrial' },
@@ -30,6 +31,7 @@ export const listAreasOptionsConstants = [
   { label: 'Psicología', value: 'Psicología' },
   { label: 'Derecho', value: 'Derecho' },
   { label: 'Ciencias de la Comunicación', value: 'Ciencias de la Comunicación' },
+  { label: 'Telecomunicaciones', value: 'Telecomunicaciones' },
 ];
 
 export const listDegreesOptionsConstants = [
@@ -42,20 +44,21 @@ export const listDegreesOptionsConstants = [
 ];
 
 export const listWorkingHoursOptionsConstants = [
-  { value: 'Tiempo completo', label: 'Tiempo completo' },
-  { value: 'Medio tiempo', label: 'Medio tiempo' },
-  { value: 'Pago por hora', label: 'Pago por hora' },
-  { value: 'Horario flexible', label: 'Horario flexible' }
+  { value: 'TIEMPO_COMPLETO', label: 'Tiempo completo' },
+  { value: 'MEDIO_TIEMPO', label: 'Medio tiempo' },
+  { value: 'PAGO_HORA', label: 'Pago por hora' },
+  { value: 'HORARIO_FLEXIBLE', label: 'Horario flexible' }
 ]
 
 export const listModalityOptionsConstants = [
-  { value: 'Presencial', label: 'Presencial' },
-  { value: 'Remoto', label: 'Remoto' },
-  { value: 'Híbrido', label: 'Híbrido' },
+  { value: 'PRESENCIAL', label: 'Presencial' },
+  { value: 'REMOTO', label: 'Remoto' },
+  { value: 'HIBRIDO', label: 'Híbrido' },
 ]
 
 export const listGenderOptionsConstants = [
-  { value: 'Masculino', label: 'Masculino' },
-  { value: 'Femenino', label: 'Femenino' },
-  { value: 'Otro', label: 'Otro' },
+  { value: 'MASCULINO', label: 'Masculino' },
+  { value: 'FEMENINO', label: 'Femenino' },
+  { value: 'INDIFERENTE', label: 'Indiferente' },
+  { value: 'OTRO', label: 'Otro' },
 ]

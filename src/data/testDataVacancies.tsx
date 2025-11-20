@@ -1,8 +1,9 @@
 import { Vacancy } from "@/interfaces/vacancy";
+import { VacancyU } from "@/interfaces/vacancyUpdate";
 
 export const DataVacancies: Vacancy[] = [
   {
-    id: 1,
+    id: '1',
     LogoUrl: '/Deloitte.svg',
     company: "Tech Solutions",
     name: 'Desarrollador Frontend Senior',
@@ -13,7 +14,7 @@ export const DataVacancies: Vacancy[] = [
       { skill: 'Diseño de interfaces con Tailwind', time: '2 años' },
       { skill: 'Consumo de APIs REST', time: '3 años' },
     ],
-    workingDay: ['Lunes', 'Viernes'],
+    workingDay: ['Monday', 'Friday'],
     employeeBenefit: 'Seguro de gastos médicos, Vales de despensa, Capacitaciones continuas',
     additionaSupport: 'Horario flexible, home office parcial, estacionamiento gratuito.',
     requiredProfile: [
@@ -32,7 +33,7 @@ export const DataVacancies: Vacancy[] = [
       'Ciencias de la Computación',
       'Ingeniería en Software',
     ],
-    industryCategory: 'Informática',
+    industryCategory: 'Tecnología e informática',
     gender: 'Indistinto',
     numberOpening: 3,
     limitApply: 100,
@@ -44,7 +45,7 @@ export const DataVacancies: Vacancy[] = [
     requestedAt: '2025-07-28T06:00:00.000Z'
   },
   {
-    id: 2,
+    id: '2',
   LogoUrl: '/Deloitte.svg',
     company: "Data Insights",
     name: 'Analista de Datos',
@@ -54,7 +55,7 @@ export const DataVacancies: Vacancy[] = [
       { skill: 'Power BI', time: '2 años' },
       { skill: 'SQL avanzado', time: '3 años' },
     ],
-    workingDay: ['Lunes', 'Sábado'],
+    workingDay: ['Monday', 'Saturday'],
     employeeBenefit: 'Capacitación continua y acceso a certificaciones.',
     additionaSupport: 'Trabajo 100% remoto y horarios flexibles.',
     requiredProfile: [
@@ -66,7 +67,7 @@ export const DataVacancies: Vacancy[] = [
     description: 'Generación de dashboards y análisis de KPIs clave en Power BI.',
     workShift: 'Pago por Hora',
     vacancyCareer: ['Actuaría', 'Matemáticas Aplicadas', 'Ingeniería Industrial'],
-    industryCategory: 'Análisis de Datos',
+    industryCategory: 'Ingeniería en Software',
     gender: 'Indistinto',
     numberOpening: 2,
     limitApply: 50,
@@ -78,7 +79,7 @@ export const DataVacancies: Vacancy[] = [
     requestedAt: '2025-02-28T06:00:00.000Z'
   },
   {
-    id: 3,
+    id: '3',
   LogoUrl: '/Deloitte.svg',
     company: "NetCorp",
     name: 'Network Developer .NET',
@@ -88,7 +89,7 @@ export const DataVacancies: Vacancy[] = [
       { skill: 'Desarrollo .NET Core', time: '4 años' },
       { skill: 'Administración de redes', time: '2 años' },
     ],
-    workingDay: ['Lunes', 'Viernes'],
+    workingDay: ['Monday', 'Friday'],
     employeeBenefit: 'Seguro de vida, comedor subsidiado',
     additionaSupport: 'Convenios con universidades para maestrías.',
     requiredProfile: [
@@ -115,7 +116,7 @@ export const DataVacancies: Vacancy[] = [
     requestedAt: '2024-10-01T12:00:00.000Z'
   },
   {
-    id: 4,
+    id: '4',
   LogoUrl: '/Deloitte.svg',
     company: "Innovatech",
     name: 'Jr. Backend',
@@ -125,7 +126,7 @@ export const DataVacancies: Vacancy[] = [
       { skill: 'Node.js', time: '1 año' },
       { skill: 'SQL básico', time: '1 año' },
     ],
-    workingDay: ['Lunes', 'Viernes'],
+    workingDay: ['Monday', 'Friday'],
     employeeBenefit: 'Plan de carrera y mentoría.',
     additionaSupport: 'Modalidad híbrida, equipo de cómputo proporcionado.',
     requiredProfile: [
@@ -140,7 +141,7 @@ export const DataVacancies: Vacancy[] = [
     description: 'Apoyo en desarrollo de APIs con Node.js y Express.',
     workShift: 'Horario Flexible',
     vacancyCareer: ['Ingeniería en Sistemas', 'Tecnologías de la Información'],
-    industryCategory: 'Desarrollo de Software',
+    industryCategory: 'Ingeniería en Software',
     gender: 'Indistinto',
     numberOpening: 1,
     limitApply: 20,
@@ -150,5 +151,116 @@ export const DataVacancies: Vacancy[] = [
     createdAt: '2025-01-28T06:00:00.000Z',
     applications: 6,
     requestedAt: '2025-01-28T06:00:00.000Z'
+  },
+];
+
+export const DataVacanciesU: VacancyU[] = [
+  {
+    id: '1',
+    status: 'ABIERTA',
+    name: 'Desarrollador Frontend Senior',
+    businessSector: 'Tecnología e informática',
+    modality: 'PRESENCIAL',
+    location: 'Juriquilla, Querétaro',
+    numberOpenings: 3,
+    description:
+      'Desarrollo de interfaces modernas y optimizadas en React con buenas prácticas.',
+    experience:
+      'React y TypeScript (3 años); Diseño de interfaces con Tailwind (2 años); Consumo de APIs REST (3 años).',
+    gender: 'INDIFERENTE',
+    ageRange: [25, 35],
+    requiredDegree: 'INGENIERIA',
+    salary: {
+      coin: 'MXN',
+      min: 30000,
+      max: 50000,
+    },
+    benefits:
+      'Seguro de gastos médicos, vales de despensa y capacitaciones continuas.',
+    workingDay: ['Monday', 'Friday'],
+    workShift: 'TIEMPO_COMPLETO',
+    workSchedule: ['08:00', '17:00'],
+    additionalInformation:
+      'Horario flexible, home office parcial y estacionamiento gratuito.',
+  },
+  {
+    id: '2',
+    status: 'REVISION',
+    name: 'Analista de Datos',
+    businessSector: 'Ingeniería en Software',
+    modality: 'REMOTO',
+    location: 'CDMX, México',
+    numberOpenings: 2,
+    description:
+      'Generación de dashboards y análisis de KPIs clave en Power BI.',
+    experience:
+      'Power BI (2 años); SQL avanzado (3 años); Excel avanzado (3 años).',
+    gender: 'INDIFERENTE',
+    ageRange: [22, 40],
+    requiredDegree: 'LICENCIATURA',
+    salary: {
+      coin: 'MXN',
+      min: 250,
+      max: 250,
+    },
+    benefits: 'Capacitación continua y acceso a certificaciones.',
+    workingDay: ['Monday', 'Saturday'],
+    workShift: 'PAGO_HORA',
+    workSchedule: ['08:00', '17:00'],
+    additionalInformation: 'Trabajo 100% remoto y horarios flexibles.',
+  },
+  {
+    id: '3',
+    status: 'CERRADA',
+    name: 'Network Developer .NET',
+    businessSector: 'Telecomunicaciones',
+    modality: 'PRESENCIAL',
+    location: 'Guadalajara, Jalisco',
+    numberOpenings: 1,
+    description:
+      'Desarrollo de aplicaciones .NET orientadas a la conectividad de redes.',
+    experience:
+      'Desarrollo .NET Core (4 años); Administración de redes (2 años).',
+    gender: 'MASCULINO',
+    ageRange: [28, 45],
+    requiredDegree: 'INGENIERIA',
+    salary: {
+      coin: 'MXN',
+      min: 20000,
+      max: 25000,
+    },
+    benefits: 'Seguro de vida y comedor subsidiado.',
+    workingDay: ['Monday', 'Friday'],
+    workShift: 'MEDIO_TIEMPO',
+    workSchedule: ['08:00', '13:00'],
+    additionalInformation:
+      'Convenios con universidades para estudios de maestría.',
+  },
+  {
+    id: '4',
+    status: 'RECHAZADA',
+    name: 'Jr. Backend',
+    businessSector: 'Ingeniería en Software',
+    modality: 'HIBRIDO',
+    location: 'Monterrey, Nuevo León',
+    numberOpenings: 1,
+    description:
+      'Apoyo en desarrollo de APIs con Node.js y Express para productos internos.',
+    experience:
+      'Node.js (1 año); SQL básico (1 año); Uso de Git y trabajo colaborativo.',
+    gender: 'INDIFERENTE',
+    ageRange: [21, 30],
+    requiredDegree: 'TECNICA',
+    salary: {
+      coin: 'MXN',
+      min: 15000,
+      max: 20000,
+    },
+    benefits: 'Plan de carrera, mentoría y crecimiento interno.',
+    workingDay: ['Monday', 'Friday'],
+    workShift: 'HORARIO_FLEXIBLE',
+    workSchedule: ['09:00', '17:00'],
+    additionalInformation:
+      'Modalidad híbrida, equipo de cómputo proporcionado por la empresa.',
   },
 ];

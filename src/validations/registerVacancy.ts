@@ -6,24 +6,10 @@ const AGE_ERROR_MESSAGE = 'Ingrese una edad válida (mínimo 1).';
 export const registerVacancy = z.object({
   name: z.string().min(1, DEFAULT_ERROR_MESSAGE),
 
-  sector: z.enum([
-    'Ingeniería en Sistemas Computacionales', 
-    'Ingeniería en Software', 
-    'Ingeniería Industrial', 
-    'Arquitectura',
-    'Administración',
-    'Diseño Gráfico',
-    'Mercadotecnia',
-    'Psicología',
-    'Derecho',
-    'Ciencias de la Comunicación'
-], { 
+  sector: z.string().min(1, DEFAULT_ERROR_MESSAGE),
     // Mensaje para cuando es null o undefined
-    required_error: DEFAULT_ERROR_MESSAGE, 
-})
-.refine(value => value !== undefined, DEFAULT_ERROR_MESSAGE),
 
-  modality: z.enum(['Presencial', 'Remoto', 'Híbrido'], { required_error: DEFAULT_ERROR_MESSAGE }),
+  modality: z.enum(['PRESENCIAL', 'REMOTO', 'HIBRIDO'], { required_error: DEFAULT_ERROR_MESSAGE }),
 
   location: z.string().min(1, DEFAULT_ERROR_MESSAGE),
 
@@ -93,7 +79,7 @@ export const registerVacancy = z.object({
   workingDays: z.array(z.string().min(1, DEFAULT_ERROR_MESSAGE)).min(1, 'Agrega al menos un día de trabajo'),
   
   workShift: z.enum(
-    ['Tiempo completo', 'Medio tiempo', 'Pago por hora', 'Horario flexible'],
+    ['TIEMPO_COMPLETO', 'MEDIO_TIEMPO', 'PAGO_HORA', 'HORARIO_FLEXIBLE'],
     { required_error: DEFAULT_ERROR_MESSAGE, 
 })
 .refine(value => value !== undefined, DEFAULT_ERROR_MESSAGE),

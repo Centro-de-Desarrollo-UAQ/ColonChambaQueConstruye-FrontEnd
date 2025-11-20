@@ -37,10 +37,10 @@ export const vacanciesColumns: ColumnDef<Vacancy>[] = [
     cell: ({ getValue }) => {
       const state = getValue() as Vacancy['state'];
       const stateMap: Record<Vacancy['state'], string> = {
-        Activo: 'Activo',
+        Activo: 'Activa',
         EnRevisión: 'En Revisión',
-        Cerrado: 'Cerrado',
-        Rechazado: 'Rechazado',
+        Cerrado: 'Cerrada',
+        Rechazado: 'Rechazada',
       };
       return (
         <Badge
