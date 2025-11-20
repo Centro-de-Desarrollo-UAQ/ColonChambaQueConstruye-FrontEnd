@@ -39,6 +39,7 @@ export default function VacancyInfoSection({ control }: Props) {
                     label="Rango de edad"
                     description="Menciona la edad mínima y máxima aceptada para postularse."
                     className='col-span-1 justify-self-end'
+                    min = {18}
                 />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-5 gap-x-3 gap-y-6 items-start content-start auto-rows-auto">

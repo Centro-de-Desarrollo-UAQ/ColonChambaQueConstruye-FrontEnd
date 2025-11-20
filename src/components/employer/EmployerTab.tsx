@@ -9,14 +9,14 @@ export default function EmployerTab() {
   const tabsConfig = [
     {
         value:"documents",
-        route:"/employer/home/company",
+        route:"/employer/profileconfig/company",
         title: 'Documents',
         icon: <Buildings size={24} />,
         label:"Información de la empresa"
     },
     {
         value:"profile",
-        route:"/employer/home/",
+        route:"/employer/profileconfig",
         title: 'Profile',
         icon: <UserCircle size={24} />,
         label:"Datos de acceso"

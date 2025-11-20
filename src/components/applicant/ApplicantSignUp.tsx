@@ -5,7 +5,6 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import PersonalInfoStep from './PersonalInfoStep';
 import ProfessionalInfoStep from './ProfessionalInfoStep';
-import ProfilePhotoStep from './ProfilePhotoStep';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ApplicantFormType, applicantSchema } from '@/validations/applicantSchema';
 
@@ -114,7 +113,8 @@ export default function ApplicantSignUp() {
         <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
           {step === 1 && <PersonalInfoStep control={control} />}
           {step === 2 && <ProfessionalInfoStep control={control} />}
-          {step === 3 && <ProfilePhotoStep />}
+          //Aqui deberia de estar el meotodo de validacion de correo 
+          //step === 3 && 
 
           <div className="flex justify-center">
             {step < 3 ? (

@@ -9,6 +9,8 @@ import SearchBar from '@/components/toreview/searchbar';
 import FormOptions from '@/components/forms/FormOptions';
 import { Form, FormProvider, useForm } from 'react-hook-form';
 import { states } from '@/constants';
+import { DataTableCustomSearchBar } from '@/components/tables/layouts/DateTableCustomSearchBar';
+import { vacanciesColumns } from '@/components/tables/schemas/Vacancies';
 
 const users = testDataUser;
 
@@ -82,6 +84,7 @@ export default function UserLists() {
                 <TitleSection sections={sectionConfig} currentSection='talents' />
                 <br />
                 <SearchBar onSearch={handleSearch}  placeholder='Escribe palabras clave para encontrar el talento que necesitas' showFilter />
+                
                 <div className='mt-5'>
                     <FormProvider {...methods}>
                         <Form className='flex gap-3'>

@@ -26,7 +26,7 @@ export default function PostJobForm() {
             experience: '',
             gender: '',
             ageRange: '',
-            minAge: '',
+            minAge: '18',
             maxAge: '',
             requiredDegree: undefined,
             salaryRange: '',
@@ -40,6 +40,7 @@ export default function PostJobForm() {
             workHourStart: '',
             workHourEnd: '',
             additionalInformation: '',
+            numberOpenings: '1',
         },
     });
 

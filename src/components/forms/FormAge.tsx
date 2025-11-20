@@ -17,6 +17,7 @@ interface FormAgeProps<T extends FieldValues> {
   disabled?: boolean;
   className?: string;
   optional?: boolean;
+  min?: number;
 }
 
 export default function FormAge<T extends FieldValues>({
@@ -31,6 +32,7 @@ export default function FormAge<T extends FieldValues>({
   disabled = false,
   className,
   optional = false,
+  min=0,
 }: FormAgeProps<T>) {
   const context = useFormContext<T>();
   const control = propControl || context.control;
@@ -63,7 +65,7 @@ export default function FormAge<T extends FieldValues>({
                       type="number"
                       placeholder={minPlaceholder}
                       disabled={disabled}
-                      min={0}
+                      min={min}
                       {...field}
                     />
                   )}
@@ -83,7 +85,7 @@ export default function FormAge<T extends FieldValues>({
                       type="number"
                       placeholder={maxPlaceholder}
                       disabled={disabled}
-                      min={0}
+                      min={min}
                       {...field}
                     />
                   )}

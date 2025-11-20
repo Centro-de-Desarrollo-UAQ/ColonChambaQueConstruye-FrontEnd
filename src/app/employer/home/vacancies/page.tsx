@@ -10,11 +10,7 @@ import { DataVacancies } from '@/data/testDataVacancies';//
 import { filtersVacancies } from '@/data/filtersVacancies';//
 import NoteRemove from '@/components/common/hugeIcons';
 
-
-{
-  /Estado de la vacante - cambiar para probar diferentes estados/
-}
-const accountStatus: 'approved' | 'reviewed' | 'rejected' = 'approved' ;
+const accountStatus: 'approved' | 'reviewed' | 'rejected' = 'approved';
 
 
 
@@ -52,6 +48,7 @@ const VacanciesContent = ({
           filters={filtersVacancies}
         />
       </div>
+      
     ) : (
       <div className="flex w-full flex-col items-center justify-center text-center">
         {commonEmptyState}
