@@ -1,50 +1,54 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
+import { usePathname } from 'next/navigation'
+import Link from 'next/link'
 import { Button } from '../ui/button'
-import { Separator } from '../ui/separator';
+import { Separator } from '../ui/separator'
 
-
-interface Button {
-    id: number;
-    text: string; //texto visible en el botón
-    ref: string; //URL del destino de la navegación
-}
-
-interface TitleAdminNavbar{
-    NameTitle:string
-}
-
-//Array de inlaces para la navegación
-const navLinks: Button[] = [
-    { id: 1, text: 'Por aprobar', ref: '' },
-    { id: 2, text: 'Aprobadas', ref: '' },
-    { id: 3, text: 'Rechazadas', ref: '' },
-    { id:4, text: 'Todas', ref: '' }
+const navLinks = [
+    { id: 1, text: 'Por aprobar', slug: 'pendings' },
+    { id: 2, text: 'Aprobadas', slug: 'aproved' },
+    { id: 3, text: 'Rechazadas', slug: 'rejected' }
 ]
 
-const AdminNavbarMenu = ({NameTitle}:TitleAdminNavbar) => {
-
-    //Manejador de eventos de clic
-    const[button, setButton] = useState<number | null>(null);
-
-    const handleClick = (linkId: number) => {
-        setButton(linkId);
-    }
-
-  return (
-    <nav className='flex justify-start gap-4 bg-uaq-terniary py-[8px] px-[48px] items-center'>
-        <p className='text-white font-bold  text-base'>{NameTitle }</p>
-        <div className='h-[43px]'><Separator orientation='vertical'/></div>
-        {navLinks.map((link) => (
-            <div key={link.id}>
-                    {/*Condición terniaria que identifica el botón que está activo para cambiarle el color*/}
-                    <Button onClick={() => handleClick(link.id)} variant='third' color={button === link.id ? 'brand' : 'accent'} >{link.text}</Button>
-            </div>
-
-        ))}
-    </nav>
-  )
+interface AdminNavbarProps {
+    NameTitle: string;
+    basePath: 'users' | 'companies' | 'vacancies';
 }
 
-export {AdminNavbarMenu};
+const AdminNavbarMenu = ({ NameTitle, basePath }: AdminNavbarProps) => {
+    const pathname = usePathname();
+
+    return (
+        <nav className='flex justify-start gap-4 bg-uaq-terniary py-[8px] px-[48px] items-center'>
+            <p className='text-white font-bold text-base'>{NameTitle}</p>
+            
+            <div className='h-[43px]'>
+                <Separator orientation='vertical' />
+            </div>
+
+            {navLinks.map((link) => {
+                const href = `/${basePath}/${link.slug}`;
+                
+                const isActive = pathname.includes(link.slug);
+
+                return (
+                    <div key={link.id}>
+                        <Link href={href}>
+                           
+                            <Button 
+                                variant='third' 
+                                color={isActive ? 'brand' : 'accent'}
+                            >
+                                {link.text}
+                            </Button>
+                        </Link>
+                    </div>
+                )
+            })}
+        </nav>
+    )
+}
+
+export { AdminNavbarMenu };
