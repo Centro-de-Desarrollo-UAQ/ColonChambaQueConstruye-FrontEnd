@@ -48,6 +48,7 @@
   --color-uaq-accent: var(--uaq-accent);
   --color-brand: var(--brand);
   --color-success: var(--uaq-success);
+  --color-success-hover: var(--uaq-success-hover);
   --color-uaq-warning: var(--uaq-warning);
   --color-uaq-danger: var(--uaq-danger);
   --color-uaq-white: var(--uaq-white);
@@ -107,7 +108,7 @@
   --accent: #FFFFFF;
   --brand: #470A68;
   --secundary: #FF7F40;
-  --uaq-warning: oklch(78.19% 0.1585 72.33);
+  --uaq-warning: #F5A524;
   --uaq-danger: #FE4141;
   --uaq-white: oklch(100% 0 0);
   --uaq-gray: #71717A; /*Gris de botones ghost*/
@@ -116,10 +117,10 @@
   --accent-hover: #AD42D0;
   --uaq-brand-hover: #AD42D0;
   --uaq-success: #17C964;
-  --uaq-success-hover: oklch(0.5112 0.1819 153.21);
-  --uaq-warning-hover: oklch(0.5515 0.140162 66.5167);
+  --uaq-success-hover: #17C964;
+  --uaq-warning-hover: #FEC844;
 
-  --uaq-danger-hover: oklch(0.5361 0.2142 13.65);
+  --uaq-danger-hover: #FE4141;
   --uaq-selected-hover: oklch(0.68 0.17 39.5);
 
   /* Nuevo color terniary */

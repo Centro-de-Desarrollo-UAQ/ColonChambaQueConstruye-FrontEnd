@@ -1,7 +1,7 @@
 import { apiService } from './api.service';
 
 export class AuthService {
-	async loginAccount(email: string, password: string, profileType: 'user' | 'companies' | 'administrator') {
+	async loginAccount(email: string, password: string, profileType: 'user' | 'company' | 'administrator') {
 		const endpoint = `/auth/${profileType}/login`;
 		const response: Response | undefined = await apiService.post(endpoint, { email, password });
 

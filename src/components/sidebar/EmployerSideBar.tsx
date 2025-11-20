@@ -43,7 +43,7 @@ export default function EmployerSideBar() {
       {/* Vinculos a posibles nuevas paginas */}
       <div className="text-[var(--uaq-selected-hover)] font-futura flex flex-col font-[400] pt-5 items-center group-hover/sidebar:items-stretch">
         {navLinks.map(({ href, label, icon:Icon }) => (
-          <SidebarNavButton key={href} href={href} label={label} icon={Icon} active={pathname === href} />
+          <SidebarNavButton key={href} href={href} label={label} icon={Icon} active={pathname.startsWith(href)} />
         ))}
       </div>
     </nav>

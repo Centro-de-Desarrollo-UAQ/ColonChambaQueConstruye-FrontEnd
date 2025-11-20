@@ -14,6 +14,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem
 } from '@/components/ui/dropdown-menu';
+import { useState } from 'react';
+import LogoutModal from './modal/LogoutModal';
 
 
 interface HeaderProps {
@@ -33,6 +35,8 @@ export default function Header({
     showProfileButton = true, 
     logoutRedirectPath = '/' // Esta ruta ya apunta a la raíz (localhost:3000/)
 }: HeaderProps) {
+
+    const [showLogout, setShowLogout] = useState(false);
     
     const router = useRouter(); 
 
@@ -53,6 +57,9 @@ export default function Header({
     const handleLogoutClick = () => {
         setIsLogoutModalOpen(true);
     };
+
+    const openLogoutModal = () => setShowLogout(true);
+    const closeLogoutModal = () => setShowLogout(false);
 
     return (
         <>
@@ -87,25 +94,23 @@ export default function Header({
                                 </Link>
                             )}
                             
-                           
-                            <DropdownMenuItem onClick={handleLogoutClick} variant="destructive">
+                            {/* El botón de Cerrar Sesión siempre está visible */}
+                            <DropdownMenuItem onClick={openLogoutModal} variant="destructive">
                                 {logOut}
-                                Cerrar sesión 
+                                Cerrar sesión
                             </DropdownMenuItem>
                             
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
             </header>
-            {isLogoutModalOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                    <LogoutModal 
-                        onConfirm={handleLogoutConfirm} 
-                        onClose={closeLogoutModal} 
-                        open={isLogoutModalOpen}
-                    />
-                </div>
-            )}
+            <div className="mb-6 space-y-4">
+                {showLogout && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                        <LogoutModal onConfirm={handleLogout} onClose={closeLogoutModal} />
+                    </div>
+                )}
+            </div>
         </>
     );
 }
