@@ -2,16 +2,15 @@
 
 import FormInput from '@/components/forms/FormInput';
 import { Button } from '@/components/ui/button';
-import Image from 'next/image';
 import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, FormProvider } from 'react-hook-form';
 import { LoginFormType, loginSchema } from '@/validations/loginSchema';
-import LinkerNavBar from '@/components/linker/LinkerNavBar';
-import Header from '@/components/ui/header';
 import Headersimple from '@/components/ui/header-simple';
 import { authService } from '@/services/auth.service';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+
 
 export default function PublicLogin() {
   const methods = useForm<LoginFormType>({
@@ -25,13 +24,29 @@ export default function PublicLogin() {
 
   const { control, handleSubmit } = methods;
 
+  const router = useRouter();
+
 const onSubmit = async (data: LoginFormType) => {
   try {
     const response = await authService.loginAccount(data.email, data.password, 'user');
+
+    const user = response.data
   
+    if(user.status === "ACTIVO"){
+      router.push("/applicant/jobs")
+      return
+    }
+
+    if(user.status === "REVISION"){
+      router.push("/login/waiting")
+      return
+    }
+
     toast.success('Inicio de sesión exitoso');
     console.log("Response:" , response);
-  } catch (error: any) {
+
+    
+  } catch (error:any) {
     console.error('Error en login:', error.message);
     toast.error(error.message || 'Error al iniciar sesión');
   }
