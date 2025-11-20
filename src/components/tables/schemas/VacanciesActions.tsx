@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { MenuDots, Eye, UsersGroupRounded, CloseSquare } from '@solar-icons/react';
+import { MenuDots, Eye, UsersGroupRounded, CloseSquare, DocumentAdd, Document, CloseCircle } from '@solar-icons/react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +14,7 @@ import * as React from 'react';
 import { Vacancy } from '@/interfaces/vacancy';
 import { useState } from 'react';
 import CloseVacancyModal from '@/components/ui/modal/CloseVacancyModal';
+import { Close } from '@radix-ui/react-dialog';
 
 export default function RowActions({ row }: { row: { original: Vacancy } }) {
   const [open, setOpen] = React.useState(false);
@@ -24,6 +25,11 @@ export default function RowActions({ row }: { row: { original: Vacancy } }) {
     console.log('Vacante cerrada:', row.original.id);
     setShowCloseVacancy(false);
   };
+
+  function handleEditVacancy(id: string) {
+    console.log("Editar vacante: " + id)
+    window.location.href = `/employer/home/vacancies/edit/${id}`;
+  }
 
   const openCloseVacancyModal = () => setShowCloseVacancy(true);
   const closeCloseVacancyModal = () => setShowCloseVacancy(false);
@@ -39,21 +45,20 @@ export default function RowActions({ row }: { row: { original: Vacancy } }) {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-            <DropdownMenuItem onSelect={(e) => e.preventDefault()} onClick={() => setOpen(true)}>
-              <Eye className="text-zinc-800" />
-              Información de la vacante
+            <DropdownMenuItem onClick={() => handleEditVacancy(row.original.id)}>
+              <DocumentAdd className="text-zinc-800" />
+              Editar
             </DropdownMenuItem>
 
-            <DropdownMenuItem onClick={() => console.log('Ver candidatos', row.original.id)}>
-              <UsersGroupRounded className="text-zinc-800" />
-              Ver candidatos
+            <DropdownMenuItem onSelect={(e) => e.preventDefault()} onClick={() => setOpen(true)}>
+              <Document className="text-zinc-800" />
+              Ver vacante
             </DropdownMenuItem>
             <DropdownMenuSeparator />
 
             <DropdownMenuItem onClick={openCloseVacancyModal}>
-              <CloseSquare className="text-zinc-800" />
-              Cerrar vacante
+              <CloseCircle className="text-zinc-800" />
+              Cerrar
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

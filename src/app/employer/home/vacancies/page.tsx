@@ -12,9 +12,9 @@ import NoteRemove from '@/components/common/hugeIcons';
 
 
 {
-  /Estado de la cuenta del empleador - cambiar para probar diferentes estados/
+  /Estado de la vacante - cambiar para probar diferentes estados/
 }
-const accountStatus: 'approved' | 'reviewed' | 'rejected' = 'approved';
+const accountStatus: 'approved' | 'reviewed' | 'rejected' = 'approved' ;
 
 
 
@@ -34,7 +34,7 @@ const VacanciesContent = ({
   accountStatus: 'approved' | 'reviewed' | 'rejected';
 }) => {
   const commonEmptyState = (
-    <div className="flex w-full flex-col items-center justify-center text-center">
+    <div className="flex w-full flex-col mt-20 items-center justify-center text-center">
       <EmptyDisplay
         icon={<NoteRemove color="#D4D4D8" width={158} height={166} />}
         firstLine="Todavía no has publicado alguna vacante."
@@ -55,8 +55,8 @@ const VacanciesContent = ({
     ) : (
       <div className="flex w-full flex-col items-center justify-center text-center">
         {commonEmptyState}
-        <Button variant="primary" color="accent">
-          <a href="/employer/user/vacancy/create">Crear Vacante</a>
+        <Button className='mt-5' variant="primary" color="gray">
+          <a href="/employer/home/post">Crear Vacante</a>
         </Button>
       </div>
     ),
@@ -64,7 +64,7 @@ const VacanciesContent = ({
       <>
         {commonEmptyState}
         <div className="flex w-full flex-col items-center justify-center text-center">
-          <Button variant="primary" color="gray">
+          <Button className='mt-5' variant="primary" color="gray">
             Crear Vacante
           </Button>
         </div>
@@ -114,7 +114,7 @@ export default function VacanciesPage() {
 
   return (
     <>
-      <div className="mx-32 flex flex-col gap-5 mt-20">
+      <div className="mx-32 my-16 flex flex-col gap-5">
         <div className="">
           <TitleSection sections={sectionConfig} currentSection={'profile'} />
         </div>

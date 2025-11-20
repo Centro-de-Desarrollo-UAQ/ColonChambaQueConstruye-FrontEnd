@@ -1,7 +1,7 @@
 export type Vacancy = {
     company: string;
     LogoUrl: string | URL;
-    id: number;
+    id: string;
     name: string;
     location: string;
     state: 'Activo' | 'EnRevisión' | 'Cerrado' | 'Rechazado';

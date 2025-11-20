@@ -23,7 +23,7 @@ export default function LayoutEmployerView({
         </div>
 
         {/* Scrollable content */}
-        <div className="flex-1 overflow-y-auto py-10 px-6">
+        <div className="flex-1 overflow-y-auto">
           {children}
         </div>
       </main>
