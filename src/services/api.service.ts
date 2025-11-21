@@ -68,6 +68,22 @@ export class ApiService {
 			body: data ? JSON.stringify(data) : undefined,
 		});
 	}
+
+	async getTestWithToken(endpointPath: string, token: string) {
+		const headers: Record<string, string> = {
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${token}`,
+		};
+		const url = `${this.apiBaseUrl}${endpointPath}`;
+
+		const response = await fetch(url, {
+			method: 'GET',
+			headers,
+		});
+
+		return response.json();
+	}
+
 }
 
 export const apiService = new ApiService();
