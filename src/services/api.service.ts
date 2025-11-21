@@ -70,22 +70,19 @@ export class ApiService {
 		});
 	}
 
-	async getTestWithToken(endpointPath: string) {
+	async getTestWithToken(endpointPath: string, token: string) {
 		const headers: Record<string, string> = {
 			'Content-Type': 'application/json',
-			'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZjdjZTg0NTIyYTBjNzJiN2EwYzEyNiIsInN0YXR1cyI6IkFDVElWQSIsImVtYWlsIjoiZW1wbG95ZXJfYWN0aXZvQGVtcHJlc2EuY29tIiwiaWF0IjoxNzYzNzIyODQ0LCJleHAiOjE3NjQzMjc2NDR9.tE7PiUGyakBZ9TEVlVAtlkdtpIPG__hZnaJme88z4g8`,
+			'Authorization': `Bearer ${token}`,
 		};
 		const url = `${this.apiBaseUrl}${endpointPath}`;
-		console.log(url)
+
 		const response = await fetch(url, {
 			method: 'GET',
 			headers,
 		});
 
-
-		const data = await response.json();
-		console.log("Data: ", data.data)
-		return data.data;
+		return response.json();
 	}
 
 }
