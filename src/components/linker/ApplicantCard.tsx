@@ -36,9 +36,8 @@ export default function ApplicantCard({ user }: ApplicantCardProps) {
                     <p className="text-sm text-zinc-800">{user.email}</p>
                 </div>
                 <div className="flex items-center gap-2">
-                    <Phone />
-                    <p className="text-sm text-zinc-800">{user.phoneNumber}</p>
-                </div>
+<Phone />
+<p className="text-sm text-zinc-800">{user.phoneNumber || user.cellPhone}</p>                </div>
             </div>
         </div>
         <div className='flex justify-between items-center py-3'>
