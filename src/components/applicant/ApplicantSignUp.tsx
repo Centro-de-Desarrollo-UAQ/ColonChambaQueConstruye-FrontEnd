@@ -113,8 +113,8 @@ export default function ApplicantSignUp() {
         <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
           {step === 1 && <PersonalInfoStep control={control} />}
           {step === 2 && <ProfessionalInfoStep control={control} />}
-          //Aqui deberia de estar el meotodo de validacion de correo 
-          //step === 3 && 
+          {/* Aqui deberia de estar el meotodo de validacion de correo 
+          step === 3 &&  */}
 
           <div className="flex justify-center">
             {step < 3 ? (
