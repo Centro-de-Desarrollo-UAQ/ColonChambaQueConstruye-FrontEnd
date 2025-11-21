@@ -54,7 +54,7 @@ export default function EmployerDetailsStep({ control }: EmployerDetailsStepProp
         maxChars={244}
       />
 
-      <FormPhone control={control} name="employerLandlinePhone" label="Teléfono fijo "
+      <FormPhone control={control} name="employerLandlinePhone"  label="Teléfono fijo "
       description="Ingresa un número fijo donde podamos contactarte (opcional si no cuentas con uno)." />
 
       <FormPhone control={control} name="employerMobilePhone" label="Teléfono Celular"
