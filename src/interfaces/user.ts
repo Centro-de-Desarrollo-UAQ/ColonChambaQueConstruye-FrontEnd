@@ -1,15 +1,16 @@
 'use client';
 
 export interface User {
-    id: number;
+    id: string;
     firstName: string;
     lastName: string;
-    recentPosition: string;
-    careerSummary: string;
     email: string;
-    phoneNumber: string;
-    photoURL: string;
-    creadetAt: string;
-    academicLevel: string;
-
+    cellPhone?: string;
+    phoneNumber?: string;
+    photoURL?: string;
+    jobExperience?: string;
+    careerSummary?: string;
+    academicLevel?: string;
+    registeredAt?: string;
+    status?: string;
 }
