@@ -1,5 +1,4 @@
 'use client';
-
 import { useState, useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
@@ -7,10 +6,15 @@ import PersonalInfoStep from './PersonalInfoStep';
 import ProfessionalInfoStep from './ProfessionalInfoStep';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ApplicantFormType, applicantSchema } from '@/validations/applicantSchema';
+import { authService } from '@/services/auth.service';
+import { useRouter } from 'next/navigation';
 
 export default function ApplicantSignUp() {
   const [step, setStep] = useState(1);
   const [stepValid, setStepValid] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const methods = useForm<ApplicantFormType>({
     resolver: zodResolver(applicantSchema),
@@ -38,7 +42,7 @@ export default function ApplicantSignUp() {
 
   const { control, handleSubmit, trigger, watch } = methods;
 
-  const onSubmit = (data: ApplicantFormType) => {
+  const onSubmit = async (data: ApplicantFormType) => {
     console.log('Form submitted:', data);
   };
 
@@ -55,18 +59,15 @@ export default function ApplicantSignUp() {
           'password',
           'confirmPassword',
         ];
-
         const isFilled = requiredFields.every((field) => {
           const val = value[field];
           return val !== undefined && val !== null && val !== '';
         });
-
         setStepValid(isFilled);
       } else {
         setStepValid(true);
       }
     });
-
     return () => subscription.unsubscribe();
   }, [step, watch]);
 
@@ -82,20 +83,47 @@ export default function ApplicantSignUp() {
         'password',
         'confirmPassword',
       ];
-
       
       const ok = await trigger(fieldsToValidate);
-      if (!ok) return; 
-    }
+      if (!ok) return;
 
-    
-    setStep((prev) => prev + 1);
-    setStepValid(false);
+      setIsSubmitting(true);
+      setError(null);
+      
+      try {
+        const formData = methods.getValues();
+        const signupData = {
+          firstName: formData.name,
+          lastName: formData.lastName,
+          address: formData.address,
+          birthDate: formData.birthDate,
+          email: formData.email,
+          cellPhone: `${formData.telefonoCode}${formData.telefono}`,
+          password: formData.password,
+        };
+
+        const response = await authService.userSignup(signupData);
+        console.log('Registro exitoso:', response);
+        
+        // Si el registro fue exitoso, avanzar al siguiente paso
+        setStep((prev) => prev + 1);
+        setStepValid(false);
+      } catch (err) {
+        console.error('Error en el registro:', err);
+        setError(err instanceof Error ? err.message : 'Error al registrarse');
+      } finally {
+        setIsSubmitting(false);
+      }
+    } else {
+      setStep((prev) => prev + 1);
+      setStepValid(false);
+    }
   };
 
   const getButtonText = () => {
+    if (isSubmitting) return 'Registrando...';
     if (step === 1) return 'Registrarse';
-    if (step === 2) return 'Continuar';
+    if (step === 2) return 'Finalizar registro';
     return 'Finalizar registro';
   };
 
@@ -109,24 +137,28 @@ export default function ApplicantSignUp() {
         </h2>
       </div>
 
+      {error && (
+        <div className="mb-4 rounded-md bg-red-50 p-4 text-sm text-red-800">
+          {error}
+        </div>
+      )}
+
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
           {step === 1 && <PersonalInfoStep control={control} />}
           {step === 2 && <ProfessionalInfoStep control={control} />}
-          //Aqui deberia de estar el meotodo de validacion de correo 
-          //step === 3 && 
-
+          
           <div className="flex justify-center">
-            {step < 3 ? (
+            {step < 2 ? (
               <Button
                 type="button"
                 onClick={handleNextStep}
-                disabled={!stepValid}
+                disabled={!stepValid || isSubmitting}
               >
                 {getButtonText()}
               </Button>
             ) : (
-              <Button type="submit">
+              <Button type="submit" disabled={isSubmitting}>
                 {getButtonText()}
               </Button>
             )}

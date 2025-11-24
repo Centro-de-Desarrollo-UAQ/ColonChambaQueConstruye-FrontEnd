@@ -13,6 +13,18 @@ export class AuthService {
 		const data = await response.json();
 		return data;
 	}
+
+	async userSignup(body: unknown) {
+		const endpoint = '/auth/user/signup'
+		const response: Response | undefined = await apiService.post(endpoint, body);
+		if (!response || !response.ok) {
+			const errorText = await response?.text();
+			throw new Error(errorText || 'Signup failed');
+		}
+
+		const data = await response.json();
+		return data;
+	}
 }
 
 export const authService = new AuthService();
