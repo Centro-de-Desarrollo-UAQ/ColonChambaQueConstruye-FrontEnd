@@ -102,7 +102,7 @@ export default function ApplicantSignUp() {
           password: formData.password,
         };
 
-        const response = await authService.userSignup(signupData);
+        const response = await authService.userSignup(signupData, 'user');
         console.log('Registro exitoso:', response);
         
         // Si el registro fue exitoso, avanzar al siguiente paso

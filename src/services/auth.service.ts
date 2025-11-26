@@ -14,8 +14,8 @@ export class AuthService {
 		return data;
 	}
 
-	async userSignup(body: unknown) {
-		const endpoint = '/auth/user/signup'
+	async userSignup(profileType: 'user' | 'employer' | 'administrator', body: unknown) {
+		const endpoint = `/auth/${profileType}/signup`;
 		const response: Response | undefined = await apiService.post(endpoint, body);
 		if (!response || !response.ok) {
 			const errorText = await response?.text();
