@@ -69,6 +69,7 @@ export default function FormPhone<T extends FieldValues>({
                   <SelectTrigger className="w-[120px]">
                     <SelectValue placeholder="+XX" />
                   </SelectTrigger>
+
                   <SelectContent>
                     {countryCodes.map((opt) => (
                       <SelectItem key={opt.value} value={opt.value}>
