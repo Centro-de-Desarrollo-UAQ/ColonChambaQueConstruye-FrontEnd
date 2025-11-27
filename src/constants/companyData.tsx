@@ -245,3 +245,15 @@ export const countryCodes = [
   { label: '+52 (MX)', value: '+52' },
   { label: '+1 (US)', value: '+1' },
 ];
+
+export const educationLevels = [
+  { value: 'BASICA', label: 'Básica' },
+  { value: 'MEDIA_SUPERIOR', label: 'Media Superior' },
+  { value: 'TECNICA', label: 'Técnica' },
+  { value: 'LICENCIATURA', label: 'Licenciatura' },
+  { value: 'INGENIERIA', label: 'Ingeniería' },
+  { value: 'MAESTRIA', label: 'Maestría' },
+  { value: 'DOCTORADO', label: 'Doctorado' },
+  { value: 'NO_ESPECIFICA', label: 'No especifica' },
+];
+
