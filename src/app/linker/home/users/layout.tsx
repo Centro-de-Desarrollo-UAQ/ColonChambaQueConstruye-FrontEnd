@@ -1,5 +1,6 @@
 'use client';
 
+import { AdminNavbarMenu } from "@/components/navigation/AdminNavbarMenu";
 import AdminSideBar from "@/components/sidebar/AdminSideBar";
 import Header from "@/components/ui/header";
 import React from "react";
@@ -19,10 +20,6 @@ export default function LinkerLayout({ children }: { children: React.ReactNode }
       className="relative min-h-screen overflow-x-hidden"
       style={styleVars}
     >
-      {/* 1) Sidebar fijo (peer) */}
-      <AdminSideBar />
-
-      {/* 2) Contenido que se recorre con el hover del sidebar */}
       <div
         className="
           flex min-h-screen flex-col
@@ -31,12 +28,11 @@ export default function LinkerLayout({ children }: { children: React.ReactNode }
           transition-all duration-300 ease-in-out
         "
       >
-        {/* Header fijo arriba */}
-        <header className="w-full sticky top-0 z-40">
-          <Header />
-        </header>
 
-        
+        {/* Subbarra / título de página */}
+        <div>
+          <AdminNavbarMenu NameTitle="Empresas" basePath="users"/>
+        </div>
 
         {/* Contenido principal */}
         <main className="flex-1">
