@@ -52,7 +52,7 @@ export default function Page() {
 
             <EmailCodeValidationStep
               email={email}
-              onVerified={handleVerified}
+              onVerified={(code)=>{console.log('Codigo validado',code)}}
               onBack={() => router.push('/login/recovery')}
               onResend={handleResend}
             />
