@@ -11,7 +11,8 @@ interface AuthState {
   logout: () => void;
   initialize: () => void; 
 }
-const LOCAL_STORAGE_KEY = 'authToken';
+const LOCAL_STORAGE_TOKEN_KEY = 'authToken';
+const LOCAL_STORAGE_ID_KEY = 'authId';
 
 export const useApplicantStore = create<AuthState>((set) => ({
   token: null,
@@ -26,7 +27,12 @@ export const useApplicantStore = create<AuthState>((set) => ({
       email: data.email,
       status: data.status,
     });
-    localStorage.setItem(LOCAL_STORAGE_KEY, data.token);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, data.token);
+      localStorage.setItem(LOCAL_STORAGE_ID_KEY, data.id);
+    }
+    console.log("Aqui se vera el id del usuario o no?")
+    console.log(data.id, LOCAL_STORAGE_ID_KEY);
   },
   // Esto basicamente es para limpiar el token 
   logout: () => {
@@ -36,13 +42,22 @@ export const useApplicantStore = create<AuthState>((set) => ({
       email: null,
       status: null,
     });
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
+      localStorage.removeItem(LOCAL_STORAGE_ID_KEY);
+    }
   },
 
   initialize: () => {
-    const storedToken = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (storedToken) {
-      set({ token: storedToken });
+    if (typeof window !== 'undefined') {
+      const storedToken = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
+      const storedId = localStorage.getItem(LOCAL_STORAGE_ID_KEY);
+      if (storedToken && storedId) {
+        set({ 
+            token: storedToken,
+            id: storedId 
+        });
+      }
     }
   },
 }));
