@@ -21,12 +21,7 @@ export default function LinkerLayout({ children }: { children: React.ReactNode }
       style={styleVars}
     >
       <div
-        className="
-          flex min-h-screen flex-col
-          ml-[var(--sb-collapsed)]
-          peer-hover:ml-[var(--sb-expanded)]
-          transition-all duration-300 ease-in-out
-        "
+        
       >
 
         {/* Subbarra / título de página */}

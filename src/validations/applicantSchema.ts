@@ -31,13 +31,16 @@ export const applicantSchema = z.object({
   jobLocationPreference: z.string().min(1, DEFAULT_ERROR_MESSAGE),
   preferredHours: z.string().min(1, DEFAULT_ERROR_MESSAGE),
   employmentMode: z.string().min(1, DEFAULT_ERROR_MESSAGE),
-  telefonoCode: z.string(),
+  telefono: z.object({
+      code: z.string().min(1, 'Selecciona una LADA'),
+      number: z
+        .string()
+        .regex(/^\d{10}$/, 'El número debe tener exactamente 10 dígitos'),
+    }),
   // Paso 3
   profilePhoto: z.instanceof(File).optional().nullable(),
   cvFile: z.instanceof(File).optional(),
-  telefono: z
-  .string()
-  .regex(/^\d{10}$/, 'El número debe tener exactamente 10 dígitos'),
+ 
   
 
 

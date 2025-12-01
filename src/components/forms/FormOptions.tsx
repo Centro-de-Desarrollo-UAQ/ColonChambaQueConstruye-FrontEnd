@@ -53,7 +53,7 @@ export default function FormOptions<T extends FieldValues>({
             <div className="flex items-center gap-2">
               {type === 'combobox' ? (
                 <Combobox
-                  value={field.value}
+                  value={field.value??''}
                   onChange={(val) => {
                     field.onChange(val);
                     onSelect?.(val);
@@ -64,7 +64,7 @@ export default function FormOptions<T extends FieldValues>({
                   color={color}
                 />
               ) : (
-                <Select onValueChange={field.onChange} value={field.value} disabled={disabled}>
+                <Select onValueChange={field.onChange} value={field.value??''} disabled={disabled}>
                   <SelectTrigger className={cn(
                         className, width,
                       )}>

@@ -1,24 +1,24 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { accentInsensitiveTextFilter, dateSameDay } from '@/validations/filtersTanStack';
-import { Badge } from '@/components/ui/badge';
 import { dateToLocaleDateString } from '@/lib/utils';
 import React from 'react';
-import { Vacancy } from '@/interfaces/vacancy';
 import SortButton from '../tables/ui/SortButton';
-import RowActions from '../tables/schemas/VacanciesActions';
-import { filterType } from '@/interfaces/table';
 import { Button } from '@/components/ui/button';
 import { User } from '@/interfaces/user';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { filterType } from '@/interfaces/table'; 
+import { educationlevel } from '@/interfaces/escolaridad'; 
 
-export const companySearchColumns: ColumnDef<User>[] = [
+export const getCompanySearchColumns = (
+  onReviewClick: (user: User) => void
+): ColumnDef<User>[] => [
   {
     accessorFn: (row) => row.firstName, 
     id: 'name', 
     header: ({ column }) => <SortButton column={column} name="Usuario" />,
     filterFn: accentInsensitiveTextFilter,
     cell: ({ row }) => {
-      const user = row.original as User;
+      const user = row.original;
       const initials = `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`;
       return (
         <div className="flex items-center gap-3">
@@ -28,7 +28,6 @@ export const companySearchColumns: ColumnDef<User>[] = [
               {initials}
             </AvatarFallback>
           </Avatar>
-
           <div className="flex flex-col">
             <span className="text-sm font-medium text-foreground">{user.firstName}</span>
           </div>
@@ -41,8 +40,34 @@ export const companySearchColumns: ColumnDef<User>[] = [
     id: 'fullName',
     header: ({ column }) => <SortButton column={column} name="Nom. Comp." />,
     filterFn: accentInsensitiveTextFilter,
-    
   },
+  
+  // --- AQUÍ ESTÁ LA CORRECCIÓN ---
+  {
+    accessorKey: 'academicLevel', 
+    header: ({ column }) => <SortButton column={column} name="Escolaridad" />,
+    
+    // 1. Agregamos 'addMeta' como cuarto parámetro recibido
+    filterFn: (row, id, filterValue, addMeta) => {
+        const rowValue = row.getValue(id) as string || '';
+
+        // CASO 1: El filtro viene del Dropdown (Array)
+        if (Array.isArray(filterValue)) {
+            if (filterValue.length === 0) return true;
+            return filterValue.includes(rowValue);
+        }
+
+        // CASO 2: El filtro es texto (Búsqueda global)
+        if (typeof filterValue === 'string') {
+             // 2. Pasamos 'addMeta' a la función original para cumplir con los 4 argumentos
+             return accentInsensitiveTextFilter(row, id, filterValue, addMeta);
+        }
+
+        return true;
+    },
+  },
+  // -------------------------------
+
   {
     accessorKey: 'email',
     header: ({ column }) => <SortButton column={column} name="Correo" />,
@@ -54,51 +79,36 @@ export const companySearchColumns: ColumnDef<User>[] = [
     header: ({ column }) => <SortButton column={column} name="Fecha de registro" />,
     filterFn: dateSameDay,
   },
-  // {
-  //   accessorKey: 'academicLevel',
-  //   header: ({ column }) => <SortButton column={column} name="Escolaridad" />,
-  //   filterFn: accentInsensitiveTextFilter,
-  // },
   {
-    header: '  ',
+    header: 'Acciones',
     id: 'actions',
     cell: ({ row }) => {
-      const id = (row.original as User).id;
       return (
-        <a href={`/employer/vacancy/${id}/review`}>
-          <Button
-            variant="primary"
-            color='accent'
-            className=''
-          >
-            Revisar
-          </Button>
-        </a>
+        <Button
+          variant="primary"
+          color='accent'
+          onClick={() => onReviewClick(row.original)} 
+        >
+          Revisar
+        </Button>
       );
     },
   },
 ];
 
+// Tus filtros se quedan igual, asegurando que los valores del value coincidan exactamente con los de testDataUser
 export const companySearchFilters: filterType[] = [
-  // {
-  //   value: 'academicLevel',
-  //   name: 'Escolaridad',
-  //   options: [
-  //     { label: 'Preescolar', value: 'PREESCOLAR' },
-  //     { label: 'Primaria', value: 'PRIMARIA' },
-  //     { label: 'Secundaria', value:'SECUNDARIA' },
-  //     { label: 'Bachillerato', value: 'BACHILLERATO_GENERAL' },
-  //     { label: 'Carrera Técnica', value: 'CARRERA_TECNICA' },
-  //     { label: 'Licenciatura', value: 'LICENCIATURA' },
-  //     { label: 'Ingeniera', value: 'INGENIERIA' },
-  //     { label: 'Maestría', value: 'MAESTRIA' },
-  //     { label: 'Doctorado', value: 'DOCTORADO' },
-  //     { label: 'Postdoctorado', value: 'POSDOCTORADO' },
-  //   ]
-  // },
   {
     value: 'createdAt',
     name: 'Fecha de registro',
     isDate: true,
+  },
+  {
+    value: 'academicLevel', 
+    name: 'Escolaridad',
+    options: Object.values(educationlevel).map((val) => ({
+      label: val,
+      value: val
+    }))
   }
-]
+];
