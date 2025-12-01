@@ -29,6 +29,7 @@ export interface VacancyU {
   // estado de la vacante (el select que muestras en la primera imagen)
   status: VacancyStatus;
   name: string;
+  
 
   businessSector: string; // o un type si luego tienes enum para esto
   modality: Modality;

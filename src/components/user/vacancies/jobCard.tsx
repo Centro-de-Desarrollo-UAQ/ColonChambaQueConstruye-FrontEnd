@@ -31,11 +31,11 @@ export default function JobCard({
           <h2 className="text-lg leading-tight font-semibold">{title}</h2>
           <span className="text-sm underline">{company}</span>
         </div>
-        <div className="flex flex-col gap-3 self-center text-right text-xs text-zinc-800">
+        <div className="flex flex-col gap-3 text-right text-xs text-zinc-800">
           <div className="flex items-center gap-1">
             <ClockCircle className="h-4 w-4" />
             {schedule}
-          </div>
+          </div>9
           <div className="flex items-center gap-1">
             <Gps className="h-4 w-4" />
             {modality}
@@ -48,7 +48,7 @@ export default function JobCard({
           {location}
         </div>
       )}
-      <p className="mt-4 mb-4 text-sm text-zinc-800">{description}</p>
+      <p className="mt-4 mb-4 text-sm text-zinc-800 !self-start !text-right">{description}</p>
 
       <div className="mt-4 flex items-end justify-between">
         <span className="text-uaq-brand font-medium">{salaryRange}</span>

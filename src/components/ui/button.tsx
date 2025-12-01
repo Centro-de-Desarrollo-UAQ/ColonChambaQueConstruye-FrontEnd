@@ -27,7 +27,7 @@ const buttonVariants = cva(
        */
       variant: {
         primary: 'text-base font-bold',
-        secundary: 'text-base font-normal hover:drop-shadow-lg',
+        secondary: 'text-base font-normal hover:drop-shadow-lg',
         edit: 'text-base font-normal shadow-md active:shadow-none active:shadow-[0px_6px_10px_rgba(0,_0,_0,_0.20)_inset]',
         ghost: 'text-base font-bold hover:bg-zinc-200 border-0',
         mono: 'text-zinc-800 border-0',
@@ -63,8 +63,9 @@ const buttonVariants = cva(
         accent: '',
         danger: '',
         gray: '',
-        secundary: '',
+        secondary: '',
         terniary: '', // 👈 nuevo
+        success: '', // 👈 nuevo
       },
     },
     defaultVariants: {
@@ -118,19 +119,20 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     /**
      * Class map by variant and color.
      * Determines the final style of the button by combining both properties.
+     * Typed as generic record to satisfy TypeScript index access.
      */
-    const colorClasses = {
+    const colorClasses: Record<string, Record<string, string>> = {
       primary: {
         brand: 'bg-brand text-uaq-white hover:bg-uaq-brand-hover border-brand hover:border-uaq-brand-hover',
         accent: 'bg-white text-uaq-brand-hover  hover:bg-accent-hover hover:text-uaq-white hover:border-uaq-brand-hover border-brand',
         danger: 'bg-uaq-danger text-uaq-white hover:bg-uaq-danger-hover hover:border-uaq-danger-hover border-uaq-danger',
         gray: 'bg-zinc-100 text-brand hover:bg-zinc-200',
-        secundary: 'bg-secundary text-uaq-white hover:bg-secundary-hover',
+        secondary: 'bg-secondary text-uaq-white hover:bg-secondary-hover',
         terniary: 'bg-uaq-terniary text-uaq-white hover:bg-uaq-terniary-hover border-uaq-terniary hover:border-uaq-terniary-hover',
         sucess: 'bg-success text-uaq-white '
 
       },
-      secundary: {
+      secondary: {
         brand: 'text-brand',
         accent: 'text-brand border-uaq-accent hover:text-uaq-brand-hover border-0',
         danger: 'text-uaq-danger border-0 hover:text-uaq-danger-hover',
