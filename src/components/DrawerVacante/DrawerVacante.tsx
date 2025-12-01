@@ -21,15 +21,17 @@ import {
   DrawerTitle,
 } from '@/components/ui/drawer';
 
-const stateLabel: Record<Vacancy['state'], string> = {
-  Activo: 'Activo',
-  EnRevisión: 'En Revisión',
-  Cerrado: 'Cerrado',
-  Rechazado: 'Rechazado',
+const stateLabel: Record<Vacancy['status'], string> = {
+  ABIERTA: 'ABIERTA',
+  REVISION: 'REVISION',
+  CERRADA: 'CERRADA',
+  RECHAZADA: 'RECHAZADA',
+  APROBADA: 'APROBADA',
+  INACTIVA: 'INACTIVA',
 };
 
-const stateVariant = (state: Vacancy['state']) =>
-  state === 'Activo' ? 'success' : state === 'EnRevisión' ? 'warning' : 'danger';
+const stateVariant = (state: Vacancy['status']) =>
+  state === 'ABIERTA' ? 'success' : state === 'REVISION' ? 'warning' : 'danger';
 
 const formatDate = (d?: string | Date) => {
   if (!d) return '—';
@@ -83,7 +85,7 @@ export default function DrawerVacante({ vacante }: DrawerVacanteProps) {
     limitApply,
     createdAt,
     requiredProfile,
-    state,
+    status,
     applications,
     workingDay,
   } = vacante;
@@ -96,7 +98,7 @@ export default function DrawerVacante({ vacante }: DrawerVacanteProps) {
         </DrawerTitle>
         <DrawerDescription asChild>
           <div className="flex items-center justify-between">
-            <Badge variant={stateVariant(state)}>{stateLabel[state]}</Badge>
+            <Badge variant={stateVariant(status)}>{stateLabel[status]}</Badge>
             <p className="text-[16px] leading-normal font-normal">
               Solicitado: {formatDate(createdAt)}
             </p>

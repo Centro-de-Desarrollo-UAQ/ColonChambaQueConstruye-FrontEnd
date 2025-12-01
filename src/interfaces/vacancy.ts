@@ -1,10 +1,18 @@
+export type VacancyStatus =
+  | 'REVISION'
+  | 'RECHAZADA'
+  | 'APROBADA'
+  | 'ABIERTA'
+  | 'CERRADA'
+  | 'INACTIVA';
+
 export type Vacancy = {
     company: string;
     LogoUrl: string | URL;
     id: string;
     name: string;
     location: string;
-    state: 'Activo' | 'EnRevisión' | 'Cerrado' | 'Rechazado';
+    status: VacancyStatus
     experience: {
         skill: string;
         time: string;

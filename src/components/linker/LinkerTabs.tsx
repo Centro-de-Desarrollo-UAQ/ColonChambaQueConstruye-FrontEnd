@@ -1,18 +1,20 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { accentInsensitiveTextFilter, dateSameDay } from '@/validations/filtersTanStack';
-import { Badge } from '@/components/ui/badge';
 import { dateToLocaleDateString } from '@/lib/utils';
 import React from 'react';
-import { Vacancy } from '@/interfaces/vacancy';
 import SortButton from '../tables/ui/SortButton';
-import RowActions from '../tables/schemas/VacanciesActions';
 import { filterType } from '@/interfaces/table';
-import { Button } from '@/components/ui/button';
+import { listAreasOptionsConstants, listWorkingHoursOptionsConstants } from '@/constants';
+import DrawerLinkerVacancies from '../DrawerVacante/DrawerLinkerVacancies';
+import { JobCardProps } from '@/interfaces';
 
-export const vacanciesLinkerColumns: ColumnDef<Vacancy>[] = [
+export const vacanciesLinkerColumns: ColumnDef<JobCardProps>[] = [
+  // alias "name" para compatibilidad con DataTable / TableSearchBar
   {
-    accessorKey: 'name',
+    id: 'name',
+    accessorFn: (row) => row.title ?? '',
     header: ({ column }) => <SortButton column={column} name="Puesto" />,
+    cell: ({ row }) => (row.original.title ?? ''),
     filterFn: accentInsensitiveTextFilter,
   },
   {
@@ -20,6 +22,29 @@ export const vacanciesLinkerColumns: ColumnDef<Vacancy>[] = [
     header: ({ column }) => <SortButton column={column} name="Empresa" />,
     filterFn: accentInsensitiveTextFilter,
   },
+   {
+    accessorKey: 'sector',
+    header: ({ column }) => <SortButton column={column} name="Sector" />,
+    filterFn: accentInsensitiveTextFilter,
+  },
+  {
+  accessorKey: 'schedule',
+  cell: ({ getValue }) => {
+    const raw = getValue<string>();
+    const map: Record<string, string> = {
+      TIEMPO_COMPLETO: 'Tiempo Completo',
+      MEDIO_TIEMPO: 'Medio Tiempo',
+      HORARIO_FLEXIBLE: 'Horario Flexible',
+      PAGO_HORA: 'Pago por hora',
+      PRACTICAS: 'Prácticas',
+    };
+    return map[raw] ?? raw;
+  },
+  header: ({ column }) => (
+    <SortButton column={column} name="Tipo de jornada" />
+  ),
+  filterFn: accentInsensitiveTextFilter,
+},
   {
     accessorKey: 'createdAt',
     cell: ({ getValue }) => dateToLocaleDateString(getValue() as string),
@@ -30,17 +55,9 @@ export const vacanciesLinkerColumns: ColumnDef<Vacancy>[] = [
     header: '  ',
     id: 'actions',
     cell: ({ row }) => {
-      const id = (row.original as Vacancy).id;
+      const id = (row.original as JobCardProps).id;
       return (
-        <a href={`/employer/vacancy/${id}/review`}>
-          <Button
-            variant="primary"
-            color='accent'
-            className=''
-          >
-            Revisar
-          </Button>
-        </a>
+        <DrawerLinkerVacancies job={row.original as JobCardProps} sideDrawer='right' open={false} company={(row.original as JobCardProps).company} logoUrl={(row.original as JobCardProps).logoUrl} />
       );
     },
   },
@@ -48,23 +65,9 @@ export const vacanciesLinkerColumns: ColumnDef<Vacancy>[] = [
 
 export const filtersLinkerVacancies: filterType[] = [
 {
-  value: 'ageRange',
+  value: 'sector',
   name: 'Sector',
-  options: [
-    { label: 'Activa', value: 'Activo' },
-    { label: 'En revisión', value: 'EnRevisión' },
-    { label: 'Cerrada', value: 'Cerrado' },
-    { label: 'Rechazada', value: 'Rechazado' },
-  ]
-},
-{
-  value: 'modality',
-  name: 'Modalidad',
-  options: [
-    { label: 'Remoto', value: 'Remoto' },
-    { label: 'Presencial', value: 'Presencial' },
-    { label: 'Híbrido', value: 'Híbrido' },
-  ]
+  options: listAreasOptionsConstants
 },
 {
   value: 'createdAt',
@@ -72,14 +75,8 @@ export const filtersLinkerVacancies: filterType[] = [
   isDate: true,
 },
 {
-  value: 'workShift',
+  value: 'schedule',
   name: 'Tipo de jornada',
-  options: [
-    { label: 'Tiempo Completo', value: 'Tiempo Completo' },
-    { label: 'Medio Tiempo', value: 'Medio Tiempo' },
-    { label: 'Horario flexible', value: 'Horario flexible' },
-    { label: 'Pago por hora', value: 'Pago por hora' },
-    { label: 'Prácticas', value: 'Prácticas' },
-  ]
+  options:  listWorkingHoursOptionsConstants
 }
 ]
