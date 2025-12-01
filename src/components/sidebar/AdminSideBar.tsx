@@ -15,7 +15,7 @@ export default function AdminSideBar() {
   //Vinculos creados en base al figma
   const navLinks = [
     { href: '/testing/plantilla/Mateo', label: 'Empresas', icon: Buildings2 },
-    { href: '/publicar-vacantes', label: 'Vacantes', icon: Case },
+    { href: '/linker/home/vacancies', label: 'Vacantes', icon: Case },
     { href: '/Cartera de usuarios', label: 'Usuarios', icon: UserPlusRounded }, 
   
   ];
@@ -44,7 +44,7 @@ export default function AdminSideBar() {
       {/* Vinculos a posibles nuevas paginas */}
       <div className="text-[var(--uaq-terniary)] font-futura flex flex-col font-[400] pt-5 items-center group-hover/sidebar:items-stretch">
         {navLinks.map(({ href, label, icon: Icon }) => (
-          <SidebarNavButtonAdmin key={href} href={href} label={label} icon={Icon} active={pathname === href} />
+          <SidebarNavButtonAdmin key={href} href={href} label={label} icon={Icon} active={pathname.startsWith(href)} />
         ))}
       </div>
     </nav>

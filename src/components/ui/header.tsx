@@ -15,7 +15,6 @@ import {
   DropdownMenuItem
 } from '@/components/ui/dropdown-menu';
 import { useState } from 'react';
-import LogoutModal from './modal/LogoutModal';
 
 
 interface HeaderProps {
@@ -42,9 +41,7 @@ export default function Header({
 
     // <-- NUEVO: Estado para controlar la visib
     const [isLogoutModalOpen, setIsLogoutModalOpen] = React.useState(false);
-    const closeLogoutModal = () => {
-        setIsLogoutModalOpen(false);
-    };
+    const closeLogoutModal = () => setShowLogout(false);
     const handleLogoutConfirm = () => {
         closeLogoutModal(); 
         
@@ -59,8 +56,7 @@ export default function Header({
     };
 
     const openLogoutModal = () => setShowLogout(true);
-    const closeLogoutModal = () => setShowLogout(false);
-
+    
     return (
         <>
             <header className='bg-accent !z-50 flex items-center justify-between px-10 border-b border-zinc-200 drop-shadow-md'>
@@ -104,10 +100,10 @@ export default function Header({
                     </DropdownMenu>
                 </div>
             </header>
-            <div className="mb-6 space-y-4">
+            <div className="space-y-4">
                 {showLogout && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                        <LogoutModal onConfirm={handleLogout} onClose={closeLogoutModal} />
+                        <LogoutModal onConfirm={handleLogoutConfirm} onClose={closeLogoutModal} />
                     </div>
                 )}
             </div>

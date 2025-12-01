@@ -8,6 +8,7 @@ import { filtersVacancies } from '@/data/filtersVacancies';
 import { FileRemove, InboxIn } from '@solar-icons/react';
 import { AdminNavbarMenu } from '@/components/navigation/AdminNavbarMenu';
 import TitleSection from '@/components/common/TitleSection';
+import AdditionalInformation from '../../../../../components/forms/vacancy/AdditionalInformation';
 
 type Filters = {
   modality: string;
@@ -25,11 +26,10 @@ export const workShiftLabelMap: Record<string, string> = {
   PRACTICAS: "Prácticas",
 };
 
-// Datos de ejemplo: uno APROBADA, uno ABIERTA, uno CERRADA, otro RECHAZADA (no se mostrará)
 export const JobCardsData: JobCardProps[] = [
   {
     id: '1',
-    status: 'APROBADA',
+    status: 'REVISION',
     title: 'Desarrollador Frontend Senior',
     company: 'Tech Solutions',
     location: 'Juriquilla, Querétaro',
@@ -53,7 +53,7 @@ export const JobCardsData: JobCardProps[] = [
   },
   {
     id: '2',
-    status: 'ABIERTA',
+    status: 'REVISION',
     title: 'Analista de Datos',
     company: 'Data Insights',
     location: 'CDMX, México',
@@ -71,8 +71,8 @@ export const JobCardsData: JobCardProps[] = [
     BenefitsSection: 'Capacitación continua y acceso a certificaciones. Trabajo 100% remoto y horarios flexibles.',
     degree: 'INGENIERIA',
     AdditionalInformation: 'Se ofrece plan de carrera con mentoría personalizada. Modalidad híbrida con equipo de cómputo proporcionado por la empresa.',
-    gender: 'Indistinto',
     ageRange: { min: 22, max: 40 },
+    gender: 'Indistinto',
     RequiredExperience: '2 años en análisis de datos y generación de dashboards'
   },
   {
@@ -135,10 +135,8 @@ export default function VacanciesGestorPage() {
   };
 
   // mostrar solo estados: ABIERTA, APROBADA, CERRADA, INACTIVA
-  const allowedStatuses = new Set(['ABIERTA', 'APROBADA', 'CERRADA', 'INACTIVA']);
-  const visibleJobs = JobCardsData.filter((job) =>
-    allowedStatuses.has(String(job.status ?? '').toUpperCase())
-  );
+  const allowedStatuses = new Set(['RECHAZADA']);
+  const visibleJobs = JobCardsData.filter((job) => allowedStatuses.has(String(job.status).toUpperCase()));
 
   return (
     <>
@@ -162,7 +160,7 @@ export default function VacanciesGestorPage() {
             }}
             render={(filtered) => (
               <div className="space-y-4">
-                {!filtered.length &&
+                {!filtered.length && 
                 <>
                   <div className="flex flex-col items-center justify-center gap-4 m-10 text-gray-300 font-bold">
                     <FileRemove className="w-50 h-50 text-gray-300" />

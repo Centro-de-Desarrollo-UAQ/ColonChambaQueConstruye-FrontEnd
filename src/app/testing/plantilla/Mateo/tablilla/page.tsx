@@ -8,6 +8,7 @@ import { DataTableCustomSearchBar } from '@/components/tables/layouts/DateTableC
 import { DataVacancies } from '@/data/testDataVacancies';//
 import NoteRemove from '@/components/common/hugeIcons';
 import { filtersLinkerVacancies, vacanciesLinkerColumns } from '@/components/linker/LinkerTabs';
+import { JobCardsData } from '@/app/linker/home/vacancies/rejected/page';
 
 
 {
@@ -47,7 +48,7 @@ const VacanciesContent = ({
             <div>
                 <DataTableCustomSearchBar
                     columns={vacanciesLinkerColumns}
-                    data={DataVacancies}
+                    data={JobCardsData}
                     filters={filtersLinkerVacancies}
                 />
             </div>

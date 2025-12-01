@@ -12,7 +12,19 @@ export function cn(...inputs: ClassValue[]) {
  * @param text - The input string to normalize.
  * @returns The normalized string without diacritical marks and in lowercase.
  */
-export function normalizeText(text: string): string {
+export function normalizeText(input: unknown): string {
+  if (input == null) return '';
+
+  // Si es array (por ejemplo ["React", "TS"]), lo unimos
+  if (Array.isArray(input)) {
+    return input
+      .map((item) => normalizeText(item))
+      .join(' ');
+  }
+
+  // Convertimos cualquier cosa a string
+  const text = String(input);
+
   return text
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')

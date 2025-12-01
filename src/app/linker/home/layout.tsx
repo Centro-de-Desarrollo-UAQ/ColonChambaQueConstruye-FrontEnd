@@ -1,5 +1,6 @@
 'use client';
 
+import { AdminNavbarMenu } from "@/components/navigation/AdminNavbarMenu";
 import AdminSideBar from "@/components/sidebar/AdminSideBar";
 import Header from "@/components/ui/header";
 import React from "react";
@@ -32,12 +33,9 @@ export default function LinkerLayout({ children }: { children: React.ReactNode }
         "
       >
         {/* Header fijo arriba */}
-        <header className="w-full sticky top-0 z-40">
+        <header className="w-full sticky top-0 z-40 !mb-0">
           <Header />
         </header>
-
-        
-
         {/* Contenido principal */}
         <main className="flex-1">
           {children}

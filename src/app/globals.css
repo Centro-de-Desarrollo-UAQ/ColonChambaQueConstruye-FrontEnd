@@ -117,10 +117,10 @@
   --accent-hover: #AD42D0;
   --uaq-brand-hover: #AD42D0;
   --uaq-success: #17C964;
-  --uaq-success-hover: #17C964;
+  --uaq-success-hover: #4fe18e;
   --uaq-warning-hover: #FEC844;
 
-  --uaq-danger-hover: #FE4141;
+  --uaq-danger-hover: #ff7777;
   --uaq-selected-hover: oklch(0.68 0.17 39.5);
 
   /* Nuevo color terniary */
