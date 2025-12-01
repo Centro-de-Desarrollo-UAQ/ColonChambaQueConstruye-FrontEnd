@@ -129,6 +129,9 @@ export default function ApplicantSignUp() {
 
   return (
     <div className="container mx-auto max-w-2xl rounded-lg border border-zinc-200 bg-white p-12 shadow-sm">
+       <div className="mb-6">
+      <Stepper size={3} activeStep={step} />
+    </div>
       <div className="mb-8 space-y-8 text-center">
         <h1 className="text-3xl font-bold text-brand">Completa tu registro</h1>
         <h2 className="mx-auto max-w-2xl text-lg text-[600]">
