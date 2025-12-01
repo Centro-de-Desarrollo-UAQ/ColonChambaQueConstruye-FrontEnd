@@ -17,17 +17,7 @@ const users: User[] = [
 ];
 
 export default function SignUpDos() {
-  const router = useRouter();
-
-  const user = users[1]; 
-
   
-  if (user.status === true) {
-    
-    router.push('/app/employer/vacancies');
-    
-    return null; 
-  }
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -45,9 +35,7 @@ export default function SignUpDos() {
           <div className="mb-6 space-y-4">
             <EmailVerificationCode />
           </div>
-          <p className="text-xs text-zinc-600 text-center">
-            (Usuario pendiente: <code>pendiente@demo.com</code>)
-          </p>
+        
         </main>
       </div>
     </div>

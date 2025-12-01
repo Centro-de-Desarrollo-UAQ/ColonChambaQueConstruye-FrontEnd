@@ -29,7 +29,7 @@ const AdminNavbarMenu = ({ NameTitle, basePath }: AdminNavbarProps) => {
             </div>
 
             {navLinks.map((link) => {
-                const href = `./${link.slug}`;
+                const href = `/linker/home/${basePath}/${link.slug}`;
                 
                 const isActive = pathname.includes(link.slug);
 

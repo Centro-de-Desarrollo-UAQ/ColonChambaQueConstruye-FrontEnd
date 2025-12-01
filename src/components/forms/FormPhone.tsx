@@ -1,6 +1,5 @@
 'use client';
-
-import { useFormContext, FieldValues } from 'react-hook-form';
+import { FieldValues, Controller } from 'react-hook-form';
 import {
   FormField, FormItem, FormLabel, FormControl, FormMessage,
 } from '@/components/ui/form';
@@ -14,11 +13,6 @@ import { FormPhoneProps } from '@/interfaces/form';
 
 const digits = (s: string) => (s ?? '').replace(/\D/g, '');
 
-type Props<T extends FieldValues> = FormPhoneProps<T> & {
-
-  codeName?: keyof T & string;
-};
-
 export default function FormPhone<T extends FieldValues>({
   control,
   name,
@@ -29,26 +23,31 @@ export default function FormPhone<T extends FieldValues>({
   disabled = false,
   className,
   optional = false,
-  codeName = 'telefonoCode' as keyof T & string,
-}: Props<T>) {
-  const { setValue, getValues } = useFormContext();
-
+}: FormPhoneProps<T>) {
+  
   return (
     <FormField
       control={control}
-      name={name}  
+      name={name}
       render={({ field }) => {
-        const numberStr = typeof field.value === 'string' ? field.value : '';
-        const currentCode = (getValues(codeName) as string) || '+52';
+        // field.value debería ser { code: '+52', number: '1234567890' }
+        const currentValue = field.value || { code: '+52', number: '' };
+        const currentCode = currentValue.code || '+52';
+        const currentNumber = currentValue.number || '';
 
         const handleCodeChange = (newCode: string) => {
-          // persistimos la LADA aparte
-          setValue(codeName as string, newCode, { shouldValidate: true, shouldDirty: true });
+          field.onChange({
+            ...currentValue,
+            code: newCode,
+          });
         };
 
         const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-          // guardamos solo dígitos y máximo 10
-          field.onChange(digits(e.target.value).slice(0, 10));
+          const cleanNumber = digits(e.target.value).slice(0, 10);
+          field.onChange({
+            ...currentValue,
+            number: cleanNumber,
+          });
         };
 
         return (
@@ -56,10 +55,10 @@ export default function FormPhone<T extends FieldValues>({
             {label && (
               <FormLabel htmlFor={htmlFor} className="justify-between font-medium">
                 {label}
+                {!optional && <span className="text-red-500">*</span>}
                 {optional && <span className="text-sm font-light text-gray-500"> Opcional</span>}
               </FormLabel>
             )}
-
             <FormControl>
               <div className="flex gap-2">
                 <Select
@@ -70,6 +69,7 @@ export default function FormPhone<T extends FieldValues>({
                   <SelectTrigger className="w-[120px]">
                     <SelectValue placeholder="+XX" />
                   </SelectTrigger>
+
                   <SelectContent>
                     {countryCodes.map((opt) => (
                       <SelectItem key={opt.value} value={opt.value}>
@@ -78,11 +78,10 @@ export default function FormPhone<T extends FieldValues>({
                     ))}
                   </SelectContent>
                 </Select>
-
                 <Input
                   type="tel"
                   placeholder={placeholder}
-                  value={numberStr}
+                  value={currentNumber}
                   onChange={handleNumberChange}
                   disabled={disabled}
                   maxLength={10}
@@ -90,13 +89,11 @@ export default function FormPhone<T extends FieldValues>({
                 />
               </div>
             </FormControl>
-
             {description && (
               <Label htmlFor={htmlFor} variant="description">
                 {description}
               </Label>
             )}
-
             <FormMessage />
           </FormItem>
         );
