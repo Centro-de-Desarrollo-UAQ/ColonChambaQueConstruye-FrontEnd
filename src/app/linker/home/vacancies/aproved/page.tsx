@@ -29,7 +29,7 @@ export const workShiftLabelMap: Record<string, string> = {
 export const JobCardsData: JobCardProps[] = [
   {
     id: '1',
-    status: 'APROBADA',
+    status: 'REVISION',
     title: 'Desarrollador Frontend Senior',
     company: 'Tech Solutions',
     location: 'Juriquilla, Querétaro',
@@ -53,7 +53,7 @@ export const JobCardsData: JobCardProps[] = [
   },
   {
     id: '2',
-    status: 'ABIERTA',
+    status: 'REVISION',
     title: 'Analista de Datos',
     company: 'Data Insights',
     location: 'CDMX, México',
