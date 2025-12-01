@@ -7,7 +7,7 @@ import { Button } from '../ui/button'
 import { Separator } from '../ui/separator'
 
 const navLinks = [
-    { id: 1, text: 'Por aprobar', slug: 'pendings' },
+    { id: 1, text: 'Por aprobar', slug: 'pending' },
     { id: 2, text: 'Aprobadas', slug: 'aproved' },
     { id: 3, text: 'Rechazadas', slug: 'rejected' }
 ]
@@ -29,7 +29,7 @@ const AdminNavbarMenu = ({ NameTitle, basePath }: AdminNavbarProps) => {
             </div>
 
             {navLinks.map((link) => {
-                const href = `/${basePath}/${link.slug}`;
+                const href = `/linker/home/${basePath}/${link.slug}`;
                 
                 const isActive = pathname.includes(link.slug);
 

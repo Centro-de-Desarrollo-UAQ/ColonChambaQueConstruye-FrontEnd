@@ -11,7 +11,7 @@ import UploadModal from '../common/UploadModal';
 import { UploadedFile } from '../common/UploadedFile';
 import FormOptions from '../forms/FormOptions';
 import FormComboBadgeSelector from '../forms/FormComboBadgeSelector';
-import { careers, educationLevels } from '@/constants';
+import { educationLevels } from '@/constants';
 
 interface ApplicantDetailsStepProps {
   control: Control<ApplicantProfInfoFormType>;
@@ -45,16 +45,6 @@ export default function ProfessionalInfoStep({ control }: ApplicantDetailsStepPr
           name="schooling"
           options={educationLevels}
           description="Selecciona tu nivel maximo de escolaridad"
-          className="flex flex-col justify-between"
-          multiple={false}
-        />
-
-        <FormComboBadgeSelector
-          control={control}
-          label="Carrera o especialidad"
-          name="schooling"
-          options={careers}
-          description="Indica tu área de formación o especialidad."
           className="flex flex-col justify-between"
           multiple={false}
         />

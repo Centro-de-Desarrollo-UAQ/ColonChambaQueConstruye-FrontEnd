@@ -10,7 +10,7 @@ import Headersimple from '@/components/ui/header-simple';
 import { authService } from '@/services/auth.service';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-
+import { useApplicantStore } from '@/app/store/authApplicantStore';
 
 export default function PublicLogin() {
   const methods = useForm<LoginFormType>({
@@ -25,6 +25,7 @@ export default function PublicLogin() {
   const { control, handleSubmit } = methods;
 
   const router = useRouter();
+  const loginAction = useApplicantStore((state) => state.login);
 
 const onSubmit = async (data: LoginFormType) => {
   try {
@@ -33,17 +34,20 @@ const onSubmit = async (data: LoginFormType) => {
     const user = response.data
   
     if(user.status === "ACTIVO"){
-      router.push("/applicant/jobs")
-      return
+      loginAction(user); 
+        
+      toast.success('Inicio de sesión exitoso');
+      router.push("/applicant/jobs");
+      return;
     }
 
     if(user.status === "REVISION"){
-      router.push("/login/waiting")
-      return
+      toast.info('Tu cuenta está en revisión');
+      router.push("/login/waiting");
+      return;
     }
 
-    toast.success('Inicio de sesión exitoso');
-    console.log("Response:" , response);
+    toast.error("Ha sucedido algo extraño");
 
     
   } catch (error:any) {

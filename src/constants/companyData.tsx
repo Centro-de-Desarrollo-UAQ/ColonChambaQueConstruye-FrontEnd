@@ -257,17 +257,3 @@ export const educationLevels = [
   { value: 'NO_ESPECIFICA', label: 'No especifica' },
 ];
 
-export const careers = [
-  { value: 'INGENIERIA_EN_SISTEMAS_COMPUTACIONALES', label: 'Ingeniería en Sistemas Computacionales' },
-  { value: 'INGENIERIA_EN_SOFTWARE', label: 'Ingeniería en Software' },
-  { value: 'INGENIERIA_INDUSTRIAL', label: 'Ingeniería Industrial' },
-  { value: 'ARQUITECTURA', label: 'Arquitectura' },
-  { value: 'ADMINISTRACION', label: 'Administración' },
-  { value: 'DISEÑO_GRAFICO', label: 'Diseño Gráfico' },
-  { value: 'MERCADOTECNIA', label: 'Mercadotecnia' },
-  { value: 'PSICOLOGIA', label: 'Psicología' },
-  { value: 'DERECHO', label: 'Derecho' },
-  { value: 'CIENCIAS_DE_LA_COMUNICACION', label: 'Ciencias de la Comunicación' },
-];
-
-

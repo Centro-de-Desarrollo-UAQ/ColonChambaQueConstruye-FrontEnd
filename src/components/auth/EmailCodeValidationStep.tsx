@@ -56,7 +56,7 @@ export function EmailCodeValidationStep({
 
   return (
     <FormProvider {...methods}>
-      <div className="mt-8 space-y-4">
+      <form onSubmit={methods.handleSubmit(onSubmit)} className="mt-8 space-y-4">
         <div className="flex flex-col items-center gap-4">
           <img
             src="/ADMON24-27-1-03.png"
@@ -108,10 +108,10 @@ export function EmailCodeValidationStep({
                 Volver
               </Button>
             )}
-            <Button type="submit" onClick={methods.handleSubmit(onSubmit)}>Continuar</Button>
+            <Button type="submit">Continuar</Button>
           </div>
         </div>
-      </div>
+      </form>
     </FormProvider>
   );
 }
