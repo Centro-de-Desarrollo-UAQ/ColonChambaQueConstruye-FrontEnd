@@ -14,9 +14,9 @@ export default function AdminSideBar() {
 
   //Vinculos creados en base al figma
   const navLinks = [
-    { href: '/testing/plantilla/Mateo', label: 'Empresas', icon: Buildings2 },
+    { href: '/linker/home/companies', label: 'Empresas', icon: Buildings2 },
     { href: '/linker/home/vacancies', label: 'Vacantes', icon: Case },
-    { href: '/Cartera de usuarios', label: 'Usuarios', icon: UserPlusRounded }, 
+    { href: '/linker/home/users', label: 'Usuarios', icon: UserPlusRounded }, 
   
   ];
 

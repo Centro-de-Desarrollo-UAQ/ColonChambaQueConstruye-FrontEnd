@@ -19,3 +19,4 @@ export const filtersVacancies: filterType[] = [
   isDate: true,
 }
 ]
+

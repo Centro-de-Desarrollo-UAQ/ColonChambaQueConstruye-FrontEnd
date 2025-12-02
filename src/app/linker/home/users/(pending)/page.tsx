@@ -1,27 +1,26 @@
 'use client';
 import TitleSection from '@/components/common/TitleSection';
 import EmptyDisplay from '@/components/empty-display/EmptyDisplay';
-import { Button } from '@/components/ui/button';
 import { InboxIn } from '@solar-icons/react'
 import { DataTableCustomSearchBar } from '@/components/tables/layouts/DateTableCustomSearchBar';
-import { DataVacancies } from '@/data/testDataVacancies';
 import NoteRemove from '@/components/common/hugeIcons';
-import { filtersLinkerVacancies, vacanciesLinkerColumns } from '@/components/linker/LinkerTabs';
-import { AdminNavbarMenu } from '@/components/navigation/AdminNavbarMenu';
-import { JobCardsData } from '../rejected/page';
+import { testDataUser } from '@/data/testDataUsers';
+import { UserCandidate } from '@/interfaces/usercandidates';
+import { UserLinkerColumns, UserSearchFilters } from '@/components/linker/CompanySearchEmploy';
+
 
 const sectionConfig = {
   profile: {
     icon: <InboxIn size={24} weight="Bold" />,
-    title: 'SOLICITUDES DE VACANTES PENDIENTES',
+    title: 'SOLICITUDES PENDIENTES DE BUSCADORES DE EMPLEO',
     description: '',
   },
 };
 
-export default function tablillaPage() {
-  // Filtrar solo vacantes en estado 'REVISION'
-  const revisionVacancies = JobCardsData.filter((v: any) => v?.status === 'REVISION');
-  const hasData = revisionVacancies.length > 0;
+export default function PendingCompaniesPage() {
+  // Filtrar solo empresas en estado 'REVISION'
+  const revisionUser = testDataUser.filter((v: UserCandidate) => v?.status === 'REVISION');
+  const hasData = revisionUser.length > 0;
 
   const commonEmptyState = (
     <div className="flex w-full flex-col items-center justify-center text-center">
@@ -35,7 +34,6 @@ export default function tablillaPage() {
 
   return (
     <>
-      <AdminNavbarMenu NameTitle="Vacantes" basePath="vacancies" />
       <div className="mx-32 flex flex-col gap-5 m-10">
         <div>
           <TitleSection sections={sectionConfig} currentSection={'profile'} />
@@ -44,19 +42,14 @@ export default function tablillaPage() {
         {hasData ? (
           <div>
             <DataTableCustomSearchBar
-              columns={vacanciesLinkerColumns}
-              data={revisionVacancies}
-              filters={filtersLinkerVacancies}
+              columns={UserLinkerColumns}
+              data={revisionUser}
+              filters={UserSearchFilters}
             />
           </div>
         ) : (
           <div className="flex w-full flex-col items-center justify-center text-center">
             {commonEmptyState}
-            <div className="mt-4">
-              <Button variant="primary" color="accent">
-                <a href="/employer/user/vacancy/create">Crear Vacante</a>
-              </Button>
-            </div>
           </div>
         )}
 

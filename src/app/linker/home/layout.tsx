@@ -6,7 +6,7 @@ import Header from "@/components/ui/header";
 import React from "react";
 
 export default function LinkerLayout({ children }: { children: React.ReactNode }) {
-  // ✅ Tipamos correctamente las variables CSS
+
   const styleVars: React.CSSProperties & {
     '--sb-collapsed': string;
     '--sb-expanded': string;
