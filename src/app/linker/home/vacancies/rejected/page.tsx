@@ -53,7 +53,7 @@ export const JobCardsData: JobCardProps[] = [
   },
   {
     id: '2',
-    status: 'REVISION',
+    status: 'CERRADA',
     title: 'Analista de Datos',
     company: 'Data Insights',
     location: 'CDMX, México',
@@ -140,7 +140,6 @@ export default function VacanciesGestorPage() {
 
   return (
     <>
-      <AdminNavbarMenu NameTitle="Vacantes" basePath="vacancies" />
       <div className="mx-32 flex flex-col gap-5 m-10">
         <div className="">
           <TitleSection sections={sectionConfig} currentSection={'talents'} />

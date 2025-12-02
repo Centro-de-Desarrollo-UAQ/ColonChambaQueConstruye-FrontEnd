@@ -6,7 +6,11 @@ import SortButton from '../tables/ui/SortButton';
 import { filterType } from '@/interfaces/table';
 import { listAreasOptionsConstants, listWorkingHoursOptionsConstants } from '@/constants';
 import DrawerLinkerVacancies from '../DrawerVacante/DrawerLinkerVacancies';
-import { JobCardProps } from '@/interfaces';
+import { CompanyData, JobCardProps } from '@/interfaces';
+import DrawerLinkerCompany from './DrawerLinkerCompanie';
+import { Company } from '../../interfaces/company';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+
 
 export const vacanciesLinkerColumns: ColumnDef<JobCardProps>[] = [
   // alias "name" para compatibilidad con DataTable / TableSearchBar
@@ -64,19 +68,80 @@ export const vacanciesLinkerColumns: ColumnDef<JobCardProps>[] = [
 ];
 
 export const filtersLinkerVacancies: filterType[] = [
-{
-  value: 'sector',
-  name: 'Sector',
-  options: listAreasOptionsConstants
-},
-{
-  value: 'createdAt',
-  name: 'Fecha de registro',
-  isDate: true,
-},
-{
-  value: 'schedule',
-  name: 'Tipo de jornada',
-  options:  listWorkingHoursOptionsConstants
-}
+  {
+    value: 'sector',
+    name: 'Sector',
+    options: listAreasOptionsConstants
+  },
+  {
+    value: 'createdAt',
+    name: 'Fecha de registro',
+    isDate: true,
+  },
+  {
+    value: 'schedule',
+    name: 'Tipo de jornada',
+    options:  listWorkingHoursOptionsConstants
+  }
 ]
+
+export const companiesLinkerColumns: ColumnDef<CompanyData>[] = [
+  {
+    
+    id: 'name',
+    accessorFn: (row) => row.Company.tradeName ?? '', // CLAVE 1: Acceso directo
+    header: ({ column }) => <SortButton column={column} name="Nombre de la empresa" />,
+    cell: ({ row }) => (
+      <div className="flex items-center gap-3">
+        <Avatar className="w-10 h-10">
+            <AvatarFallback className="bg-uaq-terniary text-white font-semibold">
+              {row.original.Company.tradeName
+                .split(' ')
+                .map((word) => word.charAt(0))}
+            </AvatarFallback>
+          </Avatar>
+        {row.original.Company.tradeName}
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'workSector',
+    accessorFn: (row) => row.Company.workSector ?? '',
+    header: ({ column }) => <SortButton column={column} name="Giro de la empresa" />,
+  },
+  {
+    accessorKey: 'registeredAt',
+    accessorFn: (row) => row.Company.registeredAt ?? '',
+    cell: ({ getValue }) => dateToLocaleDateString(getValue() as string),
+    header: ({ column }) => <SortButton column={column} name="Fecha de registro" />,
+  },
+  {
+    id: 'actions',
+    header: ' ',
+    cell: ({ row }) => {
+      return (
+        <DrawerLinkerCompany 
+          company={row.original as CompanyData} 
+          sideDrawer='right' 
+          open={false} 
+          logoUrl={''} 
+        />
+      );
+    }
+  }
+];
+
+    export const filtersLinkerCompanies: filterType[] = [
+  {
+    value: 'workSector',
+    name: 'Giro de la empresa',
+    options: listAreasOptionsConstants
+  },
+  {
+    value: 'registeredAt',
+    name: 'Fecha de registro',
+    isDate: true,
+  }
+]
+
+

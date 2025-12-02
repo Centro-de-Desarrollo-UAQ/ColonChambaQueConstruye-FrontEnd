@@ -32,6 +32,10 @@ export const listAreasOptionsConstants = [
   { label: 'Derecho', value: 'Derecho' },
   { label: 'Ciencias de la Comunicación', value: 'Ciencias de la Comunicación' },
   { label: 'Telecomunicaciones', value: 'Telecomunicaciones' },
+  { label: 'Educación', value: 'Educación' },
+  { label: 'Salud', value: 'Salud' },
+  { label: 'Turismo', value: 'Turismo' },
+  { label: 'Automotriz', value: 'Automotriz' },
 ];
 
 export const listDegreesOptionsConstants = [
