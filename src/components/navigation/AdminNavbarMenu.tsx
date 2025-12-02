@@ -22,7 +22,7 @@ const AdminNavbarMenu = ({ NameTitle, basePath }: AdminNavbarProps) => {
 
     return (
         <nav className='flex justify-start gap-4 bg-uaq-terniary py-[8px] px-[48px] items-center'>
-            <p className='text-white font-bold text-base'>{NameTitle}</p>
+            <p className='text-white w-25 font-bold text-base'>{NameTitle}</p>
             
             <div className='h-[43px]'>
                 <Separator orientation='vertical' />
