@@ -47,7 +47,7 @@ export default function Page() {
             <div className="flex flex-col items-center gap-4">
                <img src="/ADMON24-27-1-03.png" alt="Recuperación de contraseña" className="scale-50"/>
               <h1 className="text-3xl font-medium -space-y-28">¿Olvidaste tu contraseña?</h1>
-              <p className="text-center">No te preocupes, si sucede solo sigue las instrucciones para crear una nueva contraseña</p>
+              <p className="text-center">No te preocupes, si sucede, solo sigue las instrucciones para crear una nueva contraseña</p>
             </div>
 
               <FormProvider {...methods}> 
