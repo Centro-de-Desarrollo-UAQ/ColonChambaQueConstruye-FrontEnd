@@ -26,7 +26,7 @@ export default function LinkerLayout({ children }: { children: React.ReactNode }
 
         {/* Subbarra / título de página */}
         <div>
-          <AdminNavbarMenu NameTitle="Empresas" basePath="users"/>
+          <AdminNavbarMenu NameTitle="Buscadores de Empleo" basePath="users"/>
         </div>
 
         {/* Contenido principal */}

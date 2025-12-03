@@ -1,14 +1,14 @@
 'use client';
 
 import { Industry } from '@/interfaces/industries';
-import UserLinkerVacanciesCard from '@/components/linker/UserLinkerCardvacancies';
-import { JobCardProps } from '@/interfaces/jobCard';
 import UniversalCardsFilter from '@/components/ui/UniversalCardFilter';
-import { filtersVacancies } from '@/data/filtersVacancies';
 import { FileRemove, InboxIn } from '@solar-icons/react';
-import { AdminNavbarMenu } from '@/components/navigation/AdminNavbarMenu';
 import TitleSection from '@/components/common/TitleSection';
-import { JobCardsData } from '../rejected/page';
+import { CompanyData } from '../../../../../interfaces/company';
+import CompanyLinkerCard from '@/components/linker/CompanyLinkerCard';
+import { testDataCompanyFull } from '@/data/testDataCompany';
+import { filtersLinkerCompanies } from '@/components/linker/LinkerTabs';
+
 
 type Filters = {
   modality: string;
@@ -28,20 +28,17 @@ export const workShiftLabelMap: Record<string, string> = {
 
 // Datos de ejemplo: uno APROBADA, uno ABIERTA, uno CERRADA, otro RECHAZADA (no se mostrará)
 
-export default function VacanciesGestorPage() {
+export default function CompaniesAprovedPage() {
   const sectionConfig = {
     talents: {
-      title: 'SOLICITUDES DE VACANTES APROBADAS ',
+      title: 'SOLICITUDES DE EMPRESAS APROBADAS ',
       icon: <InboxIn size={24} weight="Bold" />,
       description: '',
     },
   };
 
-  // mostrar solo estados: ABIERTA, APROBADA, CERRADA, INACTIVA
-  const allowedStatuses = new Set(['ABIERTA', 'APROBADA', 'CERRADA', 'INACTIVA']);
-  const visibleJobs = JobCardsData.filter((job) =>
-    allowedStatuses.has(String(job.status ?? '').toUpperCase())
-  );
+  const allowedStatuses = new Set(['ACTIVA', 'INACTIVA']);
+   const aprovedCompanies = testDataCompanyFull.filter((v: CompanyData) => allowedStatuses.has(v?.Company.status));
 
   return (
     <>
@@ -50,17 +47,14 @@ export default function VacanciesGestorPage() {
           <TitleSection sections={sectionConfig} currentSection={'talents'} />
         </div>
         <div className=''>
-          <UniversalCardsFilter<JobCardProps>
-            items={visibleJobs}
-            filters={filtersVacancies}
-            // accesors para que UniversalCardsFilter sepa cómo leer cada campo
+          <UniversalCardsFilter<CompanyData>
+            items={aprovedCompanies}
+            filters={filtersLinkerCompanies}
             accessors={{
-              name: (j) =>
-                `${j.title} ${j.company} ${j.sector} ${j.modality} ${j.schedule} ${j.description} ${j.location} ${j.createdAt}`,
-              sector: (j) => j.sector,
-              modality: (j) => j.modality,
-              workShift: (j) => j.schedule,
-              createdAt: (j) => j.createdAt,
+              name: (c) =>
+                `${c.Company.tradeName} ${c.Company.legalName} ${c.Company.state} `,
+              workSector: (c) => c.Company.workSector,
+              registeredAt: (c) => c.Company.registeredAt,
             }}
             render={(filtered) => (
               <div className="space-y-4">
@@ -74,7 +68,7 @@ export default function VacanciesGestorPage() {
                 </>
                 }
                 {filtered.map((job) => (
-                  <UserLinkerVacanciesCard key={job.title} job={job} company={job.company} />
+                    <CompanyLinkerCard key={job.Company.id} company={job} sideDrawer="right" />
                 ))}
               </div>
             )}
