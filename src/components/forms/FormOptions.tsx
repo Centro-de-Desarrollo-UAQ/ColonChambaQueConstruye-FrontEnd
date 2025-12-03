@@ -70,7 +70,7 @@ export default function FormOptions<T extends FieldValues>({
                       )}>
                     <SelectValue placeholder={placeholder} />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className='max-h-60 overflow-y-auto'>
                     {groupOptions(options).map(([group, groupOptions]) => (
                       <SelectGroup key={group}>
                         {group && <SelectLabel>{group}</SelectLabel>}

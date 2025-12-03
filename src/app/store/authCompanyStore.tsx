@@ -16,7 +16,8 @@ interface CompanyAuthState {
 }
 
 
-const LOCAL_STORAGE_KEY_COMPANY = 'companyAuthToken'; 
+const LOCAL_STORAGE_KEY_COMPANY = 'authToken'; 
+const LOCAL_STORAGE_ID_COMPANY = "companyId"
 
 export const useCompanyStore = create<CompanyAuthState>((set) => ({
   token: null,
@@ -34,6 +35,8 @@ export const useCompanyStore = create<CompanyAuthState>((set) => ({
     });
 
     localStorage.setItem(LOCAL_STORAGE_KEY_COMPANY, data.token);
+    localStorage.setItem(LOCAL_STORAGE_ID_COMPANY, data.companyId);
+
   },
 
  
@@ -45,13 +48,20 @@ export const useCompanyStore = create<CompanyAuthState>((set) => ({
       status: null,
     });
     localStorage.removeItem(LOCAL_STORAGE_KEY_COMPANY);
+    localStorage.removeItem(LOCAL_STORAGE_ID_COMPANY);
   },
 
    
   initialize: () => {
     const storedToken = localStorage.getItem(LOCAL_STORAGE_KEY_COMPANY);
-    if (storedToken) {
-      set({ token: storedToken });
+    const storedComanyId = localStorage.getItem(LOCAL_STORAGE_ID_COMPANY);
+
+    if (storedToken && storedComanyId) {
+      set({ 
+        token: storedToken, 
+        companyId:storedComanyId
+      });
+      
     }
   },
 }));
