@@ -34,16 +34,13 @@ export default function Header({
     logoutRedirectPath = '/' 
 }: HeaderProps) {
 
-    // 1. Usamos un solo estado para el modal
     const [showLogout, setShowLogout] = useState(false);
     
     const router = useRouter(); 
 
-    // 2. Funciones para abrir y cerrar
     const openLogoutModal = () => setShowLogout(true);
     const closeLogoutModal = () => setShowLogout(false);
 
-    // 3. Función lógica de cerrar sesión
     const handleLogoutConfirm = () => {
         closeLogoutModal(); 
         console.log("Cerrar sesión y redirigir a:", logoutRedirectPath);

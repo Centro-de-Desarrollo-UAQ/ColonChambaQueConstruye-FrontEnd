@@ -1,33 +1,33 @@
 'use client';
 import TitleSection from '@/components/common/TitleSection';
 import EmptyDisplay from '@/components/empty-display/EmptyDisplay';
-import { Button } from '@/components/ui/button';
 import { InboxIn } from '@solar-icons/react'
 import { DataTableCustomSearchBar } from '@/components/tables/layouts/DateTableCustomSearchBar';
-import { DataVacancies } from '@/data/testDataVacancies';
 import NoteRemove from '@/components/common/hugeIcons';
-import { filtersLinkerVacancies, vacanciesLinkerColumns } from '@/components/linker/LinkerTabs';
-import { AdminNavbarMenu } from '@/components/navigation/AdminNavbarMenu';
-import { JobCardsData } from '../rejected/page';
+import { testDataUser } from '@/data/testDataUsers';
+import { UserCandidate } from '@/interfaces/usercandidates';
+import { UserLinkerColumns, UserSearchFilters } from '@/components/linker/CompanySearchEmploy';
+
 
 const sectionConfig = {
   profile: {
     icon: <InboxIn size={24} weight="Bold" />,
-    title: 'SOLICITUDES DE VACANTES PENDIENTES',
+    title: 'SOLICITUDES PENDIENTES DE BUSCADORES DE EMPLEO',
     description: '',
   },
 };
 
-export default function tablillaPage() {
-  // Filtrar solo vacantes en estado 'REVISION'
-  const revisionVacancies = JobCardsData.filter((v: any) => v?.status === 'REVISION');
-  const hasData = revisionVacancies.length > 0;
+export default function PendingCompaniesPage() {
+  // Filtrar solo empresas en estado 'REVISION'
+  const revisionUser = testDataUser.filter((v: UserCandidate) => v?.status === 'REVISION');
+  const hasData = revisionUser.length > 0;
 
   const commonEmptyState = (
-    <div className="flex w-full flex-col mt-25 items-center justify-center text-center">
+    <div className="flex w-full flex-col items-center justify-center text-center">
       <EmptyDisplay
         icon={<NoteRemove color="#D4D4D8" width={158} height={166} />}
         firstLine="Todavía no tienes solicitudes de vacantes en revisión."
+        secondline="Utiliza las opciones de la barra de navegación lateral para crear una o da clic en el siguiente botón para generar una nueva vacante."
       />
     </div>
   );
@@ -42,9 +42,9 @@ export default function tablillaPage() {
         {hasData ? (
           <div>
             <DataTableCustomSearchBar
-              columns={vacanciesLinkerColumns}
-              data={revisionVacancies}
-              filters={filtersLinkerVacancies}
+              columns={UserLinkerColumns}
+              data={revisionUser}
+              filters={UserSearchFilters}
             />
           </div>
         ) : (

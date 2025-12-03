@@ -7,7 +7,7 @@ export const DataVacancies: Vacancy[] = [
     LogoUrl: '/Deloitte.svg',
     company: "Tech Solutions",
     name: 'Desarrollador Frontend Senior',
-    state: 'Activo',
+    status: 'REVISION',
     location: 'Juriquilla, Querétaro',
     experience: [
       { skill: 'React y TypeScript', time: '3 años' },
@@ -27,7 +27,7 @@ export const DataVacancies: Vacancy[] = [
     modality: 'Presencial',
     salary: { min: 30000, max: 50000 },
     description: 'Desarrollo de interfaces modernas y optimizadas en React con buenas prácticas.',
-    workShift: 'Tiempo Completo',
+    workShift: 'TIEMPO_COMPLETO',
     vacancyCareer: [
       'Ingeniería en Sistemas',
       'Ciencias de la Computación',
@@ -40,9 +40,9 @@ export const DataVacancies: Vacancy[] = [
     accountId: '',
     companyId: '',
     linkerId: '',
-    createdAt: '2025-07-28T06:00:00.000Z',
+    createdAt: '2025-07-28',
     applications: 5,
-    requestedAt: '2025-07-28T06:00:00.000Z'
+    requestedAt: '2025-07-28'
   },
   {
     id: '2',
@@ -50,7 +50,7 @@ export const DataVacancies: Vacancy[] = [
     company: "Data Insights",
     name: 'Analista de Datos',
     location: 'CDMX, México',
-    state: 'EnRevisión',
+    status: 'REVISION',
     experience: [
       { skill: 'Power BI', time: '2 años' },
       { skill: 'SQL avanzado', time: '3 años' },
@@ -65,7 +65,7 @@ export const DataVacancies: Vacancy[] = [
     modality: 'Remoto',
     salary: { min: 250, max: 250 },
     description: 'Generación de dashboards y análisis de KPIs clave en Power BI.',
-    workShift: 'Pago por Hora',
+    workShift: 'PAGO_HORA',
     vacancyCareer: ['Actuaría', 'Matemáticas Aplicadas', 'Ingeniería Industrial'],
     industryCategory: 'Ingeniería en Software',
     gender: 'Indistinto',
@@ -84,7 +84,7 @@ export const DataVacancies: Vacancy[] = [
     company: "NetCorp",
     name: 'Network Developer .NET',
     location: 'Guadalajara, Jalisco',
-    state: 'Cerrado',
+    status: 'CERRADA',
     experience: [
       { skill: 'Desarrollo .NET Core', time: '4 años' },
       { skill: 'Administración de redes', time: '2 años' },
@@ -121,7 +121,7 @@ export const DataVacancies: Vacancy[] = [
     company: "Innovatech",
     name: 'Jr. Backend',
     location: 'Monterrey, Nuevo León',
-    state: 'Rechazado',
+    status: 'RECHAZADA',
     experience: [
       { skill: 'Node.js', time: '1 año' },
       { skill: 'SQL básico', time: '1 año' },
