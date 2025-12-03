@@ -102,7 +102,7 @@ export interface ButtonProps
    *
    * @default "brand"
    */
-  color?: 'brand' | 'accent' | 'danger' | 'gray' | 'secundary' | 'terniary' | 'sucess';
+  color?: 'brand' | 'accent' | 'danger' | 'gray' | 'secundary' | 'terniary' | 'success';
 }
 
 /**
@@ -129,7 +129,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         gray: 'bg-zinc-100 text-brand hover:bg-zinc-200',
         secondary: 'bg-secondary text-uaq-white hover:bg-secondary-hover',
         terniary: 'bg-uaq-terniary text-uaq-white hover:bg-uaq-terniary-hover border-uaq-terniary hover:border-uaq-terniary-hover',
-        sucess: 'bg-success text-uaq-white '
+        success: 'bg-success text-uaq-white hover:bg-success-hover border-success hover:border-success-hover',
 
       },
       secondary: {

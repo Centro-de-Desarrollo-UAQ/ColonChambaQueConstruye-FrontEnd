@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import FormInput from '@/components/forms/FormInput';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -9,7 +10,7 @@ import { LoginFormType, loginSchema } from '@/validations/loginSchema';
 
 import Headersimple from '@/components/ui/header-simple';
 import { apiService } from '@/services/api.service';
-
+import { useApplicantStore } from '../store/authApplicantStore';
 
 
 export default function PublicLogin() {
@@ -20,15 +21,20 @@ export default function PublicLogin() {
       password: '',
     },
     mode: 'onSubmit',
+
   });
 
+  const loginApplicant = useApplicantStore((state) => state.login);
+  
+    
   const { control, handleSubmit } = methods;
+
+  const router = useRouter();
 
   const onSubmit = async (data: LoginFormType) => {
     try {
       console.log('Enviando datos de login...', data);
 
-    
       const response = await apiService.post('/auth/linker/login', {
         email: data.email,
         password: data.password,
@@ -40,9 +46,29 @@ export default function PublicLogin() {
       }
 
       const json = await response.json();
-
-    
       console.log('Respuesta de login (SUCCESS):', json);
+
+      const token = json.data.data.token;
+      const id = json.data.data.id;
+      const email = json.email;
+      const status = json.status;
+
+      // Guardar en el store de applicant
+      loginApplicant({
+        id,
+        email,
+        status,
+        token,
+      });
+
+      // Logs chidos pa' revisar
+      console.log('ESTE ES EL ID DEL LINKER/APPLICANT:', id);
+      console.log('ESTE ES EL TOKEN:', token);
+
+            if (response.status === 200) {
+        router.push('/linker/home/companies');
+      }
+
     } catch (error) {
       console.error('Error en login:', error);
     }

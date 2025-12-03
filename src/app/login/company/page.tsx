@@ -2,18 +2,24 @@
 
 import FormInput from '@/components/forms/FormInput';
 import { Button } from '@/components/ui/button';
-import Image from 'next/image';
 import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, FormProvider } from 'react-hook-form';
 import { LoginFormType, loginSchema } from '@/validations/loginSchema';
-import LinkerNavBar from '@/components/linker/LinkerNavBar';
-import Header from '@/components/ui/header';
 import Headersimple from '@/components/ui/header-simple';
 import { authService } from '@/services/auth.service';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import { useCompanyStore } from '@/app/store/authCompanyStore';
+
+
+
 
 export default function PublicLogin() {
+
+  const router = useRouter();
+  const { login } = useCompanyStore();
+
   const methods = useForm<LoginFormType>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -26,15 +32,66 @@ export default function PublicLogin() {
   const { control, handleSubmit } = methods;
 
 const onSubmit = async (data: LoginFormType) => {
-  try {
-    const response = await authService.loginAccount(data.email, data.password, 'company');
-    toast.success('Inicio de sesión exitoso');
-    console.log("Response:" , response);
-  } catch (error: any) {
-    console.error('Error en login:', error.message);
-    toast.error(error.message || 'Error al iniciar sesión');
-  }
-};
+    try {
+      const response = await authService.loginAccount(data.email, data.password, 'company');
+      
+      const accountData = response.data;
+      
+      if (!accountData) {
+        throw new Error('La respuesta del servidor está vacía.');
+      }
+
+   
+      const companyId = accountData.id;
+      const accountStatus = accountData.status;
+      const companyStatus = accountData.Company?.status;
+
+      //  Mostrar el ID del usuario en consola para uso futuro
+      console.log("COMPANY ID:", companyId);
+
+      // Lógica de redirección y guardado condicional
+      const isAccountActive = accountStatus === 'ACTIVA';
+      const isCompanyActive = companyStatus === 'ACTIVA';
+
+      if (isAccountActive && isCompanyActive) {
+        
+        // Verificamos que existan las credenciales antes de guardar
+        if (accountData.token && companyId) {
+            // Guardamos token e ID en el store 
+            login({
+                token: accountData.token,
+                companyId: companyId,
+                email: accountData.email,
+                status: accountStatus,
+            });
+
+            toast.success('Inicio de sesión exitoso');
+            router.push('/employer/home/vacancies');
+        } else {
+            throw new Error('Error: Faltan el token o el ID en la respuesta del servidor.');
+        }
+
+      } else {
+        // CASO: USUARIO NO ACTIVO (Pendiente, Rechazada, etc.)
+        // NO guardamos el token ni el ID en el store.
+      
+        console.warn('Cuenta inactiva o pendiente. No se guardó la sesión.');
+        
+        // Opcional: Mostrar un mensaje informativo antes de redirigir
+        if (accountStatus === 'PENDIENTE' || companyStatus === 'PENDIENTE') {
+            toast.info('Tu cuenta está pendiente de aprobación.');
+        } else {
+            toast.warning('Tu cuenta no se encuentra activa.');
+        }
+
+        router.push('/login/waiting');
+      }
+
+    } catch (error: any) {
+      console.error('Error en login:', error.message);
+      toast.error(error.message || 'Error al iniciar sesión');
+    }
+  };
 
 
   return (
