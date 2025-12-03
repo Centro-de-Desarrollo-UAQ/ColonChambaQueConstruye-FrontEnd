@@ -1,22 +1,39 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TitleSection from '@/components/common/TitleSection';
 import { ConfigRow } from '@/components/settings/ConfigRow';
 import { UserCircle } from '@solar-icons/react';
 import { Button } from '@/components/ui/button';
+import { useUserStore } from '@/app/store/useUserInfoStore';
+import { useApplicantStore } from '@/app/store/authApplicantStore';
 
 export default function Profile() {
+  // 1. HOOKS Y STORE
+  const { user, updateLocalUser } = useUserStore();
+  const { token, id: userId } = useApplicantStore();
+
   const [isEditing, setIsEditing] = useState(false);
-
-  //Manejador de estado de los datos dentro de la configuración
+  const [isSaving, setIsSaving] = useState(false);
+  
   const [form, setForm] = useState({
-    nombre: 'Jane',
-    apellido: 'Daw',
-    direccion: '88605 Shanelle Viaduct',
-    fechaNacimiento: '27/10/2002',
+    nombre: '',
+    apellido: '',
+    direccion: '',
+    fechaNacimiento: '',
   });
-
   const [profileErrors, setProfileErrors] = useState<Record<string, string>>({});
+
+  // 2. SINCRONIZACIÓN STORE -> FORMULARIO LOCAL
+  useEffect(() => {
+    if (user) {
+      setForm({
+        nombre: user.firstName || '',
+        apellido: user.lastName || '',
+        direccion: user.address || '',
+        fechaNacimiento: user.birthDate || '', 
+      });
+    }
+  }, [user]);
 
   const sectionConfig = {
     profile: {
@@ -26,7 +43,6 @@ export default function Profile() {
     },
   };
 
-  // Handlers for each field
   const handleChange = (key: string, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
     setProfileErrors((e) => ({ ...e, [key]: '' }));
@@ -44,40 +60,91 @@ export default function Profile() {
     return errors;
   };
 
-  const handleSave = () => {
+  // 3. LOGICA DE GUARDADO (UPDATE)
+  const handleSave = async () => {
+    // A. Validaciones locales
     const errors = validateProfileFields();
     if (Object.keys(errors).length > 0) {
       setProfileErrors(errors);
-      setIsEditing(true); // mantener en edición
+      setIsEditing(true);
       return;
     }
 
-    // Trim antes de guardar
-    setForm((prev) => ({
-      ...prev,
-      nombre: prev.nombre.trim(),
-      apellido: prev.apellido.trim(),
-      direccion: prev.direccion.trim(),
-      fechaNacimiento: prev.fechaNacimiento.trim(),
-    }));
+    setIsSaving(true);
 
-    // Replace with API call later
-    console.log('Saving form data:', {
-      nombre: form.nombre,
-      apellido: form.apellido,
-      direccion: form.direccion,
-      fechaNacimiento: form.fechaNacimiento,
-    });
+    try {
+      // B. Preparar Payload (Formulario -> API JSON)
+      const payload = {
+        firstName: form.nombre.trim(),
+        lastName: form.apellido.trim(),
+        address: form.direccion.trim(),
+        birthDate: form.fechaNacimiento,
+      };
+
+      console.log('Enviando actualización:', payload);
+
+      // C. Petición a la API (PATCH)
+      const response = await fetch(`/api/v1/users/${userId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al actualizar el perfil');
+      }
+
+      const result = await response.json();
+      console.log('✅ Actualización exitosa:', result);
+
+      // D. Actualizar el Store Global (Optimistic Update)
+      updateLocalUser({
+        firstName: payload.firstName,
+        lastName: payload.lastName,
+        address: payload.address,
+        birthDate: payload.birthDate
+      });
+
+      setProfileErrors({});
+      setIsEditing(false);
+
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert("Hubo un problema al guardar los cambios. Intente nuevamente.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  // Handler para cancelar y revertir cambios
+  const handleCancel = () => {
+    if (user) {
+      setForm({
+        nombre: user.firstName || '',
+        apellido: user.lastName || '',
+        direccion: user.address || '',
+        fechaNacimiento: user.birthDate || '', 
+      });
+    }
     setProfileErrors({});
     setIsEditing(false);
   };
 
+  if (!user) {
+    return (
+      <div className="flex h-64 items-center justify-center text-gray-500">
+        <div className="animate-pulse">Cargando información...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="mr-20 space-y-6 p-4 md:p-6">
-      {/* Encabezado */}
       <TitleSection sections={sectionConfig} currentSection="profile" />
 
-      {/* Sección de Perfil */}
       <div className="rounded-lg border border-zinc-300 shadow-sm">
         <ConfigRow
           title="Perfil"
@@ -87,12 +154,11 @@ export default function Profile() {
           isEditable={true}
           editInput={false}
           onEditClick={() => {
-            setProfileErrors({});
-            setIsEditing((s) => !s);
+            if (isEditing) handleCancel();
+            else setIsEditing(true);
           }}
         />
 
-        {/* Fila 1 - Nombre */}
         <div className="px-6">
           <ConfigRow
             title="Nombre"
@@ -146,9 +212,12 @@ export default function Profile() {
         </div>
 
         {isEditing && (
-          <div className="flex justify-end px-6 py-4">
-            <Button variant="primary" onClick={handleSave}>
-              Guardar Cambios
+          <div className="flex justify-end gap-3 px-6 py-4">
+            <Button variant="primary" onClick={handleCancel} disabled={isSaving}>
+              Cancelar
+            </Button>
+            <Button variant="primary" onClick={handleSave} disabled={isSaving}>
+              {isSaving ? 'Guardando...' : 'Guardar Cambios'}
             </Button>
           </div>
         )}
