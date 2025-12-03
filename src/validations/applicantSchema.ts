@@ -18,32 +18,33 @@ export const applicantSchema = z.object({
     .regex(/[A-Z]/, 'Requiere mayúscula')
     .regex(/[a-z]/, 'Requiere minúscula')
     .regex(/[0-9]/, 'Requiere número'),
-  confirmPassword:z
+  confirmPassword: z
     .string()
     .min(8, 'Mínimo 8 caracteres')
     .regex(/[A-Z]/, 'Requiere mayúscula')
     .regex(/[a-z]/, 'Requiere minúscula')
     .regex(/[0-9]/, 'Requiere número'),
 
-  // Paso 2
+  // Paso 2 (Información Profesional)
+  schooling: z.string().min(1, DEFAULT_ERROR_MESSAGE), // <--- ¡AGREGADO!
   career: z.string().min(1, DEFAULT_ERROR_MESSAGE),
   professionalSummary: z.string().min(1, DEFAULT_ERROR_MESSAGE),
   jobLocationPreference: z.string().min(1, DEFAULT_ERROR_MESSAGE),
   preferredHours: z.string().min(1, DEFAULT_ERROR_MESSAGE),
   employmentMode: z.string().min(1, DEFAULT_ERROR_MESSAGE),
+  
+  // Validación de teléfono como OBJETO (según tu FormPhone)
   telefono: z.object({
       code: z.string().min(1, 'Selecciona una LADA'),
       number: z
         .string()
         .regex(/^\d{10}$/, 'El número debe tener exactamente 10 dígitos'),
     }),
-  // Paso 3
-  profilePhoto: z.instanceof(File).optional().nullable(),
-  cvFile: z.instanceof(File).optional(),
- 
-  
 
-
+  // Paso 3 (Archivos opcionales o manejados aparte)
+  // Usamos z.any() para evitar problemas de hidratación con 'instanceof(File)' en el cliente inicial
+  profilePhoto: z.any().optional().nullable(),
+  cvFile: z.any().optional(),
 })
 .refine((data) => data.password === data.confirmPassword, {
     path: ['confirmPassword'], 

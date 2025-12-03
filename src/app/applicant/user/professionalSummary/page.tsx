@@ -1,41 +1,89 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TitleSection from '@/components/common/TitleSection';
 import { ConfigRow } from '@/components/settings/ConfigRow';
 import { Diploma } from '@solar-icons/react';
 import { Button } from '@/components/ui/button';
+import { useUserStore } from '@/app/store/useUserInfoStore';
+import { useApplicantStore } from '@/app/store/authApplicantStore';
+import CurriculumSection from '@/components/ui/Curriculum';
+
+// Tipo para la respuesta del CV
+interface CurriculumData {
+  id: string;
+  title: string;
+  curriculumUrl: string;
+}
 
 export default function ProfessionalSummary() {
-  const [selectedVacancy, setSelectedVacancy] = useState<string | null>(null);
+  // 1. HOOKS Y STORE
+  const { user } = useUserStore(); 
+  const { token, id: userId } = useApplicantStore(); 
+  
+  const [cvData, setCvData] = useState<CurriculumData | null>(null);
+  const [isLoadingCv, setIsLoadingCv] = useState(true);
+
   const [isEditingProfile, setIsEditingProfile] = useState(false);
-  const [isEditingCurriculum, setIsEditingCurriculum] = useState(false);
-
   const [form, setForm] = useState({
-    escolaridad: 'Licenciatura',
-    carrera: 'Ingeniería de software',
+    escolaridad: '',
+    carrera: '',
     resumen: '',
-    experiencia: 'Mucha',
-    puestoInteres: 'Gerente',
-    curriculum: '',
+    experiencia: '',
+    puestoInteres: '',
   });
-
   const [profileErrors, setProfileErrors] = useState<Record<string, string>>({});
-  const [curriculumError, setCurriculumError] = useState<string | null>(null);
 
-  const sectionConfig = {
-    profile: {
-      icon: <Diploma size={24} weight="Bold" />,
-      title: 'PERFIL PROFESIONAL',
-      description:
-        'Edite los detalles de su experiencia profesional y habilidades destacadas, además de sus preferencias laborales',
-    },
-  };
+  // 2. EFECTOS
+  // Cargar datos de texto
+  useEffect(() => {
+    if (user) {
+      setForm((prev) => ({
+        ...prev,
+        escolaridad: user.scholarship || '',  
+        carrera: user.degree || '',           
+        resumen: user.summary || '',          
+        experiencia: user.experience || '',   
+        puestoInteres: user.interestJob || '',
+      }));
+    }
+  }, [user]);
 
+  // Cargar CV
+  useEffect(() => {
+    const fetchCurriculum = async () => {
+      if (!userId || !token) return;
+
+      try {
+        const response = await fetch(`/api/v1/users/${userId}/curriculum`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          if (result.data) {
+            setCvData(result.data);
+          }
+        } else if (response.status === 404) {
+          setCvData(null);
+        }
+      } catch (error) {
+        console.error("Error obteniendo curriculum:", error);
+      } finally {
+        setIsLoadingCv(false);
+      }
+    };
+
+    fetchCurriculum();
+  }, [userId, token]);
+
+  // 3. HANDLERS
   const handleChange = (key: string, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
-    // limpiar error del campo al editar
     setProfileErrors((e) => ({ ...e, [key]: '' }));
-    if (key === 'curriculum') setCurriculumError(null);
   };
 
   const validateProfileFields = () => {
@@ -54,54 +102,49 @@ export default function ProfessionalSummary() {
     const errors = validateProfileFields();
     if (Object.keys(errors).length > 0) {
       setProfileErrors(errors);
-      setIsEditingProfile(true); // mantener en edición
+      setIsEditingProfile(true); 
       return;
     }
-
-    // Trim antes de guardar
-    setForm((prev) => ({
-      ...prev,
-      escolaridad: prev.escolaridad.trim(),
-      carrera: prev.carrera.trim(),
-      resumen: prev.resumen.trim(),
-      experiencia: prev.experiencia.trim(),
-      puestoInteres: prev.puestoInteres.trim(),
-    }));
-
-    // Replace with API call later
-    console.log('Saving profile data:', {
-      escolaridad: form.escolaridad,
-      carrera: form.carrera,
-      resumen: form.resumen,
-      experiencia: form.experiencia,
-      puestoInteres: form.puestoInteres,
-    });
+    console.log('Saving profile data:', form);
     setProfileErrors({});
     setIsEditingProfile(false);
   };
 
-  const handleSaveCurriculum = () => {
-    const trimmed = form.curriculum?.trim() ?? '';
-    if (trimmed === '') {
-      setCurriculumError('No puede quedar vacío');
-      setIsEditingCurriculum(true);
-      return;
-    }
-
-    setForm((prev) => ({ ...prev, curriculum: trimmed }));
-
-    // Replace with API call later
-    console.log('Saving curriculum data:', { curriculum: trimmed });
-    setCurriculumError(null);
-    setIsEditingCurriculum(false);
+  // Handlers para el Componente de CV
+  const openUploadModal = () => {
+    console.log("Abrir modal para subir CV...");
+    alert("Aquí se debe abrir el modal para cargar el archivo PDF.");
   };
+
+  const handleRemoveCv = async () => {
+    if(!confirm("¿Estás seguro de eliminar tu CV?")) return;
+    console.log("Eliminando CV...");
+    
+    // Aquí tu fetch DELETE...
+    setCvData(null); 
+  };
+
+  const sectionConfig = {
+    profile: {
+      icon: <Diploma size={24} weight="Bold" />,
+      title: 'PERFIL PROFESIONAL',
+      description: 'Edite los detalles de su experiencia profesional y habilidades.',
+    },
+  };
+
+  if (!user) {
+    return (
+      <div className="flex h-64 items-center justify-center text-gray-500">
+        <div className="animate-pulse">Cargando perfil profesional...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="mr-20 space-y-6 p-4 md:p-6">
-      {/* Encabezado */}
       <TitleSection sections={sectionConfig} currentSection="profile" />
 
-      {/* Sección de Perfil*/}
+      {/* --- SECCIÓN 1: DATOS DE TEXTO --- */}
       <div className="rounded-lg border border-zinc-300 shadow-sm">
         <ConfigRow
           title="Mi perfil"
@@ -109,14 +152,13 @@ export default function ProfessionalSummary() {
           isTitle={true}
           placeholder=""
           isEditable={true}
-          editInput={false} // mostrar botón de editar
+          editInput={false}
           onEditClick={() => {
             setProfileErrors({});
             setIsEditingProfile((s) => !s);
-          }} // toggle solo perfil
+          }} 
         />
 
-        {/* Fila 1 - Escolaridad */}
         <div className="px-6">
           <ConfigRow
             title="Escolaridad"
@@ -130,7 +172,6 @@ export default function ProfessionalSummary() {
           />
         </div>
 
-        {/* Fila 2 - Carrera */}
         <div className="px-6">
           <ConfigRow
             title="Carrera"
@@ -144,7 +185,6 @@ export default function ProfessionalSummary() {
           />
         </div>
 
-        {/* Fila 3 - Experiencia Previa */}
         <div className="px-6">
           <ConfigRow
             title="Experiencia Previa"
@@ -158,7 +198,6 @@ export default function ProfessionalSummary() {
           />
         </div>
 
-        {/* Fila 4 - Puesto de interés */}
         <div className="px-6">
           <ConfigRow
             title="Puesto de interés"
@@ -181,40 +220,20 @@ export default function ProfessionalSummary() {
         )}
       </div>
 
-      {/* Sección de Curriculum */}
-      <div className="rounded-lg border border-zinc-300 shadow-sm">
-        <ConfigRow
-          title="Curriculum"
-          valueinput=""
-          isTitle={true}
-          placeholder=""
-          isEditable={true}
-          editInput={false}
-          onEditClick={() => {
-            setCurriculumError(null);
-            setIsEditingCurriculum((s) => !s);
-          }} // toggle solo curriculum
-        />
-        <div className="px-6">
-          <ConfigRow
-            title=""
-            valueinput={form.curriculum}
-            isTitle={false}
-            placeholder="Seleccione una opción" // Archivo del Curriculum del usuario
-            isEditable={isEditingCurriculum}
-            editInput={isEditingCurriculum}
-            onValueChange={(v) => handleChange('curriculum', v)}
-            externalError={curriculumError ?? undefined}
-          />
+      {/* --- SECCIÓN 2: CURRICULUM VITAE (Componente Nuevo) --- */}
+      <div className="rounded-lg border border-zinc-300 shadow-sm p-6 bg-white">
+        <div className="mb-2">
+          <h3 className="font-semibold text-lg">Curriculum Vitae</h3>
+          <p className="text-sm text-gray-500">Gestione su archivo PDF para aplicar a vacantes.</p>
         </div>
-
-        {isEditingCurriculum && (
-          <div className="flex justify-end px-6 py-4">
-            <Button variant="primary" onClick={handleSaveCurriculum}>
-              Guardar Cambios
-            </Button>
-          </div>
-        )}
+        
+        {/* Aquí integramos el componente visual que pediste */}
+        <CurriculumSection 
+          cvData={cvData}
+          isLoading={isLoadingCv}
+          onUpload={openUploadModal}
+          onRemove={handleRemoveCv}
+        />
       </div>
     </div>
   );

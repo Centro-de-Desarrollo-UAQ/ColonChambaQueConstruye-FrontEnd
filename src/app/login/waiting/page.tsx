@@ -4,17 +4,7 @@ import { useRouter } from 'next/navigation';
 import Headersimple from '@/components/ui/header-simple';
 import { EmailVerificationCode } from '@/components/ui/waitingBox';
 
-interface User {
-  email: string;
-  password: string;
-  status: boolean;
-}
 
-
-const users: User[] = [
-  { email: 'activo@demo.com', password: '123456', status: true },
-  { email: 'pendiente@demo.com', password: '123456', status: false },
-];
 
 export default function SignUpDos() {
   
