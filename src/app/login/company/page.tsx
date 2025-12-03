@@ -42,9 +42,13 @@ const onSubmit = async (data: LoginFormType) => {
       }
 
    
-      const companyId = accountData.id;
+      const companyId = accountData.Company?.id; 
+
       const accountStatus = accountData.status;
       const companyStatus = accountData.Company?.status;
+
+      console.log("ACCOUNT ID:", accountData.id);
+      console.log("COMPANY ID:", companyId);
 
       //  Mostrar el ID del usuario en consola para uso futuro
       console.log("COMPANY ID:", companyId);
@@ -60,7 +64,7 @@ const onSubmit = async (data: LoginFormType) => {
             // Guardamos token e ID en el store 
             login({
                 token: accountData.token,
-                companyId: companyId,
+                companyId,
                 email: accountData.email,
                 status: accountStatus,
             });

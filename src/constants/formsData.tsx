@@ -1,13 +1,13 @@
 type Day = { label: string; value: string };
 
 export const daysMap: Day[] = [
-  { label: 'L', value: 'Monday' },
-  { label: 'M', value: 'Tuesday' },
-  { label: 'M', value: 'Wednesday' },
-  { label: 'J', value: 'Thursday' },
-  { label: 'V', value: 'Friday' },
-  { label: 'S', value: 'Saturday' },
-  { label: 'D', value: 'Sunday' },
+  { label: 'L', value: 'LUNES' },
+  { label: 'M', value: 'MARTES' },
+  { label: 'M', value: 'MIERCOLES' },
+  { label: 'J', value: 'JUEVES' },
+  { label: 'V', value: 'VIERNES' },
+  { label: 'S', value: 'SABADO' },
+  { label: 'D', value: 'DOMINGO' },
 ];
 
 export const listYearsOptionsConstants = [
@@ -18,24 +18,38 @@ export const listYearsOptionsConstants = [
   { label: '3 años', value: '3 years' },
   { label: 'Mas de 3 años', value: '+3 years' }
 ];
-
 export const listAreasOptionsConstants = [
-  { label: 'Tecnología e informática', value: 'Tecnología e informática' },
-  { label: 'Ingeniería en Sistemas Computacionales', value: 'Ingeniería en Sistemas Computacionales' },
-  { label: 'Ingeniería en Software', value: 'Ingeniería en Software' },
-  { label: 'Ingeniería Industrial', value: 'Ingeniería Industrial' },
-  { label: 'Arquitectura', value: 'Arquitectura' },
-  { label: 'Administración', value: 'Administración' },
-  { label: 'Diseño Gráfico', value: 'Diseño Gráfico' },
-  { label: 'Mercadotecnia', value: 'Mercadotecnia' },
-  { label: 'Psicología', value: 'Psicología' },
-  { label: 'Derecho', value: 'Derecho' },
-  { label: 'Ciencias de la Comunicación', value: 'Ciencias de la Comunicación' },
-  { label: 'Telecomunicaciones', value: 'Telecomunicaciones' },
-  { label: 'Educación', value: 'Educación' },
-  { label: 'Salud', value: 'Salud' },
-  { label: 'Turismo', value: 'Turismo' },
-  { label: 'Automotriz', value: 'Automotriz' },
+  { label: 'Administrativo', value: 'ADMINISTRATIVO' },
+  { label: 'Atención al Cliente', value: 'ATENCION_AL_CLIENTE' },
+  { label: 'Ventas', value: 'VENTAS' },
+  { label: 'Comercial', value: 'COMERCIAL' },
+  { label: 'Marketing', value: 'MARKETING' },
+  { label: 'Publicidad', value: 'PUBLICIDAD' },
+  { label: 'Diseño', value: 'DISENO' },
+  { label: 'Tecnología e Informática', value: 'TECNOLOGIA' },
+  { label: 'Contabilidad', value: 'CONTABILIDAD' },
+  { label: 'Finanzas', value: 'FINANZAS' },
+  { label: 'Recursos Humanos', value: 'RECURSOS_HUMANOS' },
+  { label: 'Legal (Derecho)', value: 'LEGAL' },
+  { label: 'Operaciones', value: 'OPERACIONES' },
+  { label: 'Logística', value: 'LOGISTICA' },
+  { label: 'Almacén', value: 'ALMACEN' },
+  { label: 'Producción', value: 'PRODUCCION' },
+  { label: 'Manufactura', value: 'MANUFACTURA' },
+  { label: 'Mantenimiento', value: 'MANTENIMIENTO' },
+  { label: 'Construcción', value: 'CONSTRUCCION' },
+  { label: 'Seguridad', value: 'SEGURIDAD' },
+  { label: 'Limpieza', value: 'LIMPIEZA' },
+  { label: 'Salud', value: 'SALUD' },
+  { label: 'Educación', value: 'EDUCACION' },
+  { label: 'Investigación', value: 'INVESTIGACION' },
+  { label: 'Turismo', value: 'TURISMO' },
+  { label: 'Hotelería', value: 'HOTELERIA' },
+  { label: 'Gastronomía', value: 'GASTRONOMIA' },
+  { label: 'Comunicación', value: 'COMUNICACION' },
+  { label: 'Deportes', value: 'DEPORTES' },
+  { label: 'Servicio Social', value: 'SERVICIO_SOCIAL' },
+  { label: 'Otro', value: 'OTRO' },
 ];
 
 export const listDegreesOptionsConstants = [
