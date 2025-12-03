@@ -1,6 +1,7 @@
 export interface UserCandidate {
-  id: string | number;
-  name: string;
+  id: string;
+  firstName: string;
+  lastName: string;
   birthDate: string;
   email: string;
   address: string;
@@ -10,4 +11,5 @@ export interface UserCandidate {
   experience: string;
   desiredPosition: string;
   registrationDate: string;
+  status: 'REVISION' | 'RECHAZADO' | 'ACTIVO' | 'INACTIVO';
 }
