@@ -6,7 +6,7 @@ export function Hero() {
     <div className="relative flex flex-col items-center justify-between gap-8 p-10 md:flex-row md:px-16 lg:px-48">
       <div className="flex w-full flex-col items-center gap-4 text-center md:w-[686px] md:items-start md:text-left">
         <h1 className="text-4xl font-bold text-zinc-800">
-          Plataforma virtual de empleo y bolsa de trabajo del Municipio  de Colon!
+          Plataforma virtual de empleo y bolsa de trabajo del Municipio  de Colón!
         </h1>
 
         <p className="w-[400px] text-zinc-800">

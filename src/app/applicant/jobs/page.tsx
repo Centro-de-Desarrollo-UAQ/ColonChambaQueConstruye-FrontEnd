@@ -5,7 +5,7 @@ import { useForm, FormProvider, Form } from 'react-hook-form';
 import { useApplicantStore } from '@/app/store/authApplicantStore';
 import { JobCardProps } from '@/interfaces';
 import DrawerApplicantVacant from '@/components/applicant/jobsCard';
-import SearchBar from '@/components/common/SearchBar';
+// SearchBar intentionally omitted — this page only lists jobs and provides a basic search
 import Header from '@/components/ui/header';
 import TitleSectionIconLeft from '@/components/common/TitleSection IconLeft';
 import FormOptions from '@/components/forms/FormOptions';
