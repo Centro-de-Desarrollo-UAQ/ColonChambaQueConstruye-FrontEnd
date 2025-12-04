@@ -1,69 +1,21 @@
 'use client';
 
 import DrawerApplicantVacant from '@/components/applicant/jobsCard';
-import SearchBar from '@/components/common/SearchBar';
+// SearchBar intentionally omitted — this page only lists jobs and provides a basic search
 import Header from '@/components/ui/header';
 import { JobCardProps } from '@/interfaces';
 import { useMemo, useState } from 'react';
-import { CaseRound } from '@solar-icons/react';
+import { CaseRound, FileRemove } from '@solar-icons/react';
 import TitleSectionIconLeft from '@/components/common/TitleSection IconLeft';
 import { MinimalisticMagnifer } from '@solar-icons/react';
-import { Form, FormProvider, useForm } from 'react-hook-form';
-import FormOptions from '@/components/forms/FormOptions';
-import { states } from '@/constants';
+// form helpers and states not required here
+import UniversalCardsFilter from '@/components/ui/UniversalCardFilter';
+import { JobCardsData } from '@/app/linker/home/vacancies/rejected/page';
+import { filtersVacancies, filtersVacanciesUser } from '@/data/filtersVacancies';
+import UserLinkerVacanciesCard from '@/components/linker/UserLinkerCardvacancies';
+import { Industry } from '@/interfaces/industries';
 
-const fakeData: JobCardProps[] = [
-  {
-    title: 'Frontend Developer (React/Next.js)',
-    company: 'Deloitte',
-    location: 'Querétaro, Qro.',
-    description:
-      'Desarrolla interfaces modernas con Next.js, Tailwind CSS y buenas prácticas de accesibilidad. Colabora en proyectos de alto impacto.',
-    schedule: 'Tiempo completo',
-    modality: 'Híbrido',
-    salaryRange: '$28,000 - $38,000 MXN',
-    logoUrl: '/Deloitte.svg',
-  },
-  {
-    title: 'Backend Engineer (Node.js/Go)',
-    company: 'Google',
-    location: 'Ciudad de México, CDMX',
-    description:
-      'Diseña e implementa APIs escalables y microservicios robustos utilizando Node.js y Go. Mantén y optimiza bases de datos NoSQL.',
-    schedule: 'Tiempo completo',
-    modality: 'Remoto',
-    salaryRange: '$40,000 - $60,000 MXN',
-    logoUrl: '/Google.svg',
-  },
-  {
-    title: 'Data Scientist Junior',
-    company: 'BBVA',
-    location: 'Monterrey, N.L.',
-    description:
-      'Analiza grandes volúmenes de datos financieros. Crea modelos predictivos utilizando Python y librerías de Machine Learning como Scikit-learn.',
-    schedule: 'Medio tiempo',
-    modality: 'Presencial',
-    salaryRange: '$15,000 - $25,000 MXN',
-    logoUrl: '/BBVA.svg',
-  },
-  {
-    title: 'UX/UI Designer Senior',
-    company: 'Mercado Libre',
-    location: 'Guadalajara, Jal.',
-    description:
-      'Lidera el diseño de experiencia de usuario para nuevos productos. Realiza investigaciones, prototipos de alta fidelidad y pruebas de usabilidad.',
-    schedule: 'Tiempo completo',
-    modality: 'Híbrido',
-    salaryRange: '$35,000 - $50,000 MXN',
-    logoUrl: '/MercadoLibre.svg',
-  },
-];
-
-type Filters = {
-  modality: string;
-  workdayType: string;
-  state: string;
-};
+// Local filter/type definitions not required for this page
 
 
 const normalize = (s = '') =>
@@ -76,17 +28,6 @@ const normalize = (s = '') =>
 export default function JobsPage() {
 
     
-
-  const methods = useForm<Filters>({
-    defaultValues: {
-      modality: '',
-      workdayType: '',
-      state: '',
-    },
-  });
-
-  const { control } = methods;
-
 
   const [searchTags, setSearchTags] = useState<string[]>([]);
 
@@ -107,11 +48,11 @@ export default function JobsPage() {
   };
 
   const filteredJobs = useMemo(() => {
-    if (!searchTags.length) return fakeData;
+    if (!searchTags.length) return JobCardsData;
 
     const tagsNorm = searchTags.map(normalize);
 
-    return fakeData.filter((job) => {
+    return JobCardsData.filter((job) => {
       const haystack = normalize(
         [job.title, job.company, job.location, job.description, job.modality, job.schedule]
           .filter(Boolean)
@@ -148,64 +89,42 @@ export default function JobsPage() {
         <div className="w-8/12 pt-5 text-lg text-orange-400">
           <TitleSectionIconLeft currentSection="talents" sections={sectionConfig2} />
         </div>
-
-        <SearchBar
-          onSearch={handleSearch}
-          placeholder="Escribe palabras clave (ej. React, remoto, Querétaro, UX)"
-        />
-
-        <div className="w-8/12 mt-3 mb-3">
-          <FormProvider {...methods}>
-            <Form className="flex gap-3">
-              <FormOptions
-                control={control}
-                name="modality"
-                type="select"
-                placeholder="Modalidad"
-                options={[
-                  { value: 'presencial', label: 'Presencial' },
-                  { value: 'hibrido', label: 'Híbrido' },
-                  { value: 'remoto', label: 'Remoto' },
-                ]}
-                className="!text-brand border-brand bg-uaq-white-ghost rounded-full font-medium"
-              />
-
-              <FormOptions
-                control={control}
-                name="workdayType"
-                type="select"
-                placeholder="Tipo de Jornada"
-                options={[
-                  { value: 'completa', label: 'Tiempo completo' },
-                  { value: 'media', label: 'Medio tiempo' },
-                  { value: 'flexible', label: 'Flexible' },
-                ]}
-                className="!text-brand border-brand bg-uaq-white-ghost rounded-full font-medium"
-              />
-              <FormOptions
-                control={control}
-                name="state"
-                type="combobox"
-                placeholder="Estado"
-                options={states}
-                color="brand"
-              />
-            </Form>
-          </FormProvider>
-        </div>
-
         <div className="w-8/12 text-purple-800">
           <TitleSectionIconLeft currentSection="talents" sections={sectionConfig} />
         </div>
-
-        {filteredJobs.length ? (
-          filteredJobs.map((job, index) => <DrawerApplicantVacant key={index} job={job} />)
-        ) : (
-          <div className="py-10 text-center text-zinc-400">
-            <p className="font-medium">No se encontraron vacantes que coincidan con tu búsqueda.</p>
-            <p className="text-sm">Prueba con otras palabras clave o elimina filtros.</p>
-          </div>
-        )}
+        <div className='w-8/12 mb-10'>
+                  <UniversalCardsFilter<JobCardProps>
+                    items={JobCardsData}
+                    filters={filtersVacanciesUser}
+                    // accesors para que UniversalCardsFilter sepa cómo leer cada campo
+                    accessors={{
+                      name: (j) =>
+                        `${j.title} ${j.company} ${j.sector} ${j.modality} ${j.schedule} ${j.description} ${j.location} ${j.createdAt}`,
+                      sector: (j) => j.sector,
+                      modality: (j) => j.modality,
+                      workShift: (j) => j.schedule,
+                      createdAt: (j) => j.createdAt,
+                    }}
+                    render={(filtered) => (
+                      <div className="space-y-4 w-full">
+                        {!filtered.length &&
+                        <>
+                          <div className="flex flex-col items-center justify-center gap-4 m-10 text-gray-300 font-bold">
+                            <FileRemove className="w-50 h-50 text-gray-300" />
+                            <h1>NO SE ENCONTRARON RESULTADOS PARA TU BÚSQUEDA</h1>
+                            <h1>INTENTA CON OTRAS PALABRAS CLAVE O REVISA SI HAY ERRORES DE ESCRITURA</h1>
+                          </div>
+                        </>
+                        }
+                        {filtered.map((job) => (
+                          
+                          <UserLinkerVacanciesCard key={job.title} job={job} company={job.company} />
+                        ))}
+                      </div>
+                    )}
+                    multiMode='OR'
+                  />
+                </div>
       </div>
     </>
   );
