@@ -1,26 +1,42 @@
 'use client';
 
-import React, { useState, useEffect } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import ApplicantCard from '../../../../components/linker/ApplicantCard';
-import { FileRemove, UsersGroupTwoRounded } from '@solar-icons/react';
+import { UserBlockRounded, UsersGroupTwoRounded } from '@solar-icons/react';
 import TitleSection from '@/components/common/TitleSection';
+import SearchBar from '@/components/toreview/searchbar';
+import FormOptions from '@/components/forms/FormOptions';
+import { Form, FormProvider, useForm } from 'react-hook-form';
+import { states } from '@/constants';
 import { apiService } from '@/services/api.service';
-import UniversalCardsFilter from '@/components/ui/UniversalCardFilter';
-import { filtersApplicant } from '@/data/filtersApplicants';
-import { testDataCandidate } from '@/data/testDataCandidate';
-import { testDataUser } from '@/data/testDataUsers';
 
 const sectionConfig = {
     talents: {
-        icon: <UsersGroupTwoRounded size={24} weight="Bold" className='justify-self-end' />,
+        icon: <UsersGroupTwoRounded size={24} weight="Bold" className='justify+selfend' />,
         title: 'CARTERA DE USUARIOS',
         description: ''
     },
 };
 
+type Filters = {
+  modality: string;
+  workdayType: string;
+  state: string;
+};
+
 export default function UserLists() {
+    const methods = useForm<Filters>({
+        defaultValues: {
+            modality: '',
+            workdayType: '',
+            state: ''
+        },
+    });
+
+    const { control } = methods;
     const [users, setUsers] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [searchTags, setSearchTags] = useState<string[]>([]);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -52,15 +68,40 @@ export default function UserLists() {
         fetchUsers();
     }, []);
 
-    if (loading) {
-        return (
-            <main className='flex flex-col items-center mt-[100px]'>
-                <div className='w-8/12 align-center flex flex-col'>
-                    <p>Cargando usuarios...</p>
-                </div>
-            </main>
-        );
-    }
+    const normalize = (s = '') =>
+        s.normalize('NFD')
+            .replace(/\p{Diacritic}/gu, '')
+            .toLowerCase()
+            .trim();
+
+    const handleSearch = (query: string) => {
+        const trimmed = query.trim();
+        if (!trimmed) {
+            setSearchTags([]);
+            return;
+        }
+
+        const tags = trimmed
+            .split(/[,\s]+/)
+            .map((t) => t.trim())
+            .filter(Boolean);
+
+        setSearchTags(tags);
+    };
+
+    const filteredUsers = useMemo(() => {
+        const tags = searchTags.map(normalize);
+        
+        return users.filter((u) => {
+            if (!searchTags.length) return true;
+            const haystack = normalize(
+                [u.firstName, u.lastName, u.careerSummary]
+                    .filter(Boolean)
+                    .join(' ')
+            );
+            return tags.some((t) => haystack.includes(t));
+        });
+    }, [users, searchTags]);
 
     if (loading) {
         return (
@@ -73,36 +114,61 @@ export default function UserLists() {
     }
 
     return (
-        <main className='flex flex-col items-center mt-15'>
+        <main className='flex flex-col items-center mt-[100px]'>
             <div className='w-8/12 align-center flex flex-col'>
                 <TitleSection sections={sectionConfig} currentSection='talents' />
-                <UniversalCardsFilter<any>
-                    items={testDataUser}
-                    filters={filtersApplicant}
-                    accessors={{
-                        name: (u) =>
-                            `${u.firstName} ${u.lastName} ${u.email} ${u.careerSummary}`,
-                        academicLevel: (u) => u.academicLevel,
-                        workShift: (u) => u.status,
-                        state: (u) => u.status,
-                    }}
-                    render={(filtered) => (
-                        <div className="space-y-4">
-                            {!filtered.length && (
-                                <div className="flex flex-col items-center justify-center gap-4 m-10 text-gray-300 font-bold">
-                                    <FileRemove className="w-50 h-50 text-gray-300" />
-                                    <h1>NO SE ENCONTRARON RESULTADOS PARA TU BÚSQUEDA</h1>
-                                    <h1>INTENTA CON OTRAS PALABRAS CLAVE O REVISA SI HAY ERRORES DE ESCRITURA</h1>
-                                </div>
-                            )}
-                            {filtered.map((user) => (
-                                <ApplicantCard key={user.id} user={user} />
-                            ))}
-                        </div>
-                    )}
-                    multiMode='OR'
-                />
+                <br />
+                <SearchBar onSearch={handleSearch} placeholder='Escribe palabras clave para encontrar el talento que necesitas' showFilter />
+                
+                <div className='mt-5'>
+                    <FormProvider {...methods}>
+                        <Form className='flex gap-3'>
+                            <FormOptions
+                                control={control}
+                                name="modality"
+                                type="select"
+                                placeholder="Modalidad"
+                                options={[
+                                    { value: "presencial", label: "Presencial" },
+                                    { value: "hibrido", label: "Híbrido" },
+                                    { value: "remoto", label: "Remoto" },
+                                ]}
+                                className='rounded-full !text-brand border-brand bg-uaq-white-ghost font-medium'
+                            />
+                            <FormOptions
+                                control={control}
+                                name="workdayType"
+                                type="select"
+                                placeholder="Tipo de Jornada"
+                                options={[
+                                    { value: "completa", label: "Tiempo completo" },
+                                    { value: "media", label: "Medio tiempo" },
+                                    { value: "flexible", label: "Flexible" },
+                                ]}
+                                className='rounded-full !text-brand border-brand bg-uaq-white-ghost font-medium'
+                            />
+                            <FormOptions
+                                control={control}
+                                name="state"
+                                type="combobox"
+                                placeholder="Estado"
+                                options={states}
+                                color="brand"
+                            />
+                        </Form>
+                    </FormProvider>
+                </div>
+                
+                {filteredUsers.length > 0 ? (
+                    filteredUsers.map((user) => <ApplicantCard key={user.id} user={user} />)
+                ) : (
+                    <div className="text-center py-10 text-zinc-300 align-center mt-15 items-center content-center">
+                        <UserBlockRounded className='w-[203px] h-[206px] justify-self-center'/>
+                        <p>NO SE ENCONTRARON BUSCADORES DE EMPLEO QUE CUMPLAN CON LA DESCRIPCIÓN</p>
+                    </div>
+                )}
+                <br />
             </div>
         </main>
-    );
+    )
 }
