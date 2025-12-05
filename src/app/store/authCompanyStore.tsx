@@ -18,6 +18,7 @@ interface CompanyAuthState {
 
 const LOCAL_STORAGE_KEY_COMPANY = 'authToken'; 
 const LOCAL_STORAGE_ID_COMPANY = "companyId"
+const LOCAL_STORAGE_STATUS_COMPANY = "companyStatus";
 
 export const useCompanyStore = create<CompanyAuthState>((set) => ({
   token: null,
@@ -36,6 +37,7 @@ export const useCompanyStore = create<CompanyAuthState>((set) => ({
 
     localStorage.setItem(LOCAL_STORAGE_KEY_COMPANY, data.token);
     localStorage.setItem(LOCAL_STORAGE_ID_COMPANY, data.companyId);
+    localStorage.setItem(LOCAL_STORAGE_STATUS_COMPANY, data.status);
 
   },
 
