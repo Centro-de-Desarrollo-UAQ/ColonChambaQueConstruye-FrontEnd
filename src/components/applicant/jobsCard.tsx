@@ -35,7 +35,7 @@ export default function DrawerApplicantVacant({
 }: jobCardApplicationProps) {
   return (
     //Job Card Container
-    <div className="hover:border-uaq-brand-800 group flex flex-col w-8/12 rounded-lg border border-zinc-300 shadow-sm transition-all duration-300 hover:translate-y-[-2px] hover:shadow-md">
+    <div className="hover:border-uaq-brand-800 group flex flex-col w-12/12 rounded-lg border border-zinc-300 shadow-sm transition-all duration-300 hover:translate-y-[-2px] hover:shadow-md">
       {/* Fila 1 - Logo de la empresa, nombre del trabajo, nobmre de la empresa, jornada y modalidad */}
         <Drawer direction={sideDrawer === "left" ? "left" : "right"}>
           <div className="flex flex-row max-w-full items-center ">
