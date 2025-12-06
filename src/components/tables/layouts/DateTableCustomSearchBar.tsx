@@ -11,6 +11,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+
 import {
   Table,
   TableBody,
@@ -19,6 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+
 import {
   Select,
   SelectContent,
@@ -26,6 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+
 import { Button } from '@/components/ui/legacyButton';
 import {
   AltArrowLeft,
@@ -33,6 +36,7 @@ import {
   DoubleAltArrowLeft,
   DoubleAltArrowRight,
 } from '@solar-icons/react';
+
 import { useState } from 'react';
 
 import { filterType } from '@/interfaces/table';
@@ -45,12 +49,24 @@ interface DataTableProps<TData, TValue> {
 
 interface DataTableCSBProps<TData, TValue> extends DataTableProps<TData, TValue> {
   filters: filterType[];
+  /**
+   * Texto de búsqueda para hacer filtros backend.
+   * Se llama cada vez que cambia el input de búsqueda.
+   */
+  onSearchChange?: (value: string) => void;
+  /**
+   * Filtros avanzados (status, modalidad, etc) para backend.
+   * columnId = filter.value de tu config de filtros.
+   */
+  onFilterChange?: (columnId: string, value: any) => void;
 }
 
 export function DataTableCustomSearchBar<TData, TValue>({
   columns,
   data,
   filters,
+  onSearchChange,
+  onFilterChange,
 }: DataTableCSBProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -72,21 +88,27 @@ export function DataTableCustomSearchBar<TData, TValue>({
 
   return (
     <div className="flex flex-col content-end items-end space-y-4">
-      <TableSearchBar filters={filters} table={table} />
+      {/*  Barra de búsqueda + filtros (frontend + callbacks a backend) */}
+      <TableSearchBar
+        filters={filters}
+        table={table}
+        onSearch={onSearchChange}
+        onFilterChange={onFilterChange}
+      />
+
+      {/* Tabla */}
       <div className="w-full overflow-hidden rounded-md border">
         <Table className="bg-white">
           <TableHeader className="bg-gray-100">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} className="text-uaq-brand">
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id} className="text-uaq-brand">
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -112,6 +134,7 @@ export function DataTableCustomSearchBar<TData, TValue>({
         </Table>
       </div>
 
+      {/* Paginación */}
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium">Filas por vista</p>
@@ -133,9 +156,11 @@ export function DataTableCustomSearchBar<TData, TValue>({
             </SelectContent>
           </Select>
         </div>
+
         <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-          Pagina {table.getState().pagination.pageIndex + 1} de {table.getPageCount()}
+          Página {table.getState().pagination.pageIndex + 1} de {table.getPageCount()}
         </div>
+
         <div className="flex items-center space-x-2">
           <Button
             variant="outline"
@@ -182,3 +207,4 @@ export function DataTableCustomSearchBar<TData, TValue>({
     </div>
   );
 }
+
