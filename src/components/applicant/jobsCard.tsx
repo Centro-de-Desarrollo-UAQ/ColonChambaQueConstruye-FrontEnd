@@ -12,6 +12,8 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import { Button } from '../ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import CompanyAvatar from '../common/AvatarTrasnform';
 
 interface jobCardApplicationProps {
   job: JobCardProps
@@ -29,6 +31,8 @@ function daysSince(date: string): number {
   const diffMs = today.getTime() - registeredDate.getTime();
   return Math.floor(diffMs / (1000 * 60 * 60 * 24));
 }
+//Hola aqui generare el tomar las iniciales:
+
 
 export default function DrawerApplicantVacant({
   job, sideDrawer
@@ -40,12 +44,10 @@ export default function DrawerApplicantVacant({
         <Drawer direction={sideDrawer === "left" ? "left" : "right"}>
           <div className="flex flex-row max-w-full items-center ">
             <div className="w-[100px] flex-shrink-0 rounded-l-lg p-4 transition-colors duration-300">
-              <Image
-                src={job.logoUrl ?? "/Deloitte.svg" /** Logo de la empresa */}
-                alt={`${job.company} Logo`}
-                width={60}
-                height={60}
-                className="mx-auto h-15 w-15 object-contain"
+              <CompanyAvatar 
+                companyName={job.company} 
+                logoUrl={job.logoUrl} 
+                size="md" // O el tamaño que necesites
               />
             </div>
 
@@ -104,12 +106,10 @@ export default function DrawerApplicantVacant({
               </DrawerTitle>
               <div className="flex flex-row items-center w-full">
                 <div className="w-[100px] flex-shrink-0 rounded-l-lg p-4">
-                  <Image
-                    src={job.logoUrl ?? "/Deloitte.svg"}
-                    alt={`${job.company /**Logo de la empresa */} Logo`}
-                    width={60}
-                    height={60}
-                    className="mx-auto h-15 w-15 object-contain"
+                  <CompanyAvatar 
+                    companyName={job.company} 
+                    logoUrl={job.logoUrl} 
+                    size="md" // O el tamaño que necesites
                   />
                 </div>
 
@@ -117,20 +117,20 @@ export default function DrawerApplicantVacant({
                   <div className="text-xl font-bold">{job.company /* Nombre de la empresa */}</div>
                 </div>
                 <div className="flex flex-col self-center px-4 py-4 items-end text-end">
-                  <div className="text-base">{"Hace "+daysSince(job.description ?? "2025-09-23")+" dias" /* Tiempo desde la publicación */}</div>
+                  <div className="text-base">{"Hace "+daysSince(job.createdAt )+" dias" /* Tiempo desde la publicación */}</div>
                 </div>
               </div>
 
-              <div className="flex w-[250px] flex-col gap-2 rounded-r-lg py-4">
+              <div className="flex  w-[250px] flex-col gap-2 rounded-r-lg py-4">
                 <div className="flex items-center gap-2">
                   <MapPoint className="h-4 w-4" weight="Linear" />
                   <h5>Dirección: </h5>
-                  <span>{job.location /* Dirección de la empresa */}</span>
+                  <span className="whitespace-nowrap">{job.location /* Dirección de la empresa */}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Gps className="h-4 w-4" weight="Linear" />
                   <h5>Modalidad: </h5>
-                  <span>{job.modality /* Modalidad de empleo (híbrido, remoto, presencial) */}</span>
+                  <span >{job.modality /* Modalidad de empleo (híbrido, remoto, presencial) */}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <ClockCircle className="h-4 w-4" weight="Linear" />
@@ -184,17 +184,17 @@ export default function DrawerApplicantVacant({
             <div className='flex flex-row mx-10 px-10 gap-5 mb-5 border-2 rounded-xl justify-between bg-uaq-white'>
               <div className='flex flex-col'>
                 <h3 className='text-lg py-5 font-[600]'>Información de contacto</h3>
-                <span className="whitespace-nowrap pb-5">Deloitte{/**Contacto de la empresa */}</span>
+                <span className="whitespace-nowrap pb-5">{job.company}</span>
               </div>
               
               <div className='flex flex-col items-start'>
                 <div className='flex flex-row items-center gap-2 py-5'>
                   <PhoneCalling className="h-4 w-4 mr-2" weight="Linear" />
-                  <span className='whitespace-nowrap'>4421234567 {/*Número de teléfono */}</span>
+                  <span className='whitespace-nowrap'>{job.cellPhone}{/*Número de teléfono */}</span>
                 </div>
                 <div className='flex flex-row items-center gap-2'>
                   <Letter className="h-4 w-4 mr-2" weight="Linear" />
-                  <span className="whitespace-nowrap">ejemplo@gmail.com{ /*Correo electrónico */}</span>
+                  <span className="whitespace-nowrap">{job.email}{ /*Correo electrónico */}</span>
                 </div>
               </div>
             </div>
