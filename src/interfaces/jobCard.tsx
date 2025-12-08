@@ -1,6 +1,5 @@
 import { VacancyStatus } from "./vacancy";
-import BenefitsSection from '../components/forms/vacancy/BenefitsSection';
-import RequiredExperience from '../components/forms/vacancy/RequiredExperience';
+
 
 export interface JobCardProps {
   id: string;
@@ -26,5 +25,7 @@ export interface JobCardProps {
     max: number;
   }
   RequiredExperience?: string
+  cellPhone: string;
+  email:string
   
 }
