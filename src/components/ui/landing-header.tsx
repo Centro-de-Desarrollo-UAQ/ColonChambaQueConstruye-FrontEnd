@@ -36,7 +36,7 @@ export default function LandingHeader() {
                 <div className="flex items-center gap-4 py-4">
                     <Link href={"/signup/applicant"}>
                         <Button variant = "edit" color='gray'  onClick={() => console.log("Página de inicio de sesión")}>
-                            Registrate{
+                            Regístrate{
                                 //Redireccionamiento a la página de inicio de sesión
                             }
                         </Button>

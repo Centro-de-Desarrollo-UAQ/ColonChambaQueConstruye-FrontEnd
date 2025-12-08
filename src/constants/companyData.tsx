@@ -273,13 +273,14 @@ export const countryCodes = [
 ];
 
 export const educationLevels = [
-  { value: 'BASICA', label: 'Básica' },
-  { value: 'MEDIA_SUPERIOR', label: 'Media Superior' },
-  { value: 'TECNICA', label: 'Técnica' },
+  { value: 'PREESCOLAR', label: 'Preescolar' },
+  { value: 'PRIMARIA', label: 'Primaria' },
+  { value: 'SECUNDARIA', label: 'Secundaria' },
+  { value: 'BACHILLERATO_GENERAL', label: 'Bachillerato General' },
+  { value: 'CARRERA_TECNICA', label: 'Carrera Técnica' },
   { value: 'LICENCIATURA', label: 'Licenciatura' },
   { value: 'INGENIERIA', label: 'Ingeniería' },
   { value: 'MAESTRIA', label: 'Maestría' },
   { value: 'DOCTORADO', label: 'Doctorado' },
-  { value: 'NO_ESPECIFICA', label: 'No especifica' },
+  { value: 'POSDOCTORADO', label: 'Posdoctorado' },
 ];
-

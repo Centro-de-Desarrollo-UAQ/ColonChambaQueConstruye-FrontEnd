@@ -1,92 +1,116 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TitleSection from '@/components/common/TitleSection';
 import { ConfigRow } from '@/components/settings/ConfigRow';
 import { ShieldKeyholeMinimalistic } from '@solar-icons/react';
 import { Button } from '@/components/ui/button';
-import { useForm, FormProvider } from 'react-hook-form';
-
+import { useUserStore } from '@/app/store/useUserInfoStore';
 export default function Control() {
+  const { user } = useUserStore();
+  const [isEditing, setIsEditing] = useState(false);
+
+  const [form, setForm] = useState({
+    email: '',
+    phone: '',
+    password: '', 
+    confirmPassword: '', 
+  });
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (user) {
+      setForm((prev) => ({
+        ...prev,
+        email: user.email || '',
+        phone: user.phone || '',
+        password: '', 
+        confirmPassword: '',
+      }));
+    }
+  }, [user]);
+
   const sectionConfig = {
-    profile: {
+    access: {
       icon: <ShieldKeyholeMinimalistic size={24} weight="Bold" />,
       title: 'ACCESO Y SEGURIDAD',
       description: 'Administre la información de acceso a su cuenta',
     },
   };
 
-  type EditingState = { access: boolean };
-  const [editing, setEditing] = useState<EditingState>({ access: false });
-
-  const setEditingSection = (section: keyof EditingState, value: boolean, exclusive = false) => {
-    setEditing((prev) => (exclusive ? { [section]: value } as EditingState : { ...prev, [section]: value }));
+  const handleChange = (key: string, value: string) => {
+    if (key === 'phone') {
+      const sanitized = value.replace(/\D/g, '');
+      setForm((prev) => ({ ...prev, [key]: sanitized }));
+    } else {
+      setForm((prev) => ({ ...prev, [key]: value }));
+    }
+    setErrors((prev) => ({ ...prev, [key]: '' }));
+    
+    if (key === 'password' || key === 'confirmPassword') {
+       setErrors((prev) => ({ ...prev, confirmPassword: '' }));
+    }
   };
 
-  const [form, setForm] = useState({
-    email: 'bryanbona0406@gmail.com',
-    phone: '4423464978',
-    password: '*************',
-  });
-
-  const methods = useForm({
-    defaultValues: form,
-  });
-
-  const [phoneError, setPhoneError] = useState('');
-
-  const handleToggleEdit = () => {
-    methods.reset(form);
-    setEditingSection('access', !editing.access);
-    setPhoneError('');
-  };
-
-  const handleChange = (key: keyof typeof form, value: string) => {
-    setForm((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const handleSaveAccess = async () => {
-    // Fuerza validación de campos registrados en RHF
-    const valid = await methods.trigger();
-    if (!valid) return;
-
-    const data = methods.getValues();
-    // Trim valores de texto
-    const trimmed = {
-      email: typeof data.email === 'string' ? data.email.trim() : data.email,
-      phone: typeof data.phone === 'string' ? data.phone.trim() : data.phone,
-      password: typeof data.password === 'string' ? data.password.trim() : data.password,
-    };
-
-    // Validar teléfono: no vacío y solo dígitos (si está en modo editable)
-    if (editing.access) {
-      if (!trimmed.phone || trimmed.phone === '') {
-        setPhoneError('El teléfono es requerido');
-        return;
+  const handleSave = () => {
+    const newErrors: Record<string, string> = {};
+    
+    if (!form.email.trim()) newErrors.email = 'El correo es requerido';
+    if (!form.phone.trim()) newErrors.phone = 'El teléfono es requerido';
+    
+    if (form.password.length > 0) {
+      if (form.password.length < 6) {
+        newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
       }
-      if (!/^\d+$/.test(trimmed.phone)) {
-        setPhoneError('El número telefónico solo debe contener números.');
-        return;
+      if (form.password !== form.confirmPassword) {
+        newErrors.confirmPassword = 'Las contraseñas no coinciden';
       }
     }
 
-    setPhoneError('');
-    setForm((prev) => ({ ...prev, ...trimmed }));
-    console.log('Saving access data:', trimmed);
-    setEditingSection('access', false);
-    methods.reset(trimmed);
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setIsEditing(true);
+      return;
+    }
+
+    const payload = {
+      email: form.email,
+      phone: form.phone,
+      password: form.password === '' ? undefined : form.password
+    };
+
+    console.log('Guardando cambios de acceso:', payload);
+
+    setErrors({});
+    setIsEditing(false);
+    setForm(prev => ({ ...prev, password: '', confirmPassword: '' }));
   };
 
-  // Define which rows are editable at all
-  const emailEditable = false; // si es false nunca se activará el editor para esta fila
-  const phoneEditable = true;
-  const passwordEditable = false;
+  const handleCancel = () => {
+    if (user) {
+      setForm({
+        email: user.email || '',
+        phone: user.phone || '',
+        password: '',
+        confirmPassword: '',
+      });
+    }
+    setErrors({});
+    setIsEditing(false);
+  };
+
+  if (!user) {
+    return (
+      <div className="flex h-64 items-center justify-center text-gray-500">
+        <div className="animate-pulse">Cargando datos de seguridad...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="mr-20 space-y-6 p-4 md:p-6">
-      {/* Encabezado */}
-      <TitleSection sections={sectionConfig} currentSection="profile" />
+      <TitleSection sections={sectionConfig} currentSection="access" />
 
-      {/* Sección de Acceso */}
       <div className="rounded-lg border border-zinc-300 shadow-sm">
         <ConfigRow
           title="Acceso"
@@ -95,92 +119,76 @@ export default function Control() {
           placeholder=""
           isEditable={true}
           editInput={false}
-          onEditClick={handleToggleEdit}
+          onEditClick={() => {
+            if (isEditing) handleCancel();
+            else setIsEditing(true);
+          }}
         />
 
-        <FormProvider {...methods}>
-          {/* Fila 1 - Correo electrónico */}
-          <div className="px-6">
+        <div className="px-6">
+          <ConfigRow
+            title="Correo electrónico"
+            valueinput={form.email}
+            isTitle={false}
+            placeholder="correo@ejemplo.com"
+            isEditable={false} 
+            editInput={false}
+            onValueChange={(v) => handleChange('email', v)}
+            externalError={errors.email}
+          />
+          
+        </div>
+
+        <div className="px-6">
+          <ConfigRow
+            title="Número telefónico"
+            valueinput={form.phone}
+            isTitle={false}
+            placeholder="1234567890"
+            isEditable={isEditing}
+            editInput={isEditing}
+            inputType="tel"
+            onValueChange={(v) => handleChange('phone', v)}
+            externalError={errors.phone}
+          />
+        </div>
+
+        <div className="px-6">
+          <ConfigRow
+            title="Contraseña"
+            valueinput={isEditing ? form.password : '*************'}
+            isTitle={false}
+            placeholder={isEditing ? "Escriba nueva contraseña" : ""}
+            isEditable={isEditing} 
+            editInput={isEditing}
+            inputType="password"
+            onValueChange={(v) => handleChange('password', v)}
+            externalError={errors.password}
+          />
+        </div>
+
+        {isEditing && (
+          <div className="px-6 animate-in fade-in slide-in-from-top-2 duration-300">
             <ConfigRow
-              name="email"
-              title="Correo electrónico"
-              valueinput={form.email}
+              title="Confirmar"
+              valueinput={form.confirmPassword}
               isTitle={false}
-              placeholder="Contenido"
-              isEditable={emailEditable}
-              editInput={editing.access && emailEditable}
-              rules={{
-                required: editing.access ? 'El correo es requerido' : false,
-                validate: (v: any) => (typeof v === 'string' ? v.trim() !== '' : !!v) || 'No puede quedar vacío',
-              }}
-              onValueChange={(v) =>
-                editing.access ? methods.setValue('email', v) : handleChange('email', v)
-              }
+              placeholder="Escribela nuevamente"
+              isEditable={true}
+              editInput={true}
+              inputType="password"
+              onValueChange={(v) => handleChange('confirmPassword', v)}
+              externalError={errors.confirmPassword}
             />
           </div>
+        )}
 
-          {/* Fila 2 - Número telefónico */}
-          <div className="px-6">
-            <ConfigRow
-              name="phone"
-              title="Número telefónico"
-              valueinput={form.phone}
-              isTitle={false}
-              placeholder="Contenido"
-              isEditable={phoneEditable}
-              editInput={editing.access && phoneEditable}
-              inputType="tel"
-              rules={
-                editing.access
-                  ? {
-                      required: 'El teléfono es requerido',
-                      pattern: { value: /^\d+$/, message: 'Solo se permiten números' },
-                      validate: (v: any) => (typeof v === 'string' ? v.trim() !== '' : !!v) || 'No puede quedar vacío',
-                    }
-                  : undefined
-              }
-              onValueChange={(v) => {
-                // sanitizar: permitir solo dígitos mientras se escribe
-                const sanitized = v.replace(/\D/g, '');
-                if (editing.access) {
-                  methods.setValue('phone', sanitized);
-                } else {
-                  handleChange('phone', sanitized);
-                }
-                if (phoneError) setPhoneError('');
-              }}
-            />
-            {editing.access && phoneError && <div className="mt-2 text-sm text-red-600">{phoneError}</div>}
-          </div>
-
-          {/* Fila 3 - Contraseña */}
-          <div className="px-6">
-            <ConfigRow
-              name="password"
-              title="Contraseña"
-              valueinput={form.password}
-              isTitle={false}
-              placeholder="Contenido"
-              isEditable={passwordEditable}
-              editInput={editing.access && passwordEditable}
-              rules={
-                editing.access && passwordEditable
-                  ? {
-                      required: 'La contraseña es requerida',
-                      validate: (v: any) => (typeof v === 'string' ? v.trim() !== '' : !!v) || 'No puede quedar vacío',
-                    }
-                  : undefined
-              }
-              onValueChange={(v) =>
-                editing.access ? methods.setValue('password', v) : handleChange('password', v)
-              }
-            />
-          </div>
-        </FormProvider>
-
-        {editing.access && (
-          <div className="flex justify-end px-6 py-4">
-            <Button variant="primary" onClick={handleSaveAccess}>
+        {isEditing && (
+          <div className="flex justify-end gap-3 px-6 py-4">
+            <Button variant="primary" onClick={handleCancel}>
+              Cancelar
+            </Button>
+            <Button variant="primary" onClick={handleSave}>
               Guardar Cambios
             </Button>
           </div>

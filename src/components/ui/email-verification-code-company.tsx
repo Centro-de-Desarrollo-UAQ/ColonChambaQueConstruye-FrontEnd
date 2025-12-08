@@ -2,22 +2,23 @@
 
 import { useState, useRef } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { FormOTPValidation } from '../forms/FormOTPValidation';
+import { FormOTPValidation } from '@/components/forms/FormOTPValidation';
 import { Button } from '@/components/ui/button';
-import { useCompanyStore } from '@/app/store/authCompanyStore'; //CAMBIO AQUÍ
+import { useCompanyStore } from '@/app/store/authCompanyStore';
 
 interface OtpInputProps {
   length?: number;
   onChange?: (code: string) => void;
-  onSuccess?: () => void; // Callback vital para avanzar al siguiente paso
+  onSuccess?: () => void;
 }
 
-export default function EmailVerificationCode({
+export default function EmailVerificationCodeCompany({
   length = 6,
   onChange,
   onSuccess,
 }: OtpInputProps) {
-  const { id: companyId, token } = useCompanyStore(); //  AHORA OBTENEMOS LOS DATOS DE LA EMPRESA
+  // 👇 AQUÍ EL CAMBIO: usamos companyId, no id
+  const { companyId, token } = useCompanyStore();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,12 +26,10 @@ export default function EmailVerificationCode({
   const { control, watch, handleSubmit } = methods;
   const refs = useRef<(HTMLInputElement | null)[]>([]);
 
-  // Observamos los cambios para concatenar el código
   const otpValues = watch('otp');
   const otpCode = (otpValues || []).join('');
 
   const onSubmit = async () => {
-    // Validaciones previas
     if (!companyId) {
       setError(
         'No se encontró el ID de la empresa. Por favor intenta registrarte de nuevo.'
@@ -49,16 +48,14 @@ export default function EmailVerificationCode({
     try {
       console.log(`Validando empresa ${companyId} con código: ${otpCode}`);
 
-      // Petición al endpoint de validación de empresa
       const response = await fetch(
         `/api/v1/validation-email/company/${companyId}`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`, // Token obtenido del store de empresa
+            Authorization: `Bearer ${token}`,
           },
-          // Convertimos el código a número entero (Integer)
           body: JSON.stringify({ code: parseInt(otpCode, 10) }),
         }
       );
@@ -66,17 +63,14 @@ export default function EmailVerificationCode({
       const result = await response.json();
 
       if (!response.ok) {
-        // Manejo de errores que vienen como array de mensajes
         const errorMsg = Array.isArray(result.message)
           ? result.message[0]
           : result.message;
         throw new Error(errorMsg || 'Código incorrecto o expirado.');
       }
 
-      // Notificamos al componente padre para que avance al siguiente paso
-      if (onSuccess) {
-        onSuccess();
-      }
+      onChange?.(otpCode);
+      onSuccess?.();
     } catch (err) {
       console.error(err);
       setError(
@@ -88,7 +82,7 @@ export default function EmailVerificationCode({
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-full mx-auto my-8 max-w-md animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="mx-auto my-8 flex w-full max-w-md flex-col items-center justify-center animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="mb-6 text-center">
         <h3 className="mb-2 text-xl font-semibold text-brand">
           Revisa tu correo

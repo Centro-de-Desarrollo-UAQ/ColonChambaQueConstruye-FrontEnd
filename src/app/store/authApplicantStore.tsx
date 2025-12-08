@@ -10,7 +10,7 @@ interface AuthState {
   login: (data: { id: string; email: string; status: string; token: string }) => void;
   logout: () => void;
   initialize: () => void; 
-}
+} 
 const LOCAL_STORAGE_TOKEN_KEY = 'authToken';
 const LOCAL_STORAGE_ID_KEY = 'authId';
 
