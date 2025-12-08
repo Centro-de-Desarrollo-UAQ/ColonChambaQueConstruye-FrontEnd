@@ -17,7 +17,7 @@ import { useCompanyStore } from '@/app/store/authCompanyStore';
 import { useRouter } from 'next/navigation';
 
 
-export default function PostJobForm() {
+export default function   PostJobForm() {
   const methods = useForm<VacancyFormType>({
     resolver: zodResolver(registerVacancy),
     defaultValues: {

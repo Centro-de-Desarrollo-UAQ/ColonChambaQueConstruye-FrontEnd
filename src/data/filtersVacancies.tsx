@@ -14,7 +14,7 @@ export const filtersVacancies: filterType[] = [
   options: listWorkingHoursOptionsConstants
 },
 {
-  value: 'createdAt',
+  value: 'dateFilter',
   name: 'Fecha de publicación',
   isDate: true,
 }

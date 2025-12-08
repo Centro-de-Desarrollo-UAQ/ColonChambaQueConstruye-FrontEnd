@@ -16,9 +16,11 @@ interface TableSearchBarProps {
         }
       | undefined;
   };
+  onSearch?: (value: string) => void;
+  onFilterChange?: (key: string, value: any) => void;
 }
 
-function TableSearchBar({ filters, table }: TableSearchBarProps) {
+function TableSearchBar({ filters, table, onSearch, onFilterChange }: TableSearchBarProps) {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const handleFilterToggle = () => {
@@ -30,7 +32,11 @@ function TableSearchBar({ filters, table }: TableSearchBarProps) {
         type="text"
         placeholder="Buscar..."
         value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-        onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
+        onChange={(e) => {
+          const value = e.target.value;
+          table?.getColumn('name')?.setFilterValue(value);
+          onSearch?.(value); 
+        }}
         className="h-fit w-full"
         icon={MinimalisticMagnifer}
         filter={isFilterOpen}
@@ -46,7 +52,10 @@ function TableSearchBar({ filters, table }: TableSearchBarProps) {
               label={filter.name}
               options={filter.options}
               value={table.getColumn(filter.value)?.getFilterValue() ?? []}
-              onChange={(value) => table.getColumn(filter.value)?.setFilterValue(value)}
+              onChange={(value) => {
+                table?.getColumn(filter.value)?.setFilterValue(value);
+                onFilterChange?.(filter.value, value);
+              }}
             />
           ))}
       </div>

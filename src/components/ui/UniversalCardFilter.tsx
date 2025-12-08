@@ -7,15 +7,14 @@ import * as React from 'react';
 import { filterType } from '@/interfaces/table';
 import TableSearchBar from './TableSerchBar';
 
-type AccessorValue = string | number | Date | string[] | null | undefined; //los tipos de datos que puede recibir un accessor
+type AccessorValue = string | number | Date | string[] | null | undefined; 
 type Accessors<data> = Record<string, (item: data) => AccessorValue>; //lista de accessors mapeados
 
 type UniversalCardsFilterProps<data> = {
   items: data[];
   filters: filterType[];
-  accessors: Accessors<data>; // Cómo obtener el valor de cada filtro
-  multiMode?: 'AND' | 'OR'; // Cómo combinar múltiples selecciones en filtros multiple
-  // Render de lo filtrado
+  accessors: Accessors<data>; 
+  multiMode?: 'AND' | 'OR'; 
   render: (filtered: data[]) => React.ReactNode;
   normalizeFn?: (txt: unknown) => string;
 };
@@ -27,20 +26,18 @@ function defaultNormalize(txt: unknown) {
   return str.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
 }
 
-export default function UniversalCardsFilter<T>({
+export default function   UniversalCardsFilter<T>({
   items,
   filters,
   accessors,
-  // AND por defecto
   multiMode = 'AND',
   render,
   normalizeFn = defaultNormalize,
 }: UniversalCardsFilterProps<T>) {
   const [filtersState, setFiltersState] = React.useState<Record<string, unknown>>({
-    name: '', // ID que usa TableSearchBar para buscar
+    name: '', 
   });
 
-  // adapta la información de las cards al formato que espera TableSearchBar
   const tableAdapter = React.useMemo(() => ({
       getColumn: (columnId: string) => ({  
         getFilterValue: () => filtersState[columnId],
