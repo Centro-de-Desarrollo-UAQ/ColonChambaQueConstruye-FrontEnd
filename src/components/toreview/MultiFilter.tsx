@@ -72,8 +72,8 @@ export function MultiFilter({
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant="secundary"
-          className="h-fit gap-1 rounded-4xl border py-1"
+          variant="secondary"
+          className="h-fit gap-1 rounded-4xl border py-1 max-w-[300px]" // Limitamos ancho del botón
           color={isActive ? 'brand' : 'gray'}
           aria-expanded={isActive}
         >
@@ -81,30 +81,38 @@ export function MultiFilter({
             {label}
             {isActive ? ':' : ''}
           </span>
-          {isActive && <span>{displayValue()}</span>}
-          <ChevronDown className="ml-1 h-4 w-4" />
+          {/* Truncamos el texto si son muchas opciones seleccionadas */}
+          {isActive && <span className="truncate max-w-[150px] block">{displayValue()}</span>}
+          <ChevronDown className="ml-1 h-4 w-4 flex-shrink-0" />
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-fit" aria-label={`Filtro: ${label}`} align="start">
+      <PopoverContent className="w-fit max-w-sm p-0 overflow-hidden" aria-label={`Filtro: ${label}`} align="start">
         {variant === 'checkbox' && (
-          <div className="items-start space-y-2">
-            {options.map((option) => (
-              <div key={option.value} className="flex space-x-2">
-                <Checkbox
-                  id={option.value}
-                  checked={selected.includes(option.value)}
-                  onCheckedChange={() => toggleOption(option.value)}
-                />
-                <Label htmlFor={option.value}>{option.label}</Label>
-              </div>
-            ))}
+          <div className="flex flex-col p-4">
+            {/* --- AQUÍ ESTÁ LA SOLUCIÓN DEL SCROLL --- */}
+            {/* max-h-60 limita la altura y overflow-y-auto habilita el scroll */}
+            <div className="flex flex-col items-start space-y-2 max-h-60 overflow-y-auto pr-2">
+                {options.map((option) => (
+                <div key={option.value} className="flex space-x-2 items-center">
+                    <Checkbox
+                    id={option.value}
+                    checked={selected.includes(option.value)}
+                    onCheckedChange={() => toggleOption(option.value)}
+                    />
+                    <Label htmlFor={option.value} className="cursor-pointer text-sm font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                        {option.label}
+                    </Label>
+                </div>
+                ))}
+            </div>
+            
             <div className="mt-3 h-[1px] w-full bg-zinc-300" />
             <Button
-              variant="secundary"
+              variant="secondary"
               size="sm"
               color="gray"
-              className="mt-1"
+              className="mt-2 w-full"
               onClick={() => {
                 setSelected([]);
                 onChange?.([]);
@@ -116,9 +124,9 @@ export function MultiFilter({
         )}
 
         {variant === 'date' && (
-          <div className="flex flex-col items-start">
+          <div className="flex flex-col items-start p-4">
             <Calendar
-              className="rounded"
+              className="rounded-md border shadow"
               mode="single"
               selected={date}
               onSelect={handleDateChange}
@@ -126,10 +134,10 @@ export function MultiFilter({
               autoFocus
             />
             <Button
-              variant="secundary"
+              variant="secondary"
               size="sm"
               color="gray"
-              className="mt-2"
+              className="mt-2 w-full"
               onClick={() => handleDateChange(undefined)}
             >
               Borrar fecha

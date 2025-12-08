@@ -104,34 +104,7 @@ const VacanciesContent = ({
         />
       </>
     ),
-    RECHAZADA: (
-      <>
-        {commonEmptyState}
-        <div className="flex w-full flex-col items-center justifycenter text-center">
-          <Button variant="primary" color="gray">
-            Crear Vacante
-          </Button>
-        </div>
-        <AlertCard
-          title={'Tu cuenta fue rechazada'}
-          content={
-            <>
-              <ul style={{ listStyleType: 'disc', paddingLeft: '20px' }}>
-                <li>El RFC no existe</li>
-                <li>La razón social no corresponde a el RFC </li>
-              </ul>
-              <p>
-                Realiza los cambios necesarios desde los{' '}
-                <a className="underline" href="/employer/profile">
-                  ajustes de tu perfil
-                </a>{' '}
-                y solicita una nueva revisión
-              </p>
-            </>
-          }
-        />
-      </>
-    ),
+    
   };
 
   return statusComponents[accountStatus] || null;
