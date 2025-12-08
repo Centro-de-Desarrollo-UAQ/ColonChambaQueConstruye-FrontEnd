@@ -15,8 +15,10 @@ import { Vacancy } from '@/interfaces/vacancy';
 import { useState } from 'react';
 import CloseVacancyModal from '@/components/ui/modal/CloseVacancyModal';
 import { Close } from '@radix-ui/react-dialog';
+import { VacancyRow } from '@/app/employer/home/vacancies/page';
+import { VacancyU } from '@/interfaces/vacancyUpdate';
 
-export default function RowActions({ row }: { row: { original: Vacancy } }) {
+export default function RowActions({ row }: { row: { original: VacancyRow } }) {
   const [open, setOpen] = React.useState(false);
 
   const [showCloseVacancy, setShowCloseVacancy] = useState(false);
@@ -62,7 +64,7 @@ export default function RowActions({ row }: { row: { original: Vacancy } }) {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <DrawerVacante vacante={row.original} />
+        <DrawerVacante vacancyId={row.original.id} />
       </Drawer>
 
       <div className="mb-6 space-y-4">

@@ -1,3 +1,4 @@
+import { create } from 'zustand';
 export type VacancyStatus =
   | 'REVISION'
   | 'RECHAZADA'
@@ -26,7 +27,6 @@ export type WorkShift =
 
 export interface VacancyU {
     id: string;
-  // estado de la vacante (el select que muestras en la primera imagen)
   status: VacancyStatus;
   name: string;
   
@@ -60,4 +60,8 @@ export interface VacancyU {
   workSchedule: [string, string]; // ["08:00", "17:00"]
 
   additionalInformation: string;
+  comment: string; // comentario de revisión
+  createdAt: string;
+  modifiedAt: string;
+  
 }

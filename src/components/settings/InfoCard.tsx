@@ -17,16 +17,7 @@ export const InfoCard = ({ avatar, name, email, cellphone }: InfoCardProps) => {
         <AvatarImage src={avatar} />
         <AvatarFallback>CN</AvatarFallback>
 
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-200 hover:opacity-100">
-          <div className="absolute inset-0 flex items-center justify-center bg-black opacity-50 transition-opacity duration-200"></div>
-          <UploadMinimalistic
-            size={52}
-            weight="Bold"
-            mirrored
-            color="white"
-            className="absolute opacity-100"
-          />
-        </div>
+       
       </Avatar>
 
       <div className="flex flex-col justify-center pl-6">
