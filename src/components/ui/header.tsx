@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { User, Logout2 } from '@solar-icons/react';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
+import { useApplicantStore } from '@/app/store/authApplicantStore';
 
 import {
   DropdownMenu,
