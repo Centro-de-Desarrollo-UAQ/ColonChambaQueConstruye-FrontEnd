@@ -6,6 +6,7 @@ interface CompanyAuthState {
   companyId: string | null; 
   email: string | null;
   status: string | null; 
+  companyName:string | null;
 
   
   login: (data: { companyId: string; email: string; status: string; token: string }) => void;
@@ -13,6 +14,8 @@ interface CompanyAuthState {
   logout: () => void;
   
   initialize: () => void; 
+
+  setCompanyName:(name:string|null)=>void
 }
 
 
@@ -25,6 +28,7 @@ export const useCompanyStore = create<CompanyAuthState>((set) => ({
   companyId: null,
   email: null,
   status: null,
+  companyName:null,
 
 
   login: (data) => {
@@ -32,7 +36,7 @@ export const useCompanyStore = create<CompanyAuthState>((set) => ({
       token: data.token,
       companyId: data.companyId,
       email: data.email,
-      status: data.status,
+      status: data.status
     });
 
     localStorage.setItem(LOCAL_STORAGE_KEY_COMPANY, data.token);
@@ -48,6 +52,7 @@ export const useCompanyStore = create<CompanyAuthState>((set) => ({
       companyId: null,
       email: null,
       status: null,
+      companyName:null
     });
     localStorage.removeItem(LOCAL_STORAGE_KEY_COMPANY);
     localStorage.removeItem(LOCAL_STORAGE_ID_COMPANY);
@@ -66,4 +71,5 @@ export const useCompanyStore = create<CompanyAuthState>((set) => ({
       
     }
   },
+  setCompanyName: (name) => set({ companyName: name }),
 }));

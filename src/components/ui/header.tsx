@@ -2,7 +2,6 @@
 
 import React, { useState, type ReactNode } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { User, Logout2 } from '@solar-icons/react';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
@@ -16,6 +15,8 @@ import {
 
 import LogoutModal from './modal/LogoutModal';
 import CompanyAvatar from '../common/AvatarTrasnform';
+import { useCompanyStore } from '@/app/store/authCompanyStore';
+
 
 interface HeaderProps {
   companyTitle: string;           
@@ -40,11 +41,16 @@ export default function Header({
   const openLogoutModal = () => setShowLogout(true);
   const closeLogoutModal = () => setShowLogout(false);
 
+  const storeCompanyName = useCompanyStore((s) => s.companyName);
+  const finalCompanyTitle = companyTitle ?? storeCompanyName ?? 'Empresa';
+
   const handleLogoutConfirm = () => {
     closeLogoutModal();
     console.log('Cerrar sesión y redirigir a:', logoutRedirectPath);
     router.push(logoutRedirectPath);
   };
+
+  console.log("la compania se llama",companyTitle)
 
   return (
     <>
@@ -63,12 +69,12 @@ export default function Header({
             <DropdownMenuTrigger asChild>
               <Button variant="mono" className="flex items-center gap-2">
                 <CompanyAvatar
-          companyName={companyTitle}
+          companyName={finalCompanyTitle}
           
           size="sm"
         />
                 <span className="truncate max-w-[200px] text-left">
-                  {companyTitle}
+                  {finalCompanyTitle}
                 </span>
               </Button>
             </DropdownMenuTrigger>

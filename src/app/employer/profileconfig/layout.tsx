@@ -13,6 +13,7 @@ import EmployerTab from '@/components/employer/EmployerTab';
 import { apiService } from '@/services/api.service';
 
 
+
 //Tipado de respuesta al endpont
 type Company = {
   id: string;
@@ -85,6 +86,8 @@ export default function LayoutEmployerView({children,}: Readonly<{ children: Rea
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -131,6 +134,8 @@ export default function LayoutEmployerView({children,}: Readonly<{ children: Rea
 
     fetchProfile();
   }, []);
+
+    
 
   return (
     <EmployerProfileContext.Provider
