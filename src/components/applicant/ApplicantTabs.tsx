@@ -3,6 +3,7 @@ import { Documents, Diploma, UserCircle, ShieldKeyholeMinimalistic } from '@sola
 import TabOptions from '../common/TabOptions';
 
 import { InfoCard } from '../settings/InfoCard';
+import { useUserStore } from '@/app/store/useUserInfoStore';
 export default function ApplicantTabs() {
   const tabsConfig = [
     {
@@ -25,13 +26,27 @@ export default function ApplicantTabs() {
     },
   ];
 
+  const {user} = useUserStore()
+
+  let displayName = 'Cargando...';
+  let displayEmail = '';
+  let displayCellphone: string | null = null;
+
+  if (user) {
+    displayName = `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() || 'Usuario';
+    displayEmail = user.email ?? '';
+    displayCellphone = user.phone ?? null;
+  }
+
+  console.log('el user es',user)
+
+
   return (
     <div className="mx-auto max-w-md bg-white text-brand">
       <InfoCard
-        avatar="https://github.com/shadcn.png"
-        name="Jane Daw"
-        email="Hosea28@yahoo.com"
-        cellphone="+52 441 441 22 22"
+        name={displayName}
+        email={displayEmail}
+        cellphone={displayCellphone}
       />
 
       <div className="w-full px-4 pb-8">

@@ -5,13 +5,14 @@ import { useApplicantStore } from '@/app/store/authApplicantStore';
 import { JobCardProps } from '@/interfaces';
 
 // Componentes Visuales
-import Header from '@/components/ui/header';
+
 import TitleSectionIconLeft from '@/components/common/TitleSection IconLeft';
 import DrawerApplicantVacant from '@/components/applicant/jobsCard';
 import UniversalCardsFilter from '@/components/ui/UniversalCardFilter';
 import { CaseRound, MinimalisticMagnifer, FileRemove } from '@solar-icons/react';
 import { filtersVacanciesUser } from '@/data/filtersVacancies';
 import { X } from 'lucide-react';
+import HeaderApplicant from '@/components/ui/headerApplicant';
 
 // --- TIPOS API ---
 interface ApiVacancy {
@@ -156,7 +157,7 @@ export default function JobsPage() {
 
   return (
     <>
-      <Header />
+      <HeaderApplicant />
 
       <div className="flex w-full flex-col items-center justify-center gap-3">
         
