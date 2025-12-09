@@ -84,26 +84,9 @@ const VacanciesContent = ({
       </div>
     ) : (
       <div className="flex w-full flex-col items-center justify-center text-center">
-        {commonEmptyState}
-        <Button className="mt-5" variant="primary" color="gray">
-          <a href="/employer/home/post">Crear Vacante</a>
-        </Button>
+        //Recordatorio de limpiar esto, no se quien lo puso pero X
       </div>
-    ),
-    REVISION: (
-      <>
-        {commonEmptyState}
-        <div className="flex w-full flex-col items-center justify-center text-center">
-          <Button className="mt-5" variant="primary" color="gray">
-            Crear Vacante
-          </Button>
-        </div>
-        <AlertCard
-          title={'Tu cuenta aún no está verificada'}
-          content={'Una vez que se haya verificado la veracidad de la empresa, podrás empezar a publicar vacantes'}
-        />
-      </>
-    ),
+    )
     
   };
 

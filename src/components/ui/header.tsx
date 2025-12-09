@@ -1,11 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react'; // Importación simplificada
+import { useState } from 'react';
 import Image from 'next/image';
 import { User, Logout2 } from '@solar-icons/react';
 import { Button } from "@/components/ui/button"; 
 import { useRouter } from 'next/navigation';
+import { useApplicantStore } from '@/app/store/authApplicantStore';
 
 import {
   DropdownMenu,
@@ -35,15 +36,22 @@ export default function Header({
 }: HeaderProps) {
 
     const [showLogout, setShowLogout] = useState(false);
-    
     const router = useRouter(); 
+    
+    // 1. Obtenemos la función logout del store de Zustand
+    const logout = useApplicantStore((state) => state.logout);
 
     const openLogoutModal = () => setShowLogout(true);
     const closeLogoutModal = () => setShowLogout(false);
 
     const handleLogoutConfirm = () => {
+        // 2. Ejecutamos la limpieza del store y localStorage
+        logout();
+        
         closeLogoutModal(); 
-        console.log("Cerrar sesión y redirigir a:", logoutRedirectPath);
+        console.log("Sesión cerrada. Datos eliminados. Redirigiendo a:", logoutRedirectPath);
+        
+        // 3. Redirigimos al usuario
         router.push(logoutRedirectPath); 
     };
 
@@ -51,12 +59,9 @@ export default function Header({
         <>
             <header className='bg-accent !z-50 flex items-center justify-between px-10 border-b border-zinc-200 drop-shadow-md'>
                 <div className='flex items-center gap-4 py-4'>
-                    <Link href="/" className="text-lg font-bold">
-                        <img src="/UCQC.png" alt="Colon" className="h-10 w-28 scale-100"/>
-                    </Link>
-                    <Link href="/" className="text-lg font-bold">
-                        <img src="/ADMON24-27-1-03.png" alt="Colon" className="h-10 w-28 scale-100"/>
-                    </Link>
+                    {/* Asegúrate de que estas imágenes existan en tu carpeta public */}
+                    <img src="/UCQC.png" alt="Colon" className="h-10 w-28 scale-100"/>
+                    <img src="/ADMON24-27-1-03.png" alt="Colon" className="h-10 w-28 scale-100"/>
                 </div>
                 
                 <div className="flex items-center justify-center">
@@ -84,7 +89,6 @@ export default function Header({
                                 </Link>
                             )}
                             
-                            {/* Abre el modal al hacer click */}
                             <DropdownMenuItem onClick={openLogoutModal} variant="destructive">
                                 {logOut}
                                 Cerrar sesión
@@ -95,10 +99,8 @@ export default function Header({
                 </div>
             </header>
 
-            {/* Renderizado condicional del Modal fuera del header pero dentro del fragmento */}
             {showLogout && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                    {/* 4. Corregimos la prop onConfirm para usar handleLogoutConfirm */}
                     <LogoutModal 
                         onConfirm={handleLogoutConfirm} 
                         onClose={closeLogoutModal} 
