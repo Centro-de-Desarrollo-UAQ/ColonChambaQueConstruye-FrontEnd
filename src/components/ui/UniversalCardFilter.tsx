@@ -11,8 +11,8 @@ type Accessors<data> = Record<string, (item: data) => AccessorValue>;
 type UniversalCardsFilterProps<data> = {
   items: data[];
   filters: filterType[];
-  accessors: Accessors<data>; 
-  multiMode?: 'AND' | 'OR'; 
+  accessors: Accessors<data>;
+  multiMode?: 'AND' | 'OR';
   render: (filtered: data[]) => React.ReactNode;
   normalizeFn?: (txt: unknown) => string;
   onFilterChange?: (key: string, value: string) => void;
@@ -152,7 +152,7 @@ export default function UniversalCardsFilter<T>({
 
       return true;
     });
-  }, [items, filters, accessors, filtersState, multiMode, normalizeFn]);
+  }, [items, filters, accessors, effectiveFilters, multiMode, normalizeFn]);
 
   return (
     <div className="space-y-4">
