@@ -84,54 +84,10 @@ const VacanciesContent = ({
       </div>
     ) : (
       <div className="flex w-full flex-col items-center justify-center text-center">
-        {commonEmptyState}
-        <Button className="mt-5" variant="primary" color="gray">
-          <a href="/employer/home/post">Crear Vacante</a>
-        </Button>
+        //Recordatorio de limpiar esto, no se quien lo puso pero X
       </div>
-    ),
-    REVISION: (
-      <>
-        {commonEmptyState}
-        <div className="flex w-full flex-col items-center justify-center text-center">
-          <Button className="mt-5" variant="primary" color="gray">
-            Crear Vacante
-          </Button>
-        </div>
-        <AlertCard
-          title={'Tu cuenta aún no está verificada'}
-          content={'Una vez que se haya verificado la veracidad de la empresa, podrás empezar a publicar vacantes'}
-        />
-      </>
-    ),
-    RECHAZADA: (
-      <>
-        {commonEmptyState}
-        <div className="flex w-full flex-col items-center justifycenter text-center">
-          <Button variant="primary" color="gray">
-            Crear Vacante
-          </Button>
-        </div>
-        <AlertCard
-          title={'Tu cuenta fue rechazada'}
-          content={
-            <>
-              <ul style={{ listStyleType: 'disc', paddingLeft: '20px' }}>
-                <li>El RFC no existe</li>
-                <li>La razón social no corresponde a el RFC </li>
-              </ul>
-              <p>
-                Realiza los cambios necesarios desde los{' '}
-                <a className="underline" href="/employer/profile">
-                  ajustes de tu perfil
-                </a>{' '}
-                y solicita una nueva revisión
-              </p>
-            </>
-          }
-        />
-      </>
-    ),
+    )
+    
   };
 
   return statusComponents[accountStatus] || null;

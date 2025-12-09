@@ -100,7 +100,7 @@ export const targetGroups: TargetGroup[] = [
       'Publica tus vacantes y conecta con candidatos locales en Colón, Querétaro. Nuestra plataforma facilita el proceso de reclutamiento, ayudándote a llegar a las personas correctas de manera rápida y sencilla.',
     image:
       '/Hero-4.png',
-    signInHref: 'signup/employer/company',
+    signInHref: 'signup/employer',
     signInText: 'Registra tu empresa y publica vacantes',
     title: 'Encuentra al talento que tu empresa necesita',
     href: "/signup/company",

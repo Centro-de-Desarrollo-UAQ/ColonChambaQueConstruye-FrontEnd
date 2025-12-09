@@ -1,6 +1,6 @@
 'use client';
 import Headersimple from '@/components/ui/header-simple';
-import SignUpEmployer from '@/components/employer/SignUpEmployer';
+import CompanySignup from '@/components/employer/CompanySignup';
 
 export default function SignUpEmployerPage() {
   return (
@@ -17,7 +17,7 @@ export default function SignUpEmployerPage() {
       >
         <main className="flex h-fit flex-col items-center justify-center gap-10">
           <div className="mb-6 space-y-4">
-            <SignUpEmployer />
+            <CompanySignup />
           </div>
         </main>
       </div>

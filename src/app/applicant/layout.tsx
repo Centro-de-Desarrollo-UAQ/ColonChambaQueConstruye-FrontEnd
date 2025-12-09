@@ -10,25 +10,28 @@ interface ApplicantLayoutProps {
 
 export default function ApplicantLayout({ children }: ApplicantLayoutProps) {
   const router = useRouter();
-  const token = useApplicantStore((state) => state.token);
+
+  const {token, initialize} = useApplicantStore();
   const [isInitialized, setIsInitialized] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+
+    initialize();
     
     setIsInitialized(true);
     
-  }, []);
+  }, [initialize]);
 
   useEffect(() => {
     if (isInitialized) {
       if (!token) {
-        router.push('/login?redirect=/applicant/jobs'); 
-        setIsLoading(false);
-      } else {
-        setIsLoading(false);
-      }
+        router.push('/login/applicant'); 
+        
+      } 
+      setIsLoading(false);
+      
     }
   }, [token, isInitialized, router]);
 

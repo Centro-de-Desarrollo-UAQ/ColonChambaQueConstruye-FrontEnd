@@ -6,7 +6,7 @@ import { filterType } from '@/interfaces/table';
 import TableSearchBar from './TableSerchBar';
 
 type AccessorValue = string | number | Date | string[] | null | undefined; 
-type Accessors<data> = Record<string, (item: data) => AccessorValue>; //lista de accessors mapeados
+type Accessors<data> = Record<string, (item: data) => AccessorValue>; 
 
 type UniversalCardsFilterProps<data> = {
   items: data[];
@@ -15,136 +15,84 @@ type UniversalCardsFilterProps<data> = {
   multiMode?: 'AND' | 'OR';
   render: (filtered: data[]) => React.ReactNode;
   normalizeFn?: (txt: unknown) => string;
-  searchValue?: string;
-  onSearchChange?: (value: string) => void;
-  activeFilters?: Record<string, unknown>;
-  onFilterChange?: (columnId: string, value: unknown) => void;
+  onFilterChange?: (key: string, value: string) => void;
+  // NUEVO: Permite sincronizar el estado desde fuera
+  activeFilters?: Record<string, string>;
 };
 
-//elimina espacios de los arrays y pasa todo a minusculas sin tildes
 function defaultNormalize(txt: unknown) {
   if (txt == null) return '';
   const str = Array.isArray(txt) ? txt.join(' ') : String(txt);
   return str.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
 }
 
-export default function   UniversalCardsFilter<T>({
+export default function UniversalCardsFilter<T>({
   items,
   filters,
   accessors,
   multiMode = 'AND',
   render,
   normalizeFn = defaultNormalize,
-  searchValue,
-  onSearchChange,
-  activeFilters,
   onFilterChange,
+  activeFilters, // Recibimos los filtros activos
 }: UniversalCardsFilterProps<T>) {
-  const [localFilters, setLocalFilters] = React.useState<Record<string, unknown>>({
-    name: '',
+  
+  // Estado interno del TableSearchBar
+  const [filtersState, setFiltersState] = React.useState<Record<string, unknown>>({
+    name: '', 
   });
 
+  // EFECTO DE SINCRONIZACIÓN:
+  // Si activeFilters cambia (ej: limpiamos filtros desde fuera), actualizamos el estado interno
   React.useEffect(() => {
-    if (searchValue === undefined) return;
-    setLocalFilters((prev) =>
-      prev.name === searchValue ? prev : { ...prev, name: searchValue },
-    );
-  }, [searchValue]);
+    if (activeFilters) {
+      setFiltersState((prev) => {
+        // Hacemos un merge inteligente para no sobreescribir 'name' (búsqueda texto) si no es necesario
+        const nextState = { ...prev };
+        let hasChanges = false;
+        
+        Object.entries(activeFilters).forEach(([key, value]) => {
+           if (nextState[key] !== value) {
+              nextState[key] = value;
+              hasChanges = true;
+           }
+        });
 
-  React.useEffect(() => {
-    if (!activeFilters) return;
-    setLocalFilters((prev) => {
-      let changed = false;
-      const next = { ...prev };
-
-      Object.keys(next).forEach((key) => {
-        if (key === 'name') return;
-        if (!(key in activeFilters)) {
-          delete next[key];
-          changed = true;
-        }
+        return hasChanges ? nextState : prev;
       });
-
-      Object.entries(activeFilters).forEach(([key, value]) => {
-        if (key === 'name') return;
-        if (!Object.is(next[key], value)) {
-          next[key] = value;
-          changed = true;
-        }
-      });
-
-      return changed ? next : prev;
-    });
+    }
   }, [activeFilters]);
 
-  const effectiveFilters = React.useMemo(() => {
-    const base: Record<string, unknown> = {
-      ...(activeFilters ?? localFilters),
-    };
+  const tableAdapter = React.useMemo(() => ({
+      getColumn: (columnId: string) => ({  
+        getFilterValue: () => filtersState[columnId],
+        
+        setFilterValue: (value: unknown) => {
+          // 1. Actualización visual local inmediata
+          setFiltersState((prev) => ({ ...prev, [columnId]: value }));
 
-    const resolvedSearch =
-      searchValue ??
-      ((activeFilters as Record<string, unknown> | undefined)?.name as string | undefined) ??
-      (localFilters.name as string | undefined) ??
-      '';
-
-    base.name = typeof resolvedSearch === 'string' ? resolvedSearch : '';
-
-    return base;
-  }, [activeFilters, localFilters, searchValue]);
-
-  const updateLocalFilters = React.useCallback((columnId: string, value: unknown) => {
-    setLocalFilters((prev) => {
-      const next = { ...prev };
-      const shouldRemove =
-        value == null ||
-        value === '' ||
-        (Array.isArray(value) && value.length === 0);
-
-      if (columnId === 'name') {
-        next.name = shouldRemove ? '' : value;
-        return next;
-      }
-
-      if (shouldRemove) {
-        if (columnId in next) {
-          delete next[columnId];
-          return next;
-        }
-        return prev;
-      }
-
-      if (!Object.is(next[columnId], value)) {
-        next[columnId] = value;
-        return next;
-      }
-
-      return prev;
-    });
-  }, []);
-
-  const tableAdapter = React.useMemo(
-    () => ({
-      getColumn: (columnId: string) =>
-        ({
-          getFilterValue: () => effectiveFilters[columnId],
-          setFilterValue: (value: unknown) => {
-            if (columnId === 'name') {
-              const normalized = typeof value === 'string' ? value : '';
-              updateLocalFilters('name', normalized);
-              onSearchChange?.(normalized);
-            } else {
-              updateLocalFilters(columnId, value);
-              onFilterChange?.(columnId, value);
+          // 2. Notificación al padre para petición API
+          if (onFilterChange) {
+            let valueToSend = '';
+            // Convertimos el valor complejo del componente (Array, Date, etc) a string simple para la API
+            if (Array.isArray(value)) {
+               valueToSend = value.length > 0 ? String(value[0]) : ''; 
+            } else if (value instanceof Date) {
+               valueToSend = value.toISOString();
+            } else if (value) {
+               valueToSend = String(value);
             }
-          },
-        }) as const,
+            onFilterChange(columnId, valueToSend);
+          }
+        },
+      }) as const,
     }),
-    [effectiveFilters, updateLocalFilters, onSearchChange, onFilterChange],
+    [filtersState, onFilterChange]
   );
 
+  // Lógica de filtrado local (se mantiene para búsquedas por texto 'name' y retrocompatibilidad)
   const filtered = React.useMemo(() => {
-    const q = typeof effectiveFilters['name'] === 'string' ? (effectiveFilters['name'] as string) : '';
+    const q = (filtersState['name'] as string) ?? '';
 
     const includesNorm = (data: unknown, query: string) => {
       if (!query) return true;
@@ -153,14 +101,11 @@ export default function   UniversalCardsFilter<T>({
 
     const matchMulti = (value: AccessorValue, selected: string[]) => {
       if (!selected?.length) return true;
-
-      // Compara texto o array como texto
       const source = Array.isArray(value)
         ? value.join(' ')
         : String(value ?? '') || '';
       const hay = normalizeFn(source);
 
-      // Compara con cada selección
       if (multiMode === 'AND') {
         return selected.every((s) => hay.includes(normalizeFn(s)));
       } else {
@@ -172,9 +117,10 @@ export default function   UniversalCardsFilter<T>({
       const globalPass = accessors.name ? includesNorm(accessors.name(it), q) : true;
       if (!globalPass) return false;
 
+      // Nota: Si items ya viene filtrado del backend, esto solo re-valida lo que ya es true
       for (const f of filters) {
-        const key = f.value; // el id del filtro
-        const sel = effectiveFilters[key]; // la selección actual
+        const key = f.value;
+        const sel = filtersState[key];
 
         if (
           sel == null ||
@@ -185,12 +131,11 @@ export default function   UniversalCardsFilter<T>({
         }
 
         const accessor = accessors[key];
-        if (!accessor) continue; // si no definiste accessor para este filtro, lo ignoramos
+        if (!accessor) continue;
 
         const val = accessor(it);
 
         if (f.isDate) {
-          // fecha
           const selectedDate = Array.isArray(sel) ? sel[0] : sel;
           if (selectedDate) {
             const toYmd = (d: Date | string) => {
@@ -200,7 +145,6 @@ export default function   UniversalCardsFilter<T>({
             if (toYmd(val as any) !== toYmd(selectedDate as any)) return false;
           }
         } else {
-          // checkboxes / multi / select como texto
           const selected = Array.isArray(sel) ? (sel as string[]) : [String(sel)];
           if (!matchMulti(val, selected)) return false;
         }
@@ -212,6 +156,7 @@ export default function   UniversalCardsFilter<T>({
 
   return (
     <div className="space-y-4">
+      {/* Tu componente TableSearchBar se mantiene intacto */}
       <TableSearchBar filters={filters} table={tableAdapter} />
       {render(filtered)}
     </div>

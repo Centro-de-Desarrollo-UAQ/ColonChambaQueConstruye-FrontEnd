@@ -24,12 +24,10 @@ export default function EmployerSideBar() {
 
       {/* Logos alineados */}
       <div className="flex items-center gap-4">
-        <Link href="/">
-          <Image src="/colon_logo.png" alt="UAQ Logo" width={100} height={100} className="h-10 w-10 group-hover/sidebar:hidden 
-          0" />
-        </Link>
+     
+        <Image src="/colon_logo.png" alt="UAQ Logo" width={100} height={100} className="h-10 w-10 group-hover/sidebar:hidden" />
+        
 
-        <Link href="/" className="hidden group-hover/sidebar:flex transition-opacity duration-200">
           <Image
             src="/Empleate_Colon_Logo.png"
             alt="Bolsa de Trabajo Logo"
@@ -37,7 +35,6 @@ export default function EmployerSideBar() {
             height={100}
             className="h-30 w-30"
           />
-        </Link>
       </div>
 
       {/* Vinculos a posibles nuevas paginas */}

@@ -10,7 +10,7 @@ interface AuthState {
   login: (data: { id: string; email: string; status: string; token: string }) => void;
   logout: () => void;
   initialize: () => void; 
-}
+} 
 const LOCAL_STORAGE_TOKEN_KEY = 'authToken';
 const LOCAL_STORAGE_ID_KEY = 'authId';
 
@@ -31,10 +31,8 @@ export const useApplicantStore = create<AuthState>((set) => ({
       localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, data.token);
       localStorage.setItem(LOCAL_STORAGE_ID_KEY, data.id);
     }
-    console.log("Aqui se vera el id del usuario o no?")
     console.log(data.id, LOCAL_STORAGE_ID_KEY);
   },
-  // Esto basicamente es para limpiar el token 
   logout: () => {
     set({
       token: null,
