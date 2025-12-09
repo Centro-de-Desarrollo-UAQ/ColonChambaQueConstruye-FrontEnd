@@ -38,9 +38,15 @@ export default function SignUpEmployerCompanySection({
 
   const { control, handleSubmit } = methods;
 
+  // helper to log validation errors when submit fails (debug)
+  const onError = (errors: any) => {
+    console.log('SignUpEmployerCompanySection: validation errors on submit:', errors);
+  };
+
   const onSubmit = async (data: CompanyFormType) => {
     try {
       console.log('Datos de empresa:', data);
+      console.log('SignUpEmployerCompanySection: calling onSuccess if provided');
       // TODO: llamada real al backend
 
       onSuccess?.();
@@ -53,7 +59,7 @@ export default function SignUpEmployerCompanySection({
   return (
     <FormProvider {...methods}>
       {/* OJO: ya no card, solo estructura interna */}
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-6">
         {/* Si quieres puedes dejar solo este subtítulo */}
         <p className="text-center text-sm leading-5 text-gray-600">
           Por favor, completa la información general, fiscal y de ubicación de tu

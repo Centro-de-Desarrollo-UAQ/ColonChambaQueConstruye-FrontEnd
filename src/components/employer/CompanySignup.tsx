@@ -5,17 +5,13 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
-// 1️⃣ Paso 1: responsable de vacantes (componente que ya tenías)
 import SignUpEmployer from '@/components/employer/SignUpEmployer';
 
-// 2️⃣ Paso 2: validación por código (versión company que ya armamos)
 import EmailVerificationCodeCompany from '@/components/ui/email-verification-code-company';
 
-// 3️⃣ Paso 3: datos de la empresa (el form grande de CompanyDetails)
 import SignUpEmployerCompanySection from '@/components/employer/SignUpEmployerCompanySection';
+import { useRouter } from 'next/navigation';
 
-// Si los tipos de estos componentes no aceptan props como onSuccess, los
-// casteamos a "any" para no pelear con TypeScript:
 const SignUpEmployerAny = SignUpEmployer as React.ComponentType<any>;
 const EmailVerificationCodeCompanyAny =
   EmailVerificationCodeCompany as React.ComponentType<any>;
@@ -23,9 +19,9 @@ const SignUpEmployerCompanySectionAny =
   SignUpEmployerCompanySection as React.ComponentType<any>;
 
 export default function CompanySignup() {
-  // 1: responsable, 2: validación, 3: empresa
   const [step, setStep] = useState(1);
   const totalSteps = 3;
+  const router = useRouter();
 
   const goBack = () => setStep((s) => Math.max(1, s - 1));
 
@@ -35,10 +31,8 @@ export default function CompanySignup() {
       {step === 1 ? (
         // STEP 1 → usamos TU página de responsable tal cual
         <SignUpEmployerAny
-          // si luego quieres controlar el flujo desde aquí,
-          // puedes hacer que dentro de SignUpEmployer llames a props.onSuccess()
-          // después de un registro exitoso:
-          // onSuccess={() => setStep(2)}
+
+          onSuccess={() => setStep(2)}
         />
       ) : (
         // STEPS 2 y 3 → layout tipo tarjeta
@@ -96,8 +90,10 @@ export default function CompanySignup() {
 
             {step === 3 && (
               <SignUpEmployerCompanySectionAny
-                // si quieres, puedes pasar un onSuccess para redirigir al final
-                // onSuccess={() => router.push('/login/waiting')}
+                onSuccess={() => {
+                  console.log('CompanySignup: onSuccess from step3 received, navigating to /login/waiting');
+                  router.push('/login/waiting');
+                }}
               />
             )}
           </div>

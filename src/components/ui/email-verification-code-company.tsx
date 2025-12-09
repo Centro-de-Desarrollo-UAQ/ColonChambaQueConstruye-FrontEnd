@@ -1,3 +1,4 @@
+// email-verification-code-company.tsx
 'use client';
 
 import { useState, useRef } from 'react';
@@ -8,16 +9,11 @@ import { useCompanyStore } from '@/app/store/authCompanyStore';
 
 interface OtpInputProps {
   length?: number;
-  onChange?: (code: string) => void;
-  onSuccess?: () => void;
 }
 
 export default function EmailVerificationCodeCompany({
   length = 6,
-  onChange,
-  onSuccess,
 }: OtpInputProps) {
-  // 👇 AQUÍ EL CAMBIO: usamos companyId, no id
   const { companyId, token } = useCompanyStore();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -31,9 +27,7 @@ export default function EmailVerificationCodeCompany({
 
   const onSubmit = async () => {
     if (!companyId) {
-      setError(
-        'No se encontró el ID de la empresa. Por favor intenta registrarte de nuevo.'
-      );
+      setError('No se encontró el ID de la empresa. Intenta registrarte de nuevo.');
       return;
     }
 
@@ -46,43 +40,47 @@ export default function EmailVerificationCodeCompany({
     setError(null);
 
     try {
-      console.log(`Validando empresa ${companyId} con código: ${otpCode}`);
+      const numericCode = Number(otpCode);
+
+      console.log('▶ Validando empresa:', companyId, 'con código:', numericCode);
 
       const response = await fetch(
-        `/api/v1/validation-email/company/${companyId}`,
+        `/api/v1/validation-email/company-account/${companyId}`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ code: parseInt(otpCode, 10) }),
+          body: JSON.stringify({
+            // lo mandamos como número, pero JSON lo envía bien
+            code: numericCode,
+          }),
         }
       );
 
       const result = await response.json();
-
       if (!response.ok) {
-        const errorMsg = Array.isArray(result.message)
+        console.log('Error backend:', result);
+        const errorMsg = Array.isArray(result?.message)
           ? result.message[0]
-          : result.message;
-        throw new Error(errorMsg || 'Código incorrecto o expirado.');
+          : result?.message;
+        setError(errorMsg || 'Código incorrecto o expirado.');
+        return;
       }
 
-      onChange?.(otpCode);
-      onSuccess?.();
+      console.log('Código validado correctamente:', result);
+      // aquí ya podrías redirigir al siguiente paso
     } catch (err) {
       console.error(err);
-      setError(
-        err instanceof Error ? err.message : 'Error al validar el código'
-      );
+      setError('Error al validar el código.');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="mx-auto my-8 flex w-full max-w-md flex-col items-center justify-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="mx-auto my-8 flex w-full max-w-md flex-col items-center justify-center">
       <div className="mb-6 text-center">
         <h3 className="mb-2 text-xl font-semibold text-brand">
           Revisa tu correo
@@ -126,16 +124,6 @@ export default function EmailVerificationCodeCompany({
           >
             {isLoading ? 'Verificando...' : 'Validar Código'}
           </Button>
-
-          <div className="mt-4 text-center">
-            <button
-              type="button"
-              className="text-sm text-gray-400 underline hover:text-brand"
-              onClick={() => alert('Funcionalidad de reenvío pendiente')}
-            >
-              ¿No recibiste el código? Reenviar
-            </button>
-          </div>
         </form>
       </FormProvider>
     </div>

@@ -7,7 +7,7 @@ import { Button } from '../ui/button';
 import EmployerDetailsStep from './EmployerDetailsStep';
 import { authService } from '@/services/auth.service';
 
-export default function SignUpEmployer() {
+export default function SignUpEmployer(onSuccess?: () => void) {
   const [isLoading, setIsLoading] = useState(false);
   
   const methods = useForm<EmployerFormType>({
@@ -17,8 +17,8 @@ export default function SignUpEmployer() {
       positionWithinTheCompany: '',
       employerLastName: '',
       employerEmail: '',
-      //employerMobilePhone: { code: '+52', number: '' },
-      //employerLandlinePhone: { code: '+52', number: '' },
+      // employerMobilePhone: { code: '+52', number: '' },
+      // employerLandlinePhone: { code: '+52', number: '' },
       accountPassword: '',
       accountPasswordConfirm: '',
     },

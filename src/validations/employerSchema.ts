@@ -29,7 +29,7 @@ export const employerSchema = z
   })
   .refine((data) => data.accountPassword === data.accountPasswordConfirm, {
     message: 'Las contraseñas no coinciden.',
-    path: ['accountPasswordConfirm'], // El error se muestra debajo del campo de confirmación
+    path: ['accountPasswordConfirm'],
   });
 
 export type EmployerFormType = z.infer<typeof employerSchema>;
