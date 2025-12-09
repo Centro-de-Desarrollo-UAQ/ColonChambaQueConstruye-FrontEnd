@@ -152,7 +152,7 @@ export default function UniversalCardsFilter<T>({
 
       return true;
     });
-  }, [items, filters, accessors, effectiveFilters, multiMode, normalizeFn]);
+  }, [items, filters, accessors, activeFilters, multiMode, normalizeFn]);
 
   return (
     <div className="space-y-4">

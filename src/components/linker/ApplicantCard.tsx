@@ -18,7 +18,7 @@ export default function ApplicantCard({ user }: ApplicantCardProps) {
         <div>
             <div className="flex flex-row items-center gap-5 justify-between">
             <div className="flex-shrink-0">
-              <Avatar className="h-18 w-18 object-contain">
+              <Avatar className="h-16 w-16 object-contain">
                 <AvatarFallback className="bg-uaq-terniary text-white text-2xl font-semibold">
                   {user.firstName && user.lastName
                     ? user.firstName.charAt(0) + user.lastName.charAt(0)
