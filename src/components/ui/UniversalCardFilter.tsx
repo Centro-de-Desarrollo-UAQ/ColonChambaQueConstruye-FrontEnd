@@ -1,5 +1,3 @@
-//Componente que adapta los datos de las cards al formato que espera TableSearchBar para filtrar y buscar entre las cards
-
 'use client';
 
 import * as React from 'react';
@@ -13,10 +11,14 @@ type Accessors<data> = Record<string, (item: data) => AccessorValue>; //lista de
 type UniversalCardsFilterProps<data> = {
   items: data[];
   filters: filterType[];
-  accessors: Accessors<data>; 
-  multiMode?: 'AND' | 'OR'; 
+  accessors: Accessors<data>;
+  multiMode?: 'AND' | 'OR';
   render: (filtered: data[]) => React.ReactNode;
   normalizeFn?: (txt: unknown) => string;
+  searchValue?: string;
+  onSearchChange?: (value: string) => void;
+  activeFilters?: Record<string, unknown>;
+  onFilterChange?: (columnId: string, value: unknown) => void;
 };
 
 //elimina espacios de los arrays y pasa todo a minusculas sin tildes
@@ -33,33 +35,122 @@ export default function   UniversalCardsFilter<T>({
   multiMode = 'AND',
   render,
   normalizeFn = defaultNormalize,
+  searchValue,
+  onSearchChange,
+  activeFilters,
+  onFilterChange,
 }: UniversalCardsFilterProps<T>) {
-  const [filtersState, setFiltersState] = React.useState<Record<string, unknown>>({
-    name: '', 
+  const [localFilters, setLocalFilters] = React.useState<Record<string, unknown>>({
+    name: '',
   });
 
-  const tableAdapter = React.useMemo(() => ({
-      getColumn: (columnId: string) => ({  
-        getFilterValue: () => filtersState[columnId],
-        setFilterValue: (value: unknown) =>
-          setFiltersState((prev) => ({ ...prev, [columnId]: value })),
-      }) as const,
+  React.useEffect(() => {
+    if (searchValue === undefined) return;
+    setLocalFilters((prev) =>
+      prev.name === searchValue ? prev : { ...prev, name: searchValue },
+    );
+  }, [searchValue]);
+
+  React.useEffect(() => {
+    if (!activeFilters) return;
+    setLocalFilters((prev) => {
+      let changed = false;
+      const next = { ...prev };
+
+      Object.keys(next).forEach((key) => {
+        if (key === 'name') return;
+        if (!(key in activeFilters)) {
+          delete next[key];
+          changed = true;
+        }
+      });
+
+      Object.entries(activeFilters).forEach(([key, value]) => {
+        if (key === 'name') return;
+        if (!Object.is(next[key], value)) {
+          next[key] = value;
+          changed = true;
+        }
+      });
+
+      return changed ? next : prev;
+    });
+  }, [activeFilters]);
+
+  const effectiveFilters = React.useMemo(() => {
+    const base: Record<string, unknown> = {
+      ...(activeFilters ?? localFilters),
+    };
+
+    const resolvedSearch =
+      searchValue ??
+      ((activeFilters as Record<string, unknown> | undefined)?.name as string | undefined) ??
+      (localFilters.name as string | undefined) ??
+      '';
+
+    base.name = typeof resolvedSearch === 'string' ? resolvedSearch : '';
+
+    return base;
+  }, [activeFilters, localFilters, searchValue]);
+
+  const updateLocalFilters = React.useCallback((columnId: string, value: unknown) => {
+    setLocalFilters((prev) => {
+      const next = { ...prev };
+      const shouldRemove =
+        value == null ||
+        value === '' ||
+        (Array.isArray(value) && value.length === 0);
+
+      if (columnId === 'name') {
+        next.name = shouldRemove ? '' : value;
+        return next;
+      }
+
+      if (shouldRemove) {
+        if (columnId in next) {
+          delete next[columnId];
+          return next;
+        }
+        return prev;
+      }
+
+      if (!Object.is(next[columnId], value)) {
+        next[columnId] = value;
+        return next;
+      }
+
+      return prev;
+    });
+  }, []);
+
+  const tableAdapter = React.useMemo(
+    () => ({
+      getColumn: (columnId: string) =>
+        ({
+          getFilterValue: () => effectiveFilters[columnId],
+          setFilterValue: (value: unknown) => {
+            if (columnId === 'name') {
+              const normalized = typeof value === 'string' ? value : '';
+              updateLocalFilters('name', normalized);
+              onSearchChange?.(normalized);
+            } else {
+              updateLocalFilters(columnId, value);
+              onFilterChange?.(columnId, value);
+            }
+          },
+        }) as const,
     }),
-    [filtersState]
+    [effectiveFilters, updateLocalFilters, onSearchChange, onFilterChange],
   );
 
   const filtered = React.useMemo(() => {
-    // q es el texto de búsqueda global
-    const q = (filtersState['name'] as string) ?? '';
+    const q = typeof effectiveFilters['name'] === 'string' ? (effectiveFilters['name'] as string) : '';
 
-    // Normaliza y chequea inclusión
     const includesNorm = (data: unknown, query: string) => {
       if (!query) return true;
-      // compara normalizado
       return normalizeFn(data).includes(normalizeFn(query));
     };
 
-    // Función para chequear múltiples selecciones en un filtro
     const matchMulti = (value: AccessorValue, selected: string[]) => {
       if (!selected?.length) return true;
 
@@ -77,18 +168,14 @@ export default function   UniversalCardsFilter<T>({
       }
     };
 
-    // Recorre cada item y decide si pasa
     return items.filter((it) => {
-      // 1) Búsqueda global sobre accessors.name (tú defines qué concatena)
       const globalPass = accessors.name ? includesNorm(accessors.name(it), q) : true;
       if (!globalPass) return false;
 
-      // Filtros por columna
       for (const f of filters) {
         const key = f.value; // el id del filtro
-        const sel = filtersState[key]; // la selección actual
+        const sel = effectiveFilters[key]; // la selección actual
 
-        // saltar si no hay selección
         if (
           sel == null ||
           (Array.isArray(sel) && sel.length === 0) ||
@@ -121,7 +208,7 @@ export default function   UniversalCardsFilter<T>({
 
       return true;
     });
-  }, [items, filters, accessors, filtersState, multiMode, normalizeFn]);
+  }, [items, filters, accessors, effectiveFilters, multiMode, normalizeFn]);
 
   return (
     <div className="space-y-4">
