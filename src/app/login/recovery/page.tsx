@@ -1,61 +1,44 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
+
+// Form & Validation
+import { useForm, FormProvider } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { recoverySchema, RecoveryFormType } from '@/validations/recoverySchema';
+
+// State Management
+import { useRecoveryStore } from '@/app/store/recoveryPasswordStore';
+
+// UI Components
 import HeaderSimple from '@/components/ui/header-simple';
 import { Button } from '@/components/ui/button';
 import Stepper from '@/components/common/Stepper';
 import FormInput from '@/components/forms/FormInput';
-import { ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
 
-import { useForm, FormProvider } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-
+// Steps Components
 import { EmailCodeValidationStep } from '@/components/auth/EmailCodeValidationStep';
 import { RecoverySetPasswordStep } from '@/components/recovey/RecoverySetPasswordStep';
 import { RecoverySuccessStep } from '@/components/recovey/RecoverySuccessStep';
 
-// import { authService } from '@/services/auth.service'; // cuando conectes el back
-
-// ─────────────────────────────────────────────
-// 1. Esquema del formulario global
-// ─────────────────────────────────────────────
-const recoverySchema = z
-  .object({
-    email: z
-      .string()
-      .min(1, 'El correo es obligatorio')
-      .max(244, 'El correo es demasiado largo')
-      .email('Ingresa un correo válido'),
-
-    password: z
-      .string()
-      .optional(),
-
-    confirmPassword: z.string().optional(),
-  })
-  .refine(
-    (data) => {
-      // si no estamos en el step de contraseña todavía, no forzamos nada
-      if (!data.password && !data.confirmPassword) return true;
-      return data.password === data.confirmPassword;
-    },
-    {
-      path: ['confirmPassword'],
-      message: 'Las contraseñas no coinciden',
-    }
-  );
-
-
-type RecoveryFormType = z.infer<typeof recoverySchema>;
+// Definición de la respuesta esperada de la API
+interface VerifyUserResponse {
+  statusCode: number;
+  message: string;
+  data: {
+    ok: boolean;
+    verificationId: string;
+  };
+}
 
 export default function RecoveryPage() {
-  // 1: correo, 2: código, 3: nueva contraseña, 4: éxito/redirección
   const [step, setStep] = useState(1);
   const totalSteps = 4;
 
-  const [userId, setUserId] = useState<string | null>(null);
+  // Store de Zustand
+  const { setRecoveryData } = useRecoveryStore();
 
   const [stepValid, setStepValid] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -74,11 +57,9 @@ export default function RecoveryPage() {
     shouldFocusError: true,
   });
 
-  const { control, handleSubmit, trigger, watch, getValues } = methods;
+  const { control, trigger, watch, getValues } = methods;
 
-  
-  // 2. Habilitar / deshabilitar botón por step
- 
+  // Validación dinámica
   useEffect(() => {
     const sub = watch((value) => {
       if (step === 1) {
@@ -97,14 +78,10 @@ export default function RecoveryPage() {
     return () => sub.unsubscribe();
   }, [step, watch]);
 
-
-  // Lógica de avanzar de step (botón principal)
- 
   const handleNextStep = async () => {
     setError(null);
     setCodeError(null);
 
-    // STEP 1 → enviar código al correo
     if (step === 1) {
       const ok = await trigger('email');
       if (!ok) return;
@@ -112,18 +89,33 @@ export default function RecoveryPage() {
       setIsSubmitting(true);
       try {
         const { email } = getValues();
-
-        // 🚨llamada real para mandar el código de recuperación
         
-        console.log('Enviar código de recuperación a:', email);
+        const response = await fetch(`/api/v1/verifications/user`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email }),
+        });
+
+        const result: VerifyUserResponse = await response.json();
+
+        if (!response.ok || result.statusCode !== 201 || !result.data?.ok) {
+          throw new Error(result.message || 'El correo no se encuentra registrado o hubo un error.');
+        }
+
+        console.log('Usuario verificado, ID:', result.data.verificationId);
+        setRecoveryData(email, result.data.verificationId);
+
         setStep(2);
         setStepValid(true);
+
       } catch (err) {
         console.error('Error enviando código de recuperación:', err);
         setError(
           err instanceof Error
             ? err.message
-            : 'No se pudo enviar el código. Intenta de nuevo.'
+            : 'Ocurrió un error al verificar el correo. Intenta de nuevo.'
         );
       } finally {
         setIsSubmitting(false);
@@ -131,7 +123,6 @@ export default function RecoveryPage() {
       return;
     }
 
-    // STEP 3 → cambiar contraseña
     if (step === 3) {
       const ok = await trigger(['password', 'confirmPassword']);
       if (!ok) return;
@@ -139,10 +130,9 @@ export default function RecoveryPage() {
       setIsSubmitting(true);
       try {
         const { email, password } = getValues();
-
-        //  llamada real para actualizar la contraseña
-    
-        console.log('Restablecer contraseña de:', email, '->', password);
+        console.log('Restablecer contraseña para:', email);
+        
+        
         setStep(4);
         setStepValid(true);
       } catch (err) {
@@ -159,20 +149,15 @@ export default function RecoveryPage() {
     }
   };
 
-  // STEP 2 → handler para cuando EmailCodeValidationStep dice "onVerified"
   const handleCodeVerified = async (code: string) => {
     setCodeError(null);
     setCodeIsLoading(true);
     try {
       const { email } = getValues();
-
-      //  llamada real para validar el código
-  
-
-      console.log('Código verificado (recovery):', { email, code });
+      console.log('Código verificado:', { email, code });
       setStep(3);
     } catch (err) {
-      console.error('Error al validar código de recuperación:', err);
+      console.error('Error al validar código:', err);
       setCodeError(
         err instanceof Error
           ? err.message
@@ -183,24 +168,15 @@ export default function RecoveryPage() {
     }
   };
 
-  // STEP 2 → reenviar código
   const handleResendCode = async () => {
     setCodeError(null);
     setCodeIsLoading(true);
     try {
       const { email } = getValues();
-
-      //  endpoint para reenviar el código
-  
-
-      console.log('Reenviar código (recovery) a:', email);
+      console.log('Reenviando código a:', email);
     } catch (err) {
-      console.error('Error al reenviar código:', err);
-      setCodeError(
-        err instanceof Error
-          ? err.message
-          : 'No se pudo reenviar el código. Intenta nuevamente.'
-      );
+      console.error('Error al reenviar:', err);
+      setCodeError('No se pudo reenviar el código.');
     } finally {
       setCodeIsLoading(false);
     }
@@ -208,7 +184,7 @@ export default function RecoveryPage() {
 
   const getButtonText = () => {
     if (isSubmitting) {
-      if (step === 1) return 'Enviando código...';
+      if (step === 1) return 'Verificando correo...';
       if (step === 3) return 'Actualizando contraseña...';
     }
     if (step === 1) return 'Enviar código';
@@ -216,15 +192,6 @@ export default function RecoveryPage() {
     return 'Continuar';
   };
 
-  const onSubmit = (data: RecoveryFormType) => {
-    // El submit no se usa mucho porque manejamos todo por steps,
-    // pero lo dejamos por si quieres debug:
-    console.log('Submit global recovery:', data);
-  };
-
-  
-  // 4. Render
-  
   return (
     <>
       <HeaderSimple />
@@ -240,7 +207,7 @@ export default function RecoveryPage() {
       >
         <main className="flex h-fit flex-col items-center justify-center gap-10">
           <div className="h-full w-full max-w-2xl space-y-8 rounded-md border border-gray-300 bg-white px-12 py-6 shadow-sm">
-            {/* Barra superior: back + stepper */}
+            {/* Barra superior */}
             <div className="mb-4 flex items-center gap-4">
               {step === 1 ? (
                 <Link href="/">
@@ -264,7 +231,6 @@ export default function RecoveryPage() {
               </div>
             </div>
 
-            {/* Error global */}
             {error && (
               <div className="rounded-md bg-red-50 p-3 text-sm text-red-700">
                 {error}
@@ -273,21 +239,20 @@ export default function RecoveryPage() {
 
             <FormProvider {...methods}>
               <div className="space-y-6">
-                {/* STEP 1 – correo (basado en tu RecoveryEmailPageComponent) */}
+                {/* STEP 1 – Email */}
                 {step === 1 && (
                   <div className="space-y-8">
                     <div className="flex flex-col items-center gap-4">
                       <img
                         src="/ADMON24-27-1-03.png"
-                        alt="Recuperación de contraseña"
+                        alt="Recuperación"
                         className="scale-50"
                       />
                       <h1 className="text-3xl font-medium -space-y-28">
                         ¿Olvidaste tu contraseña?
                       </h1>
                       <p className="text-center">
-                        No te preocupes, si sucede solo sigue las instrucciones
-                        para crear una nueva contraseña
+                        Sigue las instrucciones para restablecer tu contraseña.
                       </p>
                     </div>
 
@@ -296,7 +261,7 @@ export default function RecoveryPage() {
                         name="email"
                         label="Correo electrónico"
                         type="email"
-                        placeholder="Ingresa tu correo electrónico"
+                        placeholder="Ingresa tu correo"
                         control={control}
                         maxChars={244}
                       />
@@ -304,38 +269,27 @@ export default function RecoveryPage() {
                   </div>
                 )}
 
-                {/* STEP 2 – código (usa tu EmailCodeValidationStep) */}
                 {step === 2 && (
                   <div className="space-y-4">
                     <EmailCodeValidationStep
-                      email={
-                        getValues('email') || 'Tu correo registrado'
-                      }
+                      email={getValues('email') || 'Tu correo'}
                       onVerified={handleCodeVerified}
                       onBack={() => setStep(1)}
                       onResend={handleResendCode}
                     />
-
                     {codeError && (
-                      <p className="text-sm text-center text-red-600">
-                        {codeError}
-                      </p>
+                      <p className="text-sm text-center text-red-600">{codeError}</p>
                     )}
                     {codeIsLoading && (
-                      <p className="text-xs text-center text-muted-foreground">
-                        Procesando...
-                      </p>
+                      <p className="text-xs text-center text-muted-foreground">Procesando...</p>
                     )}
                   </div>
                 )}
 
-                {/* STEP 3 – nueva contraseña */}
                 {step === 3 && <RecoverySetPasswordStep />}
 
-                {/* STEP 4 – éxito / redirección */}
                 {step === 4 && <RecoverySuccessStep />}
 
-                {/* Botón principal solo en steps 1 y 3 */}
                 {(step === 1 || step === 3) && (
                   <div className="mt-6 flex justify-center">
                     <Button
