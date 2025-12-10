@@ -139,7 +139,7 @@ export default function LayoutEmployerView({children,}: Readonly<{ children: Rea
       <div className="min-h-screen bg-gray-50">
         {/* Fixed Header */}
         <header className="fixed top-0 left-0 right-0 z-50 h-16 border-b bg-white shadow-sm">
-          <Header showProfileButton={false} />
+          <Header showProfileButton={false} companyTitle={company?.tradeName || 'Empresa'}/>
         </header>
 
         {/* Main layout with padding for fixed header */}

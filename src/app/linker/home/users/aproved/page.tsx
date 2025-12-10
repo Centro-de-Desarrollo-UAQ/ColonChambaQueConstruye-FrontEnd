@@ -1,23 +1,14 @@
 'use client';
 
-import { Industry } from '@/interfaces/industries';
 import UniversalCardsFilter from '@/components/ui/UniversalCardFilter';
 import { FileRemove, InboxIn } from '@solar-icons/react';
 import TitleSection from '@/components/common/TitleSection';
 import { testDataUser } from '@/data/testDataUsers';
 import { UserCandidate } from '@/interfaces/usercandidates';
 import UserLinkerCard from '@/components/linker/UserLinkerCard';
-import { User } from 'lucide-react';
 import { UserSearchFilters } from '@/components/linker/CompanySearchEmploy';
 
 
-type Filters = {
-  modality: string;
-  workdayType: string;
-  state: string;
-  industry?: Industry | ''
-  registerDate?:string
-};
 
 export const workShiftLabelMap: Record<string, string> = {
   TIEMPO_COMPLETO: "Tiempo completo",

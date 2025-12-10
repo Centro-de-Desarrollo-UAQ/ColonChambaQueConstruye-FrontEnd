@@ -1,23 +1,19 @@
-import { listWorkingHoursOptionsConstants } from "@/constants";
+import { listDegreesOptionsConstants } from "@/constants";
 import { filterType } from "@/interfaces/table";
 
 export const filtersApplicant: filterType[] = [
 {
   value: 'academicLevel',
     name: 'Nivel académico',
-    options: [
-        { label: 'Preparatoria', value: 'Preparatoria' },
-        { label: 'Licenciatura', value: 'Licenciatura' },
-        { label: 'Maestría', value: 'Maestría' },
-        { label: 'Doctorado', value: 'Doctorado' },
-    ]
+    options: listDegreesOptionsConstants
 
 },
-
 {
-  value: 'workShift',
-  name: 'Jornada laboral',
-  options: listWorkingHoursOptionsConstants
-},
+  value: 'dateFilter',
+  name: 'Fecha de publicación',
+  isDate: true,
+}
+
+
 
 ]

@@ -1,24 +1,35 @@
+// src/app/store/authCompanyStore.ts
 import { create } from 'zustand';
-
 
 interface CompanyAuthState {
   token: string | null;
-  companyId: string | null; 
+  companyId: string | null;   // id de la cuenta de empresa (companyAccountId)
   email: string | null;
-  status: string | null; 
+  status: string | null;
 
-  
-  login: (data: { companyId: string; email: string; status: string; token: string }) => void;
-  
+  // ya la debes tener:
+  login: (data: {
+    companyId?: string;        // opcional por compatibilidad
+    id?: string;               // si antes usabas "id"
+    email: string;
+    status: string;
+    token: string;
+  }) => void;
+
   logout: () => void;
-  
-  initialize: () => void; 
+  initialize: () => void;
+
+  // 👉 esta es la que te falta
+  saveCompanyData: (data: {
+    companyId: string;
+    email: string;
+    status: string;
+    token: string;
+  }) => void;
 }
 
-
-const LOCAL_STORAGE_KEY_COMPANY = 'authToken'; 
-const LOCAL_STORAGE_ID_COMPANY = "companyId"
-const LOCAL_STORAGE_STATUS_COMPANY = "companyStatus";
+const LOCAL_STORAGE_TOKEN_KEY = 'authToken';
+const LOCAL_STORAGE_COMPANY_ID_KEY = 'companyId';
 
 export const useCompanyStore = create<CompanyAuthState>((set) => ({
   token: null,
@@ -26,22 +37,24 @@ export const useCompanyStore = create<CompanyAuthState>((set) => ({
   email: null,
   status: null,
 
+  login: ({ companyId, id, email, status, token }) => {
+    const finalCompanyId = companyId ?? id ?? null;
 
-  login: (data) => {
     set({
-      token: data.token,
-      companyId: data.companyId,
-      email: data.email,
-      status: data.status,
+      companyId: finalCompanyId,
+      email,
+      status,
+      token,
     });
 
-    localStorage.setItem(LOCAL_STORAGE_KEY_COMPANY, data.token);
-    localStorage.setItem(LOCAL_STORAGE_ID_COMPANY, data.companyId);
-    localStorage.setItem(LOCAL_STORAGE_STATUS_COMPANY, data.status);
-
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, token);
+      if (finalCompanyId) {
+        localStorage.setItem(LOCAL_STORAGE_COMPANY_ID_KEY, finalCompanyId);
+      }
+    }
   },
 
- 
   logout: () => {
     set({
       token: null,
@@ -49,21 +62,38 @@ export const useCompanyStore = create<CompanyAuthState>((set) => ({
       email: null,
       status: null,
     });
-    localStorage.removeItem(LOCAL_STORAGE_KEY_COMPANY);
-    localStorage.removeItem(LOCAL_STORAGE_ID_COMPANY);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
+      localStorage.removeItem(LOCAL_STORAGE_COMPANY_ID_KEY);
+    }
   },
 
-   
   initialize: () => {
-    const storedToken = localStorage.getItem(LOCAL_STORAGE_KEY_COMPANY);
-    const storedComanyId = localStorage.getItem(LOCAL_STORAGE_ID_COMPANY);
+    if (typeof window === 'undefined') return;
 
-    if (storedToken && storedComanyId) {
-      set({ 
-        token: storedToken, 
-        companyId:storedComanyId
+    const token = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
+    const companyId = localStorage.getItem(LOCAL_STORAGE_COMPANY_ID_KEY);
+
+    if (token && companyId) {
+      set({
+        token,
+        companyId,
       });
-      
+    }
+  },
+
+  // 👉 esta es la acción que usas en SignUpEmployer
+  saveCompanyData: ({ companyId, email, status, token }) => {
+    set({
+      companyId,
+      email,
+      status,
+      token,
+    });
+
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, token);
+      localStorage.setItem(LOCAL_STORAGE_COMPANY_ID_KEY, companyId);
     }
   },
 }));
