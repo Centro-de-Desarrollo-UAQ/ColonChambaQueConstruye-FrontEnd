@@ -1,18 +1,12 @@
-import Image from 'next/image';
-import { AddCircle, Balloon, Buildings, Calendar, ClockCircle, Dollar, Gps, Letter, MapPoint, User } from '@solar-icons/react';
-import { PlusCircle } from 'lucide-react';
+import { AddCircle, Letter, User } from '@solar-icons/react';
 import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
-import { Button } from '../ui/button';
-import { ApplicantCompanyCardProps } from '@/interfaces/applicantCompanyCard';
 import { CompanyData } from '@/interfaces';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import { Separator } from '../ui/separator';

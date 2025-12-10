@@ -167,6 +167,16 @@ export default function DrawerVacante({ vacancyId }: DrawerVacanteProps) {
     ? dayMap[vacancy!.workingDay] ?? vacancy!.workingDay
     : undefined;
 
+    const stateMap: Record<Vacancy['status'], string> = {
+            APROBADA: 'APROBADA',
+            REVISION: 'REVISION',
+            CERRADA: 'CERRADA',
+            RECHAZADA: 'RECHAZADA',
+            INACTIVA: 'INACTIVA',
+            ABIERTA: 'ABIERTA',
+          };
+  const status = vacancy?.status;
+
   return (
     <DrawerContent className="overflow-y-auto overflow-x-hidden px-4 py-6">
       <div className="mx-auto w-full max-w-[760px] rounded-3xl bg-background p-8 flex flex-col gap-6">
@@ -178,11 +188,10 @@ export default function DrawerVacante({ vacancyId }: DrawerVacanteProps) {
             <div className="flex flex-wrap items-center justify-between gap-3 text-[14px] text-zinc-600">
               {vacancy?.status && (
                 <Badge
-                  variant={stateVariant(vacancy.status)}
-                  className="w-fit rounded-full px-4 py-1 font-semibold uppercase"
-                >
-                  {stateLabel[vacancy.status] ?? vacancy.status}
-                </Badge>
+                          variant={status === 'APROBADA' ? 'success' : status === 'REVISION' ? 'warning' : 'danger'}
+                        >
+
+                        </Badge>
               )}
               <span className="ml-auto text-right">{subtitleText}</span>
             </div>
