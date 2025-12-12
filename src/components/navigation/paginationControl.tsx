@@ -68,7 +68,7 @@ export default function PaginationControl({
 
       <div className="flex items-center space-x-2">
         <Button
-          variant="outline"
+          variant="ghost"
           size="icon"
           className="hidden size-8 lg:flex"
           onClick={handleFirst}
@@ -78,7 +78,7 @@ export default function PaginationControl({
           <DoubleAltArrowLeft />
         </Button>
         <Button
-          variant="outline"
+          variant="ghost"
           size="icon"
           className="size-8"
           onClick={handlePrevious}
@@ -88,7 +88,7 @@ export default function PaginationControl({
           <AltArrowLeft />
         </Button>
         <Button
-          variant="outline"
+          variant="ghost"
           size="icon"
           className="size-8"
           onClick={handleNext}
@@ -98,7 +98,7 @@ export default function PaginationControl({
           <AltArrowRight />
         </Button>
         <Button
-          variant="outline"
+          variant="ghost"
           size="icon"
           className="hidden size-8 lg:flex"
           onClick={handleLast}

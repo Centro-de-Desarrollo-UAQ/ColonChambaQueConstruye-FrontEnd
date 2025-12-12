@@ -9,6 +9,7 @@ import UniversalCardsFilter from '@/components/ui/UniversalCardFilter';
 import { filtersApplicant } from '@/data/filtersApplicants';
 import { CompanyUser } from '@/interfaces/user';
 import { useCompanyStore } from '@/app/store/authCompanyStore';
+import PaginationControl from '@/components/navigation/paginationControl';
 
 const sectionConfig = {
   talents: {
@@ -22,33 +23,16 @@ const sectionConfig = {
 const mapApiUserToCompanyUser = (entry: any): CompanyUser => {
   const raw = entry?.user ?? entry?.profile ?? entry?.User ?? entry ?? {};
 
-  const fallbackId =
-    raw?.id ??
-    entry?.id ??
-    raw?.userId ??
-    entry?.userId ??
-    raw?.linkerId ??
-    entry?.linkerId;
-
-  const pickString = (...keys: string[]): string => {
-    for (const key of keys) {
-      if (raw?.[key]?.toString) return String(raw[key]);
-      if (entry?.[key]?.toString) return String(entry[key]);
-    }
-    return '';
-  };
-
-
   return {
-    id: fallbackId,
-    firstName: pickString('firstName'),
-    lastName: pickString('lastName'),
-    email: pickString('email'),
-    cellPhone: pickString('cellPhone'),
-    academicLevel: pickString('academicLevel'),
-    dateFilter: pickString('reviewedAt'),
-    jobExperience: pickString('jobExperience'),
-    curriculumURL: pickString('curriculumUrl'),
+    id: raw.id,
+    firstName: raw.firstName,
+    lastName: raw.lastName,
+    email: raw.email,
+    cellPhone: raw.cellPhone,
+    academicLevel: raw.academicLevel,
+    dateFilter: raw.reviewedAt,
+    jobExperience: raw.jobExperience,
+    curriculumURL: raw.curriculumUrl,
   };
 };
 
@@ -61,11 +45,20 @@ export default function UserLists() {
     //  estado para buscar y filtros backend
     const [search, setSearch] = useState('');
     const [backendFilters, setBackendFilters] = useState<Record<string, any>>({});
+
+    const [pagination, setPagination] = useState({
+        page: 1,      
+        limit: 10,    
+        totalItems: 0, 
+      });
+    
   
     // handlers que se pasan al DataTableCustomSearchBar
     const handleSearchChange = (value: string) => {
       setSearch(value);
     };
+
+    
   
     const handleFilterChange = (columnId: string, value: any) => {
       setBackendFilters((prev) => ({
@@ -73,6 +66,16 @@ export default function UserLists() {
         [columnId]: value,
       }));
     };
+
+
+    const handlePageChange = (newPage: number) => {
+    setPagination(prev => ({ ...prev, page: newPage }));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handlePageSizeChange = (newLimit: number) => {
+    setPagination(prev => ({ ...prev, limit: newLimit, page: 1 }));
+  };
   
     useEffect(() => {
       const fetchVacancies = async () => {
@@ -84,11 +87,11 @@ export default function UserLists() {
   
         try {
           const params = new URLSearchParams();
-  
+
           if (search) {
             params.append('search', search);
           }
-  
+
           Object.entries(backendFilters).forEach(([key, value]) => {
             if (value == null || value === '' || (Array.isArray(value) && value.length === 0)) return;
   
@@ -132,9 +135,13 @@ export default function UserLists() {
               params.append(key, String(value));
             }
           });
-  
-  
-  
+
+          params.append('limit', String(pagination.limit));
+          const offset = (pagination.page - 1) * pagination.limit;
+          if (offset > 0) {
+            params.append('offset', String(offset));
+          }
+
           const qs = params.toString();
           const url = qs
             ? `/companies/${companyId}/users?${qs}`
@@ -163,8 +170,21 @@ export default function UserLists() {
             const mapped = cardUsers.map(mapApiUserToCompanyUser);
 
             setCompanyUsers(mapped);
+
+            const total =
+              Number(result?.data?.total) ??
+              Number(result?.data?.pagination?.total) ??
+              Number(result?.meta?.total) ??
+              Number(result?.total) ??
+              mapped.length;
+
+            setPagination((prev) => ({
+              ...prev,
+              totalItems: Number.isFinite(total) ? total : mapped.length,
+            }));
           } else {
             setCompanyUsers([]);
+            setPagination((prev) => ({ ...prev, totalItems: 0 }));
           }
         } catch (error) {
           setCompanyUsers([]);
@@ -174,7 +194,9 @@ export default function UserLists() {
       };
   
       fetchVacancies();
-    }, [token, companyId, search, backendFilters]);
+    }, [token, companyId, search, backendFilters, pagination.page, pagination.limit]);
+
+  const totalPages = Math.max(1, Math.ceil(pagination.totalItems / pagination.limit));
 
   return (
     <main className="mt-15 flex flex-col items-center">
@@ -184,8 +206,7 @@ export default function UserLists() {
         <UniversalCardsFilter<any>
           items={companyUsers}
           filters={filtersApplicant}
-          searchValue={search}
-          onSearchChange={handleSearchChange}
+
           activeFilters={backendFilters}
           onFilterChange={handleFilterChange}
           accessors={{
@@ -215,6 +236,19 @@ export default function UserLists() {
                     user={user}
                   />
                 ))}
+
+              {pagination.totalItems > 0 && (
+                <div className="mt-6 border-t pt-4">
+                  <PaginationControl
+                    currentPage={pagination.page}
+                    totalPages={totalPages}
+                    pageSize={pagination.limit}
+                    totalItems={pagination.totalItems}
+                    onPageChange={handlePageChange}
+                    onPageSizeChange={handlePageSizeChange}
+                  />
+                </div>
+              )}
             </div>
           )}
           multiMode="OR"
