@@ -2,7 +2,7 @@
 
 Un front-end en **Next.js + TypeScript** para el **Sistema General de Bolsa de Trabajo UAQ**, que conecta a la comunidad universitaria (alumnos de últimos semestres y recién egresados) con empresas que requieren talento.
 
-> 🚀 **Personal Contribution**
+>  **Personal Contribution**
 >  
 > This repository is a fork of the official *Sistema General de Bolsa de Trabajo UAQ* project,
 > developed as part of the **Centro de Desarrollo UAQ**.
