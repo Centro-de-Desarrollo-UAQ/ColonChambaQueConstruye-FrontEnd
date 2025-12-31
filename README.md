@@ -169,15 +169,7 @@ Si el cambio afecta el diseño, interfaz o interacción, añade capturas de pant
 
 ---
 
-## Equipo
 
-- **Frontend**:
-  - @JuanAntonioHR
-  - @AJesusMG
-  - @ElianJ09
-  - @BryanBonilla
-  - @DaniPau19
-  - @Carlitosandia
 
 ---
 
