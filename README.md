@@ -2,6 +2,19 @@
 
 Un front-end en **Next.js + TypeScript** para el **Sistema General de Bolsa de Trabajo UAQ**, que conecta a la comunidad universitaria (alumnos de últimos semestres y recién egresados) con empresas que requieren talento.
 
+> 🚀 **Personal Contribution**
+>  
+> This repository is a fork of the official *Sistema General de Bolsa de Trabajo UAQ* project,
+> developed as part of the **Centro de Desarrollo UAQ**.
+>  
+> **My role in this project:**
+> - Frontend development with **Next.js 15 & TypeScript**
+> - Implementation of reusable UI components (Shadcn/UI, Tailwind)
+> - Form validation with **Zod**
+> - Participation in feature development and bug fixes
+> - - Maintenance and implementation of existing frontend components within a large-scale Next.js codebase
+> - Collaboration using Git, branches and Pull Requests
+
 ---
 
 ## Tabla de contenidos
