@@ -228,7 +228,7 @@ export default function JobsPage() {
 
   return (
     <>
-      <Header />
+      <Header companyTitle='' />
 
       <div className="flex w-full flex-col items-center justify-center gap-3">
         
