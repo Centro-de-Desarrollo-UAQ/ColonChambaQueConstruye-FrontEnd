@@ -16,13 +16,14 @@ export default function ApplicantLayout({ children }: ApplicantLayoutProps) {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-
-    initialize();
-    
+useEffect(() => {
+  const boot = async () => {
+    await initialize();     // importante
     setIsInitialized(true);
-    
-  }, [initialize]);
+  };
+  boot();
+}, [initialize]);
+
 
   useEffect(() => {
     if (isInitialized) {

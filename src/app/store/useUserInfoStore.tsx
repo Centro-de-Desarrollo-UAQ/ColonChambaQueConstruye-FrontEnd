@@ -41,11 +41,12 @@ export const useUserStore = create<UserState>((set, get) => ({
         },
       });
 
+      console.log('[STORE] status:', response.status);
       if (!response.ok) throw new Error('Error al obtener datos del usuario');
 
       const result = await response.json();
       const apiData = result.data; 
-
+      console.log('[STORE] apiData used:', apiData);
       const mappedUser: UserProfileData = {
         firstName: apiData.firstName || '', 
         lastName: apiData.lastName || '',
@@ -69,6 +70,8 @@ export const useUserStore = create<UserState>((set, get) => ({
       };
 
       set({ user: mappedUser, isLoading: false });
+      console.log('[STORE] mappedUser saved:', mappedUser);
+      console.log('[STORE] get().user now:', get().user);
 
     } catch (error) {
       console.error(error);

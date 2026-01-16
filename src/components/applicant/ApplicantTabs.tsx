@@ -1,9 +1,12 @@
 'use client';
-import { Documents, Diploma, UserCircle, ShieldKeyholeMinimalistic } from '@solar-icons/react';
+import { Diploma, UserCircle, ShieldKeyholeMinimalistic } from '@solar-icons/react';
 import TabOptions from '../common/TabOptions';
-
 import { InfoCard } from '../settings/InfoCard';
+import { useUserStore } from '@/app/store/useUserInfoStore';
+
 export default function ApplicantTabs() {
+  const { user, isLoading } = useUserStore();
+
   const tabsConfig = [
     {
       value: 'profile',
@@ -25,13 +28,15 @@ export default function ApplicantTabs() {
     },
   ];
 
+  const fullName = user ? `${user.firstName} ${user.lastName}`.trim() : 'Cargando...';
+
   return (
     <div className="mx-auto max-w-md bg-white text-brand">
       <InfoCard
         avatar="https://github.com/shadcn.png"
-        name="Jane Daw"
-        email="Hosea28@yahoo.com"
-        cellphone="+52 441 441 22 22"
+        name={fullName || 'Sin nombre'}
+        email={user?.email || 'Sin correo'}
+        cellphone={user?.phone || 'Sin teléfono'}
       />
 
       <div className="w-full px-4 pb-8">

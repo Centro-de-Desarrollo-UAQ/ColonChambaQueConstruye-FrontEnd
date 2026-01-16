@@ -29,7 +29,11 @@ export default function PublicLogin() {
 
 const onSubmit = async (data: LoginFormType) => {
   try {
-    const response = await authService.loginAccount(data.email, data.password, 'user');
+
+    const email = data.email.toLowerCase().trim()
+    const password = data.password.trim()
+
+    const response = await authService.loginAccount(email, password, 'user');
 
     const user = response.data
   
