@@ -166,12 +166,24 @@ export default function VacanciesPage() {
           }
 
           if (Array.isArray(value)) {
-            const cleaned = value.map((v) => String(v));
-            if (cleaned.length === 0) return;
-            params.append(key, cleaned.join(','));
-          } else {
-            params.append(key, String(value));
+            value
+              .map((item) => (typeof item === 'string' ? item : String(item ?? '')))
+              .map((item) => item.trim())
+              .filter((item) => item.length > 0)
+              .forEach((item) => params.append(key, item));
+            return;
           }
+
+          if (typeof value === 'string') {
+            value
+              .split(/[|,]/)
+              .map((item) => item.trim())
+              .filter((item) => item.length > 0)
+              .forEach((item) => params.append(key, item));
+            return;
+          }
+
+          params.append(key, String(value));
         });
 
 
