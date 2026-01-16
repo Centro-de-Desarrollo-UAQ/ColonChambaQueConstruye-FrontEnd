@@ -181,23 +181,33 @@ export default function DrawerApplicantVacant({
             </DrawerHeader>
 
 
-            <div className='flex flex-row mx-10 px-10 gap-5 mb-5 border-2 rounded-xl justify-between bg-uaq-white'>
-              <div className='flex flex-col'>
-                <h3 className='text-lg py-5 font-[600]'>Información de contacto</h3>
-                <span className="whitespace-nowrap pb-5">{job.company}</span>
-              </div>
-              
-              <div className='flex flex-col items-start'>
-                <div className='flex flex-row items-center gap-2 py-5'>
-                  <PhoneCalling className="h-4 w-4 mr-2" weight="Linear" />
-                  <span className='whitespace-nowrap'>{job.cellPhone}{/*Número de teléfono */}</span>
-                </div>
-                <div className='flex flex-row items-center gap-2'>
-                  <Letter className="h-4 w-4 mr-2" weight="Linear" />
-                  <span className="whitespace-nowrap">{job.email}{ /*Correo electrónico */}</span>
-                </div>
-              </div>
-            </div>
+            <div className="mx-10 mb-5 rounded-xl border-2 bg-uaq-white px-8 py-6">
+  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:items-center">
+    
+    {/* Columna izquierda */}
+    <div className="flex flex-col gap-2">
+      <h3 className="text-lg font-[600]">Información de contacto</h3>
+      <span className="text-sm text-gray-700">{job.company}</span>
+    </div>
+
+    <div className="flex flex-col gap-4">
+  <div className="flex items-center gap-3">
+    <PhoneCalling className="h-4 w-4 flex-shrink-0" weight="Linear" />
+    <span className="whitespace-nowrap">{job.cellPhone}</span>
+  </div>
+
+  <div className="flex items-center gap-3">
+    <Letter className="h-4 w-4 flex-shrink-0" weight="Linear" />
+    <span className="max-w-[260px] truncate">
+      {job.email}
+    </span>
+  </div>
+</div>
+
+  </div>
+</div>
+
+
           </DrawerContent>
       </Drawer>
     </div>
