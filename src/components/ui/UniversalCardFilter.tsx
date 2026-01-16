@@ -15,9 +15,8 @@ type UniversalCardsFilterProps<data> = {
   multiMode?: 'AND' | 'OR';
   render: (filtered: data[]) => React.ReactNode;
   normalizeFn?: (txt: unknown) => string;
-  onFilterChange?: (key: string, value: string) => void;
-  // NUEVO: Permite sincronizar el estado desde fuera
-  activeFilters?: Record<string, string>;
+  onFilterChange?: (key: string, value: string | string[] | null) => void;
+  activeFilters?: Record<string, string | string[]>;
 };
 
 function defaultNormalize(txt: unknown) {
@@ -37,7 +36,6 @@ export default function UniversalCardsFilter<T>({
   activeFilters, // Recibimos los filtros activos
 }: UniversalCardsFilterProps<T>) {
   
-  // Estado interno del TableSearchBar
   const [filtersState, setFiltersState] = React.useState<Record<string, unknown>>({
     name: '', 
   });
@@ -73,15 +71,21 @@ export default function UniversalCardsFilter<T>({
 
           // 2. Notificación al padre para petición API
           if (onFilterChange) {
-            let valueToSend = '';
-            // Convertimos el valor complejo del componente (Array, Date, etc) a string simple para la API
+            let valueToSend: string | string[] | null = null;
+
             if (Array.isArray(value)) {
-               valueToSend = value.length > 0 ? String(value[0]) : ''; 
+              const normalized = value
+                .map((v) => (typeof v === 'string' ? v : String(v ?? '')))
+                .filter((v) => v.length > 0);
+              valueToSend = normalized.length ? normalized : [];
             } else if (value instanceof Date) {
-               valueToSend = value.toISOString();
-            } else if (value) {
-               valueToSend = String(value);
+              valueToSend = value.toISOString();
+            } else if (value == null || value === '') {
+              valueToSend = '';
+            } else {
+              valueToSend = String(value);
             }
+
             onFilterChange(columnId, valueToSend);
           }
         },

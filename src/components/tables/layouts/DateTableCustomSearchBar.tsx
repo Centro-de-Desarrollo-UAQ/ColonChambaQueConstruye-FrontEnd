@@ -6,7 +6,6 @@ import {
   SortingState,
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
@@ -37,10 +36,23 @@ import {
   DoubleAltArrowRight,
 } from '@solar-icons/react';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { filterType } from '@/interfaces/table';
 import TableSearchBar from '@/components/ui/TableSerchBar';
+
+const normalizeValue = (value: unknown) => {
+  if (value == null) return '';
+  const base = Array.isArray(value) ? value.join(' ') : String(value);
+  return base.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
+};
+
+const normalizeDateValue = (value: unknown) => {
+  if (!value) return '';
+  const date = value instanceof Date ? value : new Date(value as any);
+  if (Number.isNaN(date.getTime())) return '';
+  return date.toISOString().slice(0, 10);
+};
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -71,19 +83,121 @@ export function DataTableCustomSearchBar<TData, TValue>({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
+  const filtersMap = useMemo(() => {
+    const map = new Map<string, filterType>();
+    filters.forEach((filter) => {
+      map.set(filter.value, filter);
+    });
+    return map;
+  }, [filters]);
+
+  const columnAccessors = useMemo(() => {
+    return columns.reduce<Record<string, (row: TData) => unknown>>((acc, column) => {
+      let columnId: string | undefined = typeof column.id === 'string' ? column.id : undefined;
+
+      if (!columnId && 'accessorKey' in column && column.accessorKey) {
+        columnId = Array.isArray(column.accessorKey)
+          ? column.accessorKey.map((segment) => String(segment)).join('.')
+          : String(column.accessorKey);
+      }
+
+      if (!columnId) {
+        return acc;
+      }
+
+      if ('accessorFn' in column && typeof column.accessorFn === 'function') {
+        acc[columnId] = (row: TData) => column.accessorFn?.(row, 0);
+        return acc;
+      }
+
+      if ('accessorKey' in column && column.accessorKey) {
+        const rawPath = Array.isArray(column.accessorKey)
+          ? column.accessorKey.map((segment) => String(segment))
+          : String(column.accessorKey).split('.');
+
+        acc[columnId] = (row: TData) =>
+          rawPath.reduce<unknown>((current: unknown, segment: string) => {
+            if (current == null || typeof current !== 'object') return undefined;
+            const container = current as Record<string, unknown>;
+            return segment in container ? container[segment] : undefined;
+          }, row as unknown);
+      }
+
+      return acc;
+    }, {});
+  }, [columns]);
+
+  const filteredData = useMemo(() => {
+    if (!columnFilters.length) {
+      return data;
+    }
+
+    return data.filter((row) => {
+      return columnFilters.every(({ id, value }) => {
+        if (
+          value == null ||
+          (Array.isArray(value) && value.length === 0) ||
+          (typeof value === 'string' && value.length === 0)
+        ) {
+          return true;
+        }
+
+        const accessor = columnAccessors[id];
+        if (!accessor) {
+          return true;
+        }
+
+        const cellValue = accessor(row);
+
+        if (id === 'name') {
+          const text = typeof value === 'string' ? value : Array.isArray(value) ? value[0] : '';
+          if (!text || !text.trim()) {
+            return true;
+          }
+          return normalizeValue(cellValue).includes(normalizeValue(text));
+        }
+
+        const config = filtersMap.get(id);
+        if (config?.isDate) {
+          const selectedDate = Array.isArray(value) ? value[0] : value;
+          if (!selectedDate) {
+            return true;
+          }
+          return normalizeDateValue(cellValue) === normalizeDateValue(selectedDate);
+        }
+
+        const selectedValues = Array.isArray(value)
+          ? value
+              .map((option) => (typeof option === 'string' ? option : String(option ?? '')))
+              .filter((option) => option.length > 0)
+          : String(value)
+              .split(/[|,]/)
+              .map((option) => option.trim())
+              .filter((option) => option.length > 0);
+
+        if (selectedValues.length === 0) {
+          return true;
+        }
+
+        const normalizedCell = normalizeValue(cellValue);
+        return selectedValues.some((option) => normalizedCell.includes(normalizeValue(option)));
+      });
+    });
+  }, [columnAccessors, columnFilters, data, filtersMap]);
+
   const table = useReactTable({
-    data,
+    data: filteredData,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
       columnFilters,
     },
+    manualFiltering: true,
   });
 
   return (
