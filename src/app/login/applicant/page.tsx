@@ -34,7 +34,7 @@ const onSubmit = async (data: LoginFormType) => {
     const password = data.password.trim()
 
     const response = await authService.loginAccount(email, password, 'user');
-
+    
     const user = response.data
   
     if(user.status === "ACTIVO"){
@@ -52,9 +52,11 @@ const onSubmit = async (data: LoginFormType) => {
     }
 
     toast.error("Ha sucedido algo extraño");
+    
 
     
   } catch (error:any) {
+    
     console.error('Error en login:', error.message);
     toast.error(error.message || 'Error al iniciar sesión');
   }
