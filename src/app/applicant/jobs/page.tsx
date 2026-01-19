@@ -36,11 +36,11 @@ interface ApiVacancy {
 }
 
 interface FilterState {
-  modality: string;
-  workShift: string;
-  sector: string;
+  modality: string | string[];
+  workShift: string | string[];
+  sector: string | string[];
   name: string; 
-  [key: string]: string;
+  [key: string]: string | string[];
 }
 
 export default function JobsPage() {
@@ -71,11 +71,11 @@ export default function JobsPage() {
   };
 
   // 3. ACTUALIZAR FILTROS
-  const handleFilterUpdate = (key: string, value: string | null) => {
+  const handleFilterUpdate = (key: string, value: string | string[] | null) => {
     setPagination(prev => ({ ...prev, page: 1 })); 
     setSelectedFilters(prev => ({
         ...prev,
-        [key]: value || '' 
+        [key]: value == null ? '' : value 
     }));
   };
 
@@ -129,9 +129,29 @@ export default function JobsPage() {
 
       // A. Construimos los parámetros BASE (solo filtros)
       const baseParams = new URLSearchParams();
-      if (selectedFilters.modality) baseParams.append('modality', selectedFilters.modality);
-      if (selectedFilters.workShift) baseParams.append('workShift', selectedFilters.workShift);
-      if (selectedFilters.sector) baseParams.append('sector', selectedFilters.sector);
+
+      const appendFilterParam = (param: string, raw: string | string[]) => {
+        if (Array.isArray(raw)) {
+          raw
+            .map((value) => (typeof value === 'string' ? value : String(value)))
+            .map((value) => value.trim())
+            .filter((value) => value.length > 0)
+            .forEach((value) => baseParams.append(param, value));
+          return;
+        }
+
+        if (!raw) return;
+
+        String(raw)
+          .split(/[|,]/)
+          .map((value) => value.trim())
+          .filter((value) => value.length > 0)
+          .forEach((value) => baseParams.append(param, value));
+      };
+
+      appendFilterParam('modality', selectedFilters.modality);
+      appendFilterParam('workShift', selectedFilters.workShift);
+      appendFilterParam('sector', selectedFilters.sector);
       if (selectedFilters.name) baseParams.append('search', selectedFilters.name);
 
       const baseUrl = `/api/v1/users/${userId}/vacancies`;
