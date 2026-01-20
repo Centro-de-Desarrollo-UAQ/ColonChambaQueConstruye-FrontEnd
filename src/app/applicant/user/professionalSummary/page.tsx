@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { useUserStore } from '@/app/store/useUserInfoStore';
 import { useApplicantStore } from '@/app/store/authApplicantStore';
 import CurriculumSection from '@/components/ui/Curriculum';
+import ConfigRowSelect from '@/components/settings/ConfigRowDropDawn';
+import { educationLevels } from '@/constants';
 
 // Tipo para la respuesta del CV
 interface CurriculumData {
@@ -25,13 +27,17 @@ export default function ProfessionalSummary() {
 
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [form, setForm] = useState({
+    status: '',
     escolaridad: '',
     carrera: '',
     resumen: '',
     experiencia: '',
     puestoInteres: '',
   });
+
   const [profileErrors, setProfileErrors] = useState<Record<string, string>>({});
+
+  
 
   // 2. EFECTOS
   // Cargar datos de texto
@@ -139,7 +145,7 @@ export default function ProfessionalSummary() {
       </div>
     );
   }
-
+  console.log(form)
   return (
     <div className="mr-20 space-y-6 p-4 md:p-6">
       <TitleSection sections={sectionConfig} currentSection="profile" />
@@ -160,16 +166,18 @@ export default function ProfessionalSummary() {
         />
 
         <div className="px-6">
-          <ConfigRow
+          <ConfigRowSelect
             title="Escolaridad"
-            valueinput={form.escolaridad}
-            isTitle={false}
-            placeholder="Licenciatura"
-            isEditable={isEditingProfile}
+            placeholder="Selecciona escolaridad"
+            options={educationLevels}
             editInput={isEditingProfile}
-            onValueChange={(v) => handleChange('escolaridad', v)}
+            valueinput={form.escolaridad}
+            onValueChange={(v) => handleChange('escolaridad', v)} 
             externalError={profileErrors.escolaridad}
           />
+
+
+
         </div>
 
         <div className="px-6">
