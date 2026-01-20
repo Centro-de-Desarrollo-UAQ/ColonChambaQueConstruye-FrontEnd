@@ -29,8 +29,12 @@ export default function PublicLogin() {
 
 const onSubmit = async (data: LoginFormType) => {
   try {
-    const response = await authService.loginAccount(data.email, data.password, 'user');
 
+    const email = data.email.toLowerCase().trim()
+    const password = data.password.trim()
+
+    const response = await authService.loginAccount(email, password, 'user');
+    
     const user = response.data
   
     if(user.status === "ACTIVO"){
@@ -48,9 +52,11 @@ const onSubmit = async (data: LoginFormType) => {
     }
 
     toast.error("Ha sucedido algo extraño");
+    
 
     
   } catch (error:any) {
+    
     console.error('Error en login:', error.message);
     toast.error(error.message || 'Error al iniciar sesión');
   }

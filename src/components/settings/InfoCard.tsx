@@ -11,6 +11,9 @@ interface InfoCardProps {
 }
 
 export const InfoCard = ({ name, email, cellphone }: InfoCardProps) => {
+
+  const firstName= name.trim().split(" ")[0]
+
   return (
     <div className="ml-12 flex h-32 w-25 flex-row p-4">
       <CompanyAvatar
@@ -20,7 +23,7 @@ export const InfoCard = ({ name, email, cellphone }: InfoCardProps) => {
       />
 
       <div className="flex flex-col justify-center pl-6">
-        <p className="text-xl font-bold text-zinc-800">{name}</p>
+        <p className="text-xl font-bold text-zinc-800">{firstName}</p>
         <p className="text-zinc-800 italic">{email}</p>
         {cellphone ?? <p className="text-zinc-800 italic">{cellphone}</p>}
       </div>
