@@ -12,120 +12,107 @@ import GeneralInfoSection from './GeneralInfoSection';
 import BenefitsSection from './BenefitsSection';
 import VacancyInfoSection from './VacancyInfoSection';
 import RequiredExperience from './RequiredExperience';
+
 import { apiService } from '@/services/api.service';
 import { useCompanyStore } from '@/app/store/authCompanyStore';
 import { useRouter } from 'next/navigation';
 
-
-export default function   PostJobForm() {
+export default function PostJobForm() {
   const methods = useForm<VacancyFormType>({
     resolver: zodResolver(registerVacancy),
     defaultValues: {
       name: '',
       sector: '',
-      modality: 'PRESENCIAL',       // coincide con z.enum(['PRESENCIAL', 'REMOTO', 'HIBRIDO'])
+      modality: 'PRESENCIAL',
       location: '',
       numberOpenings: '1',
       description: '',
       experience: '',
-      gender: '',                   // tú eliges en el select (MASCULINO/FEMENINO/INDIFERENTE)
-      ageRange: '',
+      gender: '',
       minAge: '',
       maxAge: '',
-      requiredDegree: 'INDIFERENTE', // uno válido del enum
-      salaryRange: '',
-      currency: 'mxn',              // coincide con z.enum(['mxn', 'usd'])
+      requiredDegree: 'INDIFERENTE',
+      currency: 'mxn',
       minSalary: '',
       maxSalary: '',
       benefits: '',
-      workingDays: [],              // array de strings
-      workShift: 'TIEMPO_COMPLETO', // valor válido del enum
-      workSchedule: '',
+      workingDays: [],
+      workShift: 'TIEMPO_COMPLETO',
       workHourStart: '',
       workHourEnd: '',
       additionalInformation: '',
     },
   });
 
-  const router = useRouter()
   const { control, handleSubmit } = methods;
+  const router = useRouter();
+  const { companyId } = useCompanyStore();
+
   const [submittedData, setSubmittedData] = useState<VacancyFormType | null>(null);
-  const { companyId } = useCompanyStore(); 
 
   const onSubmit = async (values: VacancyFormType) => {
-    
-    if (!companyId) {
-      console.error("No se encontró companyId en el store");
-      return;
-    }
-    
-    const minAgeNum = values.minAge ? Number(values.minAge) : undefined;
-    const maxAgeNum = values.maxAge ? Number(values.maxAge) : undefined;
-    const minSalaryNum = Number(values.minSalary);
-    const maxSalaryNum = Number(values.maxSalary);
-    const openingsNum = Number(values.numberOpenings);
-
-
-    const payload = {
-      name: values.name,
-      businessSector: values.sector,          
-      modality: values.modality,              
-      location: values.location,
-      numberOpenings: openingsNum,
-
-      description: values.description,
-      experience: values.experience,
-
-      gender: values.gender.toUpperCase() || 'INDIFERENTE',
-
-      ageRange: [
-        minAgeNum ?? 18,
-        maxAgeNum ?? (minAgeNum ?? 18),
-      ],
-
-      requiredDegree: values.requiredDegree,  
-
-      salary: {
-        coin: values.currency.toUpperCase(),  
-        min: minSalaryNum,
-        max: maxSalaryNum,
-      },
-
-      benefits: values.benefits,
-
-      workingDay: (values.workingDays || []).map((d) => d.toUpperCase()),
-     
-
-      workShift: values.workShift,          
-
-      workSchedule: [values.workHourStart, values.workHourEnd],
-     
-
-      additionalInformation: values.additionalInformation,
-    };
-
-    console.log('Payload final que va al backend:', payload);
-    setSubmittedData(values);
-
     try {
-      const response = await apiService.post(`/companies/${companyId}/vacancies`,payload);
-        if(!response?.ok){
-            console.log("error en crear la vacante")
-            return  
-        }
+      if (!companyId) {
+        throw new Error('No se encontró companyId en sesión');
+      }
 
-        const data = await response.json()
-        console.log("vacante creada, el id es:",data.data.id)
+      const payload = {
+        name: values.name,
+        businessSector: values.sector,
+        modality: values.modality,
+        location: values.location,
+        numberOpenings: Number(values.numberOpenings),
 
-        console.log("STATUS:", response.status);
-  console.log("BODY:", data);
+        description: values.description,
+        experience: values.experience,
 
-    router.push("/employer/home/vacancies");
-  return;
-  
-    } catch (err) {
-      console.error('Error de red al crear la vacante:', err);
-      // toast.error('Error de red al publicar la vacante');
+        gender: (values.gender || 'INDIFERENTE').toUpperCase(),
+
+        ageRange: [
+          values.minAge ? Number(values.minAge) : 18,
+          values.maxAge ? Number(values.maxAge) : Number(values.minAge) || 18,
+        ],
+
+        requiredDegree: values.requiredDegree,
+
+        salary: {
+          coin: values.currency.toUpperCase(),
+          min: Number(values.minSalary),
+          max: Number(values.maxSalary),
+        },
+
+        benefits: values.benefits,
+
+        workingDay: (values.workingDays || []).map(d => d.toUpperCase()),
+
+        workShift: values.workShift,
+
+        workSchedule: [values.workHourStart, values.workHourEnd],
+
+        additionalInformation: values.additionalInformation,
+      };
+
+      console.log('Payload enviado:', payload);
+      setSubmittedData(values);
+
+      const response = await apiService.post(
+        `/companies/${companyId}/vacancies`,
+        payload
+      );
+
+
+      if (!response?.ok) {
+        const err = await response.json().catch(() => null);
+        console.error('Error backend:', err);
+        throw new Error(err?.message || 'No se pudo crear la vacante');
+      }
+
+      const data = await response.json();
+      console.log('Vacante creada con ID:', data?.data?.id);
+
+      router.push('/employer/home/vacancies');
+    } catch (err: any) {
+      console.error('Error al crear vacante:', err);
     }
   };
 
@@ -138,8 +125,9 @@ export default function   PostJobForm() {
         <h2 className="text-4xl font-bold text-center text-[var(--secundary)]">
           Publica una nueva vacante
         </h2>
-        <p className="text-center text-xl mb-6 w-[578px] justify-self-center pb-5">
-          Completa la información de la oferta de trabajo u conéctate con los mejores talentos
+
+        <p className="text-center text-xl mb-6 w-[578px] mx-auto">
+          Completa la información de la oferta de trabajo y conéctate con los mejores talentos
         </p>
 
         <GeneralInfoSection control={control} />
@@ -150,7 +138,6 @@ export default function   PostJobForm() {
         <InterestAreasSelector control={control} />
 
         <div className="flex justify-end">
-          {/* Ya no uses onClick, el handleSubmit está en el form */}
           <Button type="submit">Publicar</Button>
         </div>
       </form>

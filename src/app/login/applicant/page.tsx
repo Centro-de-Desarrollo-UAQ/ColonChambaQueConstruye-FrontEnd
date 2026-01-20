@@ -60,7 +60,7 @@ export default function PublicLogin() {
         error.message?.includes("User doesn't exist") || 
         error.message?.includes("404") ||
         error.message?.includes("Not Found") ||
-        error.message?.includes("Bad credentials") ||
+        error.message?.includes("Bad credentials")  ||
         error.message?.includes("401")
       ) {
         setShowErrorAlert(true);
