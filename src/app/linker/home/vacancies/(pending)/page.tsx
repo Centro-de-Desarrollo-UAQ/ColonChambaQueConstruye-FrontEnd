@@ -42,20 +42,16 @@ export default function TablillaPage() {
         }
 
         const result = await response.json();
-        // Accedemos a data.vacancies según tu estructura de backend
         const backendData = result.data?.vacancies || [];
 
-        // --- MAPEO DE DATOS ---
         const mappedData: JobCardProps[] = backendData.map((item: any) => {
           const v = item.Vacancy || {};
           const c = item.Company || {};
           
-          // Helper para evitar fallos si ageRange es null
           const minAge = Array.isArray(v.ageRange) ? v.ageRange[0] : 0;
           const maxAge = Array.isArray(v.ageRange) ? v.ageRange[1] : 0;
 
           return {
-            // -- Campos obligatorios de JobCardProps --
             id: v.id,
             status: v.status,
             title: v.name || 'Sin título',
@@ -71,10 +67,8 @@ export default function TablillaPage() {
             modality: v.modality || 'PRESENCIAL',
             logoUrl: c.logoUrl || '',
             createdAt: v.createdAt,
-            // Priorizamos el sector de la vacante, si no el de la empresa
             sector: v.businessSector || c.workSector || 'No especificado',
 
-            // -- Campos específicos (con tus nombres de variables) --
             numberOfPositions: v.numberOpenings || 1,
             BenefitsSection: v.benefits || '',
             degree: v.requiredDegree || 'No especificada',
@@ -88,11 +82,9 @@ export default function TablillaPage() {
             
             RequiredExperience: v.experience || '',
             
-            // Datos de contacto (Fallback si no vienen)
             cellPhone: c.CompanyAccount?.cellPhone || 'N/A',
             email: c.CompanyAccount?.email || c.companyEmail || 'N/A',
 
-            // -- Objeto Extra para el Drawer --
             companyDetails: {
               legalName: c.legalName,
               rfc: c.rfc,

@@ -40,6 +40,7 @@ import { useMemo, useState } from 'react';
 
 import { filterType } from '@/interfaces/table';
 import TableSearchBar from '@/components/ui/TableSerchBar';
+import PaginationControl from '@/components/navigation/paginationControl';
 
 const normalizeValue = (value: unknown) => {
   if (value == null) return '';
@@ -61,15 +62,9 @@ interface DataTableProps<TData, TValue> {
 
 interface DataTableCSBProps<TData, TValue> extends DataTableProps<TData, TValue> {
   filters: filterType[];
-  /**
-   * Texto de búsqueda para hacer filtros backend.
-   * Se llama cada vez que cambia el input de búsqueda.
-   */
+  
   onSearchChange?: (value: string) => void;
-  /**
-   * Filtros avanzados (status, modalidad, etc) para backend.
-   * columnId = filter.value de tu config de filtros.
-   */
+  
   onFilterChange?: (columnId: string, value: any) => void;
 }
 
@@ -321,4 +316,5 @@ export function DataTableCustomSearchBar<TData, TValue>({
     </div>
   );
 }
+
 
