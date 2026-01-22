@@ -1,4 +1,4 @@
-import { JobCardProps } from '@/interfaces';
+import { JobCardProps } from '@/interfaces/jobCard'; // Asegúrate que la ruta sea correcta
 import {
   Drawer,
   DrawerClose,
@@ -21,15 +21,18 @@ export default function DrawerLinkerVacancies({
   sideDrawer,
 }: DrawerLinkerVacanciesProps) {
 
-  const details = job.companyDetails || {};
-
+  // 1. CORRECCIÓN: Primero validamos que job exista
   if (!job) return null;
+
+  // 2. Ahora es seguro acceder a companyDetails
+  // Usamos el operador ?. (optional chaining) por doble seguridad
+  const details = job?.companyDetails || {};
 
   return (
     <div className="hover:border-uaq-brand-800 group flex flex-col rounded-lg border border-zinc-300 shadow-sm transition-all duration-300 hover:translate-y-[-2px] hover:shadow-md">
       <Drawer direction={sideDrawer === "left" ? "left" : "right"}>
         <DrawerTrigger asChild>
-          <Button variant="primary" color='accent'>
+          <Button variant="primary" className="w-full">
             Revisar
           </Button>
         </DrawerTrigger>
@@ -48,10 +51,10 @@ export default function DrawerLinkerVacancies({
               </div>
 
               <div className="flex flex-col gap-2 shrink-0">
-                <Button variant="primary" color="danger" size="sm" className="w-full">
+                <Button variant="primary" size="sm" className="w-full">
                   Rechazar
                 </Button>
-                <Button variant="primary" color="success" size="sm" className="w-full">
+                <Button variant="primary" className="bg-green-600 hover:bg-green-700 w-full" size="sm">
                   Aprobar
                 </Button>
               </div>
@@ -67,7 +70,7 @@ export default function DrawerLinkerVacancies({
             {/* Descripción */}
             <div className="px-6 py-4 flex flex-col gap-2">
               <h3 className="text-sm font-bold text-gray-900">Descripción</h3>
-              <p className="text-sm text-gray-600 whitespace-pre-wrap text-justify leading-relaxed">
+              <p className="text-sm text-gray-600 whitespace-pre-wrap text-justify leading-relaxed break-words">
                 {job.description || 'Sin descripción'}
               </p>
             </div>
@@ -118,6 +121,15 @@ export default function DrawerLinkerVacancies({
                 {job.degree}
               </div>
             </div>
+            <Separator className='w-11/12 mx-auto' />
+            
+            {/* AGREGADO: Información Adicional que mapeamos antes */}
+             <div className="px-6 py-4 flex flex-col gap-2">
+              <h3 className="text-sm font-bold text-gray-900">Información Adicional</h3>
+              <p className="text-sm text-gray-600 text-justify leading-relaxed break-words">
+                {job.AdditionalInformation || 'N/A'}
+              </p>
+            </div>
 
             
             <div className="mt-6 px-6 py-4 bg-gray-100 border-y">
@@ -163,13 +175,20 @@ export default function DrawerLinkerVacancies({
             <div className="px-6 py-4 flex justify-between items-center">
               <h3 className="text-sm font-bold w-1/3">Correo</h3>
               <div className="w-2/3 text-sm text-gray-600 text-right">
-                {details.companyEmail || '-'}
+                {details.companyEmail || job.email || '-'}
+              </div>
+            </div>
+
+            <div className="px-6 py-4 flex justify-between items-center">
+              <h3 className="text-sm font-bold w-1/3">Teléfono</h3>
+              <div className="w-2/3 text-sm text-gray-600 text-right">
+                {details.cellPhone || job.cellPhone || '-'}
               </div>
             </div>
 
           </div>
 
-          <DrawerClose className='text-sm font-bold hover:bg-zinc-200 border-0 text-uaq-danger px-4 py-3 rounded-md mx-auto mb-7 cursor-pointer transition-colors'>
+          <DrawerClose className='text-sm font-bold hover:bg-zinc-200 border-0 text-red-500 px-4 py-3 rounded-md mx-auto mb-7 cursor-pointer transition-colors'>
             Cerrar Ventana
           </DrawerClose>
         </DrawerContent>

@@ -28,7 +28,7 @@ export default function VacanciesRejectedPage() {
   const sectionConfig = {
     talents: {
       title: 'SOLICITUDES DE VACANTES RECHAZADAS', 
-      icon: <FileRemove size={24} weight="Bold" className="text-uaq-brand-hover" />, 
+      icon: <FileRemove size={24} weight="Bold" className="text-uaq-brand" />, 
       description: '',
     },
   };
