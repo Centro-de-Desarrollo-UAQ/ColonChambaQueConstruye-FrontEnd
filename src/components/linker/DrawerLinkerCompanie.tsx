@@ -1,4 +1,4 @@
-import { JobCardProps } from '@/interfaces/jobCard'; // Asegúrate que la ruta sea correcta
+import { JobCardProps } from '@/interfaces/jobCard';
 import {
   Drawer,
   DrawerClose,
@@ -21,11 +21,8 @@ export default function DrawerLinkerVacancies({
   sideDrawer,
 }: DrawerLinkerVacanciesProps) {
 
-  // 1. CORRECCIÓN: Primero validamos que job exista
   if (!job) return null;
 
-  // 2. Ahora es seguro acceder a companyDetails
-  // Usamos el operador ?. (optional chaining) por doble seguridad
   const details = job?.companyDetails || {};
 
   return (

@@ -40,7 +40,6 @@ import { useMemo, useState } from 'react';
 
 import { filterType } from '@/interfaces/table';
 import TableSearchBar from '@/components/ui/TableSerchBar';
-import PaginationControl from '@/components/navigation/paginationControl';
 
 const normalizeValue = (value: unknown) => {
   if (value == null) return '';
@@ -62,10 +61,10 @@ interface DataTableProps<TData, TValue> {
 
 interface DataTableCSBProps<TData, TValue> extends DataTableProps<TData, TValue> {
   filters: filterType[];
-  
   onSearchChange?: (value: string) => void;
-  
   onFilterChange?: (columnId: string, value: any) => void;
+  // Prop opcional para ocultar la paginación interna
+  hidePagination?: boolean; 
 }
 
 export function DataTableCustomSearchBar<TData, TValue>({
@@ -74,7 +73,9 @@ export function DataTableCustomSearchBar<TData, TValue>({
   filters,
   onSearchChange,
   onFilterChange,
+  hidePagination = false, // Por defecto es false para no romper otras tablas
 }: DataTableCSBProps<TData, TValue>) {
+  
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
@@ -197,7 +198,7 @@ export function DataTableCustomSearchBar<TData, TValue>({
 
   return (
     <div className="flex flex-col content-end items-end space-y-4">
-      {/*  Barra de búsqueda + filtros (frontend + callbacks a backend) */}
+      {/*  Barra de búsqueda + filtros */}
       <TableSearchBar
         filters={filters}
         table={table}
@@ -243,78 +244,78 @@ export function DataTableCustomSearchBar<TData, TValue>({
         </Table>
       </div>
 
-      {/* Paginación */}
-      <div className="flex items-center space-x-6 lg:space-x-8">
-        <div className="flex items-center space-x-2">
-          <p className="text-sm font-medium">Filas por vista</p>
-          <Select
-            value={`${table.getState().pagination.pageSize}`}
-            onValueChange={(value) => {
-              table.setPageSize(Number(value));
-            }}
-          >
-            <SelectTrigger className="h-8 w-[70px]">
-              <SelectValue placeholder={table.getState().pagination.pageSize} />
-            </SelectTrigger>
-            <SelectContent side="top">
-              {[10, 20, 25, 30, 40, 50].map((pageSize) => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
-                  {pageSize}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+      {/* Paginación - Se renderiza solo si hidePagination es false */}
+      {!hidePagination && (
+        <div className="flex items-center space-x-6 lg:space-x-8">
+          <div className="flex items-center space-x-2">
+            <p className="text-sm font-medium">Filas por vista</p>
+            <Select
+              value={`${table.getState().pagination.pageSize}`}
+              onValueChange={(value) => {
+                table.setPageSize(Number(value));
+              }}
+            >
+              <SelectTrigger className="h-8 w-[70px]">
+                <SelectValue placeholder={table.getState().pagination.pageSize} />
+              </SelectTrigger>
+              <SelectContent side="top">
+                {[10, 20, 25, 30, 40, 50].map((pageSize) => (
+                  <SelectItem key={pageSize} value={`${pageSize}`}>
+                    {pageSize}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
-        <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-          Página {table.getState().pagination.pageIndex + 1} de {table.getPageCount()}
-        </div>
+          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+            Página {table.getState().pagination.pageIndex + 1} de {table.getPageCount()}
+          </div>
 
-        <div className="flex items-center space-x-2">
-          <Button
-            variant="outline"
-            size="icon"
-            className="hidden size-8 lg:flex"
-            onClick={() => table.setPageIndex(0)}
-            disabled={!table.getCanPreviousPage()}
-          >
-            <span className="sr-only">Ir a la primera página</span>
-            <DoubleAltArrowLeft />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            className="size-8"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            <span className="sr-only">Ir a la página anterior</span>
-            <AltArrowLeft />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            className="size-8"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            <span className="sr-only">Ir a la página siguiente</span>
-            <AltArrowRight />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            className="hidden size-8 lg:flex"
-            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-            disabled={!table.getCanNextPage()}
-          >
-            <span className="sr-only">Ir a la última página</span>
-            <DoubleAltArrowRight />
-          </Button>
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="outline"
+              size="icon"
+              className="hidden size-8 lg:flex"
+              onClick={() => table.setPageIndex(0)}
+              disabled={!table.getCanPreviousPage()}
+            >
+              <span className="sr-only">Ir a la primera página</span>
+              <DoubleAltArrowLeft />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              className="size-8"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              <span className="sr-only">Ir a la página anterior</span>
+              <AltArrowLeft />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              className="size-8"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              <span className="sr-only">Ir a la página siguiente</span>
+              <AltArrowRight />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              className="hidden size-8 lg:flex"
+              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+              disabled={!table.getCanNextPage()}
+            >
+              <span className="sr-only">Ir a la última página</span>
+              <DoubleAltArrowRight />
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
-
-
