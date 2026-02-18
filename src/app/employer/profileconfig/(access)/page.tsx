@@ -7,8 +7,31 @@ import { UserCircle } from '@solar-icons/react';
 import { Button } from '@/components/ui/button';
 import { useEmployerProfile } from '../layout';
 import { apiService } from '@/services/api.service';
+import { useRouter } from 'next/navigation';
+
+import Alerts from '@/components/ui/Alerts';
+import ConfirmChangePasswordModal from '@/components/ui/modal/ConfirmChangePasswordModal';
+
+/** ✅ mismos mensajes base del Register */
+const DEFAULT_ERROR_MESSAGE = 'Este campo es requerido';
+
+/** ✅ mismas reglas del Register */
+const PASSWORD_RULES = [
+  { regex: /.{8,}/, message: 'Mínimo 8 caracteres' },
+  { regex: /[A-Z]/, message: 'Requiere mayúscula' },
+  { regex: /[a-z]/, message: 'Requiere minúscula' },
+  { regex: /[0-9]/, message: 'Requiere número' },
+] as const;
+
+function validatePasswordLikeRegister(value: string): string | null {
+  for (const rule of PASSWORD_RULES) {
+    if (!rule.regex.test(value)) return rule.message;
+  }
+  return null;
+}
 
 export default function Page() {
+  const router = useRouter();
   const { companyAccount, loading, error } = useEmployerProfile();
 
   const [isEditingPersonal, setIsEditingPersonal] = useState(false);
@@ -31,6 +54,16 @@ export default function Page() {
     {},
   );
   const [accessErrors, setAccessErrors] = useState<Record<string, string>>({});
+
+  // Alert global (para el escenario "NO-FUNCIONO" del cambio de contraseña)
+  const [alert, setAlert] = useState<{
+    type: 'error' | 'success';
+    message: string;
+  } | null>(null);
+
+  // Modal confirmación
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const [isPatchingPassword, setIsPatchingPassword] = useState(false);
 
   const sectionConfig = {
     profile: {
@@ -57,6 +90,9 @@ export default function Page() {
     setLastPassword('');
     setPersonalErrors({});
     setAccessErrors({});
+    setAlert(null);
+    setOpenConfirmModal(false);
+    setIsPatchingPassword(false);
   }, [companyAccount]);
 
   /* ---------------- helpers ---------------- */
@@ -74,37 +110,37 @@ export default function Page() {
     setAccessErrors((e) => ({ ...e, [key]: '' }));
   };
 
-const validatePersonalFields = () => {
-  const errors: Record<string, string> = {};
-  const keys: (keyof typeof form)[] = [
-    'nombres',
-    'apellidos',
-    'puesto',
-    'celular',
-    'telfijo',
-  ];
+  const validatePersonalFields = () => {
+    const errors: Record<string, string> = {};
+    const keys: (keyof typeof form)[] = [
+      'nombres',
+      'apellidos',
+      'puesto',
+      'celular',
+      'telfijo',
+    ];
 
-  keys.forEach((k) => {
-    const raw = form[k];
-    const v = typeof raw === 'string' ? raw.trim() : raw;
+    keys.forEach((k) => {
+      const raw = form[k];
+      const v = typeof raw === 'string' ? raw.trim() : raw;
 
-    if (!v || (typeof v === 'string' && v === '')) {
-      errors[k] = 'No puede quedar vacío';
-    }
+      if (!v || (typeof v === 'string' && v === '')) {
+        errors[k] = 'No puede quedar vacío';
+      }
 
-    if (
-      (k === 'celular' || k === 'telfijo') &&
-      typeof v === 'string' &&
-      !/^\+?\d*$/.test(v)          // 👈 mismo patrón aquí
-    ) {
-      errors[k] = 'Debe contener solo números y un "+" inicial';
-    }
-  });
+      if (
+        (k === 'celular' || k === 'telfijo') &&
+        typeof v === 'string' &&
+        !/^\+?\d*$/.test(v)
+      ) {
+        errors[k] = 'Debe contener solo números y un "+" inicial';
+      }
+    });
 
-  return errors;
-};
+    return errors;
+  };
 
-
+  /** ✅ REEMPLAZADO: Validaciones de password estilo Register */
   const validateAccessFields = () => {
     const errors: Record<string, string> = {};
 
@@ -119,18 +155,33 @@ const validatePersonalFields = () => {
       errors.correo = 'Correo inválido';
     }
 
+    // last password requerida (mensaje estilo register)
+    if (!last) errors.lastPassword = DEFAULT_ERROR_MESSAGE;
+
+    // new password (mensaje estilo register)
     if (!newPass) {
-      errors.contrasena = 'La nueva contraseña es obligatoria';
+      errors.contrasena = DEFAULT_ERROR_MESSAGE;
+    } else {
+      const msg = validatePasswordLikeRegister(newPass);
+      if (msg) errors.contrasena = msg;
     }
 
+    // confirm password (mensaje estilo register)
     if (!confirm) {
-      errors.confirmPassword = 'Debes repetir la nueva contraseña';
-    } else if (newPass && confirm && newPass !== confirm) {
+      errors.confirmPassword = DEFAULT_ERROR_MESSAGE;
+    } else {
+      const msg = validatePasswordLikeRegister(confirm);
+      if (msg) errors.confirmPassword = msg;
+    }
+
+    // coincide (igual que refine)
+    if (!errors.contrasena && !errors.confirmPassword && newPass !== confirm) {
       errors.confirmPassword = 'Las contraseñas no coinciden';
     }
 
-    if (!last) {
-      errors.lastPassword = 'Debes ingresar tu contraseña anterior';
+    // opcional: evitar misma que la anterior
+    if (!errors.contrasena && last && newPass && newPass === last) {
+      errors.contrasena = 'La nueva contraseña no puede ser igual a la anterior';
     }
 
     return errors;
@@ -168,7 +219,16 @@ const validatePersonalFields = () => {
     }
   };
 
-  
+  // Limpieza de "memoria" (store/localStorage)
+  const clearCompanySession = () => {
+    try {
+      localStorage.removeItem('token');
+      localStorage.removeItem('companyId');
+      localStorage.removeItem('accountId');
+    } catch {
+      // ignore
+    }
+  };
 
   const handleSavePersonal = async () => {
     const errors = validatePersonalFields();
@@ -183,7 +243,6 @@ const validatePersonalFields = () => {
       jobTitle: form.puesto.trim(),
       cellPhone: form.celular.trim(),
       landlinePhone: form.telfijo.trim(),
-      
     };
 
     try {
@@ -209,15 +268,26 @@ const validatePersonalFields = () => {
     }
   };
 
- 
-
+  /**
+   * PASO 2:
+   * 1) validamos
+   * 2) abrimos modal
+   * 3) confirmar modal -> patch
+   */
   const handleSaveGeneral = async () => {
+    setAlert(null);
+
     const errors = validateAccessFields();
     if (Object.keys(errors).length > 0) {
       setAccessErrors(errors);
       return;
     }
 
+    setAccessErrors({});
+    setOpenConfirmModal(true);
+  };
+
+  const handleConfirmChangePassword = async () => {
     const payload = {
       firstName: form.nombres.trim(),
       lastName: form.apellidos.trim(),
@@ -226,32 +296,28 @@ const validatePersonalFields = () => {
       landlinePhone: form.telfijo.trim(),
       lastPassword: lastPassword.trim(),
       newPassword: form.contrasena.trim(),
-      // si en el futuro el DTO acepta email, aquí podrías añadirlo
     };
 
     try {
+      setIsPatchingPassword(true);
       await patchAccount(payload);
-      console.log('Datos de acceso actualizados ');
 
-      setForm((prev) => ({
-        ...prev,
-        correo: prev.correo.trim(),
-        contrasena: prev.contrasena.trim(),
-      }));
-      setLastPassword('');
-      setConfirmPassword('');
-      setAccessErrors({});
-      setIsEditingGeneral(false);
+      clearCompanySession();
+      router.replace('/login/company');
     } catch (err: any) {
       console.error(err);
-      setAccessErrors((prev) => ({
-        ...prev,
-        global: 'No se pudieron actualizar los datos de acceso.',
-      }));
+
+      setAlert({
+        type: 'error',
+        message: 'Datos incorrectos, inténtalo nuevamente.',
+      });
+
+      setIsEditingGeneral(true);
+    } finally {
+      setIsPatchingPassword(false);
+      setOpenConfirmModal(false);
     }
   };
-
-
 
   if (loading) {
     return (
@@ -277,13 +343,16 @@ const validatePersonalFields = () => {
     );
   }
 
- 
-
   return (
     <div className="mr-20 space-y-6 p-4 md:p-6">
       <TitleSection sections={sectionConfig} currentSection="profile" />
 
-      
+      {alert && (
+        <div className="px-1">
+          <Alerts type={alert.type} message={alert.message} />
+        </div>
+      )}
+
       <div className="rounded-lg border border-zinc-300 shadow-sm">
         <ConfigRow
           title="Información general"
@@ -369,9 +438,11 @@ const validatePersonalFields = () => {
           isEditable={true}
           editInput={false}
           onEditClick={() => {
+            setAlert(null);
             setAccessErrors({});
             setConfirmPassword('');
             setLastPassword('');
+            setForm((p) => ({ ...p, contrasena: '' }));
             setIsEditingGeneral((s) => !s);
           }}
         />
@@ -380,7 +451,7 @@ const validatePersonalFields = () => {
           title="Correo electrónico"
           valueinput={form.correo}
           placeholder="ejemplo@correo.com"
-          isEditable={false}         // correo solo lectura por ahora
+          isEditable={false}
           editInput={false}
           externalError={accessErrors.correo}
         />
@@ -435,6 +506,12 @@ const validatePersonalFields = () => {
           </div>
         )}
       </div>
+
+      <ConfirmChangePasswordModal
+        open={openConfirmModal}
+        onClose={() => setOpenConfirmModal(false)}
+        onConfirm={handleConfirmChangePassword}
+      />
     </div>
   );
 }

@@ -1,8 +1,6 @@
 'use client';
 
 import { AdminNavbarMenu } from "@/components/navigation/AdminNavbarMenu";
-import AdminSideBar from "@/components/sidebar/AdminSideBar";
-import Header from "@/components/ui/header";
 import React from "react";
 
 export default function LinkerLayout({ children }: { children: React.ReactNode }) {
@@ -20,13 +18,15 @@ export default function LinkerLayout({ children }: { children: React.ReactNode }
       className="relative min-h-screen overflow-x-hidden"
       style={styleVars}
     >
-      <div
-        
-      >
+      {/* ✅ DEBUG: si este marcador NO aparece en pantalla, este layout NO se está usando */}
+      <div className="fixed bottom-4 right-4 z-[9999] rounded bg-black px-3 py-1 text-white">
+        LINKER LAYOUT
+      </div>
 
+      <div>
         {/* Subbarra / título de página */}
         <div>
-          <AdminNavbarMenu NameTitle="Empresas" basePath="companies"/>
+          <AdminNavbarMenu NameTitle="Empresas" basePath="companies" />
         </div>
 
         {/* Contenido principal */}
