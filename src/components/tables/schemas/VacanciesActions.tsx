@@ -43,10 +43,12 @@ export default function RowActions({
           </DropdownMenuTrigger>
 
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => handleEditVacancy(row.original.id)}>
-              <DocumentAdd className="text-zinc-800" />
-              Editar
-            </DropdownMenuItem>
+            {row.original.status !== 'REVISION'  && (
+              <DropdownMenuItem onClick={() => handleEditVacancy(row.original.id)}>
+                <DocumentAdd className="text-zinc-800" />
+                Editar
+              </DropdownMenuItem>
+            )}
 
             <DropdownMenuItem onSelect={(e) => e.preventDefault()} onClick={() => setOpen(true)}>
               <Document className="text-zinc-800" />
@@ -60,7 +62,7 @@ export default function RowActions({
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-         {open && <DrawerVacante vacancyId={row.original.id} />}
+        {open && <DrawerVacante vacancyId={row.original.id} />}
       </Drawer>
     </>
   );
