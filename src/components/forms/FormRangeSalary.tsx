@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { FieldValues, useFormContext, Controller } from 'react-hook-form';
+import { useEffect } from 'react';
 
 
 interface FormSalaryRangeProps<T extends FieldValues> {
@@ -61,6 +62,24 @@ export default function FormSalaryRange<T extends FieldValues>({
     );
   }
 
+  const { watch, setError, clearErrors, formState } = context;
+  const watchedMinRaw = watch(minSalaryName as any);
+  const watchedMaxRaw = watch(maxSalaryName as any);
+  const watchedMin = watchedMinRaw ? Number(watchedMinRaw) : NaN;
+  const watchedMax = watchedMaxRaw ? Number(watchedMaxRaw) : NaN;
+
+  useEffect(() => {
+    if (!isNaN(watchedMin) && !isNaN(watchedMax)) {
+      if (watchedMax <= watchedMin) {
+        setError(maxSalaryName as any, { type: 'manual', message: 'El salario máximo debe ser mayor que el salario mínimo.' });
+      } else {
+        clearErrors(maxSalaryName as any);
+      }
+    } else {
+      clearErrors(maxSalaryName as any);
+    }
+  }, [watchedMin, watchedMax, maxSalaryName, setError, clearErrors]);
+
   return (
     <Controller
       control={control}
@@ -104,9 +123,16 @@ export default function FormSalaryRange<T extends FieldValues>({
                       type="number"
                       placeholder={minPlaceholder}
                       disabled={disabled}
-                      min={0}
-                      className='border-0 p-0'
                       {...minField}
+                      min={1000}
+                      className='border-0 p-0'
+                      onBlur={(e) => {
+                        if (typeof minField.onBlur === 'function') minField.onBlur?.();
+                        const val = (e.target as HTMLInputElement).value;
+                        if (val !== '' && !isNaN(Number(val)) && Number(val) < 1000) {
+                          minField.onChange('1000');
+                        }
+                      }}
                     />
                   )}
                 />
@@ -118,16 +144,27 @@ export default function FormSalaryRange<T extends FieldValues>({
                 <Controller
                   control={control}
                   name={maxSalaryName}
-                  render={({ field: maxField }) => (
-                    <Input
-                      type="number"
-                      placeholder={maxPlaceholder}
-                      disabled={disabled}
-                      min={0}
-                      className='border-0 px-1  '
-                      {...maxField}
-                    />
-                  )}
+                  render={({ field: maxField }) => {
+                    const dynamicMin = !isNaN(watchedMin) ? watchedMin + 1 : 1000;
+                    return (
+                      <Input
+                        type="number"
+                        placeholder={maxPlaceholder}
+                        disabled={disabled}
+                        min={dynamicMin}
+                        className='border-0 px-1  '
+                        {...maxField}
+                        onBlur={(e) => {
+                          if (typeof maxField.onBlur === 'function') maxField.onBlur?.();
+                          const val = (e.target as HTMLInputElement).value;
+                          if (val !== '' && !isNaN(Number(val)) && !isNaN(watchedMin) && Number(val) <= watchedMin) {
+                            const corrected = String(watchedMin + 1);
+                            maxField.onChange(corrected);
+                          }
+                        }}
+                      />
+                    );
+                  }}
                 /> 
               </div>
             </div>
@@ -137,6 +174,10 @@ export default function FormSalaryRange<T extends FieldValues>({
             <Label variant="description" className="mt-1">
               {description}
             </Label>
+          )}
+
+          {formState.errors && (formState.errors as any)[maxSalaryName] && (
+            <Label className="text-red-600 mt-1">{(formState.errors as any)[maxSalaryName].message}</Label>
           )}
 
           <FormMessage />
