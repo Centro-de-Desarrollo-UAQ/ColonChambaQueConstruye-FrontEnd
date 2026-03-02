@@ -6,6 +6,7 @@ import { CompanyFormType } from '@/validations/companySchema';
 import FormInput from '@/components/forms/FormInput';
 import FormComboBadgeSelector from '@/components/forms/FormComboBadgeSelector';
 import { country, sector, states } from '@/constants';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface CompanyDetailsProps {
   control: Control<CompanyFormType>;
@@ -14,14 +15,10 @@ interface CompanyDetailsProps {
 export default function CompanyDetails({ control }: CompanyDetailsProps) {
   return (
     <div className="space-y-8 p-4">
-      {/* ─────────────── Información general ─────────────── */}
       <section className="space-y-6">
-        <h2 className="text-center text-xl text-uaq-terniary">
-          Información general
-        </h2>
+        <h2 className="text-center text-xl text-uaq-terniary">Información general</h2>
         <div className="mx-auto h-px w-full max-w-[596px] rounded bg-gray-300" />
 
-        {/* Nombre comercial */}
         <FormInput
           control={control}
           label="Nombre comercial *"
@@ -31,7 +28,6 @@ export default function CompanyDetails({ control }: CompanyDetailsProps) {
           maxChars={100}
         />
 
-        {/* Correo + Giro */}
         <div className="grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2">
           <FormInput
             control={control}
@@ -52,7 +48,6 @@ export default function CompanyDetails({ control }: CompanyDetailsProps) {
           />
         </div>
 
-        {/* Descripción */}
         <FormInput
           control={control}
           label="Descripción *"
@@ -62,7 +57,6 @@ export default function CompanyDetails({ control }: CompanyDetailsProps) {
           maxChars={1200}
         />
 
-        {/* País de inversión + Número de trabajadores */}
         <div className="grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2">
           <FormComboBadgeSelector
             control={control}
@@ -84,11 +78,8 @@ export default function CompanyDetails({ control }: CompanyDetailsProps) {
         </div>
       </section>
 
-      {/* ─────────────── Datos fiscales ─────────────── */}
       <section className="space-y-6">
-        <h2 className="text-center text-xl text-uaq-terniary">
-          Datos fiscales
-        </h2>
+        <h2 className="text-center text-xl text-uaq-terniary">Datos fiscales</h2>
         <div className="mx-auto h-px w-full max-w-[596px] rounded bg-gray-300" />
 
         <FormInput
@@ -110,47 +101,38 @@ export default function CompanyDetails({ control }: CompanyDetailsProps) {
         />
       </section>
 
-      {/* ─────────────── Ubicación ─────────────── */}
       <section className="space-y-6">
         <h2 className="text-center text-xl text-uaq-terniary">Ubicación</h2>
         <div className="mx-auto h-px w-full max-w-[596px] rounded bg-gray-300" />
 
-        {/* País + Estado */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6 items-start">
+          <div className="flex flex-col">
+            <FormComboBadgeSelector
+              control={control}
+              label="País *"
+              name="companyAddressCountry"
+              options={country}
+              description="Selecciona el país donde se ubica la empresa"
+              multiple={false}
+            />
+            <p className="mt-1 text-xs leading-4 text-gray-500">Selecciona el país donde se ubica la empresa</p>
+          </div>
 
-  {/* País */}
-  <div className="flex flex-col">
-    <FormComboBadgeSelector
-      control={control}
-      label="País *"
-      name="companyAddressCountry"
-      options={country}
-      description="Selecciona el país donde se ubica la empresa"
-      multiple={false}
-    />
-    <p className="mt-1 text-xs leading-4 text-gray-500">
-      Selecciona el país donde se ubica la empresa
-    </p>
-  </div>
-
-        {/* Estado */}
-        <div className="flex flex-col">
-          <FormComboBadgeSelector
-            control={control}
-            label="Estado *"
-            name="companyAddressState"
-            options={states}
-            description="Elige el estado o entidad federativa correspondiente a la ubicación de la empresa"
-            multiple={false}
-          />
-          <p className="mt-1 text-xs leading-4 text-gray-500">
-            Elige el estado o entidad federativa correspondiente a la ubicación de la empresa
-          </p>
+          <div className="flex flex-col">
+            <FormComboBadgeSelector
+              control={control}
+              label="Estado *"
+              name="companyAddressState"
+              options={states}
+              description="Elige el estado o entidad federativa correspondiente a la ubicación de la empresa"
+              multiple={false}
+            />
+            <p className="mt-1 text-xs leading-4 text-gray-500">
+              Elige el estado o entidad federativa correspondiente a la ubicación de la empresa
+            </p>
+          </div>
         </div>
 
-      </div>
-
-        {/* Municipio + Colonia */}
         <div className="grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2">
           <FormInput
             control={control}
@@ -170,7 +152,6 @@ export default function CompanyDetails({ control }: CompanyDetailsProps) {
           />
         </div>
 
-        {/* Calle + CP + Número */}
         <div className="grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-3">
           <FormInput
             control={control}
@@ -198,6 +179,49 @@ export default function CompanyDetails({ control }: CompanyDetailsProps) {
           />
         </div>
       </section>
+    </div>
+  );
+}
+
+export function CountryDropdown({
+  value,
+  onChange,
+  label = 'País',
+  placeholder = 'Selecciona un país',
+}: {
+  value: string;
+  onChange: (val: string) => void;
+  label?: string;
+  placeholder?: string;
+}) {
+  const items = Array.isArray(country) ? country : [];
+
+  return (
+    <div className="flex min-w-0 flex-1 flex-col">
+      <div className="flex items-center min-w-0">
+        <p className="min-w-[150px] py-3">{label}</p>
+        <div className="flex-1">
+          <Select value={value || ''} onValueChange={onChange}>
+            <SelectTrigger>
+              <SelectValue placeholder={placeholder} />
+            </SelectTrigger>
+            <SelectContent className="max-h-60 overflow-y-auto">
+              {items.map((opt: any) => {
+                const key = typeof opt === 'string' ? opt : String(opt?.value ?? opt?.label ?? '');
+                const val = typeof opt === 'string' ? opt : String(opt?.value ?? '');
+                const text = typeof opt === 'string' ? opt : String(opt?.label ?? opt?.value ?? '');
+                if (!val) return null;
+
+                return (
+                  <SelectItem key={key} value={val}>
+                    {text}
+                  </SelectItem>
+                );
+              })}
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
     </div>
   );
 }
