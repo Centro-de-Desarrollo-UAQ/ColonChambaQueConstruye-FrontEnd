@@ -229,7 +229,9 @@ export const states = [
   { value: 'TLA', label: 'Tlaxcala' },
   { value: 'VER', label: 'Veracruz de Ignacio de la Llave' },
   { value: 'YUC', label: 'Yucatán' },
-  { value: 'ZAC', label: 'Zacatecas' }
+  { value: 'ZAC', label: 'Zacatecas' },
+  { value: 'Fuera del territorio Mexicano', label: 'Fuera del territorio Mexicano' },
+ 
 
 ];
 
