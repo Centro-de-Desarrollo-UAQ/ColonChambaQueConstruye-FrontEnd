@@ -64,14 +64,14 @@ export const registerVacancy = z.object({
 
   minSalary: z.string()
     .min(1, DEFAULT_ERROR_MESSAGE)
-    .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
-      message: 'Ingrese un salario válido mayor a 0.',
+    .refine((val) => !isNaN(Number(val)) && Number(val) >= 1000, {
+      message: 'El salario mínimo debe ser al menos 1000.',
     }),
 
   maxSalary: z.string()
     .min(1, DEFAULT_ERROR_MESSAGE)
-    .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
-      message: 'Ingrese un salario válido mayor a 0.',
+    .refine((val) => !isNaN(Number(val)) && Number(val) >= 1000, {
+      message: 'El salario máximo debe ser al menos 1000.',
     }),
 
   benefits: z.string().min(1, DEFAULT_ERROR_MESSAGE),
@@ -101,8 +101,8 @@ export const registerVacancy = z.object({
   if (!isNaN(minSalary) && !isNaN(maxSalary) && minSalary >= maxSalary) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
-      message: 'El salario mínimo debe ser menor que el salario máximo.',
-      path: ['minSalary'],
+      message: 'El salario máximo debe ser mayor que el salario mínimo.',
+      path: ['maxSalary'],
     });
   }
 

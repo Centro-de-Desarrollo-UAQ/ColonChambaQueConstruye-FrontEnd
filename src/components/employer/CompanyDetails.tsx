@@ -21,7 +21,7 @@ export default function CompanyDetails({ control }: CompanyDetailsProps) {
 
         <FormInput
           control={control}
-          label="Nombre comercial *"
+          label="Nombre comercial "
           name="companyName"
           type="text"
           description="Ingresa el nombre con el que se conoce públicamente la empresa"
@@ -31,7 +31,7 @@ export default function CompanyDetails({ control }: CompanyDetailsProps) {
         <div className="grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2">
           <FormInput
             control={control}
-            label="Correo electrónico *"
+            label="Correo electrónico"
             name="companyEmail"
             type="email"
             description="Proporciona un correo electrónico de contacto oficial de la empresa"
@@ -40,7 +40,7 @@ export default function CompanyDetails({ control }: CompanyDetailsProps) {
 
           <FormComboBadgeSelector
             control={control}
-            label="Giro de la empresa *"
+            label="Giro de la empresa "
             name="companySector"
             options={sector}
             description="Selecciona la opción que mejor se adapte a tu empresa"
@@ -50,7 +50,7 @@ export default function CompanyDetails({ control }: CompanyDetailsProps) {
 
         <FormInput
           control={control}
-          label="Descripción *"
+          label="Descripción "
           name="companyDescription"
           type="textarea"
           description="Describe brevemente a qué se dedica la empresa, productos o servicios que ofrece"
@@ -60,7 +60,7 @@ export default function CompanyDetails({ control }: CompanyDetailsProps) {
         <div className="grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2">
           <FormComboBadgeSelector
             control={control}
-            label="País de inversión *"
+            label="País de inversión"
             name="companyInvestmentCountry"
             options={country}
             description="Selecciona el país desde el cual provienen los recursos o capital de inversión"
@@ -69,7 +69,7 @@ export default function CompanyDetails({ control }: CompanyDetailsProps) {
 
           <FormInput
             control={control}
-            label="Número de trabajadores *"
+            label="Número de trabajadores"
             name="companyEmlpoyeesNumber"
             type="text"
             description="Indica cuántos empleados tiene actualmente la empresa"
@@ -84,7 +84,7 @@ export default function CompanyDetails({ control }: CompanyDetailsProps) {
 
         <FormInput
           control={control}
-          label="RFC *"
+          label="RFC"
           name="companyRFC"
           type="text"
           maxChars={13}
@@ -93,7 +93,7 @@ export default function CompanyDetails({ control }: CompanyDetailsProps) {
 
         <FormInput
           control={control}
-          label="Razón social *"
+          label="Razón social"
           name="companyRazonSocial"
           type="text"
           maxChars={100}
@@ -106,37 +106,41 @@ export default function CompanyDetails({ control }: CompanyDetailsProps) {
         <div className="mx-auto h-px w-full max-w-[596px] rounded bg-gray-300" />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6 items-start">
-          <div className="flex flex-col">
-            <FormComboBadgeSelector
-              control={control}
-              label="País *"
-              name="companyAddressCountry"
-              options={country}
-              description="Selecciona el país donde se ubica la empresa"
-              multiple={false}
-            />
-            <p className="mt-1 text-xs leading-4 text-gray-500">Selecciona el país donde se ubica la empresa</p>
-          </div>
 
-          <div className="flex flex-col">
-            <FormComboBadgeSelector
-              control={control}
-              label="Estado *"
-              name="companyAddressState"
-              options={states}
-              description="Elige el estado o entidad federativa correspondiente a la ubicación de la empresa"
-              multiple={false}
-            />
-            <p className="mt-1 text-xs leading-4 text-gray-500">
-              Elige el estado o entidad federativa correspondiente a la ubicación de la empresa
-            </p>
-          </div>
+  {/* País */}
+  <div className="flex flex-col">
+    <FormComboBadgeSelector
+      control={control}
+      label="País"
+      name="companyAddressCountry"
+      options={country}
+      description="Selecciona el país donde se ubica la empresa"
+      multiple={false}
+    />
+    <p className="mt-1 text-xs leading-4 text-gray-500">
+      Selecciona el país donde se ubica la empresa
+    </p>
+  </div>
+
+        {/* Estado */}
+        <div className="flex flex-col">
+          <FormComboBadgeSelector
+            control={control}
+            label="Estado "
+            name="companyAddressState"
+            options={states}
+            description="Elige el estado o entidad federativa correspondiente a la ubicación de la empresa"
+            multiple={false}
+          />
+          <p className="mt-1 text-xs leading-4 text-gray-500">
+            Elige el estado o entidad federativa correspondiente a la ubicación de la empresa
+          </p>
         </div>
 
         <div className="grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2">
           <FormInput
             control={control}
-            label="Municipio *"
+            label="Municipio"
             name="companyAddressMunicipality"
             type="text"
             maxChars={100}
@@ -144,7 +148,7 @@ export default function CompanyDetails({ control }: CompanyDetailsProps) {
           />
           <FormInput
             control={control}
-            label="Colonia *"
+            label="Colonia"
             name="companyAddressColonia"
             type="text"
             maxChars={100}
@@ -155,7 +159,7 @@ export default function CompanyDetails({ control }: CompanyDetailsProps) {
         <div className="grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-3">
           <FormInput
             control={control}
-            label="Calle *"
+            label="Calle"
             name="companyAddressStreet"
             type="text"
             maxChars={100}
@@ -163,7 +167,7 @@ export default function CompanyDetails({ control }: CompanyDetailsProps) {
           />
           <FormInput
             control={control}
-            label="C.P. *"
+            label="C.P."
             name="companyAddressZip"
             type="text"
             maxChars={10}
@@ -171,7 +175,7 @@ export default function CompanyDetails({ control }: CompanyDetailsProps) {
           />
           <FormInput
             control={control}
-            label="No. Exterior *"
+            label="No. Exterior "
             name="companyAddressNo"
             type="text"
             maxChars={5}
