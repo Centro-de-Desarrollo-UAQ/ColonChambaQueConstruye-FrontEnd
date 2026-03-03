@@ -21,6 +21,7 @@ interface BaseModalTemplateProps {
 }
 
 export default function BaseModalTemplate({
+  open = true,
   onClose,
   onConfirm,
   texts,
@@ -48,35 +49,44 @@ export default function BaseModalTemplate({
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown, true);
-    return () => window.removeEventListener('keydown', handleKeyDown, true);
-  }, [onClose, handleConfirm]);
+    if (open) {
+      window.addEventListener('keydown', handleKeyDown, true);
+      return () => window.removeEventListener('keydown', handleKeyDown, true);
+    }
+  }, [onClose, handleConfirm, open]);
+
+  if (!open) return null;
 
   return (
     <div
-      className={`relative mx-auto w-full max-w-lg ${className}`}
-      onClick={(e) => e.stopPropagation()}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      onClick={onClose}
     >
-      <Tabs value="open">
-        <TabsContent value="open">
-          <Card className="flex flex-col bg-zinc-50 p-8">
-            <CardTitle>{texts.title}</CardTitle>
+      <div
+        className={`relative mx-auto w-full max-w-lg ${className}`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <Tabs value="open">
+          <TabsContent value="open">
+            <Card className="flex flex-col bg-zinc-50 p-8">
+              <CardTitle>{texts.title}</CardTitle>
 
-            <CardDescription className="my-4 text-card-foreground">
-              {texts.subtitle}
-            </CardDescription>
+              <CardDescription className="my-4 text-card-foreground">
+                {texts.subtitle}
+              </CardDescription>
 
-            <CardFooter className="flex justify-end gap-10 !p-0">
-              <Button variant="ghost" className="text-uaq-danger" onClick={onClose}>
-                {texts.cancel}
-              </Button>
-              <Button variant="ghost" className="text-success" onClick={handleConfirm}>
-                {texts.confirm}
-              </Button>
-            </CardFooter>
-          </Card>
-        </TabsContent>
-      </Tabs>
+              <CardFooter className="flex justify-end gap-10 !p-0">
+                <Button variant="ghost" className="text-uaq-danger" onClick={onClose}>
+                  {texts.cancel}
+                </Button>
+                <Button variant="ghost" className="text-success" onClick={handleConfirm}>
+                  {texts.confirm}
+                </Button>
+              </CardFooter>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 }

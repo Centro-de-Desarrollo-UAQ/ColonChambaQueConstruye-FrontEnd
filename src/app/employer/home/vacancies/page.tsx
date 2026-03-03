@@ -200,6 +200,7 @@ export default function VacanciesPage() {
       }
 
       const result = await response.json();
+      console.log(url)
       console.log('Vacancies fetched:', result);
 
       const rawVacancies = Array.isArray(result?.data?.vacancies)
@@ -209,15 +210,15 @@ export default function VacanciesPage() {
           : Array.isArray(result)
             ? result
             : [];
-
+      
       const mapped: VacancyRow[] = rawVacancies.map((item: any) => ({
         id: item.id,
         name: item.name ?? item.title ?? '',
         company: item.company?.name ?? item.company ?? 'Empresa',
         location: item.location ?? '',
         description: item.description ?? '',
-        workShift: item.workShift ?? item.schedule ?? '',
-        modality: item.modality ?? '',
+        workShift: item.name,
+        modality: item.modality,
         salaryRange:
           item.salary && typeof item.salary === 'object'
             ? `$${Number(item.salary.min).toLocaleString()} - $${Number(item.salary.max).toLocaleString()} MXN`

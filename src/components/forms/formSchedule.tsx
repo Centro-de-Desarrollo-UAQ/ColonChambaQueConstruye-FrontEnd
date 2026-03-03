@@ -1,5 +1,6 @@
-'use client';
+ 'use client';
 
+import { useEffect } from 'react';
 import {
   FormField,
   FormItem,
@@ -22,6 +23,8 @@ interface FormScheduleProps<T extends FieldValues> {
   name: Path<T>;
   minHourName: Path<T>;
   maxHourName: Path<T>;
+  minDefault?: string;
+  maxDefault?: string;
   label?: string;
   description?: string;
   minPlaceholder?: string;
@@ -79,6 +82,8 @@ export default function FormSchedule<T extends FieldValues>({
   description,
   minPlaceholder = 'HH:mm (ej. 20:10)',
   maxPlaceholder = 'HH:mm (ej. 23:30)',
+  minDefault = '09:00',
+  maxDefault = '17:00',
   disabled = false,
   className,
   optional = false,
@@ -93,6 +98,17 @@ export default function FormSchedule<T extends FieldValues>({
   // ✅ Validación de rango
   const startHour = useWatch({ control, name: minHourName });
   const endHour = useWatch({ control, name: maxHourName });
+
+  const { setValue } = context;
+
+  useEffect(() => {
+    if (!startHour) {
+      setValue(minHourName as any, minDefault as any);
+    }
+    if (!endHour) {
+      setValue(maxHourName as any, maxDefault as any);
+    }
+  }, []);
 
   const isValidRange = (() => {
     const start = safeString(startHour);
@@ -132,17 +148,17 @@ export default function FormSchedule<T extends FieldValues>({
                   name={minHourName}
                   render={({ field }) => (
                     <Input
-                      type="text"
-                      inputMode="numeric"
+                      type="time"
+                      step={60}
                       placeholder={minPlaceholder}
                       disabled={disabled}
                       value={safeString(field.value)}
-                      onChange={(e) => field.onChange(looseSanitize(e.target.value))}
-                      onBlur={() => {
-                        const formatted = formatOnBlur(safeString(field.value));
-                        field.onChange(formatted);
-                        field.onBlur();
+                      className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                      onChange={(e) => {
+                        const val = (e.target as HTMLInputElement).value; // expected HH:MM
+                        field.onChange(val || '');
                       }}
+                      onBlur={() => field.onBlur()}
                     />
                   )}
                 />
@@ -159,17 +175,17 @@ export default function FormSchedule<T extends FieldValues>({
                   name={maxHourName}
                   render={({ field }) => (
                     <Input
-                      type="text"
-                      inputMode="numeric"
+                      type="time"
+                      step={60}
                       placeholder={maxPlaceholder}
                       disabled={disabled}
                       value={safeString(field.value)}
-                      onChange={(e) => field.onChange(looseSanitize(e.target.value))}
-                      onBlur={() => {
-                        const formatted = formatOnBlur(safeString(field.value));
-                        field.onChange(formatted);
-                        field.onBlur();
+                      className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                      onChange={(e) => {
+                        const val = (e.target as HTMLInputElement).value;
+                        field.onChange(val || '');
                       }}
+                      onBlur={() => field.onBlur()}
                     />
                   )}
                 />
