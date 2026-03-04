@@ -17,9 +17,12 @@ import { apiService } from '@/services/api.service';
 import { useApplicantStore } from '@/app/store/authApplicantStore';
 import { toast } from 'sonner';
 
-
-import AllowVacancyModal from '@/components/ui/modal/AllowVacancy';
-import RejectVacancyModal from '@/components/ui/modal/RejectVacancyModal';
+/**
+ * Se corrigen las rutas de importación para asegurar la resolución de módulos.
+ * Se asume la estructura de carpetas estándar del proyecto.
+ */
+import AllowVacancyModal from '@/components/ui/modal/AllowUserModal';
+import RejectVacancyModal from '@/components/ui/modal/RejectUserModal';
 
 interface DrawerLinkerCompanyProps {
   companyData: CompanyData;
@@ -63,7 +66,8 @@ export default function DrawerLinkerCompany({
   const [showAllowModal, setShowAllowModal] = useState(false);
   const [showRejectModal, setShowRejectModal] = useState(false);
 
-  if (!companyData) return null;
+  // Validación defensiva: Si no hay datos o falta el objeto Company, no renderizamos.
+  if (!companyData || !companyData.Company) return null;
 
   const { Company, CompanyAccount } = companyData;
 
@@ -76,14 +80,12 @@ export default function DrawerLinkerCompany({
     setIsSubmitting(true);
     try {
       const endpoint = `/linkers/${linkerId}/companies/${Company.id}`;
-      
       const body = {
         validation,
         comment: comment || null
       };
 
       const response = await apiService.patch(endpoint, body);
-
       if (!response.ok) throw new Error('Fallo al actualizar estado');
 
       toast.success(validation ? 'Empresa aprobada correctamente.' : 'Empresa rechazada correctamente.');
@@ -92,9 +94,7 @@ export default function DrawerLinkerCompany({
       setShowRejectModal(false);
       setOpen(false);
 
-      if (onSuccess) {
-        onSuccess();
-      }
+      if (onSuccess) onSuccess();
     } catch (error) {
       console.error(error);
       toast.error('Ocurrió un error al procesar la solicitud.');
@@ -127,20 +127,19 @@ export default function DrawerLinkerCompany({
         <DrawerContent className="flex h-full w-[500px] overflow-y-auto overflow-x-hidden bg-gray-50 pt-5 outline-none">
           <DrawerHeader className="px-10">
             <div className="flex w-full items-center justify-between">
-              
               <div className='flex flex-col text-left space-y-1'>
                 <DrawerTitle className="text-2xl font-[800] uppercase text-brand-500 leading-tight">
                   EMPRESA:{' '}
-                  <span className="font-[800] tracking-wide">{Company.tradeName?.toUpperCase()}</span>
+                  <span className="font-[800] tracking-wide">{Company.tradeName?.toUpperCase() || 'N/A'}</span>
                 </DrawerTitle>
                 <span className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
-                  {Company.legalName}
+                  {Company.legalName || 'Razón Social no disponible'}
                 </span>
               </div>
 
               <div className="flex flex-row gap-4 shrink-0 items-center">
                 <Button 
-                  className="px-6"
+                  className="px-6 font-bold"
                   variant="primary" color="danger"
                   disabled={isSubmitting}
                   onClick={() => setShowRejectModal(true)}
@@ -148,7 +147,7 @@ export default function DrawerLinkerCompany({
                   Rechazar
                 </Button>
                 <Button 
-                  className="px-6 "
+                  className="px-6 font-bold"
                   variant="primary" color="success"
                   disabled={isSubmitting}
                   onClick={() => setShowAllowModal(true)}
@@ -160,104 +159,103 @@ export default function DrawerLinkerCompany({
           </DrawerHeader>
 
           <div className="w-10/12 bg-white mx-auto my-5 shadow-sm border border-gray-200 rounded-lg pb-5">
-            
             <div className="px-6 py-4 bg-gray-100 rounded-t-lg border-b">
-               <h3 className="font-bold text-gray-700">Información de la Empresa</h3>
+               <h3 className="font-bold text-gray-700 uppercase text-xs tracking-wider">Información de la Empresa</h3>
             </div>
 
             <div className="px-6 py-4 flex flex-col gap-2">
               <h3 className="text-sm font-bold text-gray-900">Descripción</h3>
               <p className="text-sm text-gray-600 whitespace-pre-wrap text-justify leading-relaxed break-words">
-                {Company.description || 'Sin descripción'}
+                {Company.description || 'Sin descripción disponible.'}
               </p>
             </div>
             <Separator className='w-11/12 mx-auto' />
 
             <div className="px-6 py-4 flex justify-between items-center">
-              <h3 className="text-sm font-bold w-1/3">RFC</h3>
-              <div className="w-2/3 text-sm text-gray-600 text-right">
-                {Company.rfc}
+              <h3 className="font-bold w-1/3 text-zinc-500 text-xs uppercase">RFC</h3>
+              <div className="w-2/3 text-sm font-semibold text-zinc-800 text-right uppercase">
+                {Company.rfc || 'N/A'}
               </div>
             </div>
             <Separator className='w-11/12 mx-auto' />
 
              <div className="px-6 py-4 flex justify-between items-center">
-              <h3 className="text-sm font-bold w-1/3">Giro</h3>
-              <div className="w-2/3 text-sm text-gray-600 text-right">
-                {Company.workSector}
+              <h3 className="font-bold w-1/3 text-zinc-500 text-xs uppercase">Giro</h3>
+              <div className="w-2/3 text-sm text-zinc-800 text-right">
+                {Company.workSector?.replace(/_/g, ' ') || 'No especificado'}
               </div>
             </div>
             <Separator className='w-11/12 mx-auto' />
             
             <div className="px-6 py-4 flex justify-between items-center">
-              <h3 className="text-sm font-bold w-1/3">Trabajadores</h3>
-              <div className="w-2/3 text-sm text-gray-600 text-right">
-                {Company.totalWorkers}
+              <h3 className="font-bold w-1/3 text-zinc-500 text-xs uppercase">Trabajadores</h3>
+              <div className="w-2/3 text-sm text-zinc-800 text-right">
+                {Company.totalWorkers || '0'}
               </div>
             </div>
             <Separator className='w-11/12 mx-auto' />
 
             <div className="px-6 py-4 flex justify-between items-start">
-              <h3 className="text-sm font-bold w-1/3 mt-1">Dirección</h3>
-              <div className="w-2/3 text-sm text-gray-600 text-right break-words">
-                {Company.street} #{Company.streetNumber}, {Company.district}, {Company.municipality}, {Company.state}, {Company.zipCode}
+              <h3 className=" font-bold w-1/3 mt-1 text-zinc-500 text-xs uppercase">Dirección</h3>
+              <div className="w-2/3 text-sm text-zinc-800 text-right break-words leading-tight">
+                {Company.street} {Company.streetNumber ? `#${Company.streetNumber}` : ''}, {Company.district}, {Company.municipality}, {Company.state}, {Company.zipCode}
               </div>
             </div>
             <Separator className='w-11/12 mx-auto' />
 
-            <div className="px-6 py-4 flex justify-between items-center">
-              <h3 className="text-sm font-bold w-1/3">Correo Empresa</h3>
-              <div className="w-2/3 text-sm text-gray-600 text-right">
-                {Company.companyEmail}
+            <div className="px-6 py-4 flex justify-between items-center text-uaq-brand">
+              <h3 className="font-bold w-1/3 text-xs uppercase">Correo Empresa</h3>
+              <div className="w-2/3 text-sm font-bold text-right truncate">
+                {Company.companyEmail || 'N/A'}
               </div>
             </div>
 
             <div className="mt-6 px-6 py-4 bg-gray-100 border-y">
-               <h3 className="font-bold text-gray-700">Datos del Contacto</h3>
+               <h3 className="font-bold text-gray-700 uppercase text-xs tracking-wider">Datos del Contacto Administrativo</h3>
             </div>
 
             <div className="px-6 py-4 flex justify-between items-center">
-              <h3 className="text-sm font-bold w-1/3">Nombre</h3>
-              <div className="w-2/3 text-sm text-gray-600 text-right">
-                {CompanyAccount.firstName} {CompanyAccount.lastName}
+              <h3 className=" font-bold w-1/3 text-zinc-500 text-xs uppercase">Nombre</h3>
+              <div className="w-2/3 text-sm font-semibold text-zinc-800 text-right uppercase">
+                {CompanyAccount?.firstName || 'Nombre'} {CompanyAccount?.lastName || 'no disponible'}
               </div>
             </div>
             <Separator className='w-11/12 mx-auto' />
 
             <div className="px-6 py-4 flex justify-between items-center">
-              <h3 className="text-sm font-bold w-1/3">Puesto</h3>
-              <div className="w-2/3 text-sm text-gray-600 text-right">
-                {CompanyAccount.jobTitle}
+              <h3 className="font-bold w-1/3 text-zinc-500 text-xs uppercase">Puesto</h3>
+              <div className="w-2/3 text-sm text-zinc-800 text-right">
+                {CompanyAccount?.jobTitle || 'N/A'}
               </div>
             </div>
             <Separator className='w-11/12 mx-auto' />
 
             <div className="px-6 py-4 flex justify-between items-center">
-              <h3 className="text-sm font-bold w-1/3">Teléfono</h3>
-              <div className="w-2/3 text-sm text-gray-600 text-right">
-                {CompanyAccount.cellPhone}
+              <h3 className="font-bold w-1/3 text-zinc-500 text-xs uppercase">Teléfono</h3>
+              <div className="w-2/3 text-sm text-zinc-800 text-right">
+                {CompanyAccount?.cellPhone || CompanyAccount?.landlinePhone || 'N/A'}
               </div>
             </div>
             <Separator className='w-11/12 mx-auto' />
 
             <div className="px-6 py-4 flex justify-between items-center">
-              <h3 className="text-sm font-bold w-1/3">Email Personal</h3>
-              <div className="w-2/3 text-sm text-gray-600 text-right">
-                {CompanyAccount.email}
+              <h3 className=" font-bold w-1/3 text-zinc-500 text-xs uppercase">Email Personal</h3>
+              <div className="w-2/3 text-sm text-zinc-800 text-right truncate">
+                {CompanyAccount?.email || 'N/A'}
               </div>
             </div>
 
           </div>
 
           <DrawerClose className='text-sm font-bold hover:bg-zinc-200 border-0 text-red-500 px-4 py-3 rounded-md mx-auto mb-7 cursor-pointer transition-colors' onClick={() => setOpen(false)}>
-            Cancelar
+            Cerrar Panel
           </DrawerClose>
         </DrawerContent>
       </Drawer>
 
       {/* MODALES DE ACCIÓN CON PORTAL */}
       {mounted && showAllowModal && createPortal(
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <AllowVacancyModal 
             open={true}
             onClose={() => setShowAllowModal(false)}
@@ -268,11 +266,11 @@ export default function DrawerLinkerCompany({
       )}
 
       {mounted && showRejectModal && createPortal(
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <RejectVacancyModal 
             open={true}
-            companyName={Company.tradeName}
-            roleTitle={Company.legalName}
+            userName={Company.tradeName}
+            email={Company.legalName}
             onClose={() => setShowRejectModal(false)}
             onConfirm={handleRejectConfirm}
           />
