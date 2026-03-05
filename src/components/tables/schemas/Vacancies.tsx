@@ -6,7 +6,7 @@ import { dateToLocaleDateString } from '@/lib/utils';
 import React from 'react';
 import RowActions from './VacanciesActions';
 import { Vacancy } from '@/interfaces/vacancy';
-import { VacancyRow } from '@/app/employer/home/vacancies/page';
+import { VacancyRow } from '@/interfaces/company';
 
 export const createVacanciesColumns = (
   onCloseVacancy?: (vacancyId: string) => void,
