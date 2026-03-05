@@ -192,7 +192,7 @@ export default function VacanciesPage() {
       const url = `/companies/${companyId}/vacancies?${params.toString()}`;
       const response = await apiService.get(url);
 
-      
+
 
       if (!response?.ok) {
         setVacancies([]);
@@ -210,14 +210,14 @@ export default function VacanciesPage() {
           : Array.isArray(result)
             ? result
             : [];
-      
+
       const mapped: VacancyRow[] = rawVacancies.map((item: any) => ({
         id: item.id,
         name: item.name ?? item.title ?? '',
         company: item.company?.name ?? item.company ?? 'Empresa',
         location: item.location ?? '',
         description: item.description ?? '',
-        workShift: item.name,
+        workShift: item.workShift,
         modality: item.modality,
         salaryRange:
           item.salary && typeof item.salary === 'object'
