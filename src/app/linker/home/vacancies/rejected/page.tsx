@@ -15,7 +15,7 @@ import { apiService } from '@/services/api.service';
 import { 
   JobCardProps, 
   BackendVacancyResponse, 
-  VacancyStatus 
+  mapBackendVacancyToJobCard
 } from '@/interfaces/jobCard';
 
 export default function VacanciesRejectedPage() {
@@ -25,6 +25,7 @@ export default function VacanciesRejectedPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10); 
   const [totalItems, setTotalItems] = useState(0); 
+
   const sectionConfig = {
     talents: {
       title: 'SOLICITUDES DE VACANTES RECHAZADAS', 
@@ -61,49 +62,7 @@ export default function VacanciesRejectedPage() {
           
           setTotalItems(result.data.total || 0);
 
-          const mappedVacancies: JobCardProps[] = serverVacancies.map((item) => {
-            const ageRangeArray = item.Vacancy.ageRange;
-            const formattedAgeRange = (Array.isArray(ageRangeArray) && ageRangeArray.length === 2)
-                ? { min: ageRangeArray[0], max: ageRangeArray[1] }
-                : { min: 18, max: 65 };
-
-            return {
-                id: item.Vacancy.id,
-                status: (item.Vacancy.status || 'RECHAZADA') as VacancyStatus,
-                title: item.Vacancy.name,
-                company: item.Company.tradeName,
-                description: item.Vacancy.description || "No especificado|error",
-                location: item.Vacancy.location,
-                
-                salaryRange: item.Vacancy.salary 
-                ? `$${item.Vacancy.salary.min} - $${item.Vacancy.salary.max} ${item.Vacancy.salary.coin}`
-                : "No especificado|error",
-
-                modality: item.Vacancy.modality,
-                schedule: item.Vacancy.workShift,
-                createdAt: item.Vacancy.createdAt,
-                numberOfPositions: item.Vacancy.numberOpenings,
-
-                sector: item.Vacancy.businessSector 
-                ? item.Vacancy.businessSector.replace(/_/g, ' ') 
-                : 'No especificado',
-
-                BenefitsSection: item.Vacancy.benefits || "No especificado|error",
-                degree: item.Vacancy.requiredDegree || "No especificado|error",
-                gender: item.Vacancy.gender || "No especificado|error",
-                ageRange: formattedAgeRange,
-                AdditionalInformation: item.Vacancy.additionalInformation || "No especificado|error",
-                RequiredExperience: item.Vacancy.experience || "No especificado|error",
-
-                logoUrl: undefined,
-                cellPhone: item.Company.phone || "No especificado|error",
-                email: item.Company.email || "No especificado|error",
-                
-                companyDetails: {
-                legalName: item.Company.legalName,
-                }
-            };
-          });
+          const mappedVacancies: JobCardProps[] = serverVacancies.map(mapBackendVacancyToJobCard);
 
           setVacancies(mappedVacancies);
         } else {
@@ -170,23 +129,25 @@ export default function VacanciesRejectedPage() {
                 />
               ))}
 
-              <div className="mt-6 border-t pt-4">
-                <PaginationControl
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  pageSize={pageSize}
-                  totalItems={totalItems}
-                  onPageChange={(page) => {
-                    setCurrentPage(page);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                  onPageSizeChange={(size) => {
-                    setPageSize(size);
-                    setCurrentPage(1);
-                  }}
-                  pageSizeOptions={[10, 20, 30, 40, 50]}
-                />
-              </div>
+              {filteredItems.length > 0 && (
+                <div className="mt-6 border-t pt-4">
+                  <PaginationControl
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    pageSize={pageSize}
+                    totalItems={totalItems}
+                    onPageChange={(page) => {
+                      setCurrentPage(page);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    onPageSizeChange={(size) => {
+                      setPageSize(size);
+                      setCurrentPage(1);
+                    }}
+                    pageSizeOptions={[10, 20, 30, 40, 50]}
+                  />
+                </div>
+              )}
             </div>
           )}
           multiMode='OR'

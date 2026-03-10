@@ -1,5 +1,12 @@
 export type VacancyStatus = 'ABIERTA' | 'APROBADA' | 'CERRADA' | 'INACTIVA' | 'RECHAZADA' | 'REVISION';
 
+export interface BackendVacancyResponse {
+  data: {
+    vacancies: BackendVacancyItem[];
+    total: number;
+  };
+}
+
 export interface BackendVacancyItem {
   Vacancy: {
     id: string;
@@ -19,7 +26,8 @@ export interface BackendVacancyItem {
     requiredDegree?: string;      
     experience?: string;          
     gender?: string | null;       
-    ageRange?: [number, number];  
+    ageRange?: [number, number];
+    comment?: string; 
   };
   Company: {
     id: string;
@@ -46,6 +54,7 @@ export interface CompanyDetails {
 export interface JobCardProps {
   id: string;
   status: VacancyStatus;
+  comment?: string; // <-- AGREGADO
   title: string;
   company: string;
   location: string;
@@ -78,6 +87,7 @@ export const mapBackendVacancyToJobCard = (item: BackendVacancyItem): JobCardPro
   return {
     id: v.id,
     status: v.status as VacancyStatus,
+    comment: v.comment, // <-- AGREGADO
     title: v.name || 'Sin título',
     company: c.tradeName || c.legalName || 'Empresa desconocida',
     location: v.location || 'Ubicación no especificada',

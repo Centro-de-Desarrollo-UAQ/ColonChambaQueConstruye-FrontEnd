@@ -1,23 +1,18 @@
 'use client';
 
-import { Industry } from '@/interfaces/industries';
-import UniversalCardsFilter from '@/components/ui/UniversalCardFilter';
+import React, { useEffect, useState, useCallback } from 'react';
 import { FileRemove, InboxIn } from '@solar-icons/react';
+import { toast } from 'sonner';
+
+import UniversalCardsFilter from '@/components/ui/UniversalCardFilter';
 import TitleSection from '@/components/common/TitleSection';
-import { testDataUser } from '@/data/testDataUsers';
-import { UserCandidate } from '@/interfaces/usercandidates';
 import UserLinkerCard from '@/components/linker/UserLinkerCard';
-import { User } from 'lucide-react';
 import { UserSearchFilters } from '@/components/linker/CompanySearchEmploy';
+import PaginationControl from '@/components/navigation/paginationControl';
 
-
-type Filters = {
-  modality: string;
-  workdayType: string;
-  state: string;
-  industry?: Industry | ''
-  registerDate?:string
-};
+import { UserCandidate } from '@/interfaces/usercandidates';
+import { useApplicantStore } from '@/app/store/authApplicantStore';
+import { apiService } from '@/services/api.service';
 
 export const workShiftLabelMap: Record<string, string> = {
   TIEMPO_COMPLETO: "Tiempo completo",
@@ -27,58 +22,138 @@ export const workShiftLabelMap: Record<string, string> = {
   PRACTICAS: "Prácticas",
 };
 
-// Datos de ejemplo: uno APROBADA, uno ABIERTA, uno CERRADA, otro RECHAZADA (no se mostrará)
+interface UserApiResponse {
+  statusCode: number;
+  message: string;
+  data: {
+    User: UserCandidate[];
+  }[];
+}
 
 export default function CompaniesRejectedPage() {
+  const { token, id: linkerId } = useApplicantStore();
+
+  const [users, setUsers] = useState<UserCandidate[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalItems, setTotalItems] = useState(0);
+
   const sectionConfig = {
     talents: {
       title: 'SOLICITUDES RECHAZADAS DE BUSCADORES DE EMPLEO',
-      icon: <InboxIn size={24} weight="Bold" />,
-      description: '',
+      icon: <InboxIn className="w-6 h-6" weight="Bold" />,
+      description: 'Consulta los perfiles que han sido rechazados.',
     },
   };
 
-  const allowedStatuses = new Set(['RECHAZADO']);
-    const visibleUsers = testDataUser.filter((user) =>
-      allowedStatuses.has(String(user.status ?? '').toUpperCase())
-    );
+  const fetchRejectedUsers = useCallback(async () => {
+    if (!token || !linkerId) {
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const offset = (currentPage - 1) * pageSize;
+      
+      const query = new URLSearchParams({
+        status: 'RECHAZADO', 
+        limit: pageSize.toString(),
+        offset: offset.toString(),
+      });
+
+      const response = await apiService.get(`/linkers/${linkerId}/users?${query.toString()}`);
+
+      if (response.ok) {
+        const result: UserApiResponse = await response.json();
+        const cleanData = result.data.flatMap((item) => item.User);
+        
+        // Calculamos un estimado del total si el backend no envía el 'total' exacto
+        const calculatedTotal = offset + cleanData.length + (cleanData.length === pageSize ? 1 : 0);
+
+        setUsers(cleanData);
+        setTotalItems(calculatedTotal);
+      } else {
+        toast.error("Error al obtener las solicitudes rechazadas");
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+      toast.error("Error de conexión al cargar los usuarios");
+    } finally {
+      setLoading(false);
+    }
+  }, [linkerId, currentPage, token, pageSize]);
+
+  useEffect(() => {
+    fetchRejectedUsers();
+  }, [fetchRejectedUsers]);
+
+  const totalPages = Math.ceil(totalItems / pageSize) || 1;
 
   return (
-    <>
-      <div className="mx-32 flex flex-col gap-5 m-10">
-        <div className="">
-          <TitleSection sections={sectionConfig} currentSection={'talents'} />
-        </div>
-        <div className=''>
-          <UniversalCardsFilter<UserCandidate>
-            items={visibleUsers}
-            filters={UserSearchFilters}
-            accessors={{
-              name: (u) =>
-                `${u.firstName} ${u.lastName} ${u.desiredPosition} `,
-              educationLevel: (u) => u.educationLevel,
-              registrationDate: (u) => u.registrationDate,
-            }}
-            render={(filtered) => (
-              <div className="space-y-4">
-                {!filtered.length &&
-                <>
-                  <div className="flex flex-col items-center justify-center gap-4 m-10 text-gray-300 font-bold">
-                    <FileRemove className="w-50 h-50 text-gray-300" />
-                    <h1>NO SE ENCONTRARON RESULTADOS PARA TU BÚSQUEDA</h1>
-                    <h1>INTENTA CON OTRAS PALABRAS CLAVE O REVISA SI HAY ERRORES DE ESCRITURA</h1>
+    <div className="mx-auto max-w-5xl flex flex-col gap-5 p-10 font-sans">
+      <TitleSection sections={sectionConfig} currentSection={'talents'} />
+
+      <div className={`transition-opacity duration-300 ${loading ? 'opacity-60 pointer-events-none' : 'opacity-100'}`}>
+        <UniversalCardsFilter
+          items={users}
+          filters={UserSearchFilters}
+          accessors={{
+            name: (u: UserCandidate) => `${u.firstName || ''} ${u.lastName || ''} ${u.desiredPosition || ''}`,
+            academicLevel: (u: UserCandidate) => u.academicLevel || '',
+            registeredAt: (u: UserCandidate) => u.registeredAt || '',
+          }}
+          render={(filtered: UserCandidate[]) => (
+            <div className="space-y-4">
+              
+              {!loading && filtered.length === 0 && (
+                <div className="flex flex-col items-center justify-center gap-4 py-16 text-gray-400 text-center bg-gray-50 rounded-xl border border-dashed border-gray-300">
+                  <FileRemove className="w-16 h-16 text-gray-300" />
+                  <div>
+                    <h2 className="font-bold text-lg text-gray-500">NO SE ENCONTRARON RESULTADOS</h2>
+                    <p className="text-sm font-normal mt-1">
+                      Intenta con otras palabras clave o no hay perfiles rechazados aún.
+                    </p>
                   </div>
-                </>
-                }
-                {filtered.map((user) => (
-                    <UserLinkerCard key={user.id} user={user} />
-                ))}
-              </div>
-            )}
-            multiMode='OR'
-          />
-        </div>
+                </div>
+              )}
+              
+              {filtered.map((user) => (
+                <UserLinkerCard key={user.id} user={user} />
+              ))}
+
+              {users.length > 0 && (
+                <div className="border-t border-gray-200 pt-2 mt-6">
+                  <PaginationControl
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    pageSize={pageSize}
+                    totalItems={totalItems}
+                    onPageChange={(page: number) => {
+                      setCurrentPage(page);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    onPageSizeChange={(size: number) => {
+                      setPageSize(size);
+                      setCurrentPage(1);
+                    }}
+                    pageSizeOptions={[10, 20, 30, 40, 50]}
+                  />
+                </div>
+              )}
+            </div>
+          )}
+          multiMode='OR'
+        />
       </div>
-    </>
+      
+      {loading && users.length === 0 && (
+        <div className="flex h-64 items-center justify-center -mt-20">
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600"></div>
+        </div>
+      )}
+    </div>
   );
 }
