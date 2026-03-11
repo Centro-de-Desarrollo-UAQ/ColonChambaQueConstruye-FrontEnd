@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback } from 'react';
 import TitleSection from '@/components/common/TitleSection';
 import { createVacanciesColumns } from '@/components/tables/schemas/Vacancies';
 import { Button } from '@/components/ui/button';
-import { CaseRound } from '@solar-icons/react';
+import { CaseRound, NotificationLinesRemove } from '@solar-icons/react';
 import { DataTableCustomSearchBar } from '@/components/tables/layouts/DateTableCustomSearchBar';
 import { filtersVacancies } from '@/data/filtersVacancies';
 import { useCompanyStore } from '@/app/store/authCompanyStore';
@@ -76,9 +76,11 @@ const VacanciesContent = ({
         />
       </div>
     ) : (
-      <div className="flex w-full flex-col items-center justify-center text-center">
-        {/* Recordatorio de limpiar esto, no se quien lo puso pero X */}
-      </div>
+      <div className="flex w-full flex-col items-center justify-center py-16 text-center text-gray-300 gap-3">
+          <NotificationLinesRemove weight={'Linear'} size={200}  />
+          <h3 className="text-xl font-semibold">NO SE ENCONTRARON VACANTES QUE CUMPLAN CON LA DESCREIPCIÓN </h3>
+          
+        </div>
     ),
   };
 
