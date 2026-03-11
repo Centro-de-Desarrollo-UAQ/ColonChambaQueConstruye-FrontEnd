@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback } from 'react';
 import TitleSection from '@/components/common/TitleSection';
 import { createVacanciesColumns } from '@/components/tables/schemas/Vacancies';
 import { Button } from '@/components/ui/button';
-import { CaseRound } from '@solar-icons/react';
+import { CaseRound, NotificationLinesRemove } from '@solar-icons/react';
 import { DataTableCustomSearchBar } from '@/components/tables/layouts/DateTableCustomSearchBar';
 import { filtersVacancies } from '@/data/filtersVacancies';
 import { useCompanyStore } from '@/app/store/authCompanyStore';
