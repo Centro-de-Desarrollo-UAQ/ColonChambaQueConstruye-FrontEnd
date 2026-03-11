@@ -15,7 +15,7 @@ export interface CompanyC {
   id: string;
   tradeName: string;
   legalName: string;
-  zipCode: string; 
+  zipCode: string;
   street: string;
   state: string;
   district: string;
@@ -27,11 +27,11 @@ export interface CompanyC {
   rfc: string;
   description: string;
   companyEmail: string;
-  workSector: string; 
-  registeredAt: string; 
-  status: 'REVISION' | 'ACTIVA' | 'INACTIVA' | 'RECHAZADA'; 
+  workSector: string;
+  registeredAt: string;
+  status: 'REVISION' | 'ACTIVA' | 'INACTIVA' | 'RECHAZADA';
   comment: string | null;
-  LinkerId: string | null; 
+  LinkerId: string | null;
 }
 
 export interface CompanyAccount {
@@ -47,4 +47,19 @@ export interface CompanyAccount {
 export interface CompanyData {
   Company: CompanyC;
   CompanyAccount: CompanyAccount;
+}
+
+export interface VacancyRow {
+  id: string;
+  name: string;
+  description: string;
+  location: string;
+  modality: string;
+  workShift: string;
+  company: string;
+  logoUrl: string;
+  numberOpenings: number;
+  salaryRange: string;
+  status: string;
+  dateFilter: string;
 }
