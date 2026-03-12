@@ -1,22 +1,16 @@
 import Image from 'next/image';
 import { Balloon, Buildings, Calendar, ClockCircle, Dollar, Gps, MapPoint, User, Letter, PhoneCalling, AddCircle, InboxIn } from '@solar-icons/react';
-import { JobCardProps } from '@/interfaces';
+import { JobCardProps } from '@/interfaces/jobCard'; 
 import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
-import { Button } from '../ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { workShiftLabelMap } from '@/constants';
-import { Separator } from '../ui/separator';
-import { DataVacancies } from '../../data/testDataVacancies';
-import { stat } from 'fs';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Separator } from '@/components/ui/separator';
 
 interface jobCardApplicationProps {
   job: JobCardProps;
@@ -25,6 +19,14 @@ interface jobCardApplicationProps {
   company: string;
 }
 
+const workShiftLabelMap: Record<string, string> = {
+  TIEMPO_COMPLETO: "Tiempo completo",
+  MEDIO_TIEMPO: "Medio tiempo",
+  HORARIO_FLEXIBLE: "Horario flexible",
+  PAGO_HORA: "Pago por hora",
+  PRACTICAS: "Prácticas",
+};
+
 function getInitials(company: string) {
     return company
         .split(' ')
@@ -32,24 +34,6 @@ function getInitials(company: string) {
         .join('')
         .slice(0, 2); 
 }
-
-function daysSince(date: string): number {
-  const today = new Date();
-  const registeredDate = new Date(date);
-  today.setHours(0, 0, 0, 0);
-  registeredDate.setHours(0, 0, 0, 0);
-
-  const diffMs = today.getTime() - registeredDate.getTime();
-  return Math.floor(diffMs / (1000 * 60 * 60 * 24));
-}
-
- function  handleAcceptVacancy(id: string) {
-   console.log(`Vacante con ID ${id} aceptada.`);
- }
-
- function handleRejectVacancy(id: string) {
-   console.log(`Vacante con ID ${id} rechazada.`);
- }
 
 export default function UserLinkerVacanciesCard({
   job, sideDrawer, company, logoUrl
@@ -60,6 +44,8 @@ export default function UserLinkerVacanciesCard({
   return (
     <div className="hover:border-uaq-brand-800 group flex flex-col rounded-lg border border-zinc-300 shadow-sm transition-all duration-300 hover:translate-y-[-2px] hover:shadow-md">
         <Drawer direction={sideDrawer === "left" ? "left" : "right"}>
+          
+          {/* VISTA PRINCIPAL DE LA TARJETA */}
           <div className="flex flex-row max-w-full items-center align-middle justify-between p-3">
             <div className="flex-shrink-0 rounded-l-lg pl-4 transition-colors duration-300">
               <Avatar className="h-18 w-18 object-contain">
@@ -72,8 +58,8 @@ export default function UserLinkerVacanciesCard({
 
             <div className="flex flex-1 flex-col self-center px-4 py-4 transition-colors duration-300">
               <div className="flex-1 space-y-1 text-start">
-                <div className="text-lg font-[800]">{job.title /* Nombre del trabajo */}</div>
-                <div className="text-l">{job.company /* Nombre de la empresa */}</div>
+                <div className="text-lg font-[800] text-gray-900">{job.title}</div>
+                <div className="text-l text-gray-600">{job.company}</div>
               </div>
             </div>
 
@@ -84,29 +70,27 @@ export default function UserLinkerVacanciesCard({
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-700 transition-colors duration-200 group-hover:text-gray-900">
                 <Gps className="h-4 w-4" weight="Linear" />
-                <span>{job.modality /* Modalidad de empleo (híbrido, remoto, presencial) */}</span>
+                <span>{job.modality}</span>
               </div>
             </div>
-
           </div>
 
-          {/* Fila 2 - Descripción del trabajo y direccion de la empresa */}
           <div className="flex flex-col px-2">
             <div className="flex items-center gap-2 text-sm text-gray-400 transition-colors duration-200 group-hover:text-gray-500 mx-3">
               <MapPoint className="h-4 w-4" weight="Linear" />
-              <span className="whitespace-nowrap">{job.location /* Dirección de la empresa */}</span>
+              <span className="whitespace-nowrap">{job.location}</span>
             </div>
 
             <div className="flex flex-1 flex-col px-4 py-4 transition-colors duration-300">
               <div className="flex-1 space-y-1 text-start">
-                <div className="text-start font-[400] text-gray-600 line-clamp-3 break-all">{job.description /* Descripción del trabajo */}</div>
+                <div className="text-start font-[400] text-gray-600 line-clamp-3 break-all">{job.description}</div>
               </div>
             </div>
           </div>
 
           <div className="flex flex-row px-5 mb-5 justify-between items-center">
             <div className="flex items-center gap-2 text-l font-[600] text-brand transition-colors duration-200 group-hover:text-brand-hover mx-3">
-              <span className="text-start">{job.salaryRange /* Rango salarial */}</span>
+              <span className="text-start">{job.salaryRange}</span>
             </div>
 
             <div className="flex flex-1 flex-col self-center px-4 transition-colors duration-300 items-end">
@@ -117,120 +101,139 @@ export default function UserLinkerVacanciesCard({
             </div>
           </div>
         
-          {/* Drawer Content */}
-          <DrawerContent className=" flex overflow-y-auto overflow-x-hidden bg-gray-50 pt-5">
-              <DrawerHeader className="px-10">
-                <div className="flex w-full items-center justify-between">
-                  {/* TÍTULO */}
-                  <DrawerTitle className="text-2xl font-[800]">
+          {/* DRAWER CONTENT CON SCROLL Y WRAPPING CORREGIDO */}
+          <DrawerContent className="flex flex-col bg-gray-50 h-full max-h-[100dvh]">
+              <DrawerHeader className="px-6 sm:px-10 shrink-0">
+                <div className="flex w-full items-center justify-between gap-4">
+                  <DrawerTitle className="text-xl sm:text-2xl font-[800] break-words min-w-0 flex-1">
                     VACANTE:{' '}
                     <span className="font-[800] tracking-wide">
                       {job.title.toUpperCase()}
                     </span>
                   </DrawerTitle>
 
-                  <div className={`text-white text-lg font-semibold px-4 py-2 rounded-lg ${
+                  <div className={`text-white text-xs sm:text-lg font-semibold px-3 sm:px-4 py-1 sm:py-2 rounded-lg shrink-0 ${
                     (String(job.status ?? '').toUpperCase() === 'RECHAZADA') ? 'bg-uaq-danger' : 'bg-success'
                   }`}>
-                    {String(job.status ?? '').toUpperCase() === 'RECHAZADA' ? (
-                      <div>
-                        RECHAZADA
-                      </div>
-                    ) :  (
-                      <div>
-                        APROBADA
-                      </div>
-                    )}
+                    {String(job.status ?? '').toUpperCase() === 'RECHAZADA' ? 'RECHAZADA' : 'APROBADA'}
                   </div>
                 </div>
-
-                  
               </DrawerHeader>
-              <div className="w-10/12 bg-white justify-center mx-auto my-5 my-5shadow-md border border-gray-200 rounded-lg">
 
-                {/* Número de plazas */}
-                <div className="px-10 py-6 flex justify-between">
-                  <h3 className="text-base font-medium w-1/3">Número de plazas</h3>
-                  <div className="w-2/3">
-                    <span>{job.numberOfPositions}</span>
+              {/* CONTENEDOR CON SCROLL QUE PERMITE VER TODO EL CONTENIDO */}
+              <div className="flex-1 overflow-y-auto px-4 sm:px-10 pb-10">
+                
+                {/* --- SECCIÓN DE MOTIVO DE RECHAZO (CORRECCIÓN DE WRAPPING) --- */}
+                {String(job.status ?? '').toUpperCase() === 'RECHAZADA' && (
+                  <div className="w-full max-w-4xl bg-red-50 mx-auto mt-4 mb-4 shadow-sm border border-red-200 rounded-lg overflow-hidden">
+                    <div className="px-6 py-6 flex flex-col items-start gap-3">
+                      <h3 className="text-base font-bold text-red-700 shrink-0">
+                        Motivo de rechazo
+                      </h3>
+                      <div className="w-full min-w-0">
+                        {/* Se usa break-words y whitespace-pre-wrap para que el texto largo se ajuste al contenedor */}
+                        <p className="text-red-800 font-medium whitespace-pre-wrap break-words leading-relaxed text-sm sm:text-base">
+                          {job.comment || 'Motivo no especificado en el sistema.'}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <Separator className='w-11/12 justify-center mx-auto shadow-md rounded-lg' />
+                )}
 
-                {/* Descripción */}
-                <div className="px-10 py-6 flex justify-between">
-                  <h3 className="text-base font-medium w-1/3">Descripción</h3>
-                  <div className="w-2/3">
-                    <p className="leading-relaxed text-gray-800">
-                      {job.description}
-                    </p>
-                  </div>
-                </div>
-                <Separator className='w-11/12 justify-center mx-auto shadow-md rounded-lg' />
+                {/* --- BLOQUE DE INFORMACIÓN GENERAL --- */}
+                <div className="w-full max-w-4xl bg-white justify-center mx-auto mb-5 shadow-md border border-gray-200 rounded-lg overflow-hidden">
 
-                {/* Sueldo mensual */}
-                <div className="px-10 py-6 flex justify-between">
-                  <h3 className="text-base font-medium w-1/3">Sueldo mensual</h3>
-                  <div className="w-2/3">
-                    <span>
-                      {job.salaryRange}
-                    </span>
+                  {/* Número de plazas */}
+                  <div className="px-6 sm:px-10 py-6 flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
+                    <h3 className="text-base font-medium w-full sm:w-1/3 shrink-0 text-gray-900">Número de plazas</h3>
+                    <div className="w-full sm:w-2/3 min-w-0 break-words text-gray-700">
+                      <span>{job.numberOfPositions}</span>
+                    </div>
                   </div>
-                </div>
-                <Separator className='w-11/12 justify-center mx-auto shadow-md rounded-lg' />
+                  <Separator className='w-11/12 justify-center mx-auto' />
 
-                {/* Modalidad */}
-                <div className="px-10 py-6 flex justify-between">
-                  <h3 className="text-base font-medium w-1/3">Prestaciones</h3>
-                  <div className="w-2/3">
-                    <span>{job.BenefitsSection}</span>
+                  {/* Descripción */}
+                  <div className="px-6 sm:px-10 py-6 flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
+                    <h3 className="text-base font-medium w-full sm:w-1/3 shrink-0 text-gray-900">Descripción</h3>
+                    <div className="w-full sm:w-2/3 min-w-0 break-words text-gray-700">
+                      <p className="leading-relaxed whitespace-pre-wrap">
+                        {job.description}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <Separator className='w-11/12 justify-center mx-auto shadow-md rounded-lg' />
+                  <Separator className='w-11/12 justify-center mx-auto' />
 
-                {/* Modalidad */}
-                <div className="px-10 py-6 flex justify-between">
-                  <h3 className="text-base font-medium w-1/3">Escolaridad requerida</h3>
-                  <div className="w-2/3">
-                    <span>{job.degree?.toLowerCase()}</span>
+                  {/* Sueldo mensual */}
+                  <div className="px-6 sm:px-10 py-6 flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
+                    <h3 className="text-base font-medium w-full sm:w-1/3 shrink-0 text-gray-900">Sueldo mensual</h3>
+                    <div className="w-full sm:w-2/3 min-w-0 break-words text-gray-700 font-semibold">
+                      <span>{job.salaryRange}</span>
+                    </div>
                   </div>
-                </div>
-                <Separator className='w-11/12 justify-center mx-auto shadow-md rounded-lg' />
+                  <Separator className='w-11/12 justify-center mx-auto' />
 
-                 {/* Modalidad */}
-                <div className="px-10 py-6 flex justify-between">
-                  <h3 className="text-base font-medium w-1/3">Horarios</h3>
-                  <div className="w-2/3">
-                    {workShiftLabelMap[job.schedule] ?? job.schedule}
+                  {/* Prestaciones */}
+                  <div className="px-6 sm:px-10 py-6 flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
+                    <h3 className="text-base font-medium w-full sm:w-1/3 shrink-0 text-gray-900">Prestaciones</h3>
+                    <div className="w-full sm:w-2/3 min-w-0 break-words text-gray-700">
+                      <p className="whitespace-pre-wrap">{job.BenefitsSection}</p>
+                    </div>
                   </div>
-                </div>
-                <Separator className='w-11/12 justify-center mx-auto shadow-md rounded-lg' />
+                  <Separator className='w-11/12 justify-center mx-auto' />
 
-                <div className="px-10 py-6 flex justify-between">
-                  <h3 className="text-base font-medium w-1/3">Género</h3>
-                  <div className="w-2/3">
-                    <span>{job.gender ?? 'Indistinto'}</span>
+                  {/* Escolaridad requerida */}
+                  <div className="px-6 sm:px-10 py-6 flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
+                    <h3 className="text-base font-medium w-full sm:w-1/3 shrink-0 text-gray-900">Escolaridad requerida</h3>
+                    <div className="w-full sm:w-2/3 min-w-0 break-words text-gray-700">
+                      <span className="capitalize">{job.degree?.toLowerCase()}</span>
+                    </div>
                   </div>
-                </div>
-                <Separator className='w-11/12 justify-center mx-auto shadow-md rounded-lg' />
+                  <Separator className='w-11/12 justify-center mx-auto' />
 
-                 <div className="px-10 py-6 flex justify-between">
-                  <h3 className="text-base font-medium w-1/3">Rango de edad</h3>
-                  <div className="w-2/3">
-                    <span>{job.ageRange?.min ?? '-'} - {job.ageRange?.max ?? '-'}</span>
+                  {/* Horarios */}
+                  <div className="px-6 sm:px-10 py-6 flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
+                    <h3 className="text-base font-medium w-full sm:w-1/3 shrink-0 text-gray-900">Horarios</h3>
+                    <div className="w-full sm:w-2/3 min-w-0 break-words text-gray-700">
+                      {workShiftLabelMap[job.schedule] ?? job.schedule}
+                    </div>
                   </div>
-                </div>
-                <Separator className='w-11/12 justify-center mx-auto shadow-md rounded-lg' />
-                {/* Modalidad */}
-                <div className="px-10 py-6 flex justify-between">
-                  <h3 className="text-base font-medium w-1/3">Datos adicionales</h3>
-                  <div className="w-2/3">
-                    <span>{job.AdditionalInformation}</span>
-                  </div>
-                </div>
-                <Separator className='w-11/12 justify-center mx-auto shadow-md rounded-lg' />
+                  <Separator className='w-11/12 justify-center mx-auto' />
 
-              </div>            
+                  {/* Género */}
+                  <div className="px-6 sm:px-10 py-6 flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
+                    <h3 className="text-base font-medium w-full sm:w-1/3 shrink-0 text-gray-900">Género</h3>
+                    <div className="w-full sm:w-2/3 min-w-0 break-words text-gray-700">
+                      <span>{job.gender ?? 'Indistinto'}</span>
+                    </div>
+                  </div>
+                  <Separator className='w-11/12 justify-center mx-auto' />
+
+                  {/* Rango de edad */}
+                  <div className="px-6 sm:px-10 py-6 flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
+                    <h3 className="text-base font-medium w-full sm:w-1/3 shrink-0 text-gray-900">Rango de edad</h3>
+                    <div className="w-full sm:w-2/3 min-w-0 break-words text-gray-700">
+                      <span>{job.ageRange?.min ?? '-'} - {job.ageRange?.max ?? '-'} años</span>
+                    </div>
+                  </div>
+                  <Separator className='w-11/12 justify-center mx-auto' />
+                  
+                  {/* Datos adicionales */}
+                  <div className="px-6 sm:px-10 py-6 flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
+                    <h3 className="text-base font-medium w-full sm:w-1/3 shrink-0 text-gray-900">Datos adicionales</h3>
+                    <div className="w-full sm:w-2/3 min-w-0 break-words text-gray-700">
+                      <p className="whitespace-pre-wrap">{job.AdditionalInformation}</p>
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* Botón de cerrar para mejorar accesibilidad en móviles */}
+                <div className="flex justify-center mt-6">
+                  <DrawerClose className="w-full max-w-xs text-base font-bold hover:bg-zinc-200 border border-zinc-300 text-uaq-danger px-8 py-4 rounded-xl transition-colors shadow-sm">
+                    Cerrar Detalle
+                  </DrawerClose>
+                </div>
+              </div>
           </DrawerContent>
       </Drawer>
     </div>
