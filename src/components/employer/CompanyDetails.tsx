@@ -106,36 +106,36 @@ export default function CompanyDetails({ control }: CompanyDetailsProps) {
         <div className="mx-auto h-px w-full max-w-[596px] rounded bg-gray-300" />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6 items-start">
+          {/* País */}
+          <div className="flex flex-col">
+            <FormComboBadgeSelector
+              control={control}
+              label="País"
+              name="companyAddressCountry"
+              options={country}
+              description="Selecciona el país donde se ubica la empresa"
+              multiple={false}
+            />
+            <p className="mt-1 text-xs leading-4 text-gray-500">
+              Selecciona el país donde se ubica la empresa
+            </p>
+          </div>
 
-  {/* País */}
-  <div className="flex flex-col">
-    <FormComboBadgeSelector
-      control={control}
-      label="País"
-      name="companyAddressCountry"
-      options={country}
-      description="Selecciona el país donde se ubica la empresa"
-      multiple={false}
-    />
-    <p className="mt-1 text-xs leading-4 text-gray-500">
-      Selecciona el país donde se ubica la empresa
-    </p>
-  </div>
-
-        {/* Estado */}
-        <div className="flex flex-col">
-          <FormComboBadgeSelector
-            control={control}
-            label="Estado "
-            name="companyAddressState"
-            options={states}
-            description="Elige el estado o entidad federativa correspondiente a la ubicación de la empresa"
-            multiple={false}
-          />
-          <p className="mt-1 text-xs leading-4 text-gray-500">
-            Elige el estado o entidad federativa correspondiente a la ubicación de la empresa
-          </p>
-        </div>
+          {/* Estado */}
+          <div className="flex flex-col">
+            <FormComboBadgeSelector
+              control={control}
+              label="Estado "
+              name="companyAddressState"
+              options={states}
+              description="Elige el estado o entidad federativa correspondiente a la ubicación de la empresa"
+              multiple={false}
+            />
+            <p className="mt-1 text-xs leading-4 text-gray-500">
+              Elige el estado o entidad federativa correspondiente a la ubicación de la empresa
+            </p>
+          </div>
+        </div> 
 
         <div className="grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2">
           <FormInput
