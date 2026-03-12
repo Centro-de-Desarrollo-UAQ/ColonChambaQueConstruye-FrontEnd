@@ -25,6 +25,7 @@ interface ApiVacancy {
     createdAt: string;
     status: string;
     companyStatus: string;
+    businessSector?: string;
   };
   Company: {
     id: string;
@@ -105,7 +106,7 @@ export default function JobsPage() {
           modality: formatEnum(item.Vacancy.modality),
           salaryRange: `$${item.Vacancy.salary.min.toLocaleString()} - $${item.Vacancy.salary.max.toLocaleString()} ${item.Vacancy.salary.coin}`,
           logoUrl: '', 
-          sector: '', 
+          sector: item.Vacancy.businessSector || '', 
           createdAt: item.Vacancy.createdAt,
           cellPhone: item.Company.cellPhone,
           email: item.Company.email,
