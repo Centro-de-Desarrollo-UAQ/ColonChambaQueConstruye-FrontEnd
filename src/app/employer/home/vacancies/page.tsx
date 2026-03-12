@@ -5,11 +5,13 @@ import { useEffect, useState, useCallback } from 'react';
 import TitleSection from '@/components/common/TitleSection';
 import { createVacanciesColumns } from '@/components/tables/schemas/Vacancies';
 import { Button } from '@/components/ui/button';
-import { CaseRound } from '@solar-icons/react';
+import { CaseRound, NotificationLinesRemove } from '@solar-icons/react';
 import { DataTableCustomSearchBar } from '@/components/tables/layouts/DateTableCustomSearchBar';
 import { filtersVacancies } from '@/data/filtersVacancies';
 import { useCompanyStore } from '@/app/store/authCompanyStore';
 import { apiService } from '@/services/api.service';
+import { VacancyRow } from '@/interfaces/company';
+import Link from 'next/link';
 
 const sectionConfig = {
   profile: {
@@ -18,21 +20,6 @@ const sectionConfig = {
     description: '',
   },
 };
-
-export interface VacancyRow {
-  id: string;
-  name: string;
-  description: string;
-  location: string;
-  modality: string;
-  workShift: string;
-  company: string;
-  logoUrl: string;
-  numberOpenings: number;
-  salaryRange: string;
-  status: string;
-  dateFilter: string;
-}
 
 const mapCompanyStatus = (raw: any): 'APROBADA' | 'REVISION' | 'RECHAZADA' => {
   if (!raw) return 'APROBADA';
@@ -76,8 +63,12 @@ const VacanciesContent = ({
         />
       </div>
     ) : (
-      <div className="flex w-full flex-col items-center justify-center text-center">
-        {/* Recordatorio de limpiar esto, no se quien lo puso pero X */}
+      <div className="flex w-full h-75 flex-col items-center justify-center text-center text-muted-foreground gap-2 justify-center items-center">
+        <p>Aún no tienes vacantes publicadas.</p>
+        <p>Empieza a buscar talento creando tu primera vacante.</p>
+        <Link href="/employer/home/post">
+          <Button className="mt-4">Crear vacante</Button>
+        </Link>
       </div>
     ),
   };
@@ -91,7 +82,6 @@ export default function VacanciesPage() {
   const [vacancies, setVacancies] = useState<VacancyRow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  //  estado para buscar y filtros backend
   const [search, setSearch] = useState('');
   const [backendFilters, setBackendFilters] = useState<Record<string, any>>({});
 
@@ -119,7 +109,6 @@ export default function VacanciesPage() {
     setCloseModalOpen(true);
   };
 
-  // handlers que se pasan al DataTableCustomSearchBar
   const handleSearchChange = (value: string) => {
     setSearch(value);
   };
@@ -142,7 +131,6 @@ export default function VacanciesPage() {
     try {
       const params = new URLSearchParams();
 
-      // ✅ Filtrar solo vacantes ABIERTAS
       params.set('status', 'ABIERTA');
 
       if (search.trim()) {
@@ -192,7 +180,7 @@ export default function VacanciesPage() {
       const url = `/companies/${companyId}/vacancies?${params.toString()}`;
       const response = await apiService.get(url);
 
-      
+
 
       if (!response?.ok) {
         setVacancies([]);
@@ -210,14 +198,14 @@ export default function VacanciesPage() {
           : Array.isArray(result)
             ? result
             : [];
-      
+
       const mapped: VacancyRow[] = rawVacancies.map((item: any) => ({
         id: item.id,
         name: item.name ?? item.title ?? '',
         company: item.company?.name ?? item.company ?? 'Empresa',
         location: item.location ?? '',
         description: item.description ?? '',
-        workShift: item.name,
+        workShift: item.workShift,
         modality: item.modality,
         salaryRange:
           item.salary && typeof item.salary === 'object'
@@ -258,7 +246,6 @@ export default function VacanciesPage() {
           return false;
         }
 
-        // ✅ Refrescar lista para remover la vacante cerrada
         await fetchVacancies();
 
         return true;
