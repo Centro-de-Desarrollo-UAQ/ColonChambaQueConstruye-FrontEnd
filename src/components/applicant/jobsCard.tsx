@@ -297,17 +297,10 @@ export default function DrawerApplicantVacant({
                       </div>
                     )}
 
-                    {vacancyDetails?.CompanyAccount?.landlinePhone && (
-                      <div className="flex items-center gap-3">
-                        <PhoneCalling className="h-4 w-4 flex-shrink-0" weight="Linear" />
-                        <span className="whitespace-nowrap">{vacancyDetails?.CompanyAccount?.landlinePhone}</span>
-                      </div>
-                    )}
-
                     {vacancyDetails?.CompanyAccount?.email && (
                       <div className="flex items-center gap-3">
                         <Letter className="h-4 w-4 flex-shrink-0" weight="Linear" />
-                        <span className="max-w-[260px] truncate">
+                        <span className="max-w-[260px] break-all">
                           {vacancyDetails?.CompanyAccount?.email}
                         </span>
                       </div>

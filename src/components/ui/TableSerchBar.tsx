@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, KeyboardEvent, useEffect } from 'react';
 import { MinimalisticMagnifer } from '@solar-icons/react';
 import { filterType } from '@/interfaces/table';
 import { MultiFilter } from '../toreview/MultiFilter';
@@ -22,26 +22,42 @@ interface TableSearchBarProps {
 
 function TableSearchBar({ filters, table, onSearch, onFilterChange }: TableSearchBarProps) {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  
+  const filterValue = (table.getColumn('name')?.getFilterValue() as string) ?? '';
+  const [inputValue, setInputValue] = useState(filterValue);
+
+  useEffect(() => {
+    setInputValue(filterValue);
+  }, [filterValue]);
 
   const handleFilterToggle = () => {
     setIsFilterOpen(!isFilterOpen);
   };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      table?.getColumn('name')?.setFilterValue(inputValue);
+      onSearch?.(inputValue);
+    }
+  };
+
   return (
     <div className="flex w-full flex-col items-start gap-3">
       <Input
         type="text"
         placeholder="Buscar..."
-        value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-        onChange={(e) => {
-          const value = e.target.value;
-          table?.getColumn('name')?.setFilterValue(value);
-          onSearch?.(value); 
-        }}
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onKeyDown={handleKeyDown}
         className="h-fit w-full"
         icon={MinimalisticMagnifer}
         filter={isFilterOpen}
         handleFilter={handleFilterToggle}
-        onClear={() => table.getColumn('name')?.setFilterValue('')}
+        onClear={() => {
+          setInputValue('');
+          table.getColumn('name')?.setFilterValue('');
+          onSearch?.('');
+        }}
       />
       <div className="flex flex-wrap gap-2">
         {isFilterOpen &&
