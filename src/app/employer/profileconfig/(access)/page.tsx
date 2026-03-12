@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import TitleSection from '@/components/common/TitleSection';
 import { ConfigRow } from '@/components/settings/ConfigRow';
 import { UserCircle } from '@solar-icons/react';
@@ -34,26 +34,30 @@ export default function Page() {
   const router = useRouter();
   const { companyAccount, loading, error } = useEmployerProfile();
 
-  const [isEditingPersonal, setIsEditingPersonal] = useState(false);
-  const [isEditingGeneral, setIsEditingGeneral] = useState(false);
+  const {
+    form,
+    errors,
+    isEditingPersonal,
+    setIsEditingPersonal,
+    isEditingGeneral,
+    setIsEditingGeneral,
+    confirmPassword,
+    setConfirmPassword,
+    lastPassword,
+    setLastPassword,
+    handleChange,
+    handleSavePersonal,
+    handleSaveGeneral
+  } = useAccountForm(companyAccount);
 
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [lastPassword, setLastPassword] = useState('');
-
-  const [form, setForm] = useState({
-    nombres: '',
-    apellidos: '',
-    puesto: '',
-    celular: '',
-    telfijo: '',
-    correo: '',
-    contrasena: '', // nueva contraseña (newPassword)
-  });
-
-  const [personalErrors, setPersonalErrors] = useState<Record<string, string>>(
-    {},
+  const ReadOnlyRow = ({ label, value }: { label: string, value: string | number }) => (
+    <div className="flex w-full items-center justify-between px-6 py-4 border-b border-zinc-100 min-h-[60px]">
+      <span className="text-zinc-900 font-medium shrink-0">{label}</span>
+      <span className="text-zinc-600 text-sm text-right flex-1 pl-8 break-words">
+        {value || '-'}
+      </span>
+    </div>
   );
-  const [accessErrors, setAccessErrors] = useState<Record<string, string>>({});
 
   // Alert global (para el escenario "NO-FUNCIONO" del cambio de contraseña)
   const [alert, setAlert] = useState<{
@@ -358,65 +362,103 @@ export default function Page() {
           title="Información general"
           valueinput=""
           isTitle={true}
-          placeholder=""
           isEditable={true}
           editInput={false}
-          onEditClick={() => {
-            setPersonalErrors({});
-            setIsEditingPersonal((s) => !s);
-          }}
+          onEditClick={() => setIsEditingPersonal(!isEditingPersonal)}
         />
 
-        <ConfigRow
-          title="Nombres"
-          valueinput={form.nombres}
-          placeholder=""
-          isEditable={isEditingPersonal}
-          editInput={isEditingPersonal}
-          onValueChange={(v) => handleChange('nombres', v)}
-          externalError={personalErrors.nombres}
-        />
-        <ConfigRow
-          title="Apellidos"
-          valueinput={form.apellidos}
-          placeholder=""
-          isEditable={isEditingPersonal}
-          editInput={isEditingPersonal}
-          onValueChange={(v) => handleChange('apellidos', v)}
-          externalError={personalErrors.apellidos}
-        />
-        <ConfigRow
-          title="Puesto"
-          valueinput={form.puesto}
-          placeholder=""
-          isEditable={isEditingPersonal}
-          editInput={isEditingPersonal}
-          onValueChange={(v) => handleChange('puesto', v)}
-          externalError={personalErrors.puesto}
-        />
-        <ConfigRow
-          title="Celular"
-          valueinput={form.celular}
-          placeholder=""
-          isEditable={isEditingPersonal}
-          editInput={isEditingPersonal}
-          onValueChange={(v) => handleChange('celular', v)}
-          externalError={personalErrors.celular}
-        />
-        <ConfigRow
-          title="Teléfono fijo"
-          valueinput={form.telfijo}
-          placeholder=""
-          isEditable={isEditingPersonal}
-          editInput={isEditingPersonal}
-          onValueChange={(v) => handleChange('telfijo', v)}
-          externalError={personalErrors.telfijo}
-        />
+        <div className="w-full">
+            {isEditingPersonal ? (
+                <div className="px-6">
+                    <ConfigRow
+                    title="Nombres"
+                    valueinput={form.nombres}
+                    isTitle={false}
+                    isEditable={true}
+                    editInput={true}
+                    onValueChange={(v) => handleChange('nombres', v)}
+                    externalError={errors.personal.nombres}
+                    />
+                </div>
+            ) : (
+                <ReadOnlyRow label="Nombres" value={form.nombres} />
+            )}
+        </div>
 
-        {personalErrors.global && (
-          <p className="px-6 pb-2 text-sm text-red-600">
-            {personalErrors.global}
-          </p>
+        <div className="w-full">
+            {isEditingPersonal ? (
+                <div className="px-6">
+                    <ConfigRow
+                    title="Apellidos"
+                    valueinput={form.apellidos}
+                    isTitle={false}
+                    isEditable={true}
+                    editInput={true}
+                    onValueChange={(v) => handleChange('apellidos', v)}
+                    externalError={errors.personal.apellidos}
+                    />
+                </div>
+            ) : (
+                <ReadOnlyRow label="Apellidos" value={form.apellidos} />
+            )}
+        </div>
+
+        <div className="w-full">
+            {isEditingPersonal ? (
+                <div className="px-6">
+                    <ConfigRow
+                    title="Puesto"
+                    valueinput={form.puesto}
+                    isTitle={false}
+                    isEditable={true}
+                    editInput={true}
+                    onValueChange={(v) => handleChange('puesto', v)}
+                    externalError={errors.personal.puesto}
+                    />
+                </div>
+            ) : (
+                <ReadOnlyRow label="Puesto" value={form.puesto} />
+            )}
+        </div>
+
+        <div className="w-full">
+            {isEditingPersonal ? (
+                <div className="px-6">
+                    <ConfigRow
+                    title="Celular"
+                    valueinput={form.celular}
+                    isTitle={false}
+                    isEditable={true}
+                    editInput={true}
+                    onValueChange={(v) => handleChange('celular', v)}
+                    externalError={errors.personal.celular}
+                    />
+                </div>
+            ) : (
+                <ReadOnlyRow label="Celular" value={form.celular} />
+            )}
+        </div>
+
+        <div className="w-full">
+            {isEditingPersonal ? (
+                <div className="px-6">
+                    <ConfigRow
+                    title="Teléfono fijo"
+                    valueinput={form.telfijo}
+                    isTitle={false}
+                    isEditable={true}
+                    editInput={true}
+                    onValueChange={(v) => handleChange('telfijo', v)}
+                    externalError={errors.personal.telfijo}
+                    />
+                </div>
+            ) : (
+                <ReadOnlyRow label="Teléfono fijo" value={form.telfijo} />
+            )}
+        </div>
+
+        {errors.personal.global && (
+          <p className="px-6 pb-2 text-sm text-red-600">{errors.personal.global}</p>
         )}
 
         {isEditingPersonal && (
@@ -428,13 +470,11 @@ export default function Page() {
         )}
       </div>
 
-      {/* INFORMACIÓN DE ACCESO */}
-      <div className="rounded-lg border border-zinc-300 shadow-sm">
+      <div className="rounded-lg border border-zinc-300 shadow-sm mt-6 bg-white">
         <ConfigRow
           title="Información de acceso"
           valueinput=""
           isTitle={true}
-          placeholder=""
           isEditable={true}
           editInput={false}
           onEditClick={() => {
@@ -468,34 +508,36 @@ export default function Page() {
 
         {isEditingGeneral && (
           <>
-            <ConfigRow
-              title="Repite contraseña"
-              valueinput={confirmPassword}
-              placeholder="Repite tu nueva contraseña"
-              isEditable={true}
-              editInput={true}
-              onValueChange={(v) => setConfirmPassword(v)}
-              inputType="password"
-              externalError={accessErrors.confirmPassword}
-            />
+            <div className="px-6">
+                <ConfigRow
+                title="Repite contraseña"
+                valueinput={confirmPassword}
+                placeholder="Repite tu nueva contraseña"
+                isEditable={true}
+                editInput={true}
+                onValueChange={(v) => setConfirmPassword(v)}
+                inputType="password"
+                externalError={errors.access.confirmPassword}
+                />
+            </div>
 
-            <ConfigRow
-              title="Última contraseña"
-              valueinput={lastPassword}
-              placeholder="Tu contraseña anterior"
-              isEditable={true}
-              editInput={true}
-              onValueChange={(v) => setLastPassword(v)}
-              inputType="password"
-              externalError={accessErrors.lastPassword}
-            />
+            <div className="px-6">
+                <ConfigRow
+                title="Última contraseña"
+                valueinput={lastPassword}
+                placeholder="Tu contraseña anterior"
+                isEditable={true}
+                editInput={true}
+                onValueChange={(v) => setLastPassword(v)}
+                inputType="password"
+                externalError={errors.access.lastPassword}
+                />
+            </div>
           </>
         )}
 
-        {accessErrors.global && (
-          <p className="px-6 pb-2 text-sm text-red-600">
-            {accessErrors.global}
-          </p>
+        {errors.access.global && (
+          <p className="px-6 pb-2 text-sm text-red-600">{errors.access.global}</p>
         )}
 
         {isEditingGeneral && (

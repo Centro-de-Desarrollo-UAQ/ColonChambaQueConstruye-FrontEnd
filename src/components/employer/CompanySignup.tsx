@@ -1,50 +1,81 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
-
-import SignUpEmployer from '@/components/employer/SignUpEmployer';
-
-import EmailVerificationCodeCompany from '@/components/ui/email-verification-code-company';
-
-import SignUpEmployerCompanySection from '@/components/employer/SignUpEmployerCompanySection';
 import { useRouter } from 'next/navigation';
 
+import SignUpEmployer from '@/components/employer/SignUpEmployer';
+import EmailVerificationCodeCompany from '@/components/ui/email-verification-code-company';
+import SignUpEmployerCompanySection from '@/components/employer/SignUpEmployerCompanySection';
+
+
+import { AlertState, HttpErrorPayload } from '@/interfaces/AlertInterface';
+import Alerts from '../ui/Alerts';
+
+
 const SignUpEmployerAny = SignUpEmployer as React.ComponentType<any>;
-const EmailVerificationCodeCompanyAny =
-  EmailVerificationCodeCompany as React.ComponentType<any>;
-const SignUpEmployerCompanySectionAny =
-  SignUpEmployerCompanySection as React.ComponentType<any>;
+const EmailVerificationCodeCompanyAny = EmailVerificationCodeCompany as React.ComponentType<any>;
+const SignUpEmployerCompanySectionAny = SignUpEmployerCompanySection as React.ComponentType<any>;
 
 export default function CompanySignup() {
   const [step, setStep] = useState(1);
+  const [alert, setAlert] = useState<AlertState>(null);
+
   const totalSteps = 3;
   const router = useRouter();
+
+  const closeAlert = () => setAlert(null);
+
+  const showError = useCallback((title: string, description: string) => {
+    setAlert({ type: 'error', title, description });
+  }, []);
+  
+  
+
+  const handleHttpError = useCallback(
+    (statusCode?: number, currentStep?: number) => {
+      const s = Number(statusCode);
+      console.log("entre",s)
+      if (s === 409 && currentStep === 1) {
+        showError('Conflicto', 'Este correo ya está asociado a alguna cuenta existente.');
+        return;
+      }
+      if (s === 400) {
+        showError('Error', 'Error de datos, inténtalo nuevamente o más tarde.');
+        return;
+      }    
+      showError('Error', 'Ocurrió un error inesperado. Inténtalo nuevamente o más tarde.');
+    },
+    [showError]
+  );
 
   const goBack = () => setStep((s) => Math.max(1, s - 1));
 
   return (
     <main className="flex h-fit flex-col items-center justify-center gap-10">
-      {/* Contenedor general – solo para steps 2 y 3 */}
-      {step === 1 ? (
-        // STEP 1 → usamos TU página de responsable tal cual
-        <SignUpEmployerAny
+      {/* ALERTA */}
+      <div className="w-full max-w-[900px]">
+        <Alerts
+          type={alert?.type ?? 'error'}
+          title={alert?.title ?? ''}
+          description={alert?.description ?? ''}
+          isVisible={!!alert}
+          onClose={closeAlert}
+          duration={6000}
+        />
+      </div>
 
+      {/* CONTENIDO */}
+      {step === 1 ? (
+        <SignUpEmployerAny
           onSuccess={() => setStep(2)}
+          onHttpError={(err: { status?: number }) => handleHttpError(err?.status, 1)}
         />
       ) : (
-        // STEPS 2 y 3 → layout tipo tarjeta
         <div className="h-full w-full max-w-[900px] space-y-8 rounded-md border border-gray-300 bg-white px-12 py-6 shadow-sm">
-          {/* Barra superior solo para steps 2 y 3 */}
           <div className="mb-4 flex items-center gap-4">
-            <Button
-              variant="ghost"
-              className="scale-150"
-              type="button"
-              onClick={goBack}
-            >
+            <Button variant="ghost" className="scale-150" type="button" onClick={goBack}>
               <ArrowLeft className="h-5 w-5" />
             </Button>
 
@@ -53,47 +84,43 @@ export default function CompanySignup() {
             </div>
           </div>
 
-          {/* Títulos por step */}
           <div className="mb-6 text-center">
             {step === 2 && (
               <>
-                <h1 className="text-2xl font-semibold">
-                  Verifica el correo de tu empresa
-                </h1>
+                <h1 className="text-2xl font-semibold">Verifica el correo de tu empresa</h1>
                 <p className="mt-2 text-sm text-gray-600">
-                  Ingresa el código que enviamos al correo registrado para
-                  continuar con el registro.
+                  Ingresa el código que enviamos al correo registrado para continuar con el registro.
                 </p>
               </>
             )}
 
             {step === 3 && (
               <>
-                <h1 className="text-2xl font-semibold">
-                  Completa el registro de la empresa
-                </h1>
+                <h1 className="text-2xl font-semibold">Completa el registro de la empresa</h1>
                 <p className="mt-2 text-sm text-gray-600">
-                  Proporciona los datos generales, fiscales y de ubicación de la
-                  empresa para finalizar el registro.
+                  Proporciona los datos generales, fiscales y de ubicación de la empresa para finalizar el registro.
                 </p>
               </>
             )}
           </div>
 
-          {/* Contenido de cada paso */}
           <div className="space-y-6">
             {step === 2 && (
               <EmailVerificationCodeCompanyAny
                 onSuccess={() => setStep(3)}
+                onHttpError={(err: HttpErrorPayload) => handleHttpError(err?.status, 2)}
               />
             )}
 
             {step === 3 && (
               <SignUpEmployerCompanySectionAny
                 onSuccess={() => {
-                  console.log('CompanySignup: onSuccess from step3 received, navigating to /login/waiting');
+                  console.log(
+                    'CompanySignup: onSuccess from step3 received, navigating to /login/waiting'
+                  );
                   router.push('/login/waiting');
                 }}
+                onHttpError={(err: { status?: number }) => handleHttpError(err?.status, 3)}
               />
             )}
           </div>

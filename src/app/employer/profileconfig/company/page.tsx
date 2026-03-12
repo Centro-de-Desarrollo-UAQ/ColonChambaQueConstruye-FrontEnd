@@ -1,34 +1,87 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useRouter } from 'next/navigation';
+
 import TitleSection from '@/components/common/TitleSection';
 import { ConfigRow } from '@/components/settings/ConfigRow';
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from '@/components/ui/select';
+import { sector as sectorOptions } from '@/constants/companyData';
 import { Buildings } from '@solar-icons/react';
 import { Button } from '@/components/ui/button';
+
 import { useEmployerProfile } from '../layout';
-import { apiService } from '@/services/api.service';
+import { useCompanyForm } from '@/components/forms/hooks/useCompanyForm';
+
+import ModalNoticeReview from '@/components/ui/modal/employer/ModalNoticeReview';
+import ConfirmChangeModal from '@/components/ui/modal/employer/ConfirmChangeModal';
+
+import { CountryDropdown } from '@/components/employer/CompanyDetails';
+import { useCompanyStore } from '@/app/store/authCompanyStore';
 
 export default function CompanyPage() {
-  const { company, loading, error } = useEmployerProfile();
+  const router = useRouter();
+  const clearCompanySession = useCompanyStore((s) => s.clearCompanySession);
 
-  const [isEditingInfo, setIsEditingInfo] = useState(false);
-  const [isEditingFiscales, setIsEditingFiscales] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = React.useState(false);
+  const { company, loading, error: contextError } = useEmployerProfile();
 
- 
-  const [form, setForm] = useState({
-    nombreEmpresa: '',
-    descripcion: '',
-    sectorTrabajo: '',
-    correoContacto: '',
-    codigoPostal: '',
-    pais: '',
-    direccion: '',
-    rfc: '',
-    razonSocial: '',
-  });
+  const {
+    form,
+    errors,
+    isEditingInfo,
+    setIsEditingInfo,
+    isEditingFiscales,
+    setIsEditingFiscales,
+    handleChange,
+    handleSaveInfo,
+    handleSaveFiscales,
+  } = useCompanyForm(company);
 
-  const [infoErrors, setInfoErrors] = useState<Record<string, string>>({});
-  const [fiscalErrors, setFiscalesErrors] = useState<Record<string, string>>({});
+  const [showModal, setShowModal] = React.useState(false);
+  const [showModalFiscales, setShowModalFiscales] = React.useState(false);
+
+  const handleEditClick = () => setShowModal(true);
+  const handleEditFiscalesClick = () => setShowModalFiscales(true);
+
+  const handleModalClose = (confirmEdit = false) => {
+    setShowModal(false);
+    if (confirmEdit) setIsEditingInfo(true);
+  };
+
+  const handleModalFiscalesClose = (confirmEdit = false) => {
+    setShowModalFiscales(false);
+    if (confirmEdit) setIsEditingFiscales(true);
+  };
+
+  const confirmAndSave = async () => {
+    if (isEditingInfo) await handleSaveInfo();
+    if (isEditingFiscales) await handleSaveFiscales();
+
+    clearCompanySession();
+    router.replace('/login/waiting');
+  };
+
+  const ReadOnlyBlockRow = ({
+    label,
+    value,
+  }: {
+    label: string;
+    value: string | number;
+  }) => (
+    <div className="flex flex-col w-full px-6 py-4 border-b border-zinc-100">
+      <span className="text-zinc-900 font-medium mb-2">{label}</span>
+      <span className="text-zinc-600 text-sm whitespace-pre-wrap break-words w-full leading-relaxed">
+        {value || '-'}
+      </span>
+    </div>
+  );
 
   const sectionConfig = {
     profile: {
@@ -38,405 +91,159 @@ export default function CompanyPage() {
     },
   };
 
-
-  useEffect(() => {
-    if (!company) return;
-
-    setForm({
-      nombreEmpresa: company.tradeName || '',
-      descripcion: company.description || '',
-      sectorTrabajo: company.workSector || '',
-      correoContacto: company.companyEmail || '',
-      codigoPostal: company.zipCode || '',
-      pais: company.country || '',
-      direccion: `${company.street} ${company.streetNumber}, ${company.district}, ${company.municipality}, ${company.state}`,
-      rfc: company.rfc || '',
-      razonSocial: company.legalName || '',
-    });
-    setInfoErrors({});
-    setFiscalesErrors({});
-  }, [company]);
-
-  const handleChange = (key: string, value: string) => {
-    setForm((prev) => ({ ...prev, [key]: value }));
-    setInfoErrors((e) => ({ ...e, [key]: '' }));
-    setFiscalesErrors((e) => ({ ...e, [key]: '' }));
-  };
-
-  const validateInfoFields = () => {
-    const errors: Record<string, string> = {};
-    const keys: (keyof typeof form)[] = [
-      'nombreEmpresa',
-      'descripcion',
-      'sectorTrabajo',
-      'codigoPostal',
-      'pais',
-      'direccion',
-    ];
-
-    keys.forEach((k) => {
-      const raw = form[k];
-      const v = typeof raw === 'string' ? raw.trim() : raw;
-      if (!v || (typeof v === 'string' && v === '')) {
-        errors[k as string] = 'No puede quedar vacío';
-      }
-    });
-
-    return errors;
-  };
-
-  const validateFiscalesFields = () => {
-    const errors: Record<string, string> = {};
-    const keys: (keyof typeof form)[] = ['rfc', 'razonSocial'];
-
-    keys.forEach((k) => {
-      const raw = form[k];
-      const v = typeof raw === 'string' ? raw.trim() : raw;
-      if (!v || (typeof v === 'string' && v === '')) {
-        errors[k as string] = 'No puede quedar vacío';
-      }
-    });
-
-    return errors;
-  };
-
-
-  const updateCompany = async () => {
-    if (!company) throw new Error('No hay datos de company en el contexto');
-
-    const companyId = localStorage.getItem('companyId');
-    if (!companyId) {
-      throw new Error('No se encontró companyId en localStorage');
-    }
-
-    // Usamos valores del form para lo editable y del company para lo demás
-    const payload = {
-      tradeName: form.nombreEmpresa.trim(),
-      legalName: (form.razonSocial || company.legalName || '').trim(),
-      zipCode: form.codigoPostal.trim(),
-      street: company.street || '',
-      streetNumber: company.streetNumber || '',
-      state: company.state || '',
-      district: company.district || '',
-      municipality: company.municipality || '',
-      country: form.pais.trim(),
-      investmentCountry: company.investmentCountry || company.country || '',
-      totalWorkers: company.totalWorkers ?? 0,
-      rfc: (form.rfc || company.rfc || '').trim(),
-      description: form.descripcion.trim(),
-      companyEmail: company.companyEmail || '',
-      workSector: form.sectorTrabajo.trim(),
-    };
-
-    const res = await apiService.put(`/companies/${companyId}`, payload);
-
-    if (!res) {
-      throw new Error('Sin respuesta del servidor');
-    }
-
-    if (!res.ok) {
-      let errText = `Error ${res.status}`;
-      try {
-        const errJson = await res.json();
-        console.error('Error PUT company', errJson);
-        errText = errJson.message || errText;
-      } catch {
-        // ignore
-      }
-      throw new Error(errText);
-    }
-  };
-
-  const handleSaveInfo = async () => {
-    const errors = validateInfoFields();
-    if (Object.keys(errors).length > 0) {
-      setInfoErrors(errors);
-      setIsEditingInfo(true);
-      return;
-    }
-
-    try {
-      await updateCompany();
-      console.log('Información de la empresa actualizada ✅');
-
-      setForm((prev) => ({
-        ...prev,
-        nombreEmpresa: prev.nombreEmpresa.trim(),
-        descripcion: prev.descripcion.trim(),
-        sectorTrabajo: prev.sectorTrabajo.trim(),
-        codigoPostal: prev.codigoPostal.trim(),
-        pais: prev.pais.trim(),
-        direccion: prev.direccion.trim(),
-      }));
-      setInfoErrors({});
-      setIsEditingInfo(false);
-    } catch (err: any) {
-      console.error(err);
-      setInfoErrors((prev) => ({
-        ...prev,
-        global: 'No se pudo actualizar la información de la empresa.',
-      }));
-    }
-  };
-
-  const handleSaveFiscales = async () => {
-    const errors = validateFiscalesFields();
-    if (Object.keys(errors).length > 0) {
-      setFiscalesErrors(errors);
-      setIsEditingFiscales(true);
-      return;
-    }
-
-    try {
-      await updateCompany();
-      console.log('Datos fiscales actualizados ✅');
-
-      setForm((prev) => ({
-        ...prev,
-        rfc: prev.rfc.trim(),
-        razonSocial: prev.razonSocial.trim(),
-      }));
-      setFiscalesErrors({});
-      setIsEditingFiscales(false);
-    } catch (err: any) {
-      console.error(err);
-      setFiscalesErrors((prev) => ({
-        ...prev,
-        global: 'No se pudieron actualizar los datos fiscales.',
-      }));
-    }
-  };
-
-  // Estados de carga / error
-  if (loading) {
-    return (
-      <div className="mr-20 space-y-6 p-4 md:p-6">
-        <p>Cargando información de la empresa...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="mr-20 space-y-6 p-4 md:p-6">
-        <p className="text-red-600">{error}</p>
-      </div>
-    );
-  }
-
-  if (!company) {
-    return (
-      <div className="mr-20 space-y-6 p-4 md:p-6">
-        <p>No se encontró información de la empresa.</p>
-      </div>
-    );
-  }
+  if (loading) return <div className="p-6">Cargando...</div>;
+  if (contextError) return <div className="p-6 text-red-600">{contextError}</div>;
+  if (!company) return <div className="p-6">No se encontró información.</div>;
 
   return (
-    <div className="mr-20 space-y-6 p-4 md:p-6">
-      {/* Encabezado */}
+    <div className="mr-20 space-y-6 p-4 md:p-6 relative">
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <ModalNoticeReview
+            open={showModal}
+            onClose={() => handleModalClose(false)}
+            onConfirm={() => handleModalClose(true)}
+          />
+        </div>
+      )}
+
+      {showModalFiscales && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <ModalNoticeReview
+            open={showModalFiscales}
+            onClose={() => handleModalFiscalesClose(false)}
+            onConfirm={() => handleModalFiscalesClose(true)}
+          />
+        </div>
+      )}
+
       <TitleSection sections={sectionConfig} currentSection="profile" />
 
-      {/* Sección de Información */}
-      <div className="rounded-lg border border-zinc-300 shadow-sm">
+      <div className="rounded-lg border border-zinc-300 shadow-sm bg-white">
         <ConfigRow
           title="Información de la empresa"
           valueinput=""
-          isTitle={true}
-          placeholder=""
-          isEditable={true}
+          isTitle
+          isEditable={!isEditingInfo}
           editInput={false}
-          onEditClick={() => {
-            setInfoErrors({});
-            setIsEditingInfo((s) => !s);
-          }}
+          onEditClick={handleEditClick}
         />
 
-        {/* Nombre */}
-        <div className="px-6">
-          <ConfigRow
-            title="Nombre"
-            valueinput={form.nombreEmpresa}
-            isTitle={false}
-            placeholder="Contenido"
-            isEditable={isEditingInfo}
-            editInput={isEditingInfo}
-            onValueChange={(v) => handleChange('nombreEmpresa', v)}
-            externalError={infoErrors.nombreEmpresa}
-          />
-        </div>
-
-        {/* Descripción */}
-        <div className="px-6">
-          {isEditingInfo ? (
-            <ConfigRow
-              title="Descripción"
-              valueinput={form.descripcion}
-              isTitle={false}
-              placeholder="Contenido"
-              isEditable={isEditingInfo}
-              editInput={isEditingInfo}
-              onValueChange={(v) => handleChange('descripcion', v)}
-              externalError={infoErrors.descripcion}
-            />
-          ) : (
-            <div className="flex w-full items-center px-4 border-b border-zinc-100">
-              <div className="flex min-w-0 flex-1 flex-col">
-                <div className="flex items-center min-w-0">
-                  <p className="min-w-[150px] py-3">Descripción</p>
-                  <div className="flex-1">
-                    <div className="text-sm text-zinc-600 whitespace-pre-wrap">
-                      {form.descripcion}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="ml-auto py-6 shrink-0" />
+        {isEditingInfo ? (
+          <>
+            <div className="px-2">
+              <ConfigRow
+                title="Nombre"
+                valueinput={form.nombreEmpresa}
+                isEditable
+                editInput
+                onValueChange={(v) => handleChange('nombreEmpresa', v)}
+                externalError={errors.info.nombreEmpresa}
+              />
             </div>
-          )}
-        </div>
 
-        {/* Sector */}
-        <div className="px-6">
-          <ConfigRow
-            title="Sector de trabajo"
-            valueinput={form.sectorTrabajo}
-            isTitle={false}
-            placeholder="Contenido"
-            isEditable={isEditingInfo}
-            editInput={isEditingInfo}
-            onValueChange={(v) => handleChange('sectorTrabajo', v)}
-            externalError={infoErrors.sectorTrabajo}
-          />
-        </div>
+            <div className="px-2">
+              <ConfigRow
+                title="Descripción"
+                valueinput={form.descripcion}
+                isEditable
+                editInput
+                onValueChange={(v) => handleChange('descripcion', v)}
+                externalError={errors.info.descripcion}
+              />
+            </div>
 
-        {/* Correo de contacto (solo lectura) */}
-        <div className="px-6">
-          <ConfigRow
-            title="Correo electrónico"
-            valueinput={form.correoContacto}
-            isTitle={false}
-            placeholder="Contenido"
-            isEditable={false}
-            editInput={false}
-            externalError={infoErrors.correoContacto}
-          />
-        </div>
+            <div className="px-6 py-2">
+              <p className="min-w-[150px] py-3">Sector de trabajo</p>
+              <Select
+                value={form.sectorTrabajo || ''}
+                onValueChange={(v) => handleChange('sectorTrabajo', v)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecciona un sector" />
+                </SelectTrigger>
+                <SelectContent>
+                  {sectorOptions.map((opt) => (
+                    <SelectItem key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {errors.info.sectorTrabajo && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.info.sectorTrabajo}
+                </p>
+              )}
+            </div>
 
-        {/* Código Postal */}
-        <div className="px-6">
-          <ConfigRow
-            title="Código postal"
-            valueinput={form.codigoPostal}
-            isTitle={false}
-            placeholder="Contenido"
-            isEditable={isEditingInfo}
-            editInput={isEditingInfo}
-            onValueChange={(v) => handleChange('codigoPostal', v)}
-            externalError={infoErrors.codigoPostal}
-          />
-        </div>
+            <div className="px-2">
+              <ConfigRow
+                title="Código postal"
+                valueinput={form.codigoPostal}
+                isEditable
+                editInput
+                onValueChange={(v) => handleChange('codigoPostal', v)}
+                externalError={errors.info.codigoPostal}
+              />
+            </div>
 
-        {/* País */}
-        <div className="px-6">
-          <ConfigRow
-            title="País"
-            valueinput={form.pais}
-            isTitle={false}
-            placeholder="Contenido"
-            isEditable={isEditingInfo}
-            editInput={isEditingInfo}
-            onValueChange={(v) => handleChange('pais', v)}
-            externalError={infoErrors.pais}
-          />
-        </div>
+            <div className="px-6">
+              <CountryDropdown
+                value={form.pais || ''}
+                onChange={(v) => handleChange('pais', v)}
+              />
+              {errors.info.pais && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.info.pais}
+                </p>
+              )}
+            </div>
 
-        {/* Dirección */}
-        <div className="px-6">
-          <ConfigRow
-            title="Dirección"
-            valueinput={form.direccion}
-            isTitle={false}
-            placeholder="Contenido"
-            isEditable={isEditingInfo}
-            editInput={isEditingInfo}
-            onValueChange={(v) => handleChange('direccion', v)}
-            externalError={infoErrors.direccion}
-          />
-        </div>
-
-        {infoErrors.global && (
-          <p className="px-6 pb-2 text-sm text-red-600">
-            {infoErrors.global}
-          </p>
-        )}
-
-        {isEditingInfo && (
-          <div className="flex justify-end px-6 py-4">
-            <Button variant="primary" onClick={handleSaveInfo}>
-              Guardar Cambios
-            </Button>
-          </div>
+            <div className="px-2">
+              <ConfigRow
+                title="Dirección"
+                valueinput={form.direccion}
+                isEditable
+                editInput
+                onValueChange={(v) => handleChange('direccion', v)}
+                externalError={errors.info.direccion}
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            <ReadOnlyBlockRow label="Nombre" value={form.nombreEmpresa} />
+            <ReadOnlyBlockRow label="Descripción" value={form.descripcion} />
+            <ReadOnlyBlockRow label="Sector de trabajo" value={form.sectorTrabajo} />
+            <ReadOnlyBlockRow label="Correo electrónico" value={form.correoContacto} />
+            <ReadOnlyBlockRow label="Código postal" value={form.codigoPostal} />
+            <ReadOnlyBlockRow label="País" value={form.pais} />
+            <ReadOnlyBlockRow label="Dirección" value={form.direccion} />
+          </>
         )}
       </div>
 
-      {/* Datos fiscales */}
-      <div className="rounded-lg border border-zinc-300 shadow-sm mt-6">
-        <div>
-          <ConfigRow
-            title="Datos fiscales"
-            valueinput=""
-            isTitle={true}
-            placeholder=""
-            isEditable={true}
-            editInput={false}
-            onEditClick={() => {
-              setFiscalesErrors({});
-              setIsEditingFiscales((s) => !s);
+      {(isEditingInfo || isEditingFiscales) && (
+        <div className="flex justify-end px-6 py-8">
+          <Button onClick={() => setShowConfirmModal(true)}>
+            Guardar Cambios
+          </Button>
+        </div>
+      )}
+
+      {showConfirmModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <ConfirmChangeModal
+            open={showConfirmModal}
+            onClose={() => setShowConfirmModal(false)}
+            onConfirm={async () => {
+              setShowConfirmModal(false);
+              await confirmAndSave();
             }}
           />
         </div>
-
-        <div className="px-6">
-          <ConfigRow
-            title="RFC"
-            valueinput={form.rfc}
-            isTitle={false}
-            placeholder="Contenido"
-            isEditable={isEditingFiscales}
-            editInput={isEditingFiscales}
-            onValueChange={(v) => handleChange('rfc', v)}
-            externalError={fiscalErrors.rfc}
-          />
-        </div>
-
-        <div className="px-6">
-          <ConfigRow
-            title="Razón Social"
-            valueinput={form.razonSocial}
-            isTitle={false}
-            placeholder="Contenido"
-            isEditable={isEditingFiscales}
-            editInput={isEditingFiscales}
-            onValueChange={(v) => handleChange('razonSocial', v)}
-            externalError={fiscalErrors.razonSocial}
-          />
-        </div>
-
-        {fiscalErrors.global && (
-          <p className="px-6 pb-2 text-sm text-red-600">
-            {fiscalErrors.global}
-          </p>
-        )}
-
-        {isEditingFiscales && (
-          <div className="flex justify-end px-6 py-4">
-            <Button variant="primary" onClick={handleSaveFiscales}>
-              Guardar Cambios
-            </Button>
-          </div>
-        )}
-      </div>
+      )}
     </div>
   );
 }

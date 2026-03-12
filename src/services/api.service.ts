@@ -1,4 +1,3 @@
-// src/services/api.service.ts
 
 export class ApiService {
   private readonly apiBaseUrl: string;
@@ -24,7 +23,7 @@ export class ApiService {
 
   async request(endpointPath: string, options: RequestInit = {}): Promise<Response> {
     const url = `${this.apiBaseUrl}${endpointPath}`;
-
+   
     const headers = {
       ...this.getHeaders(),
       ...((options.headers as Record<string, string>) || {}),
@@ -36,10 +35,9 @@ export class ApiService {
         headers,
       });
 
-      return response; //  siempre regresamos Response
+      return response; 
     } catch (error) {
       console.error('Error en ApiService.request:', error);
-      //  lanzamos error para que NUNCA devuelva undefined
       throw error instanceof Error
         ? error
         : new Error('Network error in ApiService.request');
@@ -47,6 +45,7 @@ export class ApiService {
   }
 
   async get(endpoint: string): Promise<Response> {
+    
     return this.request(endpoint, { method: 'GET' });
   }
 
@@ -78,7 +77,6 @@ export class ApiService {
     });
   }
 
-  // Este lo puedes dejar igual o borrarlo si ya no lo usas:
   async getTestWithToken(endpointPath: string) {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',

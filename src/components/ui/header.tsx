@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { User, Logout2 } from '@solar-icons/react';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
-import { useApplicantStore } from '@/app/store/authApplicantStore';
 
 import {
   DropdownMenu,
@@ -15,7 +14,16 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 import LogoutModal from './modal/LogoutModal';
+
+// Avatares
 import CompanyAvatar from '../common/AvatarTrasnform';
+
+
+// Stores
+import { useApplicantStore } from '@/app/store/authApplicantStore';
+import { useUserStore } from '@/app/store/useUserInfoStore';
+import ApplicantAvatar from '../applicant/AplicantAvatar';
+import { useCompanyStore } from '@/app/store/authCompanyStore';
 
 interface HeaderProps {
   companyTitle: string;
@@ -38,8 +46,21 @@ export default function Header({
   logoutRedirectPath = '/',
   variant = 'default',
 }: HeaderProps) {
-  const [showLogout, setShowLogout] = useState(false);
+
   const router = useRouter();
+  const [showLogout, setShowLogout] = useState(false);
+  
+
+
+  const { token: applicantToken } = useApplicantStore();
+  const isApplicant = !!applicantToken;
+
+  //storages
+  const {logoutCompany}=useCompanyStore()
+  const {logoutAplicant}=useApplicantStore()
+
+  // const {logout}=useApplicantStore()
+  const { user } = useUserStore();
 
   const { logout } = useApplicantStore();
 
@@ -48,16 +69,16 @@ export default function Header({
 
   const handleLogoutConfirm = () => {
     closeLogoutModal();
-
-    // ✅ Limpia store + localStorage (tu store ya lo hace)
-    logout();
-
-    console.log('Cerrar sesión y redirigir a:', logoutRedirectPath);
+    logoutCompany()
+    logoutAplicant()
     router.push(logoutRedirectPath);
   };
 
-  // ✅ En linker, no queremos avatar ni perfil
-  const isLinker = variant === 'linker';
+  
+
+  const companyName = (companyTitle && companyTitle.trim().length > 0) ? companyTitle : 'Empresa';
+
+  const profileHref = isApplicant ? '/applicant/user/profile' : '/user/profile';
 
   return (
     <>
@@ -79,23 +100,30 @@ export default function Header({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="mono" className="flex items-center gap-2">
-                {/* ❌ Linker: NO avatar (adiós ??) */}
-                {!isLinker && (
-                  <CompanyAvatar companyName={companyTitle} size="sm" />
+                {isApplicant ? (
+                  <>
+                    <ApplicantAvatar
+                      firstName={user?.firstName}
+                      lastName={user?.lastName}
+                      size="sm"
+                    />
+                    
+                  </>
+                ) : (
+                  <>
+                    <CompanyAvatar companyName={companyName} size="sm" />
+                    <span className="truncate max-w-[200px] text-left">
+                      {companyName}
+                    </span>
+                  </>
                 )}
-
-                {/* ✅ Linker: puedes dejar el texto o cambiarlo a algo fijo */}
-                <span className="truncate max-w-[200px] text-left">
-                  {isLinker ? 'Menú' : companyTitle}
-                </span>
               </Button>
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent align="end">
-              {/* ❌ Linker: NO Perfil */}
-              {!isLinker && showProfileButton && (
-                <Link href="user/profile">
-                  <DropdownMenuItem onClick={() => console.log('Página de perfil')}>
+            <DropdownMenuContent>
+              {showProfileButton && (
+                <Link href={profileHref}>
+                  <DropdownMenuItem>
                     {userIcon}
                     <span className="ml-2">Perfil</span>
                   </DropdownMenuItem>

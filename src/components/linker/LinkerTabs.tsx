@@ -8,12 +8,9 @@ import { listAreasOptionsConstants, listWorkingHoursOptionsConstants } from '@/c
 import DrawerLinkerVacancies from '../DrawerVacante/DrawerLinkerVacancies';
 import { CompanyData, JobCardProps } from '@/interfaces';
 import DrawerLinkerCompany from './DrawerLinkerCompanie';
-import { Company } from '../../interfaces/company';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { Avatar, AvatarFallback } from '../ui/avatar';
 
-
-export const vacanciesLinkerColumns: ColumnDef<JobCardProps>[] = [
-  // alias "name" para compatibilidad con DataTable / TableSearchBar
+export const getVacanciesLinkerColumns = (onUpdate: () => void): ColumnDef<JobCardProps>[] => [
   {
     id: 'name',
     accessorFn: (row) => row.title ?? '',
@@ -32,23 +29,23 @@ export const vacanciesLinkerColumns: ColumnDef<JobCardProps>[] = [
     filterFn: accentInsensitiveTextFilter,
   },
   {
-  accessorKey: 'schedule',
-  cell: ({ getValue }) => {
-    const raw = getValue<string>();
-    const map: Record<string, string> = {
-      TIEMPO_COMPLETO: 'Tiempo Completo',
-      MEDIO_TIEMPO: 'Medio Tiempo',
-      HORARIO_FLEXIBLE: 'Horario Flexible',
-      PAGO_HORA: 'Pago por hora',
-      PRACTICAS: 'Prácticas',
-    };
-    return map[raw] ?? raw;
+    accessorKey: 'schedule',
+    cell: ({ getValue }) => {
+      const raw = getValue<string>();
+      const map: Record<string, string> = {
+        TIEMPO_COMPLETO: 'Tiempo Completo',
+        MEDIO_TIEMPO: 'Medio Tiempo',
+        HORARIO_FLEXIBLE: 'Horario Flexible',
+        PAGO_HORA: 'Pago por hora',
+        PRACTICAS: 'Prácticas',
+      };
+      return map[raw] ?? raw;
+    },
+    header: ({ column }) => (
+      <SortButton column={column} name="Tipo de jornada" />
+    ),
+    filterFn: accentInsensitiveTextFilter,
   },
-  header: ({ column }) => (
-    <SortButton column={column} name="Tipo de jornada" />
-  ),
-  filterFn: accentInsensitiveTextFilter,
-},
   {
     accessorKey: 'createdAt',
     cell: ({ getValue }) => dateToLocaleDateString(getValue() as string),
@@ -56,12 +53,16 @@ export const vacanciesLinkerColumns: ColumnDef<JobCardProps>[] = [
     filterFn: dateSameDay,
   },
   {
-    header: '  ',
+    header: ' ',
     id: 'actions',
     cell: ({ row }) => {
-      const id = (row.original as JobCardProps).id;
       return (
-        <DrawerLinkerVacancies job={row.original as JobCardProps} sideDrawer='right' open={false} company={(row.original as JobCardProps).company} logoUrl={(row.original as JobCardProps).logoUrl} />
+        <DrawerLinkerVacancies 
+            job={row.original} 
+            sideDrawer='right' 
+            open={false}
+            onSuccess={onUpdate} 
+        />
       );
     },
   },
@@ -85,34 +86,38 @@ export const filtersLinkerVacancies: filterType[] = [
   }
 ]
 
-export const companiesLinkerColumns: ColumnDef<CompanyData>[] = [
+export const getCompaniesLinkerColumns = (onUpdate: () => void): ColumnDef<CompanyData>[] => [
   {
-    
     id: 'name',
-    accessorFn: (row) => row.Company.tradeName ?? '', // CLAVE 1: Acceso directo
+    accessorFn: (row) => row.Company.tradeName ?? '',
     header: ({ column }) => <SortButton column={column} name="Nombre de la empresa" />,
     cell: ({ row }) => (
       <div className="flex items-center gap-3">
         <Avatar className="w-10 h-10">
-            <AvatarFallback className="bg-uaq-terniary text-white font-semibold">
-              {row.original.Company.tradeName
-                .split(' ')
-                .map((word) => word.charAt(0))}
-            </AvatarFallback>
-          </Avatar>
-        {row.original.Company.tradeName}
+          <AvatarFallback className="bg-uaq-terniary text-white font-semibold uppercase">
+            {row.original.Company.tradeName
+              ? row.original.Company.tradeName.substring(0, 2)
+              : 'EP'}
+          </AvatarFallback>
+        </Avatar>
+        <span className="font-medium text-zinc-700">{row.original.Company.tradeName}</span>
       </div>
     ),
+    filterFn: accentInsensitiveTextFilter,
   },
   {
     accessorKey: 'workSector',
     accessorFn: (row) => row.Company.workSector ?? '',
     header: ({ column }) => <SortButton column={column} name="Giro de la empresa" />,
+    cell: ({ getValue }) => <span className="text-zinc-600">{getValue() as string}</span>,
+    filterFn: accentInsensitiveTextFilter,
   },
   {
     accessorKey: 'registeredAt',
     accessorFn: (row) => row.Company.registeredAt ?? '',
-    cell: ({ getValue }) => dateToLocaleDateString(getValue() as string),
+    cell: ({ getValue }) => (
+      <span className="text-zinc-500">{dateToLocaleDateString(getValue() as string)}</span>
+    ),
     header: ({ column }) => <SortButton column={column} name="Fecha de registro" />,
   },
   {
@@ -121,17 +126,16 @@ export const companiesLinkerColumns: ColumnDef<CompanyData>[] = [
     cell: ({ row }) => {
       return (
         <DrawerLinkerCompany 
-          company={row.original as CompanyData} 
-          sideDrawer='right' 
-          open={false} 
-          logoUrl={''} 
+          companyData={row.original} 
+          sideDrawer="right" 
+          onSuccess={onUpdate} 
         />
       );
-    }
+    },
   }
 ];
 
-    export const filtersLinkerCompanies: filterType[] = [
+export const filtersLinkerCompanies: filterType[] = [
   {
     value: 'workSector',
     name: 'Giro de la empresa',
@@ -142,6 +146,4 @@ export const companiesLinkerColumns: ColumnDef<CompanyData>[] = [
     name: 'Fecha de registro',
     isDate: true,
   }
-]
-
-
+];

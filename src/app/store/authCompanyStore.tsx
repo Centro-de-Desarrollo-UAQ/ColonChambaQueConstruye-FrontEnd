@@ -3,23 +3,22 @@ import { create } from 'zustand';
 
 interface CompanyAuthState {
   token: string | null;
-  companyId: string | null;   // id de la cuenta de empresa (companyAccountId)
+  companyId: string | null;
   email: string | null;
   status: string | null;
 
-  // ya la debes tener:
   login: (data: {
-    companyId?: string;        // opcional por compatibilidad
-    id?: string;               // si antes usabas "id"
+    companyId?: string;
+    id?: string;
     email: string;
     status: string;
     token: string;
   }) => void;
 
-  logout: () => void;
+  clearCompanySession: () => void;
+  logoutCompany: () => void;
   initialize: () => void;
 
-  // 👉 esta es la que te falta
   saveCompanyData: (data: {
     companyId: string;
     email: string;
@@ -30,6 +29,8 @@ interface CompanyAuthState {
 
 const LOCAL_STORAGE_TOKEN_KEY = 'authToken';
 const LOCAL_STORAGE_COMPANY_ID_KEY = 'companyId';
+const LOCAL_STORAGE_EMAIL_KEY = 'companyEmail';
+const LOCAL_STORAGE_STATUS_KEY = 'companyStatus';
 
 export const useCompanyStore = create<CompanyAuthState>((set) => ({
   token: null,
@@ -49,22 +50,51 @@ export const useCompanyStore = create<CompanyAuthState>((set) => ({
 
     if (typeof window !== 'undefined') {
       localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, token);
+
       if (finalCompanyId) {
         localStorage.setItem(LOCAL_STORAGE_COMPANY_ID_KEY, finalCompanyId);
+      } else {
+        localStorage.removeItem(LOCAL_STORAGE_COMPANY_ID_KEY);
       }
+
+      localStorage.setItem(LOCAL_STORAGE_EMAIL_KEY, email);
+      localStorage.setItem(LOCAL_STORAGE_STATUS_KEY, status);
     }
   },
 
-  logout: () => {
+  clearCompanySession: () => {
     set({
       token: null,
       companyId: null,
       email: null,
       status: null,
     });
+
     if (typeof window !== 'undefined') {
-      localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
-      localStorage.removeItem(LOCAL_STORAGE_COMPANY_ID_KEY);
+      try {
+        localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
+        localStorage.removeItem(LOCAL_STORAGE_COMPANY_ID_KEY);
+        localStorage.removeItem(LOCAL_STORAGE_EMAIL_KEY);
+        localStorage.removeItem(LOCAL_STORAGE_STATUS_KEY);
+      } catch {}
+    }
+  },
+
+  logoutCompany: () => {
+    set({
+      token: null,
+      companyId: null,
+      email: null,
+      status: null,
+    });
+
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
+        localStorage.removeItem(LOCAL_STORAGE_COMPANY_ID_KEY);
+        localStorage.removeItem(LOCAL_STORAGE_EMAIL_KEY);
+        localStorage.removeItem(LOCAL_STORAGE_STATUS_KEY);
+      } catch {}
     }
   },
 
@@ -73,27 +103,41 @@ export const useCompanyStore = create<CompanyAuthState>((set) => ({
 
     const token = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
     const companyId = localStorage.getItem(LOCAL_STORAGE_COMPANY_ID_KEY);
+    const email = localStorage.getItem(LOCAL_STORAGE_EMAIL_KEY);
+    const status = localStorage.getItem(LOCAL_STORAGE_STATUS_KEY);
 
     if (token && companyId) {
       set({
         token,
         companyId,
+        email: email ?? null,
+        status: status ?? null,
       });
+    } else {
+      set({
+        token: null,
+        companyId: null,
+        email: null,
+        status: null,
+      });
+
+      try {
+        localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
+        localStorage.removeItem(LOCAL_STORAGE_COMPANY_ID_KEY);
+        localStorage.removeItem(LOCAL_STORAGE_EMAIL_KEY);
+        localStorage.removeItem(LOCAL_STORAGE_STATUS_KEY);
+      } catch {}
     }
   },
 
-  // 👉 esta es la acción que usas en SignUpEmployer
   saveCompanyData: ({ companyId, email, status, token }) => {
-    set({
-      companyId,
-      email,
-      status,
-      token,
-    });
+    set({ companyId, email, status, token });
 
     if (typeof window !== 'undefined') {
       localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, token);
       localStorage.setItem(LOCAL_STORAGE_COMPANY_ID_KEY, companyId);
+      localStorage.setItem(LOCAL_STORAGE_EMAIL_KEY, email);
+      localStorage.setItem(LOCAL_STORAGE_STATUS_KEY, status);
     }
   },
 }));
