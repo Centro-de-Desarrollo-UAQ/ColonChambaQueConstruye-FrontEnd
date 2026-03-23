@@ -156,7 +156,7 @@ export default function PublicLogin() {
 
                 <div>
                   <Link
-                    href="/login/recovery"
+                    href="/login/recovery/applicant"
                     className="block text-right font-medium no-underline hover:no-underline focus:no-underline"
                     onClick={() => console.log("Le diste click a 'olvidaste contraseña' ")}
                   >

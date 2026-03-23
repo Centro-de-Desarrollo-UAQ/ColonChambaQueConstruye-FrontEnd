@@ -65,6 +65,46 @@ export function EmailCodeValidationStep({
     if (onVerified) onVerified(code);
   };
 
+  const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLInputElement;
+    if (target.tagName !== 'INPUT') return;
+    
+    // Auto-advance
+    if (target.value.length >= 1) {
+      const name = target.name;
+      const match = name.match(/code(\d)/);
+      if (match) {
+        const idx = parseInt(match[1], 10);
+        if (idx < 5) {
+          const nextInput = document.querySelector(`input[name="code${idx + 1}"]`) as HTMLInputElement;
+          if (nextInput) {
+            nextInput.focus();
+            nextInput.select(); 
+          }
+        }
+      }
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLInputElement;
+    if (target.tagName !== 'INPUT') return;
+
+    if (e.key === 'Backspace' && target.value === '') {
+      const name = target.name;
+      const match = name.match(/code(\d)/);
+      if (match) {
+        const idx = parseInt(match[1], 10);
+        if (idx > 0) {
+          const prevInput = document.querySelector(`input[name="code${idx - 1}"]`) as HTMLInputElement;
+          if (prevInput) {
+            prevInput.focus();
+          }
+        }
+      }
+    }
+  };
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)} className="mt-8 space-y-4">
@@ -76,7 +116,7 @@ export function EmailCodeValidationStep({
           <p>Ingresa el código enviado para continuar</p>
         </div>
 
-        <div className="mt-6 flex flex-row justify-center">
+        <div className="mt-6 flex flex-row justify-center gap-4">
           {Array.from({ length: 6 }).map((_, i) => (
             <FormOTPValidation
               key={i}
