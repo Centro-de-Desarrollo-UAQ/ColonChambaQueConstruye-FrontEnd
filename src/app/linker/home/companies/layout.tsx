@@ -4,13 +4,12 @@ import { AdminNavbarMenu } from "@/components/navigation/AdminNavbarMenu";
 import React from "react";
 
 export default function LinkerLayout({ children }: { children: React.ReactNode }) {
-  // ✅ Tipamos correctamente las variables CSS
   const styleVars: React.CSSProperties & {
     '--sb-collapsed': string;
     '--sb-expanded': string;
   } = {
-    '--sb-collapsed': '64px',  // w-16
-    '--sb-expanded': '256px',  // w-64
+    '--sb-collapsed': '64px', 
+    '--sb-expanded': '256px', 
   };
 
   return (
@@ -18,13 +17,8 @@ export default function LinkerLayout({ children }: { children: React.ReactNode }
       className="relative min-h-screen overflow-x-hidden"
       style={styleVars}
     >
-      {/* ✅ DEBUG: si este marcador NO aparece en pantalla, este layout NO se está usando */}
-      <div className="fixed bottom-4 right-4 z-[9999] rounded bg-black px-3 py-1 text-white">
-        LINKER LAYOUT
-      </div>
-
+      
       <div>
-        {/* Subbarra / título de página */}
         <div>
           <AdminNavbarMenu NameTitle="Empresas" basePath="companies" />
         </div>

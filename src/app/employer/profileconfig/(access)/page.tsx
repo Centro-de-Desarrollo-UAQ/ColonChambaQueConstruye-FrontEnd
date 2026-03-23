@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import TitleSection from '@/components/common/TitleSection';
 import { ConfigRow } from '@/components/settings/ConfigRow';
 import { UserCircle } from '@solar-icons/react';
@@ -12,10 +12,8 @@ import { useRouter } from 'next/navigation';
 import Alerts from '@/components/ui/Alerts';
 import ConfirmChangePasswordModal from '@/components/ui/modal/ConfirmChangePasswordModal';
 
-/** ✅ mismos mensajes base del Register */
 const DEFAULT_ERROR_MESSAGE = 'Este campo es requerido';
 
-/** ✅ mismas reglas del Register */
 const PASSWORD_RULES = [
   { regex: /.{8,}/, message: 'Mínimo 8 caracteres' },
   { regex: /[A-Z]/, message: 'Requiere mayúscula' },
@@ -34,38 +32,30 @@ export default function Page() {
   const router = useRouter();
   const { companyAccount, loading, error } = useEmployerProfile();
 
-  const {
-    form,
-    errors,
-    isEditingPersonal,
-    setIsEditingPersonal,
-    isEditingGeneral,
-    setIsEditingGeneral,
-    confirmPassword,
-    setConfirmPassword,
-    lastPassword,
-    setLastPassword,
-    handleChange,
-    handleSavePersonal,
-    handleSaveGeneral
-  } = useAccountForm(companyAccount);
+  const [form, setForm] = useState({
+    nombres: '',
+    apellidos: '',
+    puesto: '',
+    celular: '',
+    telfijo: '',
+    correo: '',
+    contrasena: '',
+  });
 
-  const ReadOnlyRow = ({ label, value }: { label: string, value: string | number }) => (
-    <div className="flex w-full items-center justify-between px-6 py-4 border-b border-zinc-100 min-h-[60px]">
-      <span className="text-zinc-900 font-medium shrink-0">{label}</span>
-      <span className="text-zinc-600 text-sm text-right flex-1 pl-8 break-words">
-        {value || '-'}
-      </span>
-    </div>
-  );
+  const [personalErrors, setPersonalErrors] = useState<Record<string, string>>({});
+  const [accessErrors, setAccessErrors] = useState<Record<string, string>>({});
 
-  // Alert global (para el escenario "NO-FUNCIONO" del cambio de contraseña)
+  const [isEditingPersonal, setIsEditingPersonal] = useState(false);
+  const [isEditingGeneral, setIsEditingGeneral] = useState(false);
+  
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [lastPassword, setLastPassword] = useState('');
+
   const [alert, setAlert] = useState<{
     type: 'error' | 'success';
     message: string;
   } | null>(null);
 
-  // Modal confirmación
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [isPatchingPassword, setIsPatchingPassword] = useState(false);
 
@@ -77,7 +67,15 @@ export default function Page() {
     },
   };
 
-  // Hidratar form con datos del backend
+  const ReadOnlyRow = ({ label, value }: { label: string, value: string | number }) => (
+    <div className="flex w-full items-center justify-between px-6 py-4 border-b border-zinc-100 min-h-[60px]">
+      <span className="text-zinc-900 font-medium shrink-0">{label}</span>
+      <span className="text-zinc-600 text-sm text-right flex-1 pl-8 break-words">
+        {value || '-'}
+      </span>
+    </div>
+  );
+
   useEffect(() => {
     if (!companyAccount) return;
 
@@ -98,8 +96,6 @@ export default function Page() {
     setOpenConfirmModal(false);
     setIsPatchingPassword(false);
   }, [companyAccount]);
-
-  /* ---------------- helpers ---------------- */
 
   const handleChange = (key: string, value: string) => {
     if ((key === 'celular' || key === 'telfijo') && /\D/.test(value)) {
@@ -144,7 +140,6 @@ export default function Page() {
     return errors;
   };
 
-  /** ✅ REEMPLAZADO: Validaciones de password estilo Register */
   const validateAccessFields = () => {
     const errors: Record<string, string> = {};
 
@@ -159,10 +154,8 @@ export default function Page() {
       errors.correo = 'Correo inválido';
     }
 
-    // last password requerida (mensaje estilo register)
     if (!last) errors.lastPassword = DEFAULT_ERROR_MESSAGE;
 
-    // new password (mensaje estilo register)
     if (!newPass) {
       errors.contrasena = DEFAULT_ERROR_MESSAGE;
     } else {
@@ -170,7 +163,6 @@ export default function Page() {
       if (msg) errors.contrasena = msg;
     }
 
-    // confirm password (mensaje estilo register)
     if (!confirm) {
       errors.confirmPassword = DEFAULT_ERROR_MESSAGE;
     } else {
@@ -178,12 +170,10 @@ export default function Page() {
       if (msg) errors.confirmPassword = msg;
     }
 
-    // coincide (igual que refine)
     if (!errors.contrasena && !errors.confirmPassword && newPass !== confirm) {
       errors.confirmPassword = 'Las contraseñas no coinciden';
     }
 
-    // opcional: evitar misma que la anterior
     if (!errors.contrasena && last && newPass && newPass === last) {
       errors.contrasena = 'La nueva contraseña no puede ser igual a la anterior';
     }
@@ -191,7 +181,6 @@ export default function Page() {
     return errors;
   };
 
-  // helper para patch
   const patchAccount = async (payload: any) => {
     const companyId = localStorage.getItem('companyId');
     const accountId = companyAccount?.id;
@@ -217,20 +206,17 @@ export default function Page() {
         console.error('Error PATCH', errJson);
         errText = errJson.message || errText;
       } catch {
-        // ignore
       }
       throw new Error(errText);
     }
   };
 
-  // Limpieza de "memoria" (store/localStorage)
   const clearCompanySession = () => {
     try {
       localStorage.removeItem('token');
       localStorage.removeItem('companyId');
       localStorage.removeItem('accountId');
     } catch {
-      // ignore
     }
   };
 
@@ -272,12 +258,6 @@ export default function Page() {
     }
   };
 
-  /**
-   * PASO 2:
-   * 1) validamos
-   * 2) abrimos modal
-   * 3) confirmar modal -> patch
-   */
   const handleSaveGeneral = async () => {
     setAlert(null);
 
@@ -351,11 +331,7 @@ export default function Page() {
     <div className="mr-20 space-y-6 p-4 md:p-6">
       <TitleSection sections={sectionConfig} currentSection="profile" />
 
-      {alert && (
-        <div className="px-1">
-          <Alerts type={alert.type} message={alert.message} />
-        </div>
-      )}
+    
 
       <div className="rounded-lg border border-zinc-300 shadow-sm">
         <ConfigRow
@@ -368,97 +344,97 @@ export default function Page() {
         />
 
         <div className="w-full">
-            {isEditingPersonal ? (
-                <div className="px-6">
-                    <ConfigRow
-                    title="Nombres"
-                    valueinput={form.nombres}
-                    isTitle={false}
-                    isEditable={true}
-                    editInput={true}
-                    onValueChange={(v) => handleChange('nombres', v)}
-                    externalError={errors.personal.nombres}
-                    />
-                </div>
-            ) : (
-                <ReadOnlyRow label="Nombres" value={form.nombres} />
-            )}
+          {isEditingPersonal ? (
+            <div className="px-6">
+              <ConfigRow
+                title="Nombres"
+                valueinput={form.nombres}
+                isTitle={false}
+                isEditable={true}
+                editInput={true}
+                onValueChange={(v) => handleChange('nombres', v)}
+                externalError={personalErrors.nombres}
+              />
+            </div>
+          ) : (
+            <ReadOnlyRow label="Nombres" value={form.nombres} />
+          )}
         </div>
 
         <div className="w-full">
-            {isEditingPersonal ? (
-                <div className="px-6">
-                    <ConfigRow
-                    title="Apellidos"
-                    valueinput={form.apellidos}
-                    isTitle={false}
-                    isEditable={true}
-                    editInput={true}
-                    onValueChange={(v) => handleChange('apellidos', v)}
-                    externalError={errors.personal.apellidos}
-                    />
-                </div>
-            ) : (
-                <ReadOnlyRow label="Apellidos" value={form.apellidos} />
-            )}
+          {isEditingPersonal ? (
+            <div className="px-6">
+              <ConfigRow
+                title="Apellidos"
+                valueinput={form.apellidos}
+                isTitle={false}
+                isEditable={true}
+                editInput={true}
+                onValueChange={(v) => handleChange('apellidos', v)}
+                externalError={personalErrors.apellidos}
+              />
+            </div>
+          ) : (
+            <ReadOnlyRow label="Apellidos" value={form.apellidos} />
+          )}
         </div>
 
         <div className="w-full">
-            {isEditingPersonal ? (
-                <div className="px-6">
-                    <ConfigRow
-                    title="Puesto"
-                    valueinput={form.puesto}
-                    isTitle={false}
-                    isEditable={true}
-                    editInput={true}
-                    onValueChange={(v) => handleChange('puesto', v)}
-                    externalError={errors.personal.puesto}
-                    />
-                </div>
-            ) : (
-                <ReadOnlyRow label="Puesto" value={form.puesto} />
-            )}
+          {isEditingPersonal ? (
+            <div className="px-6">
+              <ConfigRow
+                title="Puesto"
+                valueinput={form.puesto}
+                isTitle={false}
+                isEditable={true}
+                editInput={true}
+                onValueChange={(v) => handleChange('puesto', v)}
+                externalError={personalErrors.puesto}
+              />
+            </div>
+          ) : (
+            <ReadOnlyRow label="Puesto" value={form.puesto} />
+          )}
         </div>
 
         <div className="w-full">
-            {isEditingPersonal ? (
-                <div className="px-6">
-                    <ConfigRow
-                    title="Celular"
-                    valueinput={form.celular}
-                    isTitle={false}
-                    isEditable={true}
-                    editInput={true}
-                    onValueChange={(v) => handleChange('celular', v)}
-                    externalError={errors.personal.celular}
-                    />
-                </div>
-            ) : (
-                <ReadOnlyRow label="Celular" value={form.celular} />
-            )}
+          {isEditingPersonal ? (
+            <div className="px-6">
+              <ConfigRow
+                title="Celular"
+                valueinput={form.celular}
+                isTitle={false}
+                isEditable={true}
+                editInput={true}
+                onValueChange={(v) => handleChange('celular', v)}
+                externalError={personalErrors.celular}
+              />
+            </div>
+          ) : (
+            <ReadOnlyRow label="Celular" value={form.celular} />
+          )}
         </div>
 
         <div className="w-full">
-            {isEditingPersonal ? (
-                <div className="px-6">
-                    <ConfigRow
-                    title="Teléfono fijo"
-                    valueinput={form.telfijo}
-                    isTitle={false}
-                    isEditable={true}
-                    editInput={true}
-                    onValueChange={(v) => handleChange('telfijo', v)}
-                    externalError={errors.personal.telfijo}
-                    />
-                </div>
-            ) : (
-                <ReadOnlyRow label="Teléfono fijo" value={form.telfijo} />
-            )}
+          {isEditingPersonal ? (
+            <div className="px-6">
+              <ConfigRow
+                title="Teléfono fijo"
+                valueinput={form.telfijo}
+                isTitle={false}
+                isEditable={true}
+                editInput={true}
+                onValueChange={(v) => handleChange('telfijo', v)}
+                externalError={personalErrors.telfijo}
+              />
+            </div>
+          ) : (
+            <ReadOnlyRow label="Teléfono fijo" value={form.telfijo} />
+          )}
         </div>
 
-        {errors.personal.global && (
-          <p className="px-6 pb-2 text-sm text-red-600">{errors.personal.global}</p>
+        {personalErrors.global && (
+          <p className="px-6 pb-2 text-sm text-red-600">{personalErrors.global}</p>
         )}
 
         {isEditingPersonal && (
@@ -509,7 +485,7 @@ export default function Page() {
         {isEditingGeneral && (
           <>
             <div className="px-6">
-                <ConfigRow
+              <ConfigRow
                 title="Repite contraseña"
                 valueinput={confirmPassword}
                 placeholder="Repite tu nueva contraseña"
@@ -517,12 +493,12 @@ export default function Page() {
                 editInput={true}
                 onValueChange={(v) => setConfirmPassword(v)}
                 inputType="password"
-                externalError={errors.access.confirmPassword}
-                />
+                externalError={accessErrors.confirmPassword}
+              />
             </div>
 
             <div className="px-6">
-                <ConfigRow
+              <ConfigRow
                 title="Última contraseña"
                 valueinput={lastPassword}
                 placeholder="Tu contraseña anterior"
@@ -530,14 +506,14 @@ export default function Page() {
                 editInput={true}
                 onValueChange={(v) => setLastPassword(v)}
                 inputType="password"
-                externalError={errors.access.lastPassword}
-                />
+                externalError={accessErrors.lastPassword}
+              />
             </div>
           </>
         )}
 
-        {errors.access.global && (
-          <p className="px-6 pb-2 text-sm text-red-600">{errors.access.global}</p>
+        {accessErrors.global && (
+          <p className="px-6 pb-2 text-sm text-red-600">{accessErrors.global}</p>
         )}
 
         {isEditingGeneral && (
