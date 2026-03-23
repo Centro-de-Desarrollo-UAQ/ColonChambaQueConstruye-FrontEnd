@@ -184,7 +184,7 @@ export default function PublicLogin() {
 
                 <div>
                   <Link
-                    href={'recovery'}
+                    href="/login/recovery/company"
                     className="block text-right font-medium no-underline hover:no-underline focus:no-underline"
                   >
                     ¿Olvidaste tu contraseña?
