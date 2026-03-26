@@ -31,7 +31,6 @@ export default function CompanyLinkerCard({
   return (
     <div className="hover:border-uaq-brand-800 group flex flex-col rounded-lg border border-zinc-300 shadow-sm transition-all duration-300 hover:translate-y-[-2px] hover:shadow-md">
       <Drawer direction={sideDrawer === "left" ? "left" : "right"}>
-        {/* VISTA PREVIA DE LA TARJETA (MINIMIZADA) */}
         <div className="flex w-full gap-5 p-5 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
           
           <div className="flex-shrink-0">
