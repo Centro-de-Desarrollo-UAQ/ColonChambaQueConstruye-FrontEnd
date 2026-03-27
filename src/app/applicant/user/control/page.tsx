@@ -5,13 +5,32 @@ import { ConfigRow } from '@/components/settings/ConfigRow';
 import { ShieldKeyholeMinimalistic } from '@solar-icons/react';
 import { Button } from '@/components/ui/button';
 import { useUserStore } from '@/app/store/useUserInfoStore';
+import { useApplicantStore } from '@/app/store/authApplicantStore'; 
+import { useRouter } from 'next/navigation';
+
+import Alert from '@/components/ui/Alerts'; 
+import ConfirmChangePasswordModal from '@/components/ui/modal/ConfirmChangePasswordModal';
+
 export default function Control() {
+  const router = useRouter();
   const { user } = useUserStore();
+  const { token, id: userId, clearAuth } = useApplicantStore() as any;
+
   const [isEditing, setIsEditing] = useState(false);
+
+  // AGREGADO 2: Estados para el Alert y el Modal
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const [alertConfig, setAlertConfig] = useState<{
+    isVisible: boolean;
+    type: 'error' | 'warning';
+    title: string;
+    description: string;
+  }>({ isVisible: false, type: 'error', title: '', description: '' });
 
   const [form, setForm] = useState({
     email: '',
     phone: '',
+    lastPassword: '', 
     password: '', 
     confirmPassword: '', 
   });
@@ -24,6 +43,7 @@ export default function Control() {
         ...prev,
         email: user.email || '',
         phone: user.phone || '',
+        lastPassword: '',
         password: '', 
         confirmPassword: '',
       }));
@@ -47,8 +67,8 @@ export default function Control() {
     }
     setErrors((prev) => ({ ...prev, [key]: '' }));
     
-    if (key === 'password' || key === 'confirmPassword') {
-       setErrors((prev) => ({ ...prev, confirmPassword: '' }));
+    if (key === 'password' || key === 'confirmPassword' || key === 'lastPassword') {
+       setErrors((prev) => ({ ...prev, confirmPassword: '', lastPassword: '', password: '' }));
     }
   };
 
@@ -59,6 +79,9 @@ export default function Control() {
     if (!form.phone.trim()) newErrors.phone = 'El teléfono es requerido';
     
     if (form.password.length > 0) {
+      if (!form.lastPassword.trim()) {
+        newErrors.lastPassword = 'La contraseña actual es requerida';
+      }
       if (form.password.length < 6) {
         newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
       }
@@ -73,17 +96,61 @@ export default function Control() {
       return;
     }
 
+    if (form.password.length > 0) {
+      setOpenConfirmModal(true);
+    } else {
+      executeSaveContact();
+    }
+  };
+
+  const executeSaveContact = () => {
     const payload = {
       email: form.email,
       phone: form.phone,
-      password: form.password === '' ? undefined : form.password
     };
-
-    console.log('Guardando cambios de acceso:', payload);
-
+    console.log('Guardando cambios de contacto locales:', payload);
     setErrors({});
     setIsEditing(false);
-    setForm(prev => ({ ...prev, password: '', confirmPassword: '' }));
+  };
+
+  const handleConfirmChangePassword = async () => {
+    try {
+      const response = await fetch(`/api/v1/users/${userId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          password: form.password.trim(),
+        }),
+      });
+
+      if (response.status === 200 || response.status === 201) {
+        setOpenConfirmModal(false);
+        if (typeof clearAuth === 'function') clearAuth();
+        router.replace('/login/applicant');
+        return;
+      }
+
+      setAlertConfig({
+        isVisible: true,
+        type: 'error',
+        title: 'Error',
+        description: 'Datos incorrectos, inténtalo nuevamente.'
+      });
+      setOpenConfirmModal(false);
+
+    } catch (error) {
+      console.error('Error:', error);
+      setAlertConfig({
+        isVisible: true,
+        type: 'error',
+        title: 'Error de conexión',
+        description: 'Hubo un problema al cambiar la contraseña.'
+      });
+      setOpenConfirmModal(false);
+    }
   };
 
   const handleCancel = () => {
@@ -91,6 +158,7 @@ export default function Control() {
       setForm({
         email: user.email || '',
         phone: user.phone || '',
+        lastPassword: '',
         password: '',
         confirmPassword: '',
       });
@@ -110,6 +178,14 @@ export default function Control() {
   return (
     <div className="mr-20 space-y-6 p-4 md:p-6">
       <TitleSection sections={sectionConfig} currentSection="access" />
+
+      <Alert
+        isVisible={alertConfig.isVisible}
+        onClose={() => setAlertConfig(prev => ({ ...prev, isVisible: false }))}
+        type={alertConfig.type}
+        title={alertConfig.title}
+        description={alertConfig.description}
+      />
 
       <div className="rounded-lg border border-zinc-300 shadow-sm">
         <ConfigRow
@@ -136,7 +212,6 @@ export default function Control() {
             onValueChange={(v) => handleChange('email', v)}
             externalError={errors.email}
           />
-          
         </div>
 
         <div className="px-6">
@@ -153,34 +228,64 @@ export default function Control() {
           />
         </div>
 
-        <div className="px-6">
-          <ConfigRow
-            title="Contraseña"
-            valueinput={isEditing ? form.password : '*************'}
-            isTitle={false}
-            placeholder={isEditing ? "Escriba nueva contraseña" : ""}
-            isEditable={isEditing} 
-            editInput={isEditing}
-            inputType="password"
-            onValueChange={(v) => handleChange('password', v)}
-            externalError={errors.password}
-          />
-        </div>
-
-        {isEditing && (
-          <div className="px-6 animate-in fade-in slide-in-from-top-2 duration-300">
+        {!isEditing && (
+          <div className="px-6">
             <ConfigRow
-              title="Confirmar"
-              valueinput={form.confirmPassword}
+              title="Contraseña"
+              valueinput="*************"
               isTitle={false}
-              placeholder="Escribela nuevamente"
-              isEditable={true}
-              editInput={true}
-              inputType="password"
-              onValueChange={(v) => handleChange('confirmPassword', v)}
-              externalError={errors.confirmPassword}
+              placeholder=""
+              isEditable={false}
+              editInput={false}
+              inputType="text"
             />
           </div>
+        )}
+
+        {isEditing && (
+          <>
+            <div className="px-6">
+              <ConfigRow
+                title="Contraseña actual"
+                valueinput={''}
+                isTitle={false}
+                placeholder="Ingresa tu contraseña actual"
+                isEditable={isEditing}
+                editInput={isEditing}
+                inputType="password"
+                onValueChange={(v) => handleChange('lastPassword', v)}
+                externalError={errors.lastPassword}
+              />
+            </div>
+
+            <div className="px-6">
+              <ConfigRow
+                title="Nueva contraseña"
+                valueinput={form.password}
+                isTitle={false}
+                placeholder="Nueva contraseña"
+                isEditable={isEditing}
+                editInput={isEditing}
+                inputType="password"
+                onValueChange={(v) => handleChange('password', v)}
+                externalError={errors.password}
+              />
+            </div>
+
+            <div className="px-6">
+              <ConfigRow
+                title="Repite contraseña"
+                valueinput={form.confirmPassword}
+                isTitle={false}
+                placeholder="Repite la nueva contraseña"
+                isEditable={isEditing}
+                editInput={isEditing}
+                inputType="password"
+                onValueChange={(v) => handleChange('confirmPassword', v)}
+                externalError={errors.confirmPassword}
+              />
+            </div>
+          </>
         )}
 
         {isEditing && (
@@ -194,6 +299,13 @@ export default function Control() {
           </div>
         )}
       </div>
+
+      {/* Render del Modal */}
+      <ConfirmChangePasswordModal
+        open={openConfirmModal}
+        onClose={() => setOpenConfirmModal(false)}
+        onConfirm={handleConfirmChangePassword}
+      />
     </div>
   );
 }

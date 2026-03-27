@@ -6,36 +6,13 @@ import { UserCircle } from '@solar-icons/react';
 import { Button } from '@/components/ui/button';
 import { useUserStore } from '@/app/store/useUserInfoStore';
 import { useApplicantStore } from '@/app/store/authApplicantStore';
-import { useRouter } from 'next/navigation';
 
-import Alerts from '@/components/ui/Alerts';
-import ConfirmChangePasswordModal from '@/components/ui/modal/ConfirmChangePasswordModal';
-
-const DEFAULT_ERROR_MESSAGE = 'Este campo es requerido';
-
-// ✅ mismas reglas que applicantSchema (register)
-const PASSWORD_RULES = [
-  { regex: /.{8,}/, message: 'Mínimo 8 caracteres' },
-  { regex: /[A-Z]/, message: 'Requiere mayúscula' },
-  { regex: /[a-z]/, message: 'Requiere minúscula' },
-  { regex: /[0-9]/, message: 'Requiere número' },
-];
-
-function validatePasswordLikeRegister(value: string): string | null {
-  for (const rule of PASSWORD_RULES) {
-    if (!rule.regex.test(value)) return rule.message;
-  }
-  return null;
-}
+import Alert from '@/components/ui/Alerts'; // <-- Ajustado para que coincida con tu import y uso
 
 export default function Profile() {
-  const router = useRouter();
   const { user, updateLocalUser } = useUserStore();
+  const { token, id: userId } = useApplicantStore();
 
-  // store auth applicant
-  const { token, id: userId, clearAuth } = useApplicantStore() as any;
-
-  // Perfil
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -47,20 +24,13 @@ export default function Profile() {
   });
   const [profileErrors, setProfileErrors] = useState<Record<string, string>>({});
 
-  // Acceso / Password (Paso 3)
-  const [isEditingAccess, setIsEditingAccess] = useState(false);
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [lastPassword, setLastPassword] = useState(''); // UI only (tarea)
-  const [accessErrors, setAccessErrors] = useState<Record<string, string>>({});
-  const [openConfirmModal, setOpenConfirmModal] = useState(false);
-  const [isPatchingPassword, setIsPatchingPassword] = useState(false);
-
-  // Alert
-  const [alert, setAlert] = useState<{
-    type: 'error' | 'success';
-    message: string;
-  } | null>(null);
+  // Adaptado para almacenar todo lo que el componente Alert necesita
+  const [alertConfig, setAlertConfig] = useState<{
+    isVisible: boolean;
+    type: 'error' | 'warning';
+    title: string;
+    description: string;
+  }>({ isVisible: false, type: 'error', title: '', description: '' });
 
   useEffect(() => {
     if (!user) return;
@@ -99,47 +69,6 @@ export default function Profile() {
     return errors;
   };
 
-  // ✅ Validación de passwords (Paso 3) igual que register
-  const validateAccessFields = () => {
-    const errors: Record<string, string> = {};
-
-    const newPass = newPassword.trim();
-    const confirm = confirmPassword.trim();
-    const last = lastPassword.trim();
-
-    // La tarea pide la anterior (aunque no se mande al backend)
-    if (!last) errors.lastPassword = 'Debes ingresar tu contraseña anterior';
-
-    // new password (mismas reglas que register)
-    if (!newPass) {
-      errors.newPassword = DEFAULT_ERROR_MESSAGE;
-    } else {
-      const msg = validatePasswordLikeRegister(newPass);
-      if (msg) errors.newPassword = msg;
-    }
-
-    // confirm password (mismas reglas que register)
-    if (!confirm) {
-      errors.confirmPassword = DEFAULT_ERROR_MESSAGE;
-    } else {
-      const msg = validatePasswordLikeRegister(confirm);
-      if (msg) errors.confirmPassword = msg;
-    }
-
-    // coincide (igual que refine del schema)
-    if (!errors.newPassword && !errors.confirmPassword && newPass !== confirm) {
-      errors.confirmPassword = 'Las contraseñas no coinciden';
-    }
-
-    // recomendado: evitar que sea igual a la anterior (si tu tarea lo pide)
-    if (!errors.newPassword && last && newPass && newPass === last) {
-      errors.newPassword = 'La nueva contraseña no puede ser igual a la anterior';
-    }
-
-    return errors;
-  };
-
-  // PATCH perfil
   const handleSave = async () => {
     const errors = validateProfileFields();
     if (Object.keys(errors).length > 0) {
@@ -149,6 +78,7 @@ export default function Profile() {
     }
 
     setIsSaving(true);
+    setAlertConfig(prev => ({ ...prev, isVisible: false }));
 
     try {
       const payload = {
@@ -180,9 +110,23 @@ export default function Profile() {
 
       setProfileErrors({});
       setIsEditing(false);
+      
+      // Ojo: Si tu Alert no soporta 'success', usamos 'warning' temporalmente
+      // Si ya le agregaste 'success' a tu Alert.tsx, puedes cambiarlo aquí
+      setAlertConfig({ 
+        isVisible: true, 
+        type: 'warning', // o 'success'
+        title: 'Éxito', 
+        description: 'Perfil actualizado correctamente' 
+      });
     } catch (error) {
       console.error('Error updating profile:', error);
-      alert('Hubo un problema al guardar los cambios. Intente nuevamente.');
+      setAlertConfig({ 
+        isVisible: true, 
+        type: 'error', 
+        title: 'Error', 
+        description: 'Hubo un problema al guardar los cambios.' 
+      });
     } finally {
       setIsSaving(false);
     }
@@ -199,70 +143,7 @@ export default function Profile() {
     }
     setProfileErrors({});
     setIsEditing(false);
-  };
-
-  // Guardar en acceso -> abre modal
-  const handleSaveAccess = () => {
-    setAlert(null);
-
-    const errors = validateAccessFields();
-    if (Object.keys(errors).length > 0) {
-      setAccessErrors(errors);
-      return;
-    }
-
-    setAccessErrors({});
-    setOpenConfirmModal(true);
-  };
-
-  // Confirmar modal -> PATCH password (Swagger: solo "password")
-  const handleConfirmChangePassword = async () => {
-    try {
-      setIsPatchingPassword(true);
-      setAlert(null);
-
-      const response = await fetch(`/api/v1/users/${userId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          password: newPassword.trim(),
-        }),
-      });
-
-      if (response.status === 200 || response.status === 201) {
-        if (typeof clearAuth === 'function') clearAuth();
-        router.replace('/login/applicant');
-        return;
-      }
-
-      let msg = 'Datos incorrectos, inténtalo nuevamente.';
-      try {
-        const err = await response.json();
-        if (err?.message) {
-          msg = Array.isArray(err.message) ? err.message.join(' ') : String(err.message);
-        }
-      } catch {}
-
-      setAlert({ type: 'error', message: msg });
-    } catch (error) {
-      console.error('Error changing password:', error);
-      setAlert({ type: 'error', message: 'Datos incorrectos, inténtalo nuevamente.' });
-    } finally {
-      setIsPatchingPassword(false);
-      setOpenConfirmModal(false);
-    }
-  };
-
-  const handleCancelAccess = () => {
-    setAlert(null);
-    setAccessErrors({});
-    setNewPassword('');
-    setConfirmPassword('');
-    setLastPassword('');
-    setIsEditingAccess(false);
+    setAlertConfig(prev => ({ ...prev, isVisible: false }));
   };
 
   if (!user) {
@@ -277,13 +158,15 @@ export default function Profile() {
     <div className="mr-20 space-y-6 p-4 md:p-6">
       <TitleSection sections={sectionConfig} currentSection="profile" />
 
-      {alert && (
-        <div className="px-1">
-          <Alerts type={alert.type} message={alert.message} />
-        </div>
-      )}
+      {/* Renderizado correcto de Alert según su interfaz */}
+      <Alert 
+        isVisible={alertConfig.isVisible}
+        onClose={() => setAlertConfig(prev => ({ ...prev, isVisible: false }))}
+        type={alertConfig.type}
+        title={alertConfig.title}
+        description={alertConfig.description}
+      />
 
-      {/* PERFIL */}
       <div className="rounded-lg border border-zinc-300 shadow-sm">
         <ConfigRow
           title="Perfil"
@@ -337,7 +220,7 @@ export default function Profile() {
         <div className="px-6">
           <ConfigRow
             title="Fecha de nacimiento"
-            valueinput={form.fechaNacimiento}
+            valueinput={form.fechaNacimiento ? form.fechaNacimiento.split('T')[0].split('-').reverse().join('/') : ''}
             placeholder="Contenido"
             isEditable={isEditing}
             editInput={false}
@@ -357,85 +240,6 @@ export default function Profile() {
           </div>
         )}
       </div>
-
-      {/* ACCESO */}
-      <div className="rounded-lg border border-zinc-300 shadow-sm">
-        <ConfigRow
-          title="Información de acceso"
-          valueinput=""
-          isTitle={true}
-          placeholder=""
-          isEditable={true}
-          editInput={false}
-          onEditClick={() => {
-            setAlert(null);
-            setAccessErrors({});
-            setNewPassword('');
-            setConfirmPassword('');
-            setLastPassword('');
-            setIsEditingAccess((s) => !s);
-          }}
-        />
-
-        <div className="px-6">
-          <ConfigRow
-            title="Nueva contraseña"
-            inputType="password"
-            valueinput={newPassword}
-            placeholder="Nueva contraseña"
-            isEditable={isEditingAccess}
-            editInput={isEditingAccess}
-            onValueChange={(v) => setNewPassword(v)}
-            externalError={accessErrors.newPassword}
-          />
-        </div>
-
-        {isEditingAccess && (
-          <>
-            <div className="px-6">
-              <ConfigRow
-                title="Repite contraseña"
-                inputType="password"
-                valueinput={confirmPassword}
-                placeholder="Repite la nueva contraseña"
-                isEditable={true}
-                editInput={true}
-                onValueChange={(v) => setConfirmPassword(v)}
-                externalError={accessErrors.confirmPassword}
-              />
-            </div>
-
-            <div className="px-6">
-              <ConfigRow
-                title="Última contraseña"
-                inputType="password"
-                valueinput={lastPassword}
-                placeholder="Tu contraseña anterior"
-                isEditable={true}
-                editInput={true}
-                onValueChange={(v) => setLastPassword(v)}
-                externalError={accessErrors.lastPassword}
-              />
-            </div>
-
-            <div className="flex justify-end gap-3 px-6 py-4">
-              <Button variant="primary" onClick={handleCancelAccess} disabled={isPatchingPassword}>
-                Cancelar
-              </Button>
-
-              <Button variant="primary" onClick={handleSaveAccess} disabled={isPatchingPassword}>
-                {isPatchingPassword ? 'Guardando...' : 'Guardar Cambios'}
-              </Button>
-            </div>
-          </>
-        )}
-      </div>
-
-      <ConfirmChangePasswordModal
-        open={openConfirmModal}
-        onClose={() => setOpenConfirmModal(false)}
-        onConfirm={handleConfirmChangePassword}
-      />
     </div>
   );
 }
