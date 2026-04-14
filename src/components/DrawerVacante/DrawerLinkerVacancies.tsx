@@ -16,14 +16,14 @@ import { useState, useRef, useEffect } from 'react';
 import { useApplicantStore } from '@/app/store/authApplicantStore';
 import { apiService } from '@/services/api.service';
 import { toast } from 'sonner';
-import { createPortal } from 'react-dom'; 
+import { createPortal } from 'react-dom';
 
 interface DrawerLinkerVacanciesProps {
   job: JobCardProps;
   sideDrawer: 'right' | 'left';
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
-  onSuccess?: () => void; 
+  onSuccess?: () => void;
 }
 
 export default function DrawerLinkerVacancies({
@@ -33,7 +33,7 @@ export default function DrawerLinkerVacancies({
   onOpenChange,
   onSuccess
 }: DrawerLinkerVacanciesProps) {
-  
+
   const { id: linkerId } = useApplicantStore();
 
   const [mounted, setMounted] = useState(false);
@@ -80,10 +80,10 @@ export default function DrawerLinkerVacancies({
 
     try {
       const endpoint = `/linkers/${linkerId}/vacancies/${job.id}`;
-      
+
       const body = {
         validation,
-        ...(comment && { comment }) 
+        ...(comment && { comment })
       };
 
       const response = await apiService.patch(endpoint, body);
@@ -93,7 +93,7 @@ export default function DrawerLinkerVacancies({
       }
 
       toast.success(validation ? 'Vacante aprobada correctamente.' : 'Vacante rechazada correctamente.');
-      
+
       setShowAllowVacancy(false);
       setShowRejectVacancy(false);
 
@@ -110,16 +110,16 @@ export default function DrawerLinkerVacancies({
   };
 
   const handleAllowConfirm = () => {
-    handleReviewVacancy(true); 
+    handleReviewVacancy(true);
   };
 
   const handleRejectConfirm = (data: { reason: string }) => {
-    handleReviewVacancy(false, data.reason); 
+    handleReviewVacancy(false, data.reason);
   };
 
   const displayAgeRange = () => {
     if (!job.ageRange || (job.ageRange.min === 0 && job.ageRange.max === 0)) {
-        return 'No especificado';
+      return 'No especificado';
     }
     return `${job.ageRange.min} - ${job.ageRange.max} años`;
   };
@@ -142,10 +142,17 @@ export default function DrawerLinkerVacancies({
               </DrawerTitle>
 
               <div className="flex flex-row gap-4">
-                <Button variant="primary" color="danger" className="px-6" onClick={() => setShowRejectVacancy(true)}>
+                <Button variant="primary" color="danger" className="px-6" onClick={() => {
+                  setShowRejectVacancy(true);
+                  setOpen(false)
+                }
+                }>
                   Rechazar
                 </Button>
-                <Button variant="primary" color="success" className="px-6" onClick={() => setShowAllowVacancy(true)}>
+                <Button variant="primary" color="success" className="px-6" onClick={() => {
+                  setShowAllowVacancy(true)
+                  setOpen(false)
+                }}>
                   Aprobar
                 </Button>
               </div>
@@ -153,7 +160,7 @@ export default function DrawerLinkerVacancies({
           </DrawerHeader>
 
           <div className="w-10/12 bg-white justify-center mx-auto my-5 shadow-md border border-gray-200 rounded-lg">
-            
+
             <div className="px-10 py-6 flex justify-between">
               <h3 className="text-base font-medium w-1/3">Descripción</h3>
               <div className="w-2/3">
@@ -243,14 +250,14 @@ export default function DrawerLinkerVacancies({
         </DrawerContent>
       </Drawer>
 
-      
-      
+
+
       {mounted && showAllowVacancy && createPortal(
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50">
-          <AllowVacancyModal 
-            open={true} 
-            onConfirm={handleAllowConfirm} 
-            onClose={closeAllow} 
+          <AllowVacancyModal
+            open={true}
+            onConfirm={handleAllowConfirm}
+            onClose={closeAllow}
           />
         </div>,
         document.body
@@ -258,12 +265,12 @@ export default function DrawerLinkerVacancies({
 
       {mounted && showRejectVacancy && createPortal(
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50">
-          <RejectVacancyModal 
+          <RejectVacancyModal
             open={true}
-            companyName={job.company} 
-            roleTitle={job.title}    
-            onConfirm={handleRejectConfirm} 
-            onClose={closeReject} 
+            companyName={job.company}
+            roleTitle={job.title}
+            onConfirm={handleRejectConfirm}
+            onClose={closeReject}
           />
         </div>,
         document.body
