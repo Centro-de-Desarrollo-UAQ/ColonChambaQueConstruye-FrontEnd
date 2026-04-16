@@ -26,7 +26,7 @@ interface DrawerLinkerUserProps {
   sideDrawer: 'right' | 'left';
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
-  onSuccess?: () => void; 
+  onSuccess?: () => void;
 }
 
 export default function DrawerLinkerUser({
@@ -37,7 +37,7 @@ export default function DrawerLinkerUser({
   onSuccess
 }: DrawerLinkerUserProps) {
   const { id: linkerId, token } = useApplicantStore();
-  
+
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
@@ -76,7 +76,7 @@ export default function DrawerLinkerUser({
     setIsSubmitting(true);
     try {
       const endpoint = `/linkers/${linkerId}/users/${user.id}`;
-      
+
       const body = {
         validation,
         comment: validation ? null : (comment || "Información incompleta o incorrecta")
@@ -89,13 +89,13 @@ export default function DrawerLinkerUser({
       }
 
       toast.success(validation ? 'Usuario aprobado correctamente.' : 'Usuario rechazado correctamente.');
-      
+
       setShowAllowUser(false);
       setShowRejectUser(false);
       setOpen(false);
 
       if (onSuccess) {
-        onSuccess(); 
+        onSuccess();
       }
     } catch (error) {
       console.error(error);
@@ -131,17 +131,23 @@ export default function DrawerLinkerUser({
               </div>
 
               <div className="flex flex-row gap-4 shrink-0 items-center">
-                <Button 
+                <Button
                   variant="primary" color="danger" className="px-6"
                   disabled={isSubmitting}
-                  onClick={() => setShowRejectUser(true)}
+                  onClick={() => {
+                    setShowRejectUser(true)
+                    setOpen(false)
+                  }}
                 >
                   Rechazar
                 </Button>
-                <Button 
+                <Button
                   variant="primary" color="success" className="px-6"
                   disabled={isSubmitting}
-                  onClick={() => setShowAllowUser(true)}
+                  onClick={() => {
+                    setShowAllowUser(true)
+                    setOpen(false)
+                  }}
                 >
                   Aprobar
                 </Button>
@@ -222,8 +228,8 @@ export default function DrawerLinkerUser({
             </div>
           </div>
 
-          <DrawerClose 
-            className="text-base font-bold hover:bg-zinc-200 border-0 text-red-500 px-4 py-3 rounded-md mx-auto mb-7 cursor-pointer" 
+          <DrawerClose
+            className="text-base font-bold hover:bg-zinc-200 border-0 text-red-500 px-4 py-3 rounded-md mx-auto mb-7 cursor-pointer"
             onClick={() => setOpen(false)}
           >
             Cancelar
@@ -234,7 +240,7 @@ export default function DrawerLinkerUser({
       {/* Portales para Modales de Acción */}
       {mounted && showAllowUser && createPortal(
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <AllowUserModal 
+          <AllowUserModal
             open={true}
             onClose={() => setShowAllowUser(false)}
             onConfirm={handleAllowConfirm}
@@ -245,7 +251,7 @@ export default function DrawerLinkerUser({
 
       {mounted && showRejectUser && createPortal(
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <RejectUserModal 
+          <RejectUserModal
             open={true}
             userName={candidateName}
             email={user.email}
