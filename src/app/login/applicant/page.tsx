@@ -42,14 +42,18 @@ export default function PublicLogin() {
 
       if (user.status === 'ACTIVO') {
         loginAction(user);
-        toast.success('Inicio de sesión exitoso');
         router.push('/applicant/jobs');
         return;
       }
 
       if (user.status === 'REVISION') {
-        toast.info('Tu cuenta está en revisión');
         router.push('/login/waiting');
+        return;
+      }
+      if (user.status === 'RECHAZADO'){
+        console.log("Este usuario esta bloqueado")
+        loginAction(user);
+        router.push('/applicant/user/control')
         return;
       }
 
@@ -97,7 +101,7 @@ export default function PublicLogin() {
         onClose={() => setShowTooManyRequestsAlert(false)}
         type="warning"
         title="Demasiadas peticiones"
-        description="Muchas peticiones espera un momento"
+        description="Has agotado el numero de peticiones espera un momento."
       />
 
       <div

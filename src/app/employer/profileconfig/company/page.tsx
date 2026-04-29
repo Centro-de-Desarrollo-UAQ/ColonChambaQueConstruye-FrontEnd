@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import TitleSection from '@/components/common/TitleSection';
@@ -25,11 +25,13 @@ import ConfirmChangeModal from '@/components/ui/modal/employer/ConfirmChangeModa
 import { CountryDropdown } from '@/components/employer/CompanyDetails';
 import { useCompanyStore } from '@/app/store/authCompanyStore';
 
+import { companySchema } from '@/validations/companySchema';
+
 export default function CompanyPage() {
   const router = useRouter();
   const clearCompanySession = useCompanyStore((s) => s.clearCompanySession);
 
-  const [showConfirmModal, setShowConfirmModal] = React.useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const { company, loading, error: contextError } = useEmployerProfile();
 
   const {
@@ -44,8 +46,11 @@ export default function CompanyPage() {
     handleSaveFiscales,
   } = useCompanyForm(company);
 
-  const [showModal, setShowModal] = React.useState(false);
-  const [showModalFiscales, setShowModalFiscales] = React.useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showModalFiscales, setShowModalFiscales] = useState(false);
+
+  // Estado local para manejar el error específico del RFC validado con Zod
+  const [rfcLocalError, setRfcLocalError] = useState<string>('');
 
   const handleEditClick = () => setShowModal(true);
   const handleEditFiscalesClick = () => setShowModalFiscales(true);
@@ -61,11 +66,33 @@ export default function CompanyPage() {
   };
 
   const confirmAndSave = async () => {
+    // Evitamos guardar si hay un error de validación en el RFC
+    if (rfcLocalError) return;
+
     if (isEditingInfo) await handleSaveInfo();
     if (isEditingFiscales) await handleSaveFiscales();
 
     clearCompanySession();
     router.replace('/login/waiting');
+  };
+
+  // Función para manejar exclusivamente los cambios del RFC
+  const handleRfcChange = (value: string) => {
+    // 1. Forzamos mayúsculas y máximo 13 caracteres
+    const formattedRfc = value.toUpperCase().slice(0, 13);
+    handleChange('rfc', formattedRfc);
+
+    // 2. Validamos en tiempo real extrayendo solo la regla del RFC del esquema
+    if (formattedRfc.length > 0) {
+      const result = companySchema.shape.companyRFC.safeParse(formattedRfc);
+      if (!result.success) {
+        setRfcLocalError(result.error.errors[0].message);
+      } else {
+        setRfcLocalError('');
+      }
+    } else {
+      setRfcLocalError('Este es un campo requerido.');
+    }
   };
 
   const ReadOnlyBlockRow = ({
@@ -133,14 +160,17 @@ export default function CompanyPage() {
           <>
             <div className="px-2">
               <ConfigRow
-                title="Nombre"
+                title="Nombre comercial"
                 valueinput={form.nombreEmpresa}
                 isEditable
                 editInput
                 onValueChange={(v) => handleChange('nombreEmpresa', v)}
-                externalError={errors.info.nombreEmpresa}
+                externalError={errors.info?.nombreEmpresa}
               />
             </div>
+
+            
+            
 
             <div className="px-2">
               <ConfigRow
@@ -149,7 +179,7 @@ export default function CompanyPage() {
                 isEditable
                 editInput
                 onValueChange={(v) => handleChange('descripcion', v)}
-                externalError={errors.info.descripcion}
+                externalError={errors.info?.descripcion}
               />
             </div>
 
@@ -170,7 +200,7 @@ export default function CompanyPage() {
                   ))}
                 </SelectContent>
               </Select>
-              {errors.info.sectorTrabajo && (
+              {errors.info?.sectorTrabajo && (
                 <p className="mt-1 text-sm text-red-600">
                   {errors.info.sectorTrabajo}
                 </p>
@@ -184,7 +214,7 @@ export default function CompanyPage() {
                 isEditable
                 editInput
                 onValueChange={(v) => handleChange('codigoPostal', v)}
-                externalError={errors.info.codigoPostal}
+                externalError={errors.info?.codigoPostal}
               />
             </div>
 
@@ -193,7 +223,7 @@ export default function CompanyPage() {
                 value={form.pais || ''}
                 onChange={(v) => handleChange('pais', v)}
               />
-              {errors.info.pais && (
+              {errors.info?.pais && (
                 <p className="mt-1 text-sm text-red-600">
                   {errors.info.pais}
                 </p>
@@ -207,13 +237,37 @@ export default function CompanyPage() {
                 isEditable
                 editInput
                 onValueChange={(v) => handleChange('direccion', v)}
-                externalError={errors.info.direccion}
+                externalError={errors.info?.direccion}
               />
             </div>
+            <div className="px-2 pb-2">
+              <ConfigRow
+                title="RFC"
+                valueinput={form.rfc}
+                isEditable
+                editInput
+                onValueChange={handleRfcChange}
+                externalError={rfcLocalError || errors.info?.rfc}
+              />
+              
+            </div>
+            <div className="px-2">
+              <ConfigRow
+                title="Razón social"
+                valueinput={form.razonSocial}
+                isEditable
+                editInput
+                onValueChange={(v) => handleChange('razonSocial', v)}
+                externalError={errors.info?.razonSocial}
+              />
+            </div>
+
           </>
         ) : (
           <>
-            <ReadOnlyBlockRow label="Nombre" value={form.nombreEmpresa} />
+            <ReadOnlyBlockRow label="Nombre comercial" value={form.nombreEmpresa} />
+            <ReadOnlyBlockRow label="Razón social" value={form.razonSocial} />
+            <ReadOnlyBlockRow label="RFC" value={form.rfc} />
             <ReadOnlyBlockRow label="Descripción" value={form.descripcion} />
             <ReadOnlyBlockRow label="Sector de trabajo" value={form.sectorTrabajo} />
             <ReadOnlyBlockRow label="Correo electrónico" value={form.correoContacto} />
@@ -226,7 +280,10 @@ export default function CompanyPage() {
 
       {(isEditingInfo || isEditingFiscales) && (
         <div className="flex justify-end px-6 py-8">
-          <Button onClick={() => setShowConfirmModal(true)}>
+          <Button 
+            onClick={() => setShowConfirmModal(true)}
+            disabled={!!rfcLocalError}
+          >
             Guardar Cambios
           </Button>
         </div>

@@ -70,7 +70,6 @@ export default function CompaniesRejectedPage() {
         const result: UserApiResponse = await response.json();
         const cleanData = result.data.flatMap((item) => item.User);
         
-        // Calculamos un estimado del total si el backend no envía el 'total' exacto
         const calculatedTotal = offset + cleanData.length + (cleanData.length === pageSize ? 1 : 0);
 
         setUsers(cleanData);

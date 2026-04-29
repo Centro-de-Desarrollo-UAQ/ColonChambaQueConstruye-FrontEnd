@@ -9,6 +9,7 @@ export interface UserCandidate {
   academicLevel: string;
   degree?: string; // Opcional
   jobExperience: string;
+  comment?: string;
   desiredPosition: string;
   registeredAt: string;
   status: 'REVISION' | 'RECHAZADO' | 'ACTIVO' | 'INACTIVO';

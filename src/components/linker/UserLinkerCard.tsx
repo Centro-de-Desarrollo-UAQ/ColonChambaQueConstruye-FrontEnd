@@ -28,11 +28,9 @@ function daysSince(date: string): number {
   if (!date) return 0;
   const today = new Date();
   const registeredDate = new Date(date);
-  // Se trata de normalizar ambas fechas a medianoche local
   today.setHours(0, 0, 0, 0);
   registeredDate.setHours(0, 0, 0, 0);
 
-  //Se obtiene los dias de diferencia en milisegundos por lo que se regresa convertido a dias truncandolo
   const diffMs = today.getTime() - registeredDate.getTime();
   return Math.floor(diffMs / (1000 * 60 * 60 * 24));
 }
@@ -41,27 +39,25 @@ export default function UserLinkerCard({
   user, sideDrawer
 }: LinkerUserCardProps) {
 
-  // nombre completo seguro (first + last)
   const UserName = (
     (user?.firstName ?? '') +
     ' ' +
     (user?.lastName ?? '')
   ).trim();
 
-  // Buscador de etiqueta para el nivel académico
   const getAcademicLabel = (value?: string) => {
     if (!value) return '-';
     const found = listAcademicLevelOptions.find(opt => opt.value === value);
     return found ? found.label : value;
   };
 
+  const isRejected = String(user.status ?? '').toUpperCase() === 'RECHAZADO';
+
   return (
     <div className="hover:border-uaq-brand-800 group flex flex-col rounded-lg border border-zinc-300 shadow-sm transition-all duration-300 hover:translate-y-[-2px] hover:shadow-md">
       <Drawer direction={sideDrawer === "left" ? "left" : "right"}>
-        {/* Fila 1 - Logo de la empresa, nombre del trabajo, nobmre de la empresa, jornada y modalidad */}
         <div className="flex w-full gap-5 p-5 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
           
-          {/* --- COLUMNA 1: IMAGEN (Totalmente separada) --- */}
           <div className="flex-shrink-0">
             <Avatar className="h-18 w-18 object-contain">
               <AvatarFallback className="bg-uaq-terniary text-white text-2xl font-semibold">
@@ -72,14 +68,11 @@ export default function UserLinkerCard({
             </Avatar>
           </div>
 
-          {/* --- COLUMNA 2: CONTENIDO CENTRAL (Nombre + Descripción juntos) --- */}
           <div className="flex flex-col flex-grow gap-2">
-            {/* Nombre de la empresa */}
             <h3 className="text-lg font-[800]">
               {UserName}
             </h3>
             
-            {/* Descripción */}
             <div className="flex-1 space-y-1 text-start">
               <div className="text-start font-[400] text-gray-600">
                 {user.jobExperience || '-'} 
@@ -87,13 +80,10 @@ export default function UserLinkerCard({
             </div>
           </div>
 
-          {/* --- COLUMNA 3: LATERAL DERECHO (Contactos + Botón) --- */}
           <div className="flex flex-col w-[260px] flex-shrink-0 justify-between items-end border-l border-gray-100 pl-4">
             
-            {/* Datos de contacto (Arriba) */}
             <div className="flex flex-col justify-center gap-2 self-center rounded-r-lg p-4 transition-colors duration-300 ">
               
-              {/* Email */}
               <div className="flex items-center gap-2 text-sm text-gray-700 transition-colors duration-200 group-hover:text-gray-900">
                 <Letter className="h-4 w-4" weight="Linear"/>
                 <span className="truncate max-w-[180px]" title={user.email}>
@@ -101,7 +91,6 @@ export default function UserLinkerCard({
                 </span>
               </div>
 
-              {/* Teléfono */}
               <div className="flex items-center gap-2 text-sm text-gray-700 transition-colors duration-200 group-hover:text-gray-900">
                 <PhoneCalling className="h-4 w-4" weight="Linear" />
                 <span className="truncate max-w-[180px]">
@@ -110,7 +99,6 @@ export default function UserLinkerCard({
               </div>
             </div>
 
-            {/* Botón (Abajo) */}
             <div className="flex flex-1 flex-col self-center px-4 transition-colors duration-300 items-end">
                 <DrawerTrigger className="text-start font-[400] text-brand group-hover:hover:text-uaq-brand active:text-uaq-terniary-hover cursor-pointer hover:bg-gray-50 active:bg-gray-100 p-3 rounded-2xl flex items-center gap-2 text-l transition-colors duration-200 mx-3">
                     <AddCircle weight='Bold' className="h-4 w-4" />
@@ -120,120 +108,132 @@ export default function UserLinkerCard({
           </div>
         </div>
             
-        {/* Drawer Content */}
-        <DrawerContent className="flex overflow-y-auto overflow-x-hidden bg-gray-50 pt-5">
-          <DrawerHeader className="px-10">
-            <div className="flex w-full items-center justify-between">
-              {/* TÍTULO */}
-              <DrawerTitle className="text-2xl font-[800]">
+        <DrawerContent className="flex flex-col bg-gray-50 h-full max-h-[100dvh]">
+          <DrawerHeader className="px-6 sm:px-10 shrink-0 border-b bg-white">
+            <div className="flex w-full items-center justify-between gap-4">
+              <DrawerTitle className="text-xl sm:text-2xl font-[800] break-words min-w-0 flex-1">
                 USUARIO:{' '}
                 <span className="font-[800] tracking-wide">
                   {UserName.toUpperCase() || 'N/A'}
                 </span>
               </DrawerTitle>
   
-              {/* BOTONES DE STATUS */}
-              <div className={`text-white text-lg font-semibold px-4 py-2 rounded-lg ${
-                (String(user.status ?? '').toUpperCase() === 'RECHAZADO') ? 'bg-uaq-danger' : 'bg-success'
+              <div className={`text-white text-xs sm:text-lg font-semibold px-3 sm:px-4 py-1 sm:py-2 rounded-lg shrink-0 ${
+                isRejected ? 'bg-uaq-danger' : 'bg-success'
               }`}>
-                {String(user.status ?? '').toUpperCase() === 'RECHAZADO' ? (
-                  <div>RECHAZADO</div>
-                ) :  (
-                  <div>{user.status}</div>
-                )}
+                {isRejected ? 'RECHAZADO' : (user.status || 'ACTIVO')}
               </div>
             </div>
           </DrawerHeader>
   
-          <div className="w-10/12 bg-white justify-center mx-auto my-5 shadow-md border border-gray-200 rounded-lg">
+          <div className="flex-1 overflow-y-auto px-4 sm:px-10 pb-10 custom-scrollbar mt-5">
             
-            {/* Fecha de nacimiento */}
-            <div className="px-10 py-6 flex justify-between">
-              <h3 className="text-base font-medium w-1/3">Fecha de nacimiento</h3>
-              <div className="w-2/3">
-                <span>{user.birthDate ? dateToLocaleDateString(user.birthDate) : '-'}</span>
+            {isRejected && (
+              <div className="w-full max-w-4xl bg-red-50 mx-auto mb-5 shadow-sm border border-red-200 rounded-lg overflow-hidden">
+                <div className="px-6 py-6 flex flex-col items-start gap-3">
+                  <h3 className="text-base font-bold text-red-700 shrink-0">
+                    Motivo de rechazo
+                  </h3>
+                  <div className="w-full min-w-0">
+                    <p className="text-red-800 font-medium whitespace-pre-wrap break-words leading-relaxed text-sm sm:text-base">
+                      {user.comment || 'El administrador no especificó un motivo en el sistema.'}
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-            <Separator className='w-11/12 justify-center mx-auto shadow-md rounded-lg' />
+            )}
+
+            <div className="w-full max-w-4xl bg-white justify-center mx-auto mb-5 shadow-md border border-gray-200 rounded-lg">
+              
+              <div className="px-10 py-6 flex justify-between">
+                <h3 className="text-base font-medium w-1/3 text-gray-900">Fecha de nacimiento</h3>
+                <div className="w-2/3">
+                  <span className="text-gray-700">{user.birthDate ? dateToLocaleDateString(user.birthDate) : '-'}</span>
+                </div>
+              </div>
+              <Separator className='w-11/12 justify-center mx-auto opacity-50' />
   
-            {/* Correo electrónico */}
-            <div className="px-10 py-6 flex justify-between">
-              <h3 className="text-base font-medium w-1/3">Correo electrónico</h3>
-              <div className="w-2/3">
-                <p className="leading-relaxed text-gray-800">
-                  {user.email ?? '-'}
-                </p>
+              {/* Correo electrónico */}
+              <div className="px-10 py-6 flex justify-between">
+                <h3 className="text-base font-medium w-1/3 text-gray-900">Correo electrónico</h3>
+                <div className="w-2/3">
+                  <p className="leading-relaxed text-gray-700">
+                    {user.email ?? '-'}
+                  </p>
+                </div>
               </div>
-            </div>
-            <Separator className='w-11/12 justify-center mx-auto shadow-md rounded-lg' />
+              <Separator className='w-11/12 justify-center mx-auto opacity-50' />
   
-            {/* Dirección */}
-            <div className="px-10 py-6 flex justify-between">
-              <h3 className="text-base font-medium w-1/3">Dirección</h3>
-              <div className="w-2/3">
-                <span>{user.address ?? '-'}</span>
+              {/* Dirección */}
+              <div className="px-10 py-6 flex justify-between">
+                <h3 className="text-base font-medium w-1/3 text-gray-900">Dirección</h3>
+                <div className="w-2/3">
+                  <span className="text-gray-700">{user.address ?? '-'}</span>
+                </div>
               </div>
-            </div>
-            <Separator className='w-11/12 justify-center mx-auto shadow-md rounded-lg' />
+              <Separator className='w-11/12 justify-center mx-auto opacity-50' />
   
-            {/* Teléfono celular */}
-            <div className="px-10 py-6 flex justify-between">
-              <h3 className="text-base font-medium w-1/3">Teléfono celular</h3>
-              <div className="w-2/3">
-                <span>{user.cellPhone ?? '-'}</span>
+              {/* Teléfono celular */}
+              <div className="px-10 py-6 flex justify-between">
+                <h3 className="text-base font-medium w-1/3 text-gray-900">Teléfono celular</h3>
+                <div className="w-2/3">
+                  <span className="text-gray-700">{user.cellPhone ?? '-'}</span>
+                </div>
               </div>
-            </div>
-            <Separator className='w-11/12 justify-center mx-auto shadow-md rounded-lg' />
+              <Separator className='w-11/12 justify-center mx-auto opacity-50' />
   
-            {/* Grado de estudios */}
-            <div className="px-10 py-6 flex justify-between">
-              <h3 className="text-base font-medium w-1/3">Grado de estudios</h3>
-              <div className="w-2/3">
-                <span>{getAcademicLabel(user.academicLevel)}</span>
+              {/* Grado de estudios */}
+              <div className="px-10 py-6 flex justify-between">
+                <h3 className="text-base font-medium w-1/3 text-gray-900">Grado de estudios</h3>
+                <div className="w-2/3">
+                  <span className="text-gray-700">{getAcademicLabel(user.academicLevel)}</span>
+                </div>
               </div>
-            </div>
-            <Separator className='w-11/12 justify-center mx-auto shadow-md rounded-lg' />
+              <Separator className='w-11/12 justify-center mx-auto opacity-50' />
   
-            {/* Carrera (opcional) */}
-            <div className="px-10 py-6 flex justify-between">
-              <h3 className="text-base font-medium w-1/3">Carrera (opcional)</h3>
-              <div className="w-2/3">
-                <span>{user.degree ?? '-'}</span>
+              {/* Carrera (opcional) */}
+              <div className="px-10 py-6 flex justify-between">
+                <h3 className="text-base font-medium w-1/3 text-gray-900">Carrera (opcional)</h3>
+                <div className="w-2/3">
+                  <span className="text-gray-700">{user.degree ?? '-'}</span>
+                </div>
               </div>
-            </div>
-            <Separator className='w-11/12 justify-center mx-auto shadow-md rounded-lg' />
+              <Separator className='w-11/12 justify-center mx-auto opacity-50' />
   
-            {/* Experiencia */}
-            <div className="px-10 py-6 flex justify-between">
-              <h3 className="text-base font-medium w-1/3">Experiencia</h3>
-              <div className="w-2/3">
-                <span>{user.jobExperience ?? '-'}</span>
+              {/* Experiencia */}
+              <div className="px-10 py-6 flex justify-between">
+                <h3 className="text-base font-medium w-1/3 text-gray-900">Experiencia</h3>
+                <div className="w-2/3">
+                  <span className="text-gray-700">{user.jobExperience ?? '-'}</span>
+                </div>
               </div>
-            </div>
-            <Separator className='w-11/12 justify-center mx-auto shadow-md rounded-lg' />
+              <Separator className='w-11/12 justify-center mx-auto opacity-50' />
   
-            {/* Posición deseada */}
-            <div className="px-10 py-6 flex justify-between">
-              <h3 className="text-base font-medium w-1/3">Posición deseada</h3>
-              <div className="w-2/3">
-                <span>{user.desiredPosition ?? '-'}</span>
+              {/* Posición deseada */}
+              <div className="px-10 py-6 flex justify-between">
+                <h3 className="text-base font-medium w-1/3 text-gray-900">Posición deseada</h3>
+                <div className="w-2/3">
+                  <span className="text-gray-700">{user.desiredPosition ?? '-'}</span>
+                </div>
               </div>
-            </div>
-            <Separator className='w-11/12 justify-center mx-auto shadow-md rounded-lg' />
+              <Separator className='w-11/12 justify-center mx-auto opacity-50' />
   
-            {/* Fecha de registro */}
-            <div className="px-10 py-6 flex justify-between">
-              <h3 className="text-base font-medium w-1/3">Fecha de registro</h3>
-              <div className="w-2/3">
-                <span>{user.registeredAt ? dateToLocaleDateString(user.registeredAt) : '-'}</span>
+              {/* Fecha de registro */}
+              <div className="px-10 py-6 flex justify-between">
+                <h3 className="text-base font-medium w-1/3 text-gray-900">Fecha de registro</h3>
+                <div className="w-2/3">
+                  <span className="text-gray-700">{user.registeredAt ? dateToLocaleDateString(user.registeredAt) : '-'}</span>
+                </div>
               </div>
             </div>
-            <Separator className='w-11/12 justify-center mx-auto shadow-md rounded-lg' />
+            
+            <div className="flex justify-center mt-6">
+              <DrawerClose className="w-full max-w-xs text-base font-bold hover:bg-zinc-200 border border-zinc-300 text-uaq-danger px-8 py-4 rounded-xl transition-colors shadow-sm bg-white">
+                Cerrar Detalle
+              </DrawerClose>
+            </div>
+
           </div>
-  
-          <DrawerClose className='text-base font-bold hover:bg-zinc-200 border-0 text-uaq-danger px-4 py-3 rounded-md mx-auto mb-7'>
-            Cancelar
-          </DrawerClose>
         </DrawerContent>
       </Drawer>
     </div>

@@ -33,7 +33,6 @@ export default function ApplicantTabs() {
   return (
     <div className="mx-auto max-w-md bg-white text-brand">
       <InfoCard
-        avatar="https://github.com/shadcn.png"
         name={fullName || 'Sin nombre'}
         email={user?.email || 'Sin correo'}
         cellphone={user?.phone || 'Sin teléfono'}
