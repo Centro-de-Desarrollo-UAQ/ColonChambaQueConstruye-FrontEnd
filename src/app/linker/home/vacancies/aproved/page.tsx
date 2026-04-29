@@ -4,11 +4,12 @@ import React, { useEffect, useState } from 'react';
 import { FileRemove, InboxIn } from '@solar-icons/react';
 
 import UserLinkerVacanciesCard from '@/components/linker/UserLinkerCardvacancies';
-import UniversalCardsFilter from '@/components/ui/UniversalCardFilter';
 import PaginationControl from '@/components/navigation/paginationControl';
 import TitleSection from '@/components/common/TitleSection';
+import { LinkerSearch } from '@/components/linker/LinkerSearch';
+import { useSearchParams } from 'next/navigation';
 
-import { filtersVacancies } from '@/data/filtersVacancies';
+import { filtersLinkerVacancies } from '@/components/linker/LinkerTabs';
 import { useApplicantStore } from '@/app/store/authApplicantStore';
 import { apiService } from '@/services/api.service';
 
@@ -20,6 +21,7 @@ import {
 
 export default function VacanciesGestorPage() {
   const { id: linkerId } = useApplicantStore();
+  const searchParams = useSearchParams();
   const [vacancies, setVacancies] = useState<JobCardProps[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -48,6 +50,18 @@ export default function VacanciesGestorPage() {
         if (offset > 0) {
           queryParams.append('offset', offset.toString());
         }
+
+        const search = searchParams.get('search');
+        if (search) queryParams.append('search', search);
+
+        const sector = searchParams.get('sector');
+        if (sector) queryParams.append('sector', sector);
+
+        const workShift = searchParams.get('workShift');
+        if (workShift) queryParams.append('workShift', workShift);
+
+        const dateFilter = searchParams.get('dateFilter');
+        if (dateFilter) queryParams.append('dateFilter', dateFilter);
 
         const url = `/linkers/${linkerId}/vacancies?${queryParams.toString()}`;
         console.log("Fetching Page:", currentPage, "URL:", url);
@@ -114,7 +128,7 @@ export default function VacanciesGestorPage() {
     };
 
     fetchVacancies();
-  }, [linkerId, currentPage, pageSize]); 
+  }, [linkerId, currentPage, pageSize, searchParams]); 
 
   if (loading) {
     return (
@@ -131,61 +145,49 @@ export default function VacanciesGestorPage() {
         <TitleSection sections={sectionConfig} currentSection={'talents'} />
       </div>
 
-      <div>
-        
-        <UniversalCardsFilter<JobCardProps>
-          items={vacancies}
-          filters={filtersVacancies}
-          accessors={{
-            name: (j) => `${j.title} ${j.company} ${j.description} ${j.location}`,
-            sector: (j) => j.sector,
-            modality: (j) => j.modality,
-            workShift: (j) => j.schedule,
-            createdAt: (j) => j.createdAt,
-          }}
-          render={(filteredItems) => (
-            <div className="space-y-4">
-              
-              {!filteredItems.length && (
-                <div className="flex flex-col items-center justify-center gap-4 m-10 text-gray-300 font-bold">
-                  <FileRemove className="w-20 h-20 text-gray-300" />
-                  <div className="text-center">
-                    <h1>NO SE ENCONTRARON RESULTADOS</h1>
-                    <h2 className="text-sm font-normal mt-2">INTENTA CON OTRAS PALABRAS CLAVE</h2>
-                  </div>
-                </div>
-              )}
-
-              {filteredItems.map((job) => (
-                <UserLinkerVacanciesCard 
-                  key={job.id} 
-                  job={job} 
-                  company={job.company}
-                  logoUrl={job.logoUrl}
-                />
-              ))}
-
-              <div className="mt-6 border-t pt-4">
-                <PaginationControl
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  pageSize={pageSize}
-                  totalItems={totalItems}
-                  onPageChange={(page) => {
-                    setCurrentPage(page);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                  onPageSizeChange={(size) => {
-                    setPageSize(size);
-                    setCurrentPage(1);
-                  }}
-                  pageSizeOptions={[10, 20, 30, 40, 50]}
-                />
+      <div className={`space-y-4 transition-opacity duration-300 ${loading ? 'opacity-60' : 'opacity-100'}`}>
+        <LinkerSearch filters={filtersLinkerVacancies} />
+        <div className="space-y-4">
+          
+          {!vacancies.length && !loading ? (
+            <div className="flex flex-col items-center justify-center gap-4 m-10 text-gray-300 font-bold">
+              <FileRemove className="w-20 h-20 text-gray-300" />
+              <div className="text-center">
+                <h1>NO SE ENCONTRARON RESULTADOS</h1>
+                <h2 className="text-sm font-normal mt-2">INTENTA CON OTRAS PALABRAS CLAVE</h2>
               </div>
             </div>
+          ) : (
+            vacancies.map((job) => (
+              <UserLinkerVacanciesCard 
+                key={job.id} 
+                job={job} 
+                company={job.company}
+                logoUrl={job.logoUrl}
+              />
+            ))
           )}
-          multiMode='OR'
-        />
+
+          {vacancies.length > 0 && (
+            <div className="mt-6 border-t pt-4">
+              <PaginationControl
+                currentPage={currentPage}
+                totalPages={totalPages}
+                pageSize={pageSize}
+                totalItems={totalItems}
+                onPageChange={(page) => {
+                  setCurrentPage(page);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                onPageSizeChange={(size) => {
+                  setPageSize(size);
+                  setCurrentPage(1);
+                }}
+                pageSizeOptions={[10, 20, 30, 40, 50]}
+              />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

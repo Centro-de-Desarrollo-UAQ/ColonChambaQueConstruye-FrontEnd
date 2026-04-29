@@ -1,14 +1,14 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Industry } from '@/interfaces/industries';
-import UniversalCardsFilter from '@/components/ui/UniversalCardFilter';
 import { FileRemove, InboxIn } from '@solar-icons/react';
 import TitleSection from '@/components/common/TitleSection';
 import { CompanyData } from '@/interfaces'; 
 import CompanyLinkerCard from '@/components/linker/CompanyLinkerCard';
 import { filtersLinkerCompanies } from '@/components/linker/LinkerTabs';
 import PaginationControl from '@/components/navigation/paginationControl';
+import { LinkerSearch } from '@/components/linker/LinkerSearch';
+import { useSearchParams } from 'next/navigation';
 
 import { useApplicantStore } from '@/app/store/authApplicantStore';
 import { apiService } from '@/services/api.service';
@@ -16,6 +16,7 @@ import { toast } from 'sonner';
 
 export default function CompaniesRejectedPage() {
   const { id: linkerId } = useApplicantStore();
+  const searchParams = useSearchParams();
 
   const [companies, setCompanies] = useState<CompanyData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -52,6 +53,15 @@ export default function CompaniesRejectedPage() {
           queryParams.append('offset', offset.toString());
         }
 
+        const search = searchParams.get('search');
+        if (search) queryParams.append('search', search);
+
+        const workSector = searchParams.get('workSector');
+        if (workSector) queryParams.append('workSector', workSector);
+
+        const dateFilter = searchParams.get('dateFilter');
+        if (dateFilter) queryParams.append('dateFilter', dateFilter);
+
         const endpoint = `/linkers/${linkerId}/companies?${queryParams.toString()}`;
         console.log("Fetching Rejected Companies:", endpoint);
 
@@ -87,7 +97,7 @@ export default function CompaniesRejectedPage() {
     };
 
     fetchCompanies();
-  }, [linkerId, currentPage, pageSize]);
+  }, [linkerId, currentPage, pageSize, searchParams]);
 
   const totalPages = Math.ceil(totalItems / pageSize);
 
@@ -108,60 +118,48 @@ export default function CompaniesRejectedPage() {
         <TitleSection sections={sectionConfig} currentSection={'talents'} />
       </div>
 
-      <div>
-        <UniversalCardsFilter<CompanyData>
-          items={companies}
-          filters={filtersLinkerCompanies}
-          accessors={{
-            name: (c) =>
-              `${c.Company.tradeName} ${c.Company.legalName} ${c.Company.state} ${c.Company.workSector}`,
-            workSector: (c) => c.Company.workSector,
-            registeredAt: (c) => c.Company.registeredAt,
-          }}
-          render={(filtered) => (
-            <div className="space-y-4">
-              
-              {!filtered.length && (
-                <div className="flex flex-col items-center justify-center gap-4 m-10 text-gray-300 font-bold">
-                  <FileRemove className="w-20 h-20 text-gray-300" />
-                  <div className="text-center">
-                    <h1>NO SE ENCONTRARON EMPRESAS RECHAZADAS</h1>
-                    <h2 className="text-sm font-normal mt-2">INTENTA CON OTRAS PALABRAS CLAVE</h2>
-                  </div>
-                </div>
-              )}
+      <div className={`space-y-4 transition-opacity duration-300 ${loading ? 'opacity-60' : 'opacity-100'}`}>
+        <LinkerSearch filters={filtersLinkerCompanies} />
+        <div className="space-y-4">
+          
+          {!companies.length && !loading ? (
+            <div className="flex flex-col items-center justify-center gap-4 m-10 text-gray-300 font-bold">
+              <FileRemove className="w-20 h-20 text-gray-300" />
+              <div className="text-center">
+                <h1>NO SE ENCONTRARON EMPRESAS RECHAZADAS</h1>
+                <h2 className="text-sm font-normal mt-2">INTENTA CON OTRAS PALABRAS CLAVE</h2>
+              </div>
+            </div>
+          ) : (
+            companies.map((company) => (
+              <CompanyLinkerCard 
+                  key={company.Company.id} 
+                  company={company} 
+                  sideDrawer="right" 
+              />
+            ))
+          )}
 
-              {filtered.map((company) => (
-                <CompanyLinkerCard 
-                    key={company.Company.id} 
-                    company={company} 
-                    sideDrawer="right" 
+          {companies.length > 0 && (
+            <div className="border-t pt-4 mt-4">
+                <PaginationControl
+                    currentPage={currentPage}
+                    totalPages={totalPages || 1}
+                    pageSize={pageSize}
+                    totalItems={totalItems}
+                    onPageChange={(page) => {
+                    setCurrentPage(page);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    onPageSizeChange={(size) => {
+                    setPageSize(size);
+                    setCurrentPage(1);
+                    }}
+                    pageSizeOptions={[10, 20, 30, 40, 50]}
                 />
-              ))}
-
-              {companies.length > 0 && (
-                <div className="border-t pt-4 mt-4">
-                    <PaginationControl
-                        currentPage={currentPage}
-                        totalPages={totalPages || 1}
-                        pageSize={pageSize}
-                        totalItems={totalItems}
-                        onPageChange={(page) => {
-                        setCurrentPage(page);
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                        }}
-                        onPageSizeChange={(size) => {
-                        setPageSize(size);
-                        setCurrentPage(1);
-                        }}
-                        pageSizeOptions={[10, 20, 30, 40, 50]}
-                    />
-                </div>
-              )}
             </div>
           )}
-          multiMode='OR'
-        />
+        </div>
       </div>
     </div>
   );

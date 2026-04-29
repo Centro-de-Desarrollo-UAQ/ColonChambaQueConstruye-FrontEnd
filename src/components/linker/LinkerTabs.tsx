@@ -75,12 +75,12 @@ export const filtersLinkerVacancies: filterType[] = [
     options: listAreasOptionsConstants
   },
   {
-    value: 'createdAt',
+    value: 'dateFilter',
     name: 'Fecha de registro',
     isDate: true,
   },
   {
-    value: 'schedule',
+    value: 'workShift',
     name: 'Tipo de jornada',
     options:  listWorkingHoursOptionsConstants
   }
@@ -142,7 +142,7 @@ export const filtersLinkerCompanies: filterType[] = [
     options: listAreasOptionsConstants
   },
   {
-    value: 'registeredAt',
+    value: 'dateFilter',
     name: 'Fecha de registro',
     isDate: true,
   }
