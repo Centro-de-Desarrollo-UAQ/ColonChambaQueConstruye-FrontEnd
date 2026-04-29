@@ -8,25 +8,14 @@ import { Button } from '@/components/ui/button';
 import { useEmployerProfile } from '../layout';
 import { apiService } from '@/services/api.service';
 import { useRouter } from 'next/navigation';
+import { z } from 'zod';
 
 import Alerts from '@/components/ui/Alerts';
 import ConfirmChangePasswordModal from '@/components/ui/modal/ConfirmChangePasswordModal';
 
+import { applicantSchema } from '@/validations/applicantSchema'; 
+
 const DEFAULT_ERROR_MESSAGE = 'Este campo es requerido';
-
-const PASSWORD_RULES = [
-  { regex: /.{8,}/, message: 'Mínimo 8 caracteres' },
-  { regex: /[A-Z]/, message: 'Requiere mayúscula' },
-  { regex: /[a-z]/, message: 'Requiere minúscula' },
-  { regex: /[0-9]/, message: 'Requiere número' },
-] as const;
-
-function validatePasswordLikeRegister(value: string): string | null {
-  for (const rule of PASSWORD_RULES) {
-    if (!rule.regex.test(value)) return rule.message;
-  }
-  return null;
-}
 
 export default function Page() {
   const router = useRouter();
@@ -48,13 +37,15 @@ export default function Page() {
   const [isEditingPersonal, setIsEditingPersonal] = useState(false);
   const [isEditingGeneral, setIsEditingGeneral] = useState(false);
   
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [lastPassword, setLastPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-  const [alert, setAlert] = useState<{
-    type: 'error' | 'success';
-    message: string;
-  } | null>(null);
+  const [alertConfig, setAlertConfig] = useState<{
+    isVisible: boolean;
+    type: 'error' | 'warning';
+    title: string;
+    description: string;
+  }>({ isVisible: false, type: 'error', title: '', description: '' });
 
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [isPatchingPassword, setIsPatchingPassword] = useState(false);
@@ -88,11 +79,11 @@ export default function Page() {
       correo: companyAccount.email || '',
       contrasena: '',
     });
-    setConfirmPassword('');
     setLastPassword('');
+    setConfirmPassword('');
     setPersonalErrors({});
     setAccessErrors({});
-    setAlert(null);
+    setAlertConfig(prev => ({ ...prev, isVisible: false }));
     setOpenConfirmModal(false);
     setIsPatchingPassword(false);
   }, [companyAccount]);
@@ -146,7 +137,7 @@ export default function Page() {
     const correo = form.correo.trim();
     const newPass = form.contrasena.trim();
     const confirm = confirmPassword.trim();
-    const last = lastPassword.trim();
+    const lastPass = lastPassword.trim();
 
     if (!correo) {
       errors.correo = 'El correo es obligatorio';
@@ -154,28 +145,38 @@ export default function Page() {
       errors.correo = 'Correo inválido';
     }
 
-    if (!last) errors.lastPassword = DEFAULT_ERROR_MESSAGE;
+    if (newPass || confirm || lastPass) {
+      if (!lastPass) {
+        errors.lastPassword = 'Debes ingresar tu contraseña actual';
+      }
 
-    if (!newPass) {
-      errors.contrasena = DEFAULT_ERROR_MESSAGE;
-    } else {
-      const msg = validatePasswordLikeRegister(newPass);
-      if (msg) errors.contrasena = msg;
-    }
+      if (!newPass) {
+        errors.contrasena = DEFAULT_ERROR_MESSAGE;
+      }
+      if (!confirm) {
+        errors.confirmPassword = DEFAULT_ERROR_MESSAGE;
+      }
 
-    if (!confirm) {
-      errors.confirmPassword = DEFAULT_ERROR_MESSAGE;
-    } else {
-      const msg = validatePasswordLikeRegister(confirm);
-      if (msg) errors.confirmPassword = msg;
-    }
+      const baseObjectSchema = applicantSchema instanceof z.ZodEffects 
+        ? applicantSchema.innerType() 
+        : applicantSchema;
+      
+      const passwordSchema = (baseObjectSchema as any).pick({ password: true, confirmPassword: true });
+      const result = passwordSchema.safeParse({ password: newPass, confirmPassword: confirm });
 
-    if (!errors.contrasena && !errors.confirmPassword && newPass !== confirm) {
-      errors.confirmPassword = 'Las contraseñas no coinciden';
-    }
+      if (!result.success) {
+        const zodErrors = result.error.format();
+        if (zodErrors.password?._errors.length) {
+          errors.contrasena = zodErrors.password._errors[0];
+        }
+        if (zodErrors.confirmPassword?._errors.length) {
+          errors.confirmPassword = zodErrors.confirmPassword._errors[0];
+        }
+      }
 
-    if (!errors.contrasena && last && newPass && newPass === last) {
-      errors.contrasena = 'La nueva contraseña no puede ser igual a la anterior';
+      if (!errors.contrasena && !errors.confirmPassword && newPass !== confirm) {
+        errors.confirmPassword = 'Las contraseñas no coinciden';
+      }
     }
 
     return errors;
@@ -186,7 +187,6 @@ export default function Page() {
     const accountId = companyAccount?.id;
 
     if (!companyId || !accountId) {
-      console.error('Falta companyId o accountId');
       throw new Error('No se encontró companyId o accountId');
     }
 
@@ -203,8 +203,11 @@ export default function Page() {
       let errText = `Error ${res.status}`;
       try {
         const errJson = await res.json();
-        console.error('Error PATCH', errJson);
-        errText = errJson.message || errText;
+        if (Array.isArray(errJson.message)) {
+          errText = errJson.message.join(', ');
+        } else {
+          errText = errJson.message || errText;
+        }
       } catch {
       }
       throw new Error(errText);
@@ -237,8 +240,6 @@ export default function Page() {
 
     try {
       await patchAccount(payload);
-      console.log('Datos personales actualizados ');
-
       setForm((prev) => ({
         ...prev,
         nombres: prev.nombres.trim(),
@@ -250,7 +251,6 @@ export default function Page() {
       setPersonalErrors({});
       setIsEditingPersonal(false);
     } catch (err: any) {
-      console.error(err);
       setPersonalErrors((prev) => ({
         ...prev,
         global: 'No se pudieron actualizar los datos personales.',
@@ -259,7 +259,7 @@ export default function Page() {
   };
 
   const handleSaveGeneral = async () => {
-    setAlert(null);
+    setAlertConfig(prev => ({ ...prev, isVisible: false }));
 
     const errors = validateAccessFields();
     if (Object.keys(errors).length > 0) {
@@ -268,7 +268,28 @@ export default function Page() {
     }
 
     setAccessErrors({});
-    setOpenConfirmModal(true);
+    
+    if (form.contrasena.length > 0) {
+      setOpenConfirmModal(true);
+    } else {
+      executeSaveContact(); 
+    }
+  };
+
+  const executeSaveContact = async () => {
+    const payload = {
+      firstName: form.nombres.trim(),
+      lastName: form.apellidos.trim(),
+      jobTitle: form.puesto.trim(),
+      cellPhone: form.celular.trim(),
+      landlinePhone: form.telfijo.trim(),
+    };
+    try {
+      await patchAccount(payload);
+      setIsEditingGeneral(false);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleConfirmChangePassword = async () => {
@@ -291,9 +312,20 @@ export default function Page() {
     } catch (err: any) {
       console.error(err);
 
-      setAlert({
+      let customErrorMessage = 'Datos incorrectos, inténtalo nuevamente.';
+      const backendError = err.message || '';
+
+      if (backendError.includes('Current password is incorrect')) {
+        customErrorMessage = 'La contraseña actual es incorrecta.';
+      } else if (backendError.includes('New password must be different from last password')) {
+        customErrorMessage = 'La contraseña actual y nueva deben ser diferentes.';
+      }
+
+      setAlertConfig({
+        isVisible: true,
         type: 'error',
-        message: 'Datos incorrectos, inténtalo nuevamente.',
+        title: 'Error al cambiar contraseña',
+        description: customErrorMessage,
       });
 
       setIsEditingGeneral(true);
@@ -328,11 +360,18 @@ export default function Page() {
   }
 
   return (
-    <div className="mr-20 space-y-6 p-4 md:p-6">
+    <div className="mr-20 space-y-6 p-4 md:p-6 relative">
       <TitleSection sections={sectionConfig} currentSection="profile" />
 
-    
+      <Alerts
+        isVisible={alertConfig.isVisible}
+        onClose={() => setAlertConfig(prev => ({ ...prev, isVisible: false }))}
+        type={alertConfig.type}
+        title={alertConfig.title}
+        description={alertConfig.description}
+      />
 
+      {/* BLOQUE DATOS GENERALES */}
       <div className="rounded-lg border border-zinc-300 shadow-sm">
         <ConfigRow
           title="Información general"
@@ -446,6 +485,7 @@ export default function Page() {
         )}
       </div>
 
+      {/* BLOQUE DATOS DE ACCESO */}
       <div className="rounded-lg border border-zinc-300 shadow-sm mt-6 bg-white">
         <ConfigRow
           title="Información de acceso"
@@ -454,59 +494,84 @@ export default function Page() {
           isEditable={true}
           editInput={false}
           onEditClick={() => {
-            setAlert(null);
+            setAlertConfig(prev => ({ ...prev, isVisible: false }));
             setAccessErrors({});
-            setConfirmPassword('');
             setLastPassword('');
+            setConfirmPassword('');
             setForm((p) => ({ ...p, contrasena: '' }));
             setIsEditingGeneral((s) => !s);
           }}
         />
 
-        <ConfigRow
-          title="Correo electrónico"
-          valueinput={form.correo}
-          placeholder="ejemplo@correo.com"
-          isEditable={false}
-          editInput={false}
-          externalError={accessErrors.correo}
-        />
+        <div className="px-6">
+          <ConfigRow
+            title="Correo electrónico"
+            valueinput={form.correo}
+            placeholder="ejemplo@correo.com"
+            isEditable={false}
+            editInput={false}
+            externalError={accessErrors.correo}
+          />
+        </div>
 
-        <ConfigRow
-          title="Nueva contraseña"
-          inputType="password"
-          valueinput={form.contrasena}
-          isEditable={isEditingGeneral}
-          editInput={isEditingGeneral}
-          onValueChange={(v) => handleChange('contrasena', v)}
-          externalError={accessErrors.contrasena}
-        />
+        {!isEditingGeneral && (
+          <div className="px-6">
+            <ConfigRow
+              title="Contraseña"
+              valueinput="*************"
+              isTitle={false}
+              placeholder=""
+              isEditable={false}
+              editInput={false}
+              inputType="text"
+            />
+          </div>
+        )}
 
         {isEditingGeneral && (
           <>
             <div className="px-6">
               <ConfigRow
-                title="Repite contraseña"
-                valueinput={confirmPassword}
-                placeholder="Repite tu nueva contraseña"
+                title="Contraseña actual"
+                inputType="password"
+                valueinput={lastPassword}
+                placeholder="Ingresa tu contraseña actual"
                 isEditable={true}
                 editInput={true}
-                onValueChange={(v) => setConfirmPassword(v)}
-                inputType="password"
-                externalError={accessErrors.confirmPassword}
+                onValueChange={(v) => {
+                  setLastPassword(v);
+                  setAccessErrors(e => ({ ...e, lastPassword: '' }));
+                }}
+                externalError={accessErrors.lastPassword}
               />
             </div>
 
             <div className="px-6">
               <ConfigRow
-                title="Última contraseña"
-                valueinput={lastPassword}
-                placeholder="Tu contraseña anterior"
+                title="Nueva contraseña"
+                inputType="password"
+                valueinput={form.contrasena}
+                placeholder="Nueva contraseña"
                 isEditable={true}
                 editInput={true}
-                onValueChange={(v) => setLastPassword(v)}
+                onValueChange={(v) => handleChange('contrasena', v)}
+                externalError={accessErrors.contrasena}
+              />
+            </div>
+
+            <div className="px-6">
+              <ConfigRow
+                title="Repite contraseña"
                 inputType="password"
-                externalError={accessErrors.lastPassword}
+                valueinput={confirmPassword}
+                placeholder="Repite tu nueva contraseña"
+                isEditable={true}
+                editInput={true}
+                onValueChange={(v) => {
+                  setConfirmPassword(v);
+                  setAccessErrors(e => ({ ...e, confirmPassword: '' }));
+                }}
+                externalError={accessErrors.confirmPassword}
               />
             </div>
           </>

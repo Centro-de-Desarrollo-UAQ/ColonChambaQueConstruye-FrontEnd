@@ -17,9 +17,8 @@ export default function Control() {
   const { token, id: userId, clearAuth } = useApplicantStore() as any;
 
   const [isEditing, setIsEditing] = useState(false);
-
-  // AGREGADO 2: Estados para el Alert y el Modal
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  
   const [alertConfig, setAlertConfig] = useState<{
     isVisible: boolean;
     type: 'error' | 'warning';
@@ -30,7 +29,6 @@ export default function Control() {
   const [form, setForm] = useState({
     email: '',
     phone: '',
-    lastPassword: '', 
     password: '', 
     confirmPassword: '', 
   });
@@ -43,7 +41,6 @@ export default function Control() {
         ...prev,
         email: user.email || '',
         phone: user.phone || '',
-        lastPassword: '',
         password: '', 
         confirmPassword: '',
       }));
@@ -65,10 +62,11 @@ export default function Control() {
     } else {
       setForm((prev) => ({ ...prev, [key]: value }));
     }
+    
     setErrors((prev) => ({ ...prev, [key]: '' }));
     
-    if (key === 'password' || key === 'confirmPassword' || key === 'lastPassword') {
-       setErrors((prev) => ({ ...prev, confirmPassword: '', lastPassword: '', password: '' }));
+    if (key === 'password' || key === 'confirmPassword') {
+       setErrors((prev) => ({ ...prev, confirmPassword: '', password: '' }));
     }
   };
 
@@ -79,9 +77,6 @@ export default function Control() {
     if (!form.phone.trim()) newErrors.phone = 'El teléfono es requerido';
     
     if (form.password.length > 0) {
-      if (!form.lastPassword.trim()) {
-        newErrors.lastPassword = 'La contraseña actual es requerida';
-      }
       if (form.password.length < 6) {
         newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
       }
@@ -158,7 +153,6 @@ export default function Control() {
       setForm({
         email: user.email || '',
         phone: user.phone || '',
-        lastPassword: '',
         password: '',
         confirmPassword: '',
       });
@@ -246,20 +240,6 @@ export default function Control() {
           <>
             <div className="px-6">
               <ConfigRow
-                title="Contraseña actual"
-                valueinput={''}
-                isTitle={false}
-                placeholder="Ingresa tu contraseña actual"
-                isEditable={isEditing}
-                editInput={isEditing}
-                inputType="password"
-                onValueChange={(v) => handleChange('lastPassword', v)}
-                externalError={errors.lastPassword}
-              />
-            </div>
-
-            <div className="px-6">
-              <ConfigRow
                 title="Nueva contraseña"
                 valueinput={form.password}
                 isTitle={false}
@@ -300,7 +280,6 @@ export default function Control() {
         )}
       </div>
 
-      {/* Render del Modal */}
       <ConfirmChangePasswordModal
         open={openConfirmModal}
         onClose={() => setOpenConfirmModal(false)}
