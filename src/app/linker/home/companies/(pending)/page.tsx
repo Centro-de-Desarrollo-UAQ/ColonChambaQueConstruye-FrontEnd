@@ -14,6 +14,8 @@ import {
   getCompaniesLinkerColumns, 
   filtersLinkerCompanies 
 } from '@/components/linker/LinkerTabs';
+import { LinkerSearch } from '@/components/linker/LinkerSearch';
+import { useSearchParams } from 'next/navigation';
 import { useApplicantStore } from '@/app/store/authApplicantStore';
 import { apiService } from '@/services/api.service';
 import { CompanyData } from '@/interfaces';
@@ -28,6 +30,7 @@ const sectionConfig = {
 
 export default function PendingCompaniesPage() {
   const { id: linkerId, token } = useApplicantStore();
+  const searchParams = useSearchParams();
 
   const [companies, setCompanies] = useState<CompanyData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -53,6 +56,15 @@ export default function PendingCompaniesPage() {
       if (offset > 0) {
         queryParams.append('offset', offset.toString());
       }
+
+      const search = searchParams.get('search');
+      if (search) queryParams.append('search', search);
+
+      const workSector = searchParams.get('workSector');
+      if (workSector) queryParams.append('workSector', workSector);
+
+      const dateFilter = searchParams.get('dateFilter');
+      if (dateFilter) queryParams.append('dateFilter', dateFilter);
 
       const response = await apiService.get(`/linkers/${linkerId}/companies?${queryParams.toString()}`);
 
@@ -82,7 +94,7 @@ export default function PendingCompaniesPage() {
     } finally {
       setLoading(false);
     }
-  }, [linkerId, token, currentPage, pageSize]);
+  }, [linkerId, token, currentPage, pageSize, searchParams]);
 
   useEffect(() => {
     fetchCompanies();
@@ -108,6 +120,7 @@ export default function PendingCompaniesPage() {
       <TitleSection sections={sectionConfig} currentSection="profile" />
 
       <div className={`space-y-4 transition-opacity duration-300 ${loading ? 'opacity-60' : 'opacity-100'}`}>
+        <LinkerSearch filters={filtersLinkerCompanies} />
         {hasData ? (
           <>
             <DataTableCustomSearchBar
@@ -115,6 +128,7 @@ export default function PendingCompaniesPage() {
               data={companies}
               filters={filtersLinkerCompanies}
               hidePagination={true} 
+              hideSearchBar={true}
             />
             
             <div className="border-t pt-4">

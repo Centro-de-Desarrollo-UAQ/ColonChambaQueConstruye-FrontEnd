@@ -14,6 +14,8 @@ import {
   getUserLinkerColumns, 
   UserSearchFilters 
 } from '@/components/linker/CompanySearchEmploy';
+import { LinkerSearch } from '@/components/linker/LinkerSearch';
+import { useSearchParams } from 'next/navigation';
 import { UserCandidate, listAcademicLevelOptions } from '@/interfaces/usercandidates';
 import { useApplicantStore } from '@/app/store/authApplicantStore';
 import { apiService } from '@/services/api.service';
@@ -36,25 +38,15 @@ const sectionConfig = {
 
 export default function UsersPage() {
   const { token, id: linkerId } = useApplicantStore();
+  const searchParams = useSearchParams();
 
   const [users, setUsers] = useState<UserCandidate[]>([]);
   const [loading, setLoading] = useState(true);
-  const [inputValue, setInputValue] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
-  const [academicLevel, setAcademicLevel] = useState('');
-  const [dateFilter, setDateFilter] = useState('');
 
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalItems, setTotalItems] = useState(0);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearch(inputValue);
-      if (inputValue !== debouncedSearch) setCurrentPage(1);
-    }, 600);
-    return () => clearTimeout(timer);
-  }, [inputValue, debouncedSearch]);
 
   const fetchUsers = useCallback(async () => {
     if (!token || !linkerId) {
@@ -71,8 +63,13 @@ export default function UsersPage() {
         offset: offset.toString(),
       });
 
-      if (debouncedSearch) query.append('search', debouncedSearch);
+      const search = searchParams.get('search');
+      if (search) query.append('search', search);
+
+      const academicLevel = searchParams.get('academicLevel');
       if (academicLevel) query.append('academicLevel', academicLevel);
+
+      const dateFilter = searchParams.get('date');
       if (dateFilter) query.append('date', dateFilter);
 
       const response = await apiService.get(`/linkers/${linkerId}/users?${query.toString()}`);
@@ -92,7 +89,7 @@ export default function UsersPage() {
     } finally {
       setLoading(false);
     }
-  }, [linkerId, currentPage, token, pageSize, debouncedSearch, academicLevel, dateFilter]);
+  }, [linkerId, currentPage, token, pageSize, searchParams]);
 
   useEffect(() => {
     fetchUsers();
@@ -104,24 +101,11 @@ export default function UsersPage() {
 
   const columns = useMemo(() => getUserLinkerColumns(fetchUsers), [fetchUsers]);
 
-  const handleSearchChange = (term: string) => {
-    setInputValue(term);
-    if (!term) {
-      setDebouncedSearch('');
-      setCurrentPage(1);
-    }
-  };
-
-  const handleFilterChange = (columnId: string, value: string) => {
-    if (columnId === 'academicLevel') setAcademicLevel(value);
-    if (columnId === 'registeredAt') setDateFilter(value);
-    setCurrentPage(1);
-  };
 
   const totalPages = Math.ceil(totalItems / pageSize) || 1;
   const hasData = users.length > 0;
 
-  if (loading && users.length === 0 && !debouncedSearch) {
+  if (loading && users.length === 0 && !searchParams.get('search')) {
     return (
       <div className="m-10 mx-32 flex flex-col gap-5">
         <TitleSection sections={sectionConfig} currentSection="profile" />
@@ -137,13 +121,13 @@ export default function UsersPage() {
       <TitleSection sections={sectionConfig} currentSection="profile" />
 
       <div className={`space-y-4 transition-opacity duration-300 ${loading ? 'opacity-60' : 'opacity-100'}`}>
+        <LinkerSearch filters={updatedFilters} />
         <DataTableCustomSearchBar
           columns={columns}
           data={users}
           filters={updatedFilters}
-          onSearchChange={handleSearchChange}
-          onFilterChange={handleFilterChange}
           hidePagination={true}
+          hideSearchBar={true}
         />
 
         {hasData && (
@@ -172,7 +156,7 @@ export default function UsersPage() {
           <EmptyDisplay
             icon={<NoteRemove color="#D4D4D8" width={158} height={166} />}
             firstLine="No se encontraron solicitudes pendientes."
-            secondline={inputValue ? 'Intenta ajustar los filtros de búsqueda.' : 'Las nuevas solicitudes aparecerán aquí.'}
+            secondline={searchParams.get('search') ? 'Intenta ajustar los filtros de búsqueda.' : 'Las nuevas solicitudes aparecerán aquí.'}
           />
         </div>
       )}

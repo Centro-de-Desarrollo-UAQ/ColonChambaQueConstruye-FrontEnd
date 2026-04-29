@@ -7,7 +7,8 @@ import { CompanyData } from '@/interfaces';
 import CompanyLinkerCard from '@/components/linker/CompanyLinkerCard';
 import { filtersLinkerCompanies } from '@/components/linker/LinkerTabs';
 import PaginationControl from '@/components/navigation/paginationControl';
-import UniversalCardsFilter from '@/components/ui/UniversalCardFilter';
+import { LinkerSearch } from '@/components/linker/LinkerSearch';
+import { useSearchParams } from 'next/navigation';
 
 import { useApplicantStore } from '@/app/store/authApplicantStore';
 import { apiService } from '@/services/api.service';
@@ -23,6 +24,7 @@ const sectionConfig = {
 
 export default function CompaniesAprovedPage() {
   const { id: linkerId, token } = useApplicantStore();
+  const searchParams = useSearchParams();
 
   const [companies, setCompanies] = useState<CompanyData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -42,12 +44,20 @@ export default function CompaniesAprovedPage() {
     try {
       const offset = (currentPage - 1) * pageSize;
 
-      // Según tu backend, solicitamos empresas con status 'ACTIVA'
       const queryParams = new URLSearchParams({
         status: 'ACTIVA',
         limit: pageSize.toString(),
         offset: offset.toString(),
       });
+
+      const search = searchParams.get('search');
+      if (search) queryParams.append('search', search);
+
+      const workSector = searchParams.get('workSector');
+      if (workSector) queryParams.append('workSector', workSector);
+
+      const dateFilter = searchParams.get('dateFilter');
+      if (dateFilter) queryParams.append('dateFilter', dateFilter);
 
       const endpoint = `/linkers/${linkerId}/companies?${queryParams.toString()}`;
       const response = await apiService.get(endpoint);
@@ -78,7 +88,7 @@ export default function CompaniesAprovedPage() {
     } finally {
       setLoading(false);
     }
-  }, [linkerId, token, currentPage, pageSize]);
+  }, [linkerId, token, currentPage, pageSize, searchParams]);
 
   useEffect(() => {
     fetchCompanies();
@@ -102,62 +112,51 @@ export default function CompaniesAprovedPage() {
     <div className="mx-32 flex flex-col gap-5 m-10">
       <TitleSection sections={sectionConfig} currentSection={'talents'} />
 
-      <UniversalCardsFilter<CompanyData>
-        items={companies}
-        filters={filtersLinkerCompanies}
-        accessors={{
-          // Definimos los campos por los cuales se puede buscar en el buscador global
-          name: (c) =>
-            `${c.Company.tradeName} ${c.Company.legalName} ${c.Company.rfc} ${c.Company.workSector}`,
-          workSector: (c) => c.Company.workSector,
-          registeredAt: (c) => c.Company.registeredAt,
-        }}
-        render={(filtered) => (
-          <div className="space-y-4">
-            {!filtered.length && !loading ? (
-              <div className="flex flex-col items-center justify-center gap-4 m-10 text-gray-300 font-bold">
-                <FileRemove className="w-20 h-20 text-gray-300" />
-                <div className="text-center">
-                  <h1 className="uppercase">No se encontraron empresas activas</h1>
-                  <h2 className="text-sm font-normal mt-2">Intenta con otras palabras clave</h2>
-                </div>
+      <div className={`space-y-4 transition-opacity duration-300 ${loading ? 'opacity-60' : 'opacity-100'}`}>
+        <LinkerSearch filters={filtersLinkerCompanies} />
+        <div className="space-y-4">
+          {!companies.length && !loading ? (
+            <div className="flex flex-col items-center justify-center gap-4 m-10 text-gray-300 font-bold">
+              <FileRemove className="w-20 h-20 text-gray-300" />
+              <div className="text-center">
+                <h1 className="uppercase">No se encontraron empresas activas</h1>
+                <h2 className="text-sm font-normal mt-2">Intenta con otras palabras clave</h2>
               </div>
-            ) : (
-              <div className="flex flex-col gap-4">
-                {filtered.map((companyData) => (
-                  <CompanyLinkerCard 
-                    key={companyData.Company.id} 
-                    company={companyData} 
-                    sideDrawer="right" 
-                  />
-                ))}
-              </div>
-            )}
-
-            {/* Componente de Paginación */}
-            {totalItems > 0 && (
-              <div className="border-t pt-4 mt-6">
-                <PaginationControl
-                  currentPage={currentPage}
-                  totalPages={totalPages || 1}
-                  pageSize={pageSize}
-                  totalItems={totalItems}
-                  onPageChange={(page) => {
-                    setCurrentPage(page);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                  onPageSizeChange={(size) => {
-                    setPageSize(size);
-                    setCurrentPage(1);
-                  }}
-                  pageSizeOptions={[10, 20, 30, 40, 50]}
+            </div>
+          ) : (
+            <div className="flex flex-col gap-4">
+              {companies.map((companyData) => (
+                <CompanyLinkerCard 
+                  key={companyData.Company.id} 
+                  company={companyData} 
+                  sideDrawer="right" 
                 />
-              </div>
-            )}
-          </div>
-        )}
-        multiMode="OR"
-      />
+              ))}
+            </div>
+          )}
+
+          {/* Componente de Paginación */}
+          {totalItems > 0 && (
+            <div className="border-t pt-4 mt-6">
+              <PaginationControl
+                currentPage={currentPage}
+                totalPages={totalPages || 1}
+                pageSize={pageSize}
+                totalItems={totalItems}
+                onPageChange={(page) => {
+                  setCurrentPage(page);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                onPageSizeChange={(size) => {
+                  setPageSize(size);
+                  setCurrentPage(1);
+                }}
+                pageSizeOptions={[10, 20, 30, 40, 50]}
+              />
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

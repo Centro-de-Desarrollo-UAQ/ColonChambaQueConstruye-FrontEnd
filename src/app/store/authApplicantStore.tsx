@@ -13,6 +13,7 @@ interface AuthState {
 } 
 const LOCAL_STORAGE_TOKEN_KEY = 'authToken';
 const LOCAL_STORAGE_ID_KEY = 'authId';
+const LOCAL_STORAGE_STATUS_KEY = 'authStatus';
 
 export const useApplicantStore = create<AuthState>((set) => ({
   token: null,
@@ -30,6 +31,7 @@ export const useApplicantStore = create<AuthState>((set) => ({
     if (typeof window !== 'undefined') {
       localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, data.token);
       localStorage.setItem(LOCAL_STORAGE_ID_KEY, data.id);
+      localStorage.setItem(LOCAL_STORAGE_STATUS_KEY, data.status);
     }
     console.log(data.id, LOCAL_STORAGE_ID_KEY);
   },
@@ -43,6 +45,7 @@ export const useApplicantStore = create<AuthState>((set) => ({
     if (typeof window !== 'undefined') {
       localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
       localStorage.removeItem(LOCAL_STORAGE_ID_KEY);
+      localStorage.removeItem(LOCAL_STORAGE_STATUS_KEY);
     }
   },
 
@@ -50,10 +53,12 @@ export const useApplicantStore = create<AuthState>((set) => ({
     if (typeof window !== 'undefined') {
       const storedToken = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
       const storedId = localStorage.getItem(LOCAL_STORAGE_ID_KEY);
+      const storedStatus = localStorage.getItem(LOCAL_STORAGE_STATUS_KEY);
       if (storedToken && storedId) {
         set({ 
             token: storedToken,
-            id: storedId 
+            id: storedId, 
+            status: storedStatus,
         });
       }
     }

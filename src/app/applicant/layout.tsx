@@ -20,7 +20,7 @@ export default function ApplicantLayout({ children }: ApplicantLayoutProps) {
 
 useEffect(() => {
   const boot = async () => {
-    await initialize();     // importante
+    await initialize();    
     setIsInitialized(true);
   };
   boot();

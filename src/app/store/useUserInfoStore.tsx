@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 interface UserProfileData {
-  id:string;
+  id: string;
   firstName: string;
   lastName: string;
   address: string;
@@ -14,6 +14,7 @@ interface UserProfileData {
   experience: string;
   interestJob: string; 
   cvUrl: string | null;
+  comment: string | null; 
 }
 
 interface UserState {
@@ -33,7 +34,7 @@ export const useUserStore = create<UserState>((set, get) => ({
 
   fetchUserData: async (userId, token) => {
     const current = get().user
-    if(current?.id === userId)return
+    if(current?.id === userId) return
 
     set({ isLoading: true, error: null });
     try {
@@ -51,17 +52,16 @@ export const useUserStore = create<UserState>((set, get) => ({
       const result = await response.json();
       const apiData = result.data; 
       console.log('[STORE] apiData used:', apiData);
+      
       const mappedUser: UserProfileData = {
-        id:userId,
+        id: userId,
         firstName: apiData.firstName || '', 
         lastName: apiData.lastName || '',
         address: apiData.address || '',
         birthDate: apiData.birthDate || '', 
-        //contacto
         email: apiData.email || '',
         phone: apiData.cellPhone || '', 
         
-        // Professional STEP
         scholarship: apiData.academicLevel || 'Licenciatura',
         degree: apiData.degree || '',
         
@@ -70,8 +70,9 @@ export const useUserStore = create<UserState>((set, get) => ({
         experience: apiData.jobExperience || '',
         interestJob: apiData.desiredPosition || '', 
         
-        // EL CV debe de ir en otro lado pero lo incluyo aqui para la referencia
-        cvUrl: null 
+        cvUrl: null,
+        
+        comment: apiData.comment || null 
       };
 
       set({ user: mappedUser, isLoading: false });

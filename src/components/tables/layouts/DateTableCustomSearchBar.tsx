@@ -64,6 +64,7 @@ interface DataTableCSBProps<TData, TValue> extends DataTableProps<TData, TValue>
   onSearchChange?: (value: string) => void;
   onFilterChange?: (columnId: string, value: any) => void;
   hidePagination?: boolean; 
+  hideSearchBar?: boolean;
 }
 
 export function DataTableCustomSearchBar<TData, TValue>({
@@ -73,6 +74,7 @@ export function DataTableCustomSearchBar<TData, TValue>({
   onSearchChange,
   onFilterChange,
   hidePagination = false,
+  hideSearchBar = false,
 }: DataTableCSBProps<TData, TValue>) {
   
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -197,13 +199,23 @@ export function DataTableCustomSearchBar<TData, TValue>({
 
   return (
     <div className="flex flex-col content-end items-end space-y-4">
-      {/*  Barra de búsqueda + filtros */}
-      <TableSearchBar
-        filters={filters}
-        table={table}
-        onSearch={onSearchChange}
-        onFilterChange={onFilterChange}
-      />
+      {/* Barra de búsqueda + filtros (opcional) */}
+      {!hidePagination && !hideSearchBar && (
+        <TableSearchBar
+          filters={filters}
+          table={table}
+          onSearch={onSearchChange}
+          onFilterChange={onFilterChange}
+        />
+      )}
+      {hidePagination && !hideSearchBar && (
+        <TableSearchBar
+          filters={filters}
+          table={table}
+          onSearch={onSearchChange}
+          onFilterChange={onFilterChange}
+        />
+      )}
 
       {/* Tabla */}
       <div className="w-full overflow-hidden rounded-md border">
