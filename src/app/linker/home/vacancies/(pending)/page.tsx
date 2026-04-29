@@ -9,6 +9,8 @@ import EmptyDisplay from '@/components/empty-display/EmptyDisplay';
 import NoteRemove from '@/components/common/hugeIcons';
 import { DataTableCustomSearchBar } from '@/components/tables/layouts/DateTableCustomSearchBar';
 import { getVacanciesLinkerColumns, filtersLinkerVacancies } from '@/components/linker/LinkerTabs';
+import { LinkerSearch } from '@/components/linker/LinkerSearch';
+import { useSearchParams } from 'next/navigation';
 
 import { useApplicantStore } from '@/app/store/authApplicantStore';
 import { apiService } from '@/services/api.service';
@@ -24,6 +26,7 @@ const SECTION_CONFIG = {
 
 export default function TablillaPage() {
   const { id: linkerId, token } = useApplicantStore();
+  const searchParams = useSearchParams();
   const [vacancies, setVacancies] = useState<JobCardProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -32,7 +35,23 @@ export default function TablillaPage() {
 
     setIsLoading(true);
     try {
-      const response = await apiService.get(`/linkers/${linkerId}/vacancies?status=REVISION`);
+      const queryParams = new URLSearchParams({
+        status: 'REVISION',
+      });
+
+      const search = searchParams.get('search');
+      if (search) queryParams.append('search', search);
+
+      const sector = searchParams.get('sector');
+      if (sector) queryParams.append('sector', sector);
+
+      const workShift = searchParams.get('workShift');
+      if (workShift) queryParams.append('workShift', workShift);
+
+      const dateFilter = searchParams.get('dateFilter');
+      if (dateFilter) queryParams.append('dateFilter', dateFilter);
+
+      const response = await apiService.get(`/linkers/${linkerId}/vacancies?${queryParams.toString()}`);
       if (!response.ok) throw new Error(`Error ${response.status}`);
 
       const { data } = await response.json();
@@ -46,7 +65,7 @@ export default function TablillaPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [linkerId, token]);
+  }, [linkerId, token, searchParams]);
 
   useEffect(() => {
     fetchVacancies();
@@ -70,21 +89,25 @@ export default function TablillaPage() {
     <div className="mx-32 flex flex-col gap-5 m-10">
       <TitleSection sections={SECTION_CONFIG} currentSection="profile" />
 
-      {vacancies.length > 0 ? (
-        <DataTableCustomSearchBar
-          columns={columns}
-          data={vacancies}
-          filters={filtersLinkerVacancies}
-        />
-      ) : (
-        <div className="flex w-full flex-col items-center justify-center text-center mt-10">
-          <EmptyDisplay
-            icon={<NoteRemove color="#D4D4D8" width={158} height={166} />}
-            firstLine="Todavía no tienes solicitudes de vacantes en revisión."
-            secondline="Las nuevas vacantes aparecerán listadas en esta sección."
+      <div className={`space-y-4 transition-opacity duration-300 ${isLoading ? 'opacity-60' : 'opacity-100'}`}>
+        <LinkerSearch filters={filtersLinkerVacancies} />
+        {vacancies.length > 0 ? (
+          <DataTableCustomSearchBar
+            columns={columns}
+            data={vacancies}
+            filters={filtersLinkerVacancies}
+            hideSearchBar={true}
           />
-        </div>
-      )}
+        ) : (
+          <div className="flex w-full flex-col items-center justify-center text-center mt-10">
+            <EmptyDisplay
+              icon={<NoteRemove color="#D4D4D8" width={158} height={166} />}
+              firstLine="Todavía no tienes solicitudes de vacantes en revisión."
+              secondline="Las nuevas vacantes aparecerán listadas en esta sección."
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 }
