@@ -85,3 +85,17 @@ export function formatWorkingDays(days?: string[]): string {
 
   return `${allButLast} y ${last}`;
 }
+
+/**
+ * Formats a given enum-like string by replacing underscores with spaces and
+ * capitalizing only the first letter.
+ * 
+ * @param text - The text to format (e.g., 'TIEMPO_COMPLETO')
+ * @returns Formatted string (e.g., 'Tiempo completo')
+ */
+export function formatEnumText(text?: string): string {
+  if (!text) return '';
+  const lowerCased = text.toLowerCase().replace(/_/g, ' ');
+  return lowerCased.charAt(0).toUpperCase() + lowerCased.slice(1);
+
+}
