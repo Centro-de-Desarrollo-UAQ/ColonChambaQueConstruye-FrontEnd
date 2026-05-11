@@ -14,7 +14,7 @@ import {
 import CompanyAvatar from '../common/AvatarTrasnform';
 import { useApplicantStore } from '@/app/store/authApplicantStore';
 import { ApiService } from '@/services/api.service';
-import { formatWorkingDays } from '@/lib/utils';
+import { formatWorkingDays, formatEnumText } from '@/lib/utils';
 
 interface jobCardApplicationProps {
   job: JobCardProps
@@ -106,11 +106,11 @@ export default function DrawerApplicantVacant({
           <div className="flex flex-col justify-center gap-2 self-center rounded-r-lg p-4 transition-colors duration-300 ">
             <div className="flex items-center gap-2 text-sm text-gray-700 transition-colors duration-200 group-hover:text-gray-900">
               <ClockCircle className="h-4 w-4" weight="Linear" />
-              <span className="whitespace-nowrap">{job.schedule /* Horario de trabajo */}</span>
+              <span className="whitespace-nowrap">{formatEnumText(job.schedule) /* Horario de trabajo */}</span>
             </div>
             <div className="flex items-center gap-2 text-sm text-gray-700 transition-colors duration-200 group-hover:text-gray-900">
               <Gps className="h-4 w-4" weight="Linear" />
-              <span>{job.modality /* Modalidad de empleo (híbrido, remoto, presencial) */}</span>
+              <span>{formatEnumText(job.modality) /* Modalidad de empleo (híbrido, remoto, presencial) */}</span>
             </div>
           </div>
 
@@ -186,12 +186,12 @@ export default function DrawerApplicantVacant({
                   <div className="flex items-center gap-2">
                     <Gps className="h-4 w-4" weight="Linear" />
                     <h5>Modalidad: </h5>
-                    <span>{vacancyDetails?.Vacancy?.modality}</span>
+                    <span>{formatEnumText(vacancyDetails?.Vacancy?.modality)}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <ClockCircle className="h-4 w-4" weight="Linear" />
                     <h5>Jornada: </h5>
-                    <span className="whitespace-nowrap">{vacancyDetails?.Vacancy?.workShift}</span>
+                    <span className="whitespace-nowrap">{formatEnumText(vacancyDetails?.Vacancy?.workShift)}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" weight="Linear" />
@@ -215,7 +215,7 @@ export default function DrawerApplicantVacant({
                   <div className="flex items-center gap-2">
                     <User className="h-4 w-4" weight="Linear" />
                     <h5>Género: </h5>
-                    <span className="whitespace-nowrap">{vacancyDetails?.Vacancy?.gender || 'Indistinto'}</span>
+                    <span className="whitespace-nowrap">{formatEnumText(vacancyDetails?.Vacancy?.gender) || 'Indistinto'}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Balloon className="h-4 w-4" weight="Linear" />
@@ -227,7 +227,7 @@ export default function DrawerApplicantVacant({
                   <div className="flex items-center gap-2">
                     <Buildings className="h-4 w-4" weight="Linear" />
                     <h5>Sector: </h5>
-                    <span className="whitespace-nowrap">{vacancyDetails?.Vacancy?.businessSector}</span>
+                    <span className="whitespace-nowrap">{formatEnumText(vacancyDetails?.Vacancy?.businessSector)}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <User className="h-4 w-4" weight="Linear" />
@@ -246,7 +246,7 @@ export default function DrawerApplicantVacant({
 
                 <h3 className='text-lg font-[600]'>Perfil requerido</h3>
                 <DrawerDescription className='text-left text-gray-600 text-base'>
-                  {vacancyDetails?.Vacancy?.requiredDegree}
+                  {formatEnumText(vacancyDetails?.Vacancy?.requiredDegree)}
                 </DrawerDescription>
 
                 <h3 className='text-lg font-[600]'>Beneficios</h3>
