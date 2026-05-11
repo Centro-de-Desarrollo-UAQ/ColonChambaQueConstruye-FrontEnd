@@ -80,10 +80,8 @@ export default function PublicLogin() {
         return;
       }
 
-      const isAccountActive = accountStatus === 'ACTIVA' || accountStatus === 'ACTIVO';
-      const isCompanyActive = companyStatus === 'ACTIVA' || companyStatus === 'ACTIVO';
-
-      if (isAccountActive && isCompanyActive) {
+      const isAccountActive = accountStatus === 'ACTIVA' 
+      if (isAccountActive) {
         if (accountData.token && companyId) {
           login({
             token: accountData.token,
@@ -99,8 +97,7 @@ export default function PublicLogin() {
 
       console.warn('Cuenta en revisión o inactiva. No se guardó la sesión completa.');
       
-      if (companyStatus === 'REVISION' || accountStatus === 'REVISION' ||
-          companyStatus === 'PENDIENTE' || accountStatus === 'PENDIENTE') {
+      if (companyStatus == 'REVISION')
         toast.info('Tu cuenta está en revisión. Te notificaremos cuando sea aprobada.');
       } else {
         toast.warning('Tu cuenta no se encuentra activa en este momento.');

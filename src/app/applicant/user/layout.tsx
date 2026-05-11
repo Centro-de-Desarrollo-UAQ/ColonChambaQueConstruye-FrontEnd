@@ -43,14 +43,12 @@ export default function ApplicantLayout({
       )}
 
       <main className="flex flex-grow">
-        {/* Restaurado: Sin flex-col, con shrink-0 para que las tabs no se encojan */}
         <div className="w-120 py-12 shrink-0">
           <ApplicantTabs />
 
           {isRejected && (
             <div className="mt-8 px-4">
               
-              {/* 1. EL BOTÓN ARRIBA */}
               <div className="mb-4">
                 <RequestReviewButton 
                   endpoint={`/api/v1/users/${userId}/status`}
@@ -65,7 +63,6 @@ export default function ApplicantLayout({
                 </p>
               </div>
 
-              {/* 2. EL MOTIVO DE RECHAZO ABAJO */}
               <div className="bg-red-50 shadow-sm border border-red-200 rounded-lg overflow-hidden">
                 <div className="px-6 py-6 flex flex-col items-start gap-3">
                   <h3 className="text-base font-bold text-red-700 shrink-0">

@@ -152,7 +152,7 @@ export default function LayoutEmployerView({children,}: Readonly<{ children: Rea
           <div className="w-120 py-12 shrink-0">
             <EmployerTab />
           </div>
-
+          
           {/* Scrollable content */}
           <div className="flex-1 overflow-y-auto py-10 px-6">
             {children}
