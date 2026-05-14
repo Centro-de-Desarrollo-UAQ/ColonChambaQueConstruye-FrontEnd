@@ -11,6 +11,7 @@ import EmployerSideBar from '@/components/sidebar/EmployerSideBar';
 import Header from '@/components/ui/header';
 import EmployerTab from '@/components/employer/EmployerTab';
 import { apiService } from '@/services/api.service';
+import { useCompanyStore } from '@/app/store/authCompanyStore';
 
 
 //Tipado de respuesta al endpont
@@ -79,6 +80,7 @@ export function useEmployerProfile() {
 
 export default function LayoutEmployerView({children,}: Readonly<{ children: React.ReactNode }>) {
 
+  const { statusCompany } = useCompanyStore();
   const [company, setCompany] = useState<Company | null>(null);
   const [companyAccount, setCompanyAccount] =
     useState<CompanyAccount | null>(null);
@@ -145,9 +147,11 @@ export default function LayoutEmployerView({children,}: Readonly<{ children: Rea
         {/* Main layout with padding for fixed header */}
         <main className="flex pt-16">
           {/* Sidebar */}
-          <div className="shrink-0 sticky top-16 h-[calc(100vh-4rem)]">
-            <EmployerSideBar />
-          </div>
+          {statusCompany !== 'RECHAZADA' && (
+        <div className="shrink-0 sticky top-16 h-[calc(100vh-4rem)]">
+          <EmployerSideBar />
+        </div>
+)}
 
           <div className="w-120 py-12 shrink-0">
             <EmployerTab />
