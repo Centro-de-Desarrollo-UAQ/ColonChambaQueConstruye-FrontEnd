@@ -10,7 +10,6 @@ import { Case,AddSquare,CaseRoundMinimalistic,Settings  } from '@solar-icons/rea
 export default function EmployerSideBar() {
   const pathname = usePathname();
 
-  // Aqui tienen que cambiar el href a la ruta definida de su pantalla pueden tomar de ejemplo el de cartera de usuario
   const navLinks = [
     { href: '/employer/home/vacancies', label: 'Vacantes', icon:Case},
     { href: '/employer/home/post', label: 'Publicar vacantes', icon:AddSquare },

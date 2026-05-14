@@ -39,7 +39,6 @@ export default function EmployerTab() {
     return (
         <div className="mx-auto max-w-md bg-white text-brand">{/*Introducir la información de la empresa*/}
             <InfoCard 
-                avatar="<img src='public/Deloitte.svg' alt='Deloitte QRO' />"
                 name={displayName}
                 email={displayEmail}
                 cellphone={''}
