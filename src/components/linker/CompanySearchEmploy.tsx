@@ -68,7 +68,7 @@ export const UserSearchFilters: filterType[] = [
     options: [], 
   },
   {
-    value: 'date',
+    value: 'registeredAt',
     name: 'Fecha de registro',
     isDate: true,
   },

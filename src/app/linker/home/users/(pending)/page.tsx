@@ -69,8 +69,8 @@ export default function UsersPage() {
       const academicLevel = searchParams.get('academicLevel');
       if (academicLevel) query.append('academicLevel', academicLevel);
 
-      const dateFilter = searchParams.get('date');
-      if (dateFilter) query.append('date', dateFilter);
+      const registeredAtFilter = searchParams.get('registeredAt');
+      if (registeredAtFilter) query.append('registeredAt', registeredAtFilter);
 
       const response = await apiService.get(`/linkers/${linkerId}/users?${query.toString()}`);
 
@@ -96,7 +96,7 @@ export default function UsersPage() {
   }, [fetchUsers]);
 
   const updatedFilters = useMemo(() => 
-    UserSearchFilters.map((f) => f.value === 'academicLevel' ? { ...f, options: listAcademicLevelOptions } : f), 
+    UserSearchFilters.filter((f) => f.value !== 'academicLevel'), 
   []);
 
   const columns = useMemo(() => getUserLinkerColumns(fetchUsers), [fetchUsers]);
