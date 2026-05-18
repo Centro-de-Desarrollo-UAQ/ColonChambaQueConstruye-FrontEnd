@@ -55,7 +55,7 @@ export interface CompanyDetails {
 export interface JobCardProps {
   id: string;
   status: VacancyStatus;
-  comment?: string; // <-- AGREGADO
+  comment?: string; 
   title: string;
   company: string;
   location: string;

@@ -232,7 +232,8 @@ export default function UserLinkerVacanciesCard({
                   <div className="px-6 sm:px-10 py-6 flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
                     <h3 className="text-base font-medium w-full sm:w-1/3 shrink-0 text-gray-900">Fecha de revision</h3>
                     <div className="w-full sm:w-2/3 min-w-0 break-words text-gray-700">
-                      <span>{job.checkedAt}</span>
+                      <span>{new Date(job.checkedAt).toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' })}</span>
+                           
                     </div>
                   </div>
 
